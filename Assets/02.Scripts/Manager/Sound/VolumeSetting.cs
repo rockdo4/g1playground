@@ -23,9 +23,18 @@ public class VolumeSetting : MonoBehaviour
     private void Awake()
     {
         //add sliders set volume methods
-        masterSlider.onValueChanged.AddListener(SetMasterVolume);
-        bgmSlider.onValueChanged.AddListener(SetBgmVolume);
-        seSlider.onValueChanged.AddListener(SetSEVolume);
+        if (masterSlider != null)
+        {
+            masterSlider.onValueChanged.AddListener(SetMasterVolume);
+        }
+        if (bgmSlider != null)
+        {
+            bgmSlider.onValueChanged.AddListener(SetBgmVolume);
+        }
+        if (seSlider != null)
+        {
+            seSlider.onValueChanged.AddListener(SetSEVolume);
+        }  
     }
 
     private void Start()
@@ -34,12 +43,21 @@ public class VolumeSetting : MonoBehaviour
         InitSliderValue();
     }
 
+    //save volume values
     private void OnDisable()
     {
-        PlayerPrefs.SetFloat(SoundManager.Master_KEY, masterSlider.value);
-        PlayerPrefs.SetFloat(SoundManager.BGM_KEY, bgmSlider.value);
-        PlayerPrefs.SetFloat(SoundManager.SE_KEY, seSlider.value);
-        Debug.Log("on disable");
+        if (masterSlider != null)
+        {
+            PlayerPrefs.SetFloat(SoundManager.Master_KEY, masterSlider.value);
+        }
+        if (bgmSlider != null)
+        {
+            PlayerPrefs.SetFloat(SoundManager.BGM_KEY, bgmSlider.value);
+        }
+        if (seSlider != null)
+        {
+            PlayerPrefs.SetFloat(SoundManager.SE_KEY, seSlider.value);
+        }   
     }
 
     //Init slider value
@@ -50,6 +68,7 @@ public class VolumeSetting : MonoBehaviour
         InitSESlider();
     }
 
+    //Init Master volume
     private void InitMasterSlider()
     {
         if (masterSlider == null)
@@ -62,6 +81,7 @@ public class VolumeSetting : MonoBehaviour
         masterSlider.value = PlayerPrefs.GetFloat(SoundManager.Master_KEY, 1f);
     }
 
+    //Init BGM volume
     private void InitBGMSlider()
     {
         if (bgmSlider == null)
@@ -74,6 +94,7 @@ public class VolumeSetting : MonoBehaviour
         bgmSlider.value = PlayerPrefs.GetFloat(SoundManager.BGM_KEY, 1f);
     }
 
+    //Init SE volume
     private void InitSESlider()
     {
         if (seSlider == null)
@@ -106,6 +127,11 @@ public class VolumeSetting : MonoBehaviour
     //mute volume by toggle isOn
     public void Mute()
     {
+        if (muteToggle == null)
+        {
+            return;
+        }
+
         if (!muteToggle.isOn)
         {
             Debug.Log("sound on");

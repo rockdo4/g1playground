@@ -12,10 +12,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] public AudioSource bgmSource;
     [SerializeField] public AudioSource seSource;
 
-    [Header("BGM Clips")]
+    [Header("BGMs")]
+    //bgms
     [SerializeField] public List<AudioClip> bgmClips = new List<AudioClip>();
 
-    [Header("Sound Effects Clips")]
+    [Header("Sound Effects")]
+    //sound effects
     [SerializeField] public List<AudioClip> seClips = new List<AudioClip>();
 
     public const string Master_KEY = "MasterKey";
@@ -69,23 +71,56 @@ public class SoundManager : MonoBehaviour
         {
             if (bgm.name.Equals(name))
             {
-                bgmSource.PlayOneShot(bgm);
+                bgmSource.Stop();
+                bgmSource.clip = bgm;
+                bgmSource.Play();
             }
         }
     }
 
 
-    //play SE by file name
+    //play SE by file name find in SE list
     public void PlaySoundEffect(string name)
     {
         foreach (var se in seClips)
         {
             if (se.name.Equals(name))
             {
+                seSource.Stop();
                 seSource.PlayOneShot(se);
             }
         }
     }
 
-   
+    //play SE by audio clip
+    public void PlaySoundEffect(AudioClip clip)
+    {
+        //seSource.Stop();
+        seSource.PlayOneShot(clip);
+        
+    }
+
+    //Pause playing SoundEffect
+    public void PauseSoundEffect()
+    {
+        seSource.Pause();
+    }
+
+    //Resume paused SoundEffect
+    public void UnPauseSoundEffect()
+    {
+        seSource.UnPause();
+    }
+
+    //Pause playing BGM
+    public void PauseBGM()
+    {
+        bgmSource.Pause();
+    }
+
+    //Resume paused BGM
+    public void UnPauseBGM()
+    {
+        bgmSource.UnPause();
+    }
 }
