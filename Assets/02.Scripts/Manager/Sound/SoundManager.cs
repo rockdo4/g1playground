@@ -5,13 +5,22 @@ using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
+    [Header("Audio Mixer")]
     [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] public AudioSource bgm;
-    [SerializeField] public AudioSource se;
 
-    public const string Master_KEY = "MasterVolume";
-    public const string BGM_KEY = "BGMVolume";
-    public const string SE_KEY = "SEVolume";
+    [Header("Audio Source")]
+    [SerializeField] public AudioSource bgmSource;
+    [SerializeField] public AudioSource seSource;
+
+    [Header("BGM Clips")]
+    [SerializeField] public List<AudioClip> bgmClips = new List<AudioClip>();
+
+    [Header("Sound Effects Clips")]
+    [SerializeField] public List<AudioClip> seClips = new List<AudioClip>();
+
+    public const string Master_KEY = "MasterKey";
+    public const string BGM_KEY = "BGMKey";
+    public const string SE_KEY = "SEKey";    
 
     private static SoundManager m_instance;
     public static SoundManager instance
@@ -36,6 +45,7 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        //load volumes on load
         LoadVolume();
 
     }
@@ -51,4 +61,31 @@ public class SoundManager : MonoBehaviour
         audioMixer.SetFloat(VolumeSetting.MIXER_BGM, Mathf.Log10(bgmVolume) * 20);
         audioMixer.SetFloat(VolumeSetting.MIXER_SE, Mathf.Log10(seVolume) * 20);
     }
+
+    //play BGM by file name
+    public void PlayBGM(string name)
+    {
+        foreach (var bgm in bgmClips)
+        {
+            if (bgm.name.Equals(name))
+            {
+                bgmSource.PlayOneShot(bgm);
+            }
+        }
+    }
+
+
+    //play SE by file name
+    public void PlaySoundEffect(string name)
+    {
+        foreach (var se in seClips)
+        {
+            if (se.name.Equals(name))
+            {
+                seSource.PlayOneShot(se);
+            }
+        }
+    }
+
+   
 }

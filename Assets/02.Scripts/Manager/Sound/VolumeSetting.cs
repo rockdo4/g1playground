@@ -6,14 +6,19 @@ using UnityEngine.Audio;
 
 public class VolumeSetting : MonoBehaviour
 {
+    [Header("Audio Mixer")]
     [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] public Slider masterSlider;
-    [SerializeField] public Slider bgmSlider;
-    [SerializeField] public Slider seSlider;
-
+    [Header("Audio Mixer sliders")]
+    [SerializeField] private Slider masterSlider;
+    [SerializeField] private Slider bgmSlider;
+    [SerializeField] private Slider seSlider;
+    [Header("Audio Mixer sliders")]
+    [SerializeField] private Toggle muteToggle;
+    //Mixer volume keys
     public const string MIXER_Master = "MasterVolume";
     public const string MIXER_BGM = "BGMVolume";
     public const string MIXER_SE = "SEVolume";
+
 
     private void Awake()
     {
@@ -34,6 +39,7 @@ public class VolumeSetting : MonoBehaviour
         PlayerPrefs.SetFloat(SoundManager.Master_KEY, masterSlider.value);
         PlayerPrefs.SetFloat(SoundManager.BGM_KEY, bgmSlider.value);
         PlayerPrefs.SetFloat(SoundManager.SE_KEY, seSlider.value);
+        Debug.Log("on disable");
     }
 
     //Init slider value
@@ -96,4 +102,23 @@ public class VolumeSetting : MonoBehaviour
         audioMixer.SetFloat(MIXER_SE, Mathf.Log10(value) * 20);
     }
     ///////////////////////
+
+    //mute volume by toggle isOn
+    public void Mute()
+    {
+        if (!muteToggle.isOn)
+        {
+            Debug.Log("sound on");
+            SetMasterVolume(PlayerPrefs.GetFloat(SoundManager.Master_KEY, 1f));
+            masterSlider.value = PlayerPrefs.GetFloat(SoundManager.Master_KEY, 1f);
+        }
+        else
+        {
+            Debug.Log("mute");
+            PlayerPrefs.SetFloat(SoundManager.Master_KEY, masterSlider.value);
+            SetMasterVolume(masterSlider.minValue);
+            masterSlider.value = masterSlider.minValue;
+        }
+       
+    }
 }
