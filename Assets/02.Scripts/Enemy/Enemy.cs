@@ -28,6 +28,10 @@ public class Enemy : MonoBehaviour
     public float attackRange;
     public float searchRange;
 
+    private int curCountPattern;
+    private int countPattern;
+    private bool isPattern;
+
     private float distance;
     private Transform player;
 
@@ -38,18 +42,27 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        state = EnemyState.Idle;
+
 
     }
 
     private void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
+        countPattern = EnemyStatePattern.Count - 1;
+        curCountPattern = 0;
+        state = EnemyStatePattern[0].state;
+        isPattern = true;
     }
 
     private void Update()
     {
         distance = Vector3.Distance(transform.position, player.position);
+
+        if (isPattern)
+        {
+            ChangePatteurn();
+        }
 
         switch (state)
         {
@@ -66,6 +79,7 @@ public class Enemy : MonoBehaviour
                 AttackUpdate();
                 break;
         }
+
         Debug.Log(state);
     }
 
@@ -74,6 +88,7 @@ public class Enemy : MonoBehaviour
         if (distance < searchRange)
         {
             state = EnemyState.Chase;
+            ResetPattern();
         }
     }
 
@@ -82,6 +97,7 @@ public class Enemy : MonoBehaviour
         if (distance < attackRange)
         {
             state = EnemyState.Attack;
+            ResetPattern();
             return;
         }
 
@@ -94,6 +110,7 @@ public class Enemy : MonoBehaviour
         if (distance < searchRange)
         {
             state = EnemyState.Chase;
+            ResetPattern();
         }
     }
 
@@ -103,5 +120,33 @@ public class Enemy : MonoBehaviour
         {
             state = EnemyState.Chase;
         }
+    }
+
+    void ChangePatteurn()
+    {
+        StartCoroutine(PatternDelay(EnemyStatePattern[curCountPattern].second));
+        isPattern = false;
+    }
+    IEnumerator PatternDelay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        if (countPattern == curCountPattern)
+        {
+            curCountPattern = 0;
+        }
+        else
+        {
+            ++curCountPattern;
+        }
+
+        isPattern = true;
+        state = EnemyStatePattern[curCountPattern].state;
+    }
+
+    private void ResetPattern()
+    {
+        curCountPattern = 0;
+        isPattern = false;
     }
 }
