@@ -12,6 +12,14 @@ public class EffectManager : MonoBehaviour
     {
         foreach (GameObject effectPrefab in effectPrefabs)
         {
+#if UNITY_EDITOR
+            if (effectPrefab == null)
+            {
+                Debug.Log("Please Input Effect");
+                return;
+            }
+#endif
+
             string effectName = effectPrefab.name;
             effectPool[effectName] = new Queue<GameObject>();
         }
