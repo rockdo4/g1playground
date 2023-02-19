@@ -15,7 +15,18 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.A))
             PlayerDataManager.instance.Save();
+        if (Input.GetKeyDown(KeyCode.S))
+            ResetData();
+        if (Input.GetKeyDown(KeyCode.D))
+            PlayerDataManager.instance.Load();
+    }
+
+    void ResetData()
+    {
+        PlayerDataManager.instance.playerName = string.Empty;
+        PlayerDataManager.instance.playerCurrHp = 0;
+        PlayerDataManager.instance.lastMapId = 0;
     }
 }

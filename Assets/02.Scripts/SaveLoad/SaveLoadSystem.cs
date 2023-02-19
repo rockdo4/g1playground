@@ -23,7 +23,7 @@ public static class SaveLoadSystem
     }
 
     public static readonly string AesKey = "1234567890";
-    public const Modes CurrentMode = Modes.Binary;
+    public const Modes CurrentMode = Modes.Json;
     public const int CurrentVersion = 1;
     public static string FilePath = string.Empty;
     public static readonly string DirectoryName = "Save";

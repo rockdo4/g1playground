@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SaveData
+public class SaveData
 {
-    public abstract int Version { get; }
-    public abstract SaveData VersionUp();
-    public abstract SaveData VersionDown();
+    public int Version;
+    public virtual SaveData VersionUp() { return null; }
+    public virtual SaveData VersionDown() { return null; }
 }
 
 public class SaveDataVer1 : SaveData
 {
-    public override int Version => 1;
+    public SaveDataVer1()
+    {
+        Version = 1;
+    }
 
     public string playerName;
     public int playerCurrHp;
