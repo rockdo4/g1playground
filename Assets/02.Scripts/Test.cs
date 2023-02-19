@@ -10,6 +10,7 @@ public class Test : MonoBehaviour
         PlayerDataManager.instance.playerName = "minwoo";
         PlayerDataManager.instance.playerCurrHp = 150;
         PlayerDataManager.instance.lastMapId = 15;
+        PlayerDataManager.instance.lastPlayerPos = Vector3.up;
     }
 
     // Update is called once per frame

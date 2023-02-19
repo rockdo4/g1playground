@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveData
+public class SavePlayerData : SaveData
 {
-    public int Version;
-    public virtual SaveData VersionUp() { return null; }
-    public virtual SaveData VersionDown() { return null; }
+    public SavePlayerData()
+    {
+        type = Types.Player;
+    }
 }
 
-public class SaveDataVer1 : SaveData
+public class SavePlayerDataVer1 : SavePlayerData
 {
-    public SaveDataVer1()
+    public SavePlayerDataVer1()
     {
-        Version = 1;
+        version = 1;
     }
 
     public string playerName;

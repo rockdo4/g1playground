@@ -25,23 +25,26 @@ public class PlayerDataManager : MonoBehaviour
     public string playerName;
     public int playerCurrHp;
     public int lastMapId;
+    public Vector3 lastPlayerPos;
 
     public void Save()
     {
-        var saveData = new SaveDataVer1();
+        var saveData = new SavePlayerDataVer1();
         saveData.playerName = playerName;
         saveData.playerCurrHp = playerCurrHp;
         saveData.lastMapId = lastMapId;
         //saveData.lastPlayerPos = player.transform.position;
+        saveData.lastPlayerPos = lastPlayerPos;
 
-        SaveLoadSystem.Save(SaveLoadSystem.Types.Player, saveData);
+        SaveLoadSystem.Save(saveData);
     }
 
     public void Load()
     {
-        var saveData = SaveLoadSystem.Load(SaveLoadSystem.Types.Player) as SaveDataVer1;
+        var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
         playerName = saveData.playerName;
         playerCurrHp = saveData.playerCurrHp;
         lastMapId = saveData.lastMapId;
+        lastPlayerPos = saveData.lastPlayerPos;
     }
 }

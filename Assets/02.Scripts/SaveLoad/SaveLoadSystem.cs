@@ -8,23 +8,23 @@ using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System;
+using UnityEditor.Build.Content;
 
 public static class SaveLoadSystem
 {
     public enum Modes
     {
+        None = -1,
         Json,
         Binary
     }
-    public enum Types
-    {
-        Player,
-        Option,
-    }
 
     public static readonly string AesKey = "1234567890";
-    public const Modes CurrentMode = Modes.Json;
-    public const int CurrentVersion = 1;
+    public static readonly Dictionary<SaveData.Types, int> CurrentVersion = new Dictionary<SaveData.Types, int>
+    {
+        { SaveData.Types.Player, 1 },
+        { SaveData.Types.Option, 0 }
+    };
     public static string FilePath = string.Empty;
     public static readonly string DirectoryName = "Save";
     public static readonly string FileNameFormat = "{0}/Save_{1}.{2}";
@@ -35,16 +35,27 @@ public static class SaveLoadSystem
         get => Path.Combine(Application.persistentDataPath, DirectoryName);
     }
 
-    public static string GetSaveFileName(Types type, Modes mode = CurrentMode) => string.Format(FileNameFormat, SaveDirectory, type.ToString(), Extension[(int)mode]);
+    public static string GetSaveFileName(SaveData.Types type, Modes mode) => string.Format(FileNameFormat, SaveDirectory, type.ToString(), Extension[(int)mode]);
 
-    public static void Save(Types type, SaveData data)
+    public static void Save(SaveData data)
     {
         if (!Directory.Exists(SaveDirectory))
             Directory.CreateDirectory(SaveDirectory);
 
-        FilePath = GetSaveFileName(type);
+        var type = data.type;
+        var mode = Modes.None;
+        switch (type)
+        {
+            case SaveData.Types.Player:
+                mode = Modes.Binary;
+                break;
+            case SaveData.Types.Option:
+                mode = Modes.Json;
+                break;
+        }
+        FilePath = GetSaveFileName(type, mode);
 
-        switch (CurrentMode)
+        switch (mode)
         {
             case Modes.Json:
                 JsonSave(data);
@@ -55,11 +66,21 @@ public static class SaveLoadSystem
         }
     }
 
-    public static SaveData Load(Types type)
+    public static SaveData Load(SaveData.Types type)
     {
-        FilePath = GetSaveFileName(type);
+        var mode = Modes.None;
+        switch (type)
+        {
+            case SaveData.Types.Player:
+                mode = Modes.Binary;
+                break;
+            case SaveData.Types.Option:
+                mode = Modes.Json;
+                break;
+        }
+        FilePath = GetSaveFileName(type, mode);
 
-        switch (CurrentMode)
+        switch (mode)
         {
             case Modes.Json:
                 return JsonLoad();
@@ -103,7 +124,8 @@ public static class SaveLoadSystem
             data = deserializer.Deserialize(reader, typeof(SaveData)) as SaveData;
         }
 
-        var fileVersion = data.Version;
+        var fileType = data.type;
+        var fileVersion = data.version;
 
         bytes = File.ReadAllBytes(FilePath);
         cypher = Convert.ToBase64String(bytes);
@@ -113,11 +135,22 @@ public static class SaveLoadSystem
         using (BsonDataReader reader = new BsonDataReader(ms))
         {
             System.Type t = typeof(SaveData);
-            switch (fileVersion)
+            switch (fileType)
             {
-                case 1:
-                    t = typeof(SaveDataVer1);
+                case SaveData.Types.Player:
+                    {
+                        switch (fileVersion)
+                        {
+                            case 1:
+                                t = typeof(SavePlayerDataVer1);
+                                break;
+                        }
+                    }
                     break;
+                case SaveData.Types.Option:
+                    break;
+                default:
+                    return null;
             }
 
             var deserializer = new JsonSerializer();
@@ -126,7 +159,7 @@ public static class SaveLoadSystem
             data = deserializer.Deserialize(reader, t) as SaveData;
         }
 
-        while (data.Version < CurrentVersion)
+        while (data.version < CurrentVersion[fileType])
         {
             data = data.VersionUp();
         }
@@ -144,22 +177,22 @@ public static class SaveLoadSystem
             serializer.Serialize(file, data);
         }
 
+        // same as binary save, use if encrypt data and save as json / need to add decrypt code on JsonLoad()
+        //using (var ms = new MemoryStream())
+        //using (BsonDataWriter writer = new BsonDataWriter(ms))
+        //using (var file = File.Create(FilePath))
+        //{
+        //    var serializer = new JsonSerializer();
+        //    serializer.Converters.Add(new Vector3Converter());
+        //    serializer.Converters.Add(new QuaternionConverter());
+        //    serializer.Serialize(writer, data);
 
-        using (var ms = new MemoryStream())
-        using (BsonDataWriter writer = new BsonDataWriter(ms))
-        using (var file = File.Create(FilePath))
-        {
-            var serializer = new JsonSerializer();
-            serializer.Converters.Add(new Vector3Converter());
-            serializer.Converters.Add(new QuaternionConverter());
-            serializer.Serialize(writer, data);
-
-            var bytes = ms.ToArray();
-            var plain = Convert.ToBase64String(bytes);
-            var cypher = Encrypt(plain, AesKey);
-            bytes = Convert.FromBase64String(cypher);
-            file.Write(bytes, 0, bytes.Length);
-        }
+        //    var bytes = ms.ToArray();
+        //    var plain = Convert.ToBase64String(bytes);
+        //    var cypher = Encrypt(plain, AesKey);
+        //    bytes = Convert.FromBase64String(cypher);
+        //    file.Write(bytes, 0, bytes.Length);
+        //}
     }
 
     public static SaveData JsonLoad()
@@ -170,16 +203,28 @@ public static class SaveLoadSystem
             var deserializer = new JsonSerializer();
             data = deserializer.Deserialize(file, typeof(SaveData)) as SaveData;
         }
-        var fileVersion = data.Version;
+        var fileType = data.type;
+        var fileVersion = data.version;
 
         using (var file = File.OpenText(FilePath))
         {
             System.Type t = typeof(SaveData);
-            switch (fileVersion)
+            switch (fileType)
             {
-                case 1:
-                    t = typeof(SaveDataVer1);
+                case SaveData.Types.Player:
+                    {
+                        switch (fileVersion)
+                        {
+                            case 1:
+                                t = typeof(SavePlayerDataVer1);
+                                break;
+                        }
+                    }
                     break;
+                case SaveData.Types.Option:
+                    break;
+                default:
+                    return null;
             }
 
             var deserializer = new JsonSerializer();
@@ -188,7 +233,7 @@ public static class SaveLoadSystem
             data = deserializer.Deserialize(file, t) as SaveData;
         }
 
-        while (data.Version < CurrentVersion)
+        while (data.version < CurrentVersion[fileType])
         {
             data = data.VersionUp();
         }
