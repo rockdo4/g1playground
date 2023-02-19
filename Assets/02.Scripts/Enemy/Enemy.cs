@@ -53,6 +53,8 @@ public class Enemy : MonoBehaviour
         curCountPattern = 0;
         state = EnemyStatePattern[0].state;
         isPattern = true;
+
+        SaveFloorLength();
     }
 
     private void Update()
@@ -111,6 +113,45 @@ public class Enemy : MonoBehaviour
         {
             state = EnemyState.Chase;
             ResetPattern();
+            return;
+        }
+
+        if (isGoingRight)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, endPos, Time.deltaTime * moveSpeed);
+            if (transform.position == endPos)
+            {
+                isGoingRight = false;
+            }
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position, startPos, Time.deltaTime * moveSpeed);
+            if (transform.position == startPos)
+            {
+                isGoingRight = true;
+            }
+        }
+    }
+
+    private float floorLength;
+    private Vector3 startPos;
+    private Vector3 endPos;
+    private bool isGoingRight;
+
+    private void SaveFloorLength()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        {
+            Collider collider = hit.collider;
+            floorLength = collider.bounds.size.x;
+
+
+            startPos = collider.bounds.center - (new Vector3(floorLength / 2, 0, 0));
+            endPos = collider.bounds.center + (new Vector3(floorLength / 2, 0, 0));
+
+            isGoingRight = true;
         }
     }
 
