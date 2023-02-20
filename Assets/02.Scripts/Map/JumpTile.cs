@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class JumpTile : MonoBehaviour
 {
+    private PhysicMaterial physic;
     // Start is called before the first frame update
     void Start()
     {
