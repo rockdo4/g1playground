@@ -4,63 +4,63 @@ using UnityEngine.UI;
 
 public class PopupUIManager : MonoBehaviour
 {
-    public PopupUI _inventoryPopup;
-    public PopupUI _skillPopup;
-    public PopupUI _characterStatsPopup;
-    public PopupUI _settingPopup;
+    public PopupUI inventoryPopup;
+    public PopupUI skillPopup;
+    public PopupUI characterStatsPopup;
+    public PopupUI settingPopup;
 
-    public Button _inventoryButton;
-    public Button _skillButton;
-    public Button _charStatsButton;
-    public Button _settingButton;
+    public Button inventoryButton;
+    public Button skillButton;
+    public Button charStatsButton;
+    public Button settingButton;
 
     [Space]
-    public KeyCode _escapeKey = KeyCode.Escape;
+    public KeyCode escapeKey = KeyCode.Escape;
 
-    private LinkedList<PopupUI> _activePopupLList;
-    private List<PopupUI> _allPopupList;
+    private LinkedList<PopupUI> activePopupLList;
+    private List<PopupUI> allPopupList;
 
     private void Awake()
     {
-        _activePopupLList = new LinkedList<PopupUI>();
+        activePopupLList = new LinkedList<PopupUI>();
         Init();
         InitCloseAll();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(_escapeKey))
+        if (Input.GetKeyDown(escapeKey))
         {
-            if (_activePopupLList.Count > 0)
+            if (activePopupLList.Count > 0)
             {
-                ClosePopup(_activePopupLList.First.Value);
+                ClosePopup(activePopupLList.First.Value);
             }
         }
     }
 
     private void Init()
     {
-        _allPopupList = new List<PopupUI>()
+        allPopupList = new List<PopupUI>()
             {
-                _inventoryPopup, _skillPopup, _characterStatsPopup, _settingPopup
+                inventoryPopup, skillPopup, characterStatsPopup, settingPopup
             };
 
-        foreach (var popup in _allPopupList)
+        foreach (var popup in allPopupList)
         {
             popup.OnFocus += () =>
             {
-                _activePopupLList.Remove(popup);
-                _activePopupLList.AddFirst(popup);
+                activePopupLList.Remove(popup);
+                activePopupLList.AddFirst(popup);
                 RefreshAllPopupDepth();
             };
 
-            popup._closeButton.onClick.AddListener(() => ClosePopup(popup));
+            popup.closeButton.onClick.AddListener(() => ClosePopup(popup));
         }
     }
 
     private void InitCloseAll()
     {
-        foreach (var popup in _allPopupList)
+        foreach (var popup in allPopupList)
         {
             ClosePopup(popup);
         }
@@ -84,21 +84,21 @@ public class PopupUIManager : MonoBehaviour
 
     public void OpenPopup(PopupUI popup)
     {
-        _activePopupLList.AddFirst(popup);
+        activePopupLList.AddFirst(popup);
         popup.gameObject.SetActive(true);
         RefreshAllPopupDepth();
     }
 
     public void ClosePopup(PopupUI popup)
     {
-        _activePopupLList.Remove(popup);
+        activePopupLList.Remove(popup);
         popup.gameObject.SetActive(false);
         RefreshAllPopupDepth();
     }
 
     private void RefreshAllPopupDepth()
     {
-        foreach (var popup in _activePopupLList)
+        foreach (var popup in activePopupLList)
         {
             popup.transform.SetAsFirstSibling();
         }

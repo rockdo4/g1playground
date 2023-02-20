@@ -30,8 +30,11 @@ public class CharacterStatUI : MonoBehaviour
 
     public int playerLv;
 
+    //public UIButtonManager ubm;
+
     private void Start()
     {
+        //ubm = GetComponent<UIButtonManager>();
         currHp = maxHp;
         currMp = maxMp;
         currExp = 0;
