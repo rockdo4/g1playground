@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
-        Debug.Log(transform.position);
+        //Debug.Log(transform.position);
         //Debug.Log(state);
     }
 
@@ -119,16 +119,21 @@ public class Enemy : MonoBehaviour
 
         if (isGoingRight)
         {
+            Debug.Log("©Л");
             transform.position = Vector3.MoveTowards(transform.position, endPos, Time.deltaTime * moveSpeed);
-            if (transform.position.x >= endPos.x)
+
+            if (Vector3.Distance(transform.position, endPos) <= 1f)
             {
                 isGoingRight = false;
             }
         }
         else
         {
+            Debug.Log("аб");
+
             transform.position = Vector3.MoveTowards(transform.position, startPos, Time.deltaTime * moveSpeed);
-            if (transform.position.x <= startPos.x)
+
+            if (Vector3.Distance(transform.position, startPos) <= 1f)
             {
                 isGoingRight = true;
             }
@@ -147,10 +152,9 @@ public class Enemy : MonoBehaviour
         {
             Collider collider = hit.collider;
             floorLength = collider.bounds.size.x;
-            var cen = collider.bounds.center;
 
-            startPos = collider.bounds.center - (new Vector3((floorLength / 2), 0, 0)) + (new Vector3(2f, 0, 0));
-            endPos = collider.bounds.center + (new Vector3((floorLength / 2) + 1f, 0, 0)) - (new Vector3(2f, 0, 0));
+            startPos = collider.bounds.center - (new Vector3((floorLength / 2), 0, 0));
+            endPos = collider.bounds.center + (new Vector3((floorLength / 2) , 0, 0));
 
             isGoingRight = true;
         }
@@ -169,6 +173,7 @@ public class Enemy : MonoBehaviour
         StartCoroutine(PatternDelay(EnemyStatePattern[curCountPattern].second));
         isPattern = false;
     }
+
     IEnumerator PatternDelay(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
