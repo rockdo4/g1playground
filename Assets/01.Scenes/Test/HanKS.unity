@@ -329,7 +329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622869446}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.3, y: 0.5, z: -2}
+  m_LocalPosition: {x: -46.2, y: 0.5, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -606,6 +606,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7537034746813880889, guid: 5d1be000697d4534ca6b964ee1851b39,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
     - target: {fileID: 7537034746813880891, guid: 5d1be000697d4534ca6b964ee1851b39,
         type: 3}
       propertyPath: m_RootOrder
@@ -668,13 +673,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
         type: 3}
+      propertyPath: moveSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
+        type: 3}
       propertyPath: EnemyStatePattern.Array.size
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
+        type: 3}
+      propertyPath: EnemyStatePattern.Array.data[2].state
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
         type: 3}
       propertyPath: EnemyStatePattern.Array.data[3].state
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
         type: 3}
@@ -683,13 +698,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
         type: 3}
+      propertyPath: EnemyStatePattern.Array.data[1].second
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
+        type: 3}
       propertyPath: EnemyStatePattern.Array.data[2].second
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
         type: 3}
       propertyPath: EnemyStatePattern.Array.data[3].second
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7537034746813880894, guid: 5d1be000697d4534ca6b964ee1851b39,
         type: 3}

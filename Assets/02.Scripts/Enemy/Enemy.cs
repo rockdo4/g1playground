@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour
         SaveFloorLength();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         distance = Vector3.Distance(transform.position, player.position);
 
@@ -82,7 +82,8 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
-        Debug.Log(state);
+        Debug.Log(transform.position);
+        //Debug.Log(state);
     }
 
     private void IdleUpdate()
@@ -119,7 +120,7 @@ public class Enemy : MonoBehaviour
         if (isGoingRight)
         {
             transform.position = Vector3.MoveTowards(transform.position, endPos, Time.deltaTime * moveSpeed);
-            if (transform.position == endPos)
+            if (transform.position.x >= endPos.x)
             {
                 isGoingRight = false;
             }
@@ -127,7 +128,7 @@ public class Enemy : MonoBehaviour
         else
         {
             transform.position = Vector3.MoveTowards(transform.position, startPos, Time.deltaTime * moveSpeed);
-            if (transform.position == startPos)
+            if (transform.position.x <= startPos.x)
             {
                 isGoingRight = true;
             }
@@ -146,10 +147,10 @@ public class Enemy : MonoBehaviour
         {
             Collider collider = hit.collider;
             floorLength = collider.bounds.size.x;
+            var cen = collider.bounds.center;
 
-
-            startPos = collider.bounds.center - (new Vector3(floorLength / 2, 0, 0));
-            endPos = collider.bounds.center + (new Vector3(floorLength / 2, 0, 0));
+            startPos = collider.bounds.center - (new Vector3((floorLength / 2), 0, 0)) + (new Vector3(2f, 0, 0));
+            endPos = collider.bounds.center + (new Vector3((floorLength / 2) + 1f, 0, 0)) - (new Vector3(2f, 0, 0));
 
             isGoingRight = true;
         }
