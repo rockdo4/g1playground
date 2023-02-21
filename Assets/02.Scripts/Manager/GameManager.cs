@@ -24,10 +24,12 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    //player respawn func
     public void Respawn()
     {
         SceneManager.LoadScene(PlayerDataManager.instance.lastMapId);
-      
+
+        
         StartCoroutine(CoRespawn());
     }
 
@@ -35,7 +37,11 @@ public class GameManager : MonoBehaviour
     {
         yield return null;
         var player = GameObject.FindGameObjectWithTag("Player");
-        player.transform.position = PlayerDataManager.instance.lastPlayerPos;
-        Debug.Log(PlayerDataManager.instance.lastPlayerPos);
+        if (player != null) { 
+            player.transform.position = PlayerDataManager.instance.lastPlayerPos;
+            //Todo: Fill player HP
+            //Todo: Fill player MP
+        }
+
     }
 }
