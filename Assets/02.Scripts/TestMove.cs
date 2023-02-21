@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestMove : MonoBehaviour
 {
-    public Rigidbody rigidbody;
+    public new Rigidbody rigidbody;
     // Start is called before the first frame update
     void Start()
     {

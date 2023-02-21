@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoxTile : MonoBehaviour
 {
-    private Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
     //[Header("Delay Push Time")]
     public float pushTime = 1f;
     private float timer = 0f;

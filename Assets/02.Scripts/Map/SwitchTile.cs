@@ -7,23 +7,10 @@ public class SwitchTile : MonoBehaviour
     private Animator animator;
     //private AnimationClip animationClip;
 
-    private enum SwitchType
-    {
-        Active,
-        Destroy,
-
-
-    }
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -36,5 +23,15 @@ public class SwitchTile : MonoBehaviour
         }
         
     }
-    
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (animator.GetBool("Trigger"))
+        {
+            animator.SetBool("Trigger", false);
+
+        }
+        
+    }
+
 }
