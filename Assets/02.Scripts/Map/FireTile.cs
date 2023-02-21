@@ -28,6 +28,7 @@ public class FireTile : MonoBehaviour
 
             //
             Debug.Log("Fire");
+            Debug.Log(damage);
 
         }
     }
