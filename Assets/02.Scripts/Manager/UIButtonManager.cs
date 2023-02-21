@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UIButtonManager : MonoBehaviour
 {
+    public GameObject[] popButton;
     public PopupUI ui;
     public GameObject[] saveDatas;
 
@@ -15,9 +16,9 @@ public class UIButtonManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            if(!IsPointerOverUIObject(Input.mousePosition))
+            if (!IsPointerOverUIObject(Input.mousePosition))
             {
                 ui.gameObject.SetActive(false);
             }
