@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using static Enemy;
 
 [System.Serializable]
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour
     }
     private Rigidbody rb;
     private EnemyState state;
+    private NavMeshAgent agent;
 
     public float moveSpeed;
     public float attackRange;
@@ -43,7 +45,7 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
@@ -59,28 +61,30 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        distance = Vector3.Distance(transform.position, player.position);
+        agent.SetDestination(player.position);
 
-        if (isPattern)
-        {
-            ChangePatteurn();
-        }
+        //distance = Vector3.Distance(transform.position, player.position);
 
-        switch (state)
-        {
-            case EnemyState.Idle:
-                IdleUpdate();
-                break;
-            case EnemyState.Chase:
-                ChaseUpdate();
-                break;
-            case EnemyState.Patrol:
-                PatrolUpdate();
-                break;
-            case EnemyState.Attack:
-                AttackUpdate();
-                break;
-        }
+        //if (isPattern)
+        //{
+        //    ChangePatteurn();
+        //}
+
+        //switch (state)
+        //{
+        //    case EnemyState.Idle:
+        //        IdleUpdate();
+        //        break;
+        //    case EnemyState.Chase:
+        //        ChaseUpdate();
+        //        break;
+        //    case EnemyState.Patrol:
+        //        PatrolUpdate();
+        //        break;
+        //    case EnemyState.Attack:
+        //        AttackUpdate();
+        //        break;
+        //}
 
         //Debug.Log(transform.position);
         //Debug.Log(state);
@@ -154,7 +158,7 @@ public class Enemy : MonoBehaviour
             floorLength = collider.bounds.size.x;
 
             startPos = collider.bounds.center - (new Vector3((floorLength / 2), 0, 0));
-            endPos = collider.bounds.center + (new Vector3((floorLength / 2) , 0, 0));
+            endPos = collider.bounds.center + (new Vector3((floorLength / 2), 0, 0));
 
             isGoingRight = true;
         }
