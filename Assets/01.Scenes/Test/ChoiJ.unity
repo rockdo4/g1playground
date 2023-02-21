@@ -214,7 +214,7 @@ Transform:
   m_GameObject: {fileID: 105245633}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 4, z: 10}
-  m_LocalScale: {x: 1, y: 10, z: 20}
+  m_LocalScale: {x: 1, y: 10, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -502,6 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546d774b16b75c648bdc18f0340cc157, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1911813953}
 --- !u!4 &617602940
 Transform:
   m_ObjectHideFlags: 0
@@ -531,7 +532,7 @@ GameObject:
   - component: {fileID: 732684645}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -628,7 +629,7 @@ GameObject:
   - component: {fileID: 1052458069}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -780,8 +781,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7537034746813880893, guid: 5d1be000697d4534ca6b964ee1851b39,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537034746813880893, guid: 5d1be000697d4534ca6b964ee1851b39,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537034746813880893, guid: 5d1be000697d4534ca6b964ee1851b39,
+        type: 3}
       propertyPath: m_TagString
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537034746813880895, guid: 5d1be000697d4534ca6b964ee1851b39,
+        type: 3}
+      propertyPath: m_AngularDrag
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d1be000697d4534ca6b964ee1851b39, type: 3}
@@ -792,6 +808,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1911813952}
     m_Modifications:
+    - target: {fileID: 2664928345406777700, guid: 916d84cc1e0146741b42d3cb0d25a7bc,
+        type: 3}
+      propertyPath: playerMovement
+      value: 
+      objectReference: {fileID: 1911813953}
     - target: {fileID: 2664928345406777701, guid: 916d84cc1e0146741b42d3cb0d25a7bc,
         type: 3}
       propertyPath: m_RootOrder
@@ -879,6 +900,7 @@ GameObject:
   - component: {fileID: 1367615641}
   - component: {fileID: 1367615644}
   - component: {fileID: 1367615645}
+  - component: {fileID: 1367615646}
   m_Layer: 5
   m_Name: Right
   m_TagString: Untagged
@@ -929,7 +951,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -1014,22 +1036,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1911813953}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Move
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 1
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -1046,6 +1052,34 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1911813953}
+          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+          m_MethodName: Move
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 1
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1367615646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367615639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83208146c2c89f446ad449b3feaa7285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1423446754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,7 +1170,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423446754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 4, z: 0}
+  m_LocalPosition: {x: -20, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1348,7 +1382,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500011172}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 4, z: 0}
+  m_LocalPosition: {x: 20, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1369,7 +1403,7 @@ GameObject:
   - component: {fileID: 1511618584}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1446,7 +1480,7 @@ Transform:
   m_GameObject: {fileID: 1511618583}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 20, y: 1, z: 20}
+  m_LocalScale: {x: 40, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1555,6 +1589,7 @@ GameObject:
   - component: {fileID: 1741678547}
   - component: {fileID: 1741678550}
   - component: {fileID: 1741678551}
+  - component: {fileID: 1741678552}
   m_Layer: 5
   m_Name: Left
   m_TagString: Untagged
@@ -1605,7 +1640,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -1722,6 +1757,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1741678552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741678544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83208146c2c89f446ad449b3feaa7285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1800689523
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,7 +2048,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1911813948}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a8a242406407fce48996b308c31680d3, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2085,9 +2132,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c9e79d0e7a9d8547873f5f2bf0ffe64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpPower: 13
   speed: 10
   moveX: 0
+  dashSpeed: 30
+  dashTime: 0.1
+  jumpPower: 16
+  jumpCount: 2
 --- !u!54 &1911813954
 Rigidbody:
   m_ObjectHideFlags: 0
