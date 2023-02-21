@@ -24,10 +24,10 @@ public class PlayerDataManager : MonoBehaviour
 
     public string playerName;
     public int playerCurrHp;
-    public int lastMapId;
+    public string lastMapId;
     public Vector3 lastPlayerPos;
 
-    public void Save()
+    public void SaveFile()
     {
         var saveData = new SavePlayerDataVer1();
         saveData.playerName = playerName;
@@ -39,12 +39,19 @@ public class PlayerDataManager : MonoBehaviour
         SaveLoadSystem.Save(saveData);
     }
 
-    public void Load()
+    public void LoadFile()
     {
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
         playerName = saveData.playerName;
         playerCurrHp = saveData.playerCurrHp;
         lastMapId = saveData.lastMapId;
         lastPlayerPos = saveData.lastPlayerPos;
+    }
+
+    public void SaveLastPos(string mapId, Vector3 pos)
+    {
+        lastMapId = mapId;
+        lastPlayerPos = pos;
+        SaveFile();
     }
 }

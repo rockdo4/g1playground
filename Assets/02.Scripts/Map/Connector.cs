@@ -8,13 +8,44 @@ public class Connector : MonoBehaviour
 {
     [SerializeField]
     private string nextStageName;
+    private bool isActive = true;
+    private void Update()
+    {
+       
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+
+            GameManager.instance.Respawn();
+            return;
+        }
+    }
+    private void Awake()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (ConnectorManager.instance.GetPreviousMapName() != null && ConnectorManager.instance.GetPreviousMapName() == nextStageName)
+        {
+            player.transform.position = transform.position;
+            isActive = false;
+        }
+
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.transform.tag == "Player" && nextStageName != null)
         {
-            SceneManager.LoadScene(nextStageName);
+            if (isActive)
+            {
+                ConnectorManager.instance.SetPreviousMapName(SceneManager.GetActiveScene().name);
+                SceneManager.LoadScene(nextStageName);
+            }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        isActive = true;
     }
 
 }

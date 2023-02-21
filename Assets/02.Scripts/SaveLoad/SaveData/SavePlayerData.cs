@@ -19,7 +19,7 @@ public class SavePlayerDataVer1 : SavePlayerData
 
     public string playerName;
     public int playerCurrHp;
-    public int lastMapId;
+    public string lastMapId;
     public Vector3 lastPlayerPos;
 
     public override SaveData VersionUp()
