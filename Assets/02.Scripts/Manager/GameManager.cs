@@ -7,7 +7,7 @@ using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 public class GameManager : MonoBehaviour
 {
     private static GameManager m_instance;
-
+    public Player player;
     public static GameManager instance
     {
         get

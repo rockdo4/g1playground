@@ -31,7 +31,6 @@ public class Enemy : MonoBehaviour
     private int curCountPattern;
     private int countPattern;
     private bool isPattern;
-
     private float distance;
     private Transform player;
 
@@ -42,8 +41,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
-
+        state = EnemyState.Idle;
     }
 
     private void Start()
@@ -65,6 +63,11 @@ public class Enemy : MonoBehaviour
         {
             ChangePatteurn();
         }
+    }
+
+    private void Update()
+    {
+        distance = Vector3.Distance(transform.position, player.position);
 
         switch (state)
         {
@@ -81,7 +84,6 @@ public class Enemy : MonoBehaviour
                 AttackUpdate();
                 break;
         }
-
         Debug.Log(transform.position);
         //Debug.Log(state);
     }
