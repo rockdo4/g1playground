@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillAttack : IAttackDefinition
+public class SkillAttack : AttackDefinition
 {
     protected float damageFigure;
     protected float criticalChance;
@@ -16,9 +16,7 @@ public class SkillAttack : IAttackDefinition
         // loadFromSkillTable
     }
 
-    public void ExecuteAttack() { }
-
-    public Attack CreateAttack(Status attacker, Status defenser)
+    public override Attack CreateAttack(Status attacker, Status defenser)
     {
         var criticalChance = attacker.CriticalChance + this.criticalChance;
         var isCritical = Random.value < criticalChance;

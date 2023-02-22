@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGrowable
+public interface IDestructible
 {
-    public void ApplyLevel(int level);
+    public void OnDestroy();
 }

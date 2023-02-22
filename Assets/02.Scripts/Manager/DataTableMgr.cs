@@ -11,8 +11,6 @@ public class DataTableMgr
     public static void LoadAll()
     {
         //tables.Add(typeof(데이터), new DataTable<데이터형>(경로));
-        tables.Add(typeof(HealthData), 
-            new DataTable<HealthData>("UserCSV/PlayerHealth"));
         isLoaded = true;
     }
 

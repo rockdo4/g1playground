@@ -126,6 +126,7 @@ public class Player : MonoBehaviour
         IsBorder = Physics.Raycast(transform.position,
             new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Enemy"));
     }
+
     public void GroundRay()
     {
         Debug.DrawRay(transform.position,

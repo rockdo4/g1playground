@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicAttack : IAttackDefinition
+public class BasicAttack : AttackDefinition
 {
-    public virtual void ExecuteAttack() { }
-
-    public Attack CreateAttack(Status attacker, Status defenser)
+    public override Attack CreateAttack(Status attacker, Status defenser)
     {
         var isCritical = Random.value < attacker.CriticalChance;
         float damage = attacker.AtkPower;

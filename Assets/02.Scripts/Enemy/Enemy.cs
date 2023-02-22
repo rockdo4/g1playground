@@ -84,7 +84,6 @@ public class Enemy : MonoBehaviour
                 AttackUpdate();
                 break;
         }
-        Debug.Log(transform.position);
         //Debug.Log(state);
     }
 

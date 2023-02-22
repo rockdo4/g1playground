@@ -14,6 +14,12 @@ public abstract class Status : MonoBehaviour
     public float CriticalChance { get; protected set; }
     public float CriticalDamage { get; protected set; }
     public int Defense { get; protected set; }
+    public int MaxHp { get; protected set; }
+    public int currHp;
 
-    //load from dataTable, virtual / player dmg += weapon, player defense += armor
+    private void Start()
+    {
+        //load from dataTable, virtual / player dmg += weapon, player defense += armor
+        currHp = MaxHp;
+    }
 }

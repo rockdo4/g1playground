@@ -7,7 +7,6 @@ using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 public class GameManager : MonoBehaviour
 {
     private static GameManager m_instance;
-    public Player player;
     public static GameManager instance
     {
         get
@@ -17,6 +16,8 @@ public class GameManager : MonoBehaviour
             return m_instance;
         }
     }
+
+    public PlayerController playerController;
 
     private void Awake()
     {
@@ -28,8 +29,6 @@ public class GameManager : MonoBehaviour
     public void Respawn()
     {
         SceneManager.LoadScene(PlayerDataManager.instance.lastMapId);
-
-        
         StartCoroutine(CoRespawn());
     }
 
