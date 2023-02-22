@@ -37,7 +37,7 @@ public class TileColorManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-           
+
             ChangeTileMaterial(name, true);
         }
         if (Input.GetKeyDown(KeyCode.S))
@@ -73,7 +73,7 @@ public class TileColorManager : MonoBehaviour
     private void ToOriginalMaterial(GameObject stage)
     {
         var tiles = stage.GetComponentsInChildren<LODGroup>();
-        Debug.Log(tiles.Length);
+        ///Debug.Log(tiles.Length);
 
         foreach (var tile in tiles)
         {
@@ -88,7 +88,7 @@ public class TileColorManager : MonoBehaviour
     private void ToCustomMaterial(GameObject stage)
     {
         var tiles = stage.GetComponentsInChildren<LODGroup>();
-        Debug.Log(tiles.Length);
+        //Debug.Log(tiles.Length);
 
         foreach (var tile in tiles)
         {
