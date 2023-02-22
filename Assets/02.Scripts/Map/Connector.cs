@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class Connector : MonoBehaviour
 {
     [SerializeField]
-    private string nextStageName;
+    private GameObject nextStageRoomPrefab;
+    [SerializeField]
+    private GameObject nextDoorPrefab;
     private bool isActive = true;
     private void Update()
     {
@@ -18,27 +21,21 @@ public class Connector : MonoBehaviour
             GameManager.instance.Respawn();
             return;
         }
-    }
-    private void Awake()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if (ConnectorManager.instance.GetPreviousMapName() != null && ConnectorManager.instance.GetPreviousMapName() == nextStageName)
-        {
-            player.transform.position = transform.position;
-            isActive = false;
-        }
-
-    }
+    }   
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player" && nextStageName != null)
+        if (other.transform.CompareTag("Player") && nextStageRoomPrefab != null)
         {
+            other.GetComponent<NavMeshAgent>().ResetPath();
+            nextStageRoomPrefab.SetActive(false);
+
             if (isActive)
             {
-                ConnectorManager.instance.SetPreviousMapName(SceneManager.GetActiveScene().name);
-                SceneManager.LoadScene(nextStageName);
+                other.GetComponent<NavMeshAgent>().SetDestination(nextDoorPrefab.transform.position);
+                MapManager.instance.SetCurrentMapName(nextStageRoomPrefab.transform.name);
+                nextDoorPrefab.GetComponent<Connector>().isActive = false;
+                nextStageRoomPrefab.SetActive(true);
             }
         }
     }

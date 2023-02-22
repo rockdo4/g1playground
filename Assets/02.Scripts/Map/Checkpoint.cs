@@ -7,19 +7,16 @@ public class Checkpoint : MonoBehaviour
 {
     private void Awake()
     {
+        
        
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            PlayerDataManager.instance.SaveLastPos(SceneManager.GetActiveScene().name, transform.position);
+            PlayerDataManager.instance.SaveLastPos(MapManager.instance.GetCurrentMapName(), transform.position);
         }
     }
-
- 
-
-
 
 }
