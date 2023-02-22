@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody rb;
     private EnemyState state;
     private NavMeshAgent agent;
+    private Animator animator;
 
     public float moveSpeed;
     public float attackRange;
@@ -33,6 +34,8 @@ public class Enemy : MonoBehaviour
     private int curCountPattern;
     private int countPattern;
     private bool isPattern;
+    private bool isAttack;
+
     private float distance;
     private Transform player;
 
@@ -44,31 +47,48 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
-        state = EnemyState.Idle;
+        animator = GetComponent<Animator>();
         agent.speed = moveSpeed;
         agent.stoppingDistance = attackRange;
+
     }
 
     private void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
+        state = EnemyState.Idle;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
         state = EnemyStatePattern[0].state;
         isPattern = true;
+        isAttack = false;
 
         SaveFloorLength();
     }
 
     private void FixedUpdate()
     {
-        //agent.SetDestination(player.position);
-
         distance = Vector3.Distance(transform.position, player.position);
+
+        if (!isAttack)
+        {
+            if (Vector3.Distance(transform.position, player.position) < searchRange)
+            {
+                state = EnemyState.Chase;
+                ResetPattern();
+                isAttack = true;
+            }
+        }
 
         if (isPattern)
         {
             ChangePatteurn();
+        }
+
+
+        if (isAttack)
+        {
+            agent.isStopped = true;
         }
 
         switch (state)
@@ -87,43 +107,35 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
-        //Debug.Log(state);
+        Debug.Log(state);
     }
 
     private void IdleUpdate()
     {
-        if (distance < searchRange)
-        {
-            state = EnemyState.Chase;
-            ResetPattern();
-        }
+        //if (distance < searchRange)
+        //{
+        //    state = EnemyState.Chase;
+        //    ResetPattern();
+        //    return;
+        //}
         agent.isStopped = true;
-    }
-
-    private void ChaseUpdate()
-    {
-        if (distance < attackRange)
-        {
-            state = EnemyState.Attack;
-            ResetPattern();
-            return;
-        }
-
-        agent.SetDestination(player.position);
-        //Vector3 direction = (player.position - transform.position).normalized;
-        //rb.velocity = direction * moveSpeed;
+        animator.SetBool("Run", false);
+        animator.SetBool("Idle", true);
     }
 
     private void PatrolUpdate()
     {
-        if (distance < searchRange)
-        {
-            state = EnemyState.Chase;
-            ResetPattern();
-            return;
-        }
+        //if (distance < searchRange)
+        //{
+        //    state = EnemyState.Chase;
+        //    ResetPattern();
+        //    return;
+        //}
 
         agent.isStopped = false;
+
+        animator.SetBool("Idle", false);
+        animator.SetBool("Run", true);
 
         if (isGoingRight)
         {
@@ -136,7 +148,6 @@ public class Enemy : MonoBehaviour
                 agent.isStopped = true;
 
             }
-
         }
         else
         {
@@ -151,8 +162,37 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        Debug.Log(agent.destination);
+        //Debug.Log(agent.destination);
     }
+
+    private void ChaseUpdate()
+    {
+        if (Vector3.Distance(transform.position, player.position) <= attackRange)
+        {
+            state = EnemyState.Attack;
+            animator.SetBool("Attack", true);
+            ResetPattern();
+            return;
+        }
+        else if (Vector3.Distance(transform.position, player.position) > searchRange)
+        {
+            ResetPattern();
+            animator.SetBool("Run", false);
+            return;
+        }
+
+        animator.SetBool("Run", true);
+        agent.SetDestination(player.position);
+    }
+    private void AttackUpdate()
+    {
+        if (distance > attackRange)
+        {
+            animator.SetBool("Attack", false);
+            state = EnemyState.Chase;
+        }
+    }
+
 
     private float floorLength;
     private Vector3 startPos;
@@ -174,14 +214,8 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void AttackUpdate()
-    {
-        if (distance > attackRange)
-        {
-            state = EnemyState.Chase;
-        }
-    }
-                           
+
+
     void ChangePatteurn()
     {
         StartCoroutine(PatternDelay(EnemyStatePattern[curCountPattern].second));
@@ -191,6 +225,9 @@ public class Enemy : MonoBehaviour
     IEnumerator PatternDelay(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
+
+        if(isAttack)
+            yield return null;
 
         if (countPattern == curCountPattern)
         {
@@ -209,5 +246,6 @@ public class Enemy : MonoBehaviour
     {
         curCountPattern = 0;
         isPattern = false;
+        isAttack = false;
     }
 }
