@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Status : MonoBehaviour
+public class Status : MonoBehaviour
 {
     public int Str { get; protected set; }
     public int Dex { get; protected set; }

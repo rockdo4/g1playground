@@ -14,7 +14,6 @@ public class PlayerGroundCollider : MonoBehaviour
     {
         if (!other.CompareTag("Ground"))
             return;
-        Debug.Log("false");
         GameManager.instance.playerController.OnGround(false);
     }
 }

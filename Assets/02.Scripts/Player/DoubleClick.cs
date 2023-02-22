@@ -16,7 +16,6 @@ public class DoubleClick : MonoBehaviour, IPointerDownHandler
         {
             doubleClickedTime = -1.0f;
             GameManager.instance.playerController.Dash();
-            Debug.Log("double click!");
         }
         else
         {
