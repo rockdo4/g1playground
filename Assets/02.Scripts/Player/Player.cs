@@ -17,51 +17,35 @@ public class Player : MonoBehaviour
     [Header("Dash")]
     public float dashSpeed;
     public float dashTime;
-    private float leftButtonTime;
-    private float rightButtonTime;
 
     [Header("Jump")]
     public float jumpPower;
     public int jumpCount;
 
     public bool IsMoving { get; private set; } //move
-    public bool IsJumping { get; private set; } //jump
+    public bool IsEnemy { get; private set; }
+    public bool IsWall { get; private set; }
     public bool IsDash { get; set; } //dash
-    public bool IsBorder { get; private set; }
-    public bool IsGrounded { get; private set; }
+    public bool IsJumping { get; set; } //jump
+    public bool IsGrounded { get; set; }
     private void Awake()
-    {  
+    {
         playerRb = GetComponent<Rigidbody>();
     }
-
-    private void Start()
-    {
-    }
-    //private void FixedUpdate()
-    //{
-    //    transform.position += inputVec.normalized * speed * Time.fixedDeltaTime;
-    //}
-    //public void OnMove(InputValue value)
-    //{
-    //    inputVec = value.Get<Vector2>();
-    //}
-
     private void Update()
     {
-        if (IsJumping && playerRb.velocity.y < 0)
-            GroundRay();
-
-        if (jumpCount > 0) 
+        if (jumpCount > 0)
             Jump();
-        if(IsGrounded)
+        Dash();
+
+        if (IsGrounded)
         {
             jumpCount = 2;
             IsJumping = false;
         }
 
-        Dash();
 
-        if (moveX ==0)
+        if (moveX == 0)
         {
             IsMoving = false;
         }
@@ -73,7 +57,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         StopRay();
-        if(!IsBorder)
+        if (!IsEnemy && !IsWall)
             transform.position += new Vector3(moveX, 0, 0) * speed * Time.fixedDeltaTime;
     }
     public void Move(float moveX)
@@ -86,14 +70,14 @@ public class Player : MonoBehaviour
     }
     public void Dash()
     {
-        if(IsDash)
+        if (IsDash)
         {
             speed = dashSpeed;
             dashTime = 0.1f;
             IsDash = false;
         }
-        
-        if(dashTime <0)
+
+        if (dashTime < 0)
         {
             speed = defaultSpeed;
         }
@@ -105,34 +89,25 @@ public class Player : MonoBehaviour
         foreach (var t in Input.touches)
         {
             var viewportPoint = Camera.main.ScreenToViewportPoint(t.position);
-           
-            if (viewportPoint.x > 0.5f&&viewportPoint.y <0.5f) 
+
+            if (viewportPoint.x > 0.5f && viewportPoint.y < 0.5f)
             {
                 if (t.phase == TouchPhase.Began)
                 {
-                    playerRb.velocity = new Vector3 (moveX,0,0);
+                    playerRb.velocity = new Vector3(moveX, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-                    IsJumping = true;
-                    IsGrounded = false;
                     jumpCount--;
                 }
             }
         }
-        
+
     }
-    
     public void StopRay()
     {
-        IsBorder = Physics.Raycast(transform.position,
+        IsEnemy = Physics.Raycast(transform.position,
             new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Enemy"));
-    }
 
-    public void GroundRay()
-    {
-        Debug.DrawRay(transform.position,
-            new Vector3(0, -1f, 0), Color.green);
-        IsGrounded = Physics.Raycast(transform.position,
-            new Vector3(0, -1f, 0), 1, LayerMask.GetMask("Ground"));
-        Debug.Log(IsGrounded);
+        IsWall = Physics.Raycast(transform.position,
+           new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Wall"));
     }
 }

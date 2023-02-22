@@ -9,7 +9,6 @@ public class DoubleClick : MonoBehaviour, IPointerDownHandler
 {
     float interval = 0.3f;
     float doubleClickedTime = -1.0f;
-    public Action DoubleClicked;
 
     public void OnPointerDown(PointerEventData eventData)
     {
