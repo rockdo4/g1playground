@@ -33,7 +33,6 @@ public class Enemy : MonoBehaviour
     private int curCountPattern;
     private int countPattern;
     private bool isPattern;
-
     private float distance;
     private Transform player;
 
@@ -44,8 +43,8 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
         agent = GetComponent<NavMeshAgent>();
+        state = EnemyState.Idle;
     }
 
     private void Start()
@@ -85,9 +84,28 @@ public class Enemy : MonoBehaviour
         //        AttackUpdate();
         //        break;
         //}
+    }
 
-        //Debug.Log(transform.position);
-        //Debug.Log(state);
+    private void Update()
+    {
+        distance = Vector3.Distance(transform.position, player.position);
+
+        switch (state)
+        {
+            case EnemyState.Idle:
+                IdleUpdate();
+                break;
+            case EnemyState.Chase:
+                ChaseUpdate();
+                break;
+            case EnemyState.Patrol:
+                PatrolUpdate();
+                break;
+            case EnemyState.Attack:
+                AttackUpdate();
+                break;
+        }
+
     }
 
     private void IdleUpdate()
