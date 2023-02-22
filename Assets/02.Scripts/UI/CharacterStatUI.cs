@@ -30,11 +30,8 @@ public class CharacterStatUI : MonoBehaviour
 
     public int playerLv;
 
-    //public UIButtonManager ubm;
-
     private void Start()
     {
-        //ubm = GetComponent<UIButtonManager>();
         currHp = maxHp;
         currMp = maxMp;
         currExp = 0;
@@ -55,31 +52,10 @@ public class CharacterStatUI : MonoBehaviour
         level.text = playerLv.ToString();
         expBar.fillAmount = (float)currExp / (float)maxExp;
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    if(!IsPointerOverUIObject(Input.mousePosition))
-        //    {
-        //        ExpIncrease();
-        //    }            
-        //}
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-    }
-
-    public bool IsPointerOverUIObject(Vector2 touchPos)
-    {
-        PointerEventData eventDataCurrPos = new PointerEventData(EventSystem.current);
-        eventDataCurrPos.position = touchPos;
-
-        List<RaycastResult> results = new List<RaycastResult>();
-
-        EventSystem.current
-        .RaycastAll(eventDataCurrPos, results);
-
-        return results.Count > 0;
     }
 
     private void ExpIncrease()

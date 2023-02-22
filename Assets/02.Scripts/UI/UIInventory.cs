@@ -6,15 +6,17 @@ using UnityEngine.UI;
 public class UIInventory : MonoBehaviour
 {
     public int slotCount = 102;
-    public UISlot uiSlotPrefab;
+    public UIItemSlot uiSlotPrefab;
     public RectTransform content;
 
-    private List<UISlot> slotList = new List<UISlot>();
+    private List<UIItemSlot> slotList = new List<UIItemSlot>();
+    private DataTable<ItemData> itemTable;
 
     public UIItemInfo itemInfo;
 
     private void Awake()
     {
+        itemTable = DataTableMgr.GetTable<ItemData>();
     }
 
     public void OnEnable()
@@ -31,7 +33,13 @@ public class UIInventory : MonoBehaviour
             slotList.Add(slot);
 
             var button = slot.GetComponent<Button>();
-            //button.onClick.AddListener(() => itemInfo.Set(slot.Data));
+            button.onClick.AddListener(() => itemInfo.Set(slot.Data));
+        }
+        var itemIds = itemTable.GetAllIds();
+        for (int i = 0; i < 50; ++i)
+        {
+            var index = Random.Range(0, itemIds.Count);
+            slotList[i].Set(itemTable.Get(itemIds[index]));
         }
     }
 }
