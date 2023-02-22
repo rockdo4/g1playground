@@ -22,8 +22,10 @@ public class MapManager : MonoBehaviour
 
         foreach (var map in maps)
         {
-            if(map.active)
+            if (map.active) { 
                 currentMapName= map.name;
+
+            }
         }
         if (instance != this)
             Destroy(gameObject);

@@ -6,36 +6,42 @@ using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class Connector : MonoBehaviour
-{
+{    public enum DoorType
+    {
+        Walk,
+        Portal,
+    }
+
     [SerializeField]
     private GameObject nextStageRoomPrefab;
     [SerializeField]
-    private GameObject nextDoorPrefab;
-    private bool isActive = true;
-    private void Update()
-    {
-       
-        if (Input.GetKeyDown(KeyCode.P))
-        {
+    // private GameObject nextDoorPrefab;
+    private bool isActive = false;
+    public bool IsActive { set { isActive = value; } get { return isActive; } }
+    public DoorType doortype;
 
-            GameManager.instance.Respawn();
-            return;
-        }
-    }   
+    private void OnEnable()
+    {
+        isActive = false;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Player") && nextStageRoomPrefab != null)
         {
-            other.GetComponent<NavMeshAgent>().ResetPath();
-            nextStageRoomPrefab.SetActive(false);
 
-            if (isActive)
+            if (!nextStageRoomPrefab.active)
             {
-                other.GetComponent<NavMeshAgent>().SetDestination(nextDoorPrefab.transform.position);
-                MapManager.instance.SetCurrentMapName(nextStageRoomPrefab.transform.name);
-                nextDoorPrefab.GetComponent<Connector>().isActive = false;
                 nextStageRoomPrefab.SetActive(true);
+            }
+            else if (nextStageRoomPrefab.active)
+            {
+                if (MapManager.instance.GetCurrentMapName().CompareTo(transform.parent.name) != 0)
+                {
+                    nextStageRoomPrefab.SetActive(false);
+                    MapManager.instance.SetCurrentMapName(transform.parent.name);
+                }
+
             }
         }
     }
@@ -43,6 +49,7 @@ public class Connector : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         isActive = true;
+
     }
 
 }
