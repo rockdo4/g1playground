@@ -569,11 +569,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 491326002}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.6666667, y: -0.5, z: 0}
-  m_LocalScale: {x: 0.06666667, y: 0, z: 0.1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 0.10000001, y: 0, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1130177105}
+  m_Father: {fileID: 1911813952}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &491326004
@@ -977,7 +977,7 @@ PrefabInstance:
     - target: {fileID: 2664928345406777701, guid: 916d84cc1e0146741b42d3cb0d25a7bc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2664928345406777701, guid: 916d84cc1e0146741b42d3cb0d25a7bc,
         type: 3}
@@ -2284,6 +2284,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 491326003}
   - {fileID: 1130177105}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -2324,3 +2325,4 @@ MonoBehaviour:
   jumpForce: 16
   jumpCount: 0
   maxJumpCount: 2
+  isGrounded: 0

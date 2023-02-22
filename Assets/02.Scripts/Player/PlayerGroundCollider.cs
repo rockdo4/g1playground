@@ -8,13 +8,13 @@ public class PlayerGroundCollider : MonoBehaviour
     {
         if (!other.CompareTag("Ground"))
             return;
-        GameManager.instance.player.IsGrounded = true;
+        GameManager.instance.playerController.OnGround(true);
     }
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Ground"))
             return;
         Debug.Log("false");
-        GameManager.instance.player.IsGrounded = false;
+        GameManager.instance.playerController.OnGround(false);
     }
 }

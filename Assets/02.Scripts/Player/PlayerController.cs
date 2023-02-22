@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public int jumpCount;
     public int maxJumpCount;
-    public bool IsGrounded { get; private set; }
+    public bool isGrounded;
 
     public BasicAttack basicAttackTemp;
 
@@ -105,6 +105,14 @@ public class PlayerController : MonoBehaviour
         IsBlocked = Physics.Raycast(transform.position, new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Enemy"));
     }
 
+    public void OnGround(bool isGrounded)
+    {
+        Debug.Log(isGrounded);
+        this.isGrounded = isGrounded;
+        if (isGrounded)
+            jumpCount = 0;
+    }
+
     public void Jump()
     {
         if (jumpCount >= maxJumpCount)
@@ -120,8 +128,9 @@ public class PlayerController : MonoBehaviour
                     playerRb.velocity = new Vector3(moveX, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                     SetState(new JumpState(this));
-                    IsGrounded = false;
+                    isGrounded = false;
                     jumpCount++;
+                    Debug.Log("jump");
                 }
             }
         }
@@ -210,7 +219,7 @@ public class PlayerController : MonoBehaviour
 
         public override void Update()
         {
-            if (playerController.IsGrounded)
+            if (playerController.isGrounded)
             {
                 playerController.SetState(new IdleState(playerController));
                 return;
@@ -218,10 +227,7 @@ public class PlayerController : MonoBehaviour
             playerController.Move(playerController.moveSpeed);
         }
 
-        public override void Exit()
-        {
-            playerController.jumpCount = 0; 
-        }
+        public override void Exit() { }
     }
 
     public class AttackState : State
