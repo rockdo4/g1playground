@@ -17,49 +17,33 @@ public class Player : MonoBehaviour
     [Header("Dash")]
     public float dashSpeed;
     public float dashTime;
-    private float leftButtonTime;
-    private float rightButtonTime;
 
     [Header("Jump")]
     public float jumpPower;
     public int jumpCount;
 
     public bool IsMoving { get; private set; } //move
-    public bool IsJumping { get; private set; } //jump
+    public bool IsEnemy { get; private set; }
+    public bool IsWall { get; private set; }
     public bool IsDash { get; set; } //dash
-    public bool IsBorder { get; private set; }
-    public bool IsGrounded { get; private set; }
+    public bool IsJumping { get;  set; } //jump
+    public bool IsGrounded { get; set; }
     private void Awake()
     {  
         playerRb = GetComponent<Rigidbody>();
     }
-
-    private void Start()
-    {
-    }
-    //private void FixedUpdate()
-    //{
-    //    transform.position += inputVec.normalized * speed * Time.fixedDeltaTime;
-    //}
-    //public void OnMove(InputValue value)
-    //{
-    //    inputVec = value.Get<Vector2>();
-    //}
-
     private void Update()
     {
-        if (IsJumping && playerRb.velocity.y < 0)
-            GroundRay();
-
         if (jumpCount > 0) 
             Jump();
+        Dash();
+
         if(IsGrounded)
         {
             jumpCount = 2;
             IsJumping = false;
         }
 
-        Dash();
 
         if (moveX ==0)
         {
@@ -73,7 +57,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         StopRay();
-        if(!IsBorder)
+        if(!IsEnemy && !IsWall)
             transform.position += new Vector3(moveX, 0, 0) * speed * Time.fixedDeltaTime;
     }
     public void Move(float moveX)
@@ -112,26 +96,26 @@ public class Player : MonoBehaviour
                 {
                     playerRb.velocity = new Vector3 (moveX,0,0);
                     playerRb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-                    IsJumping = true;
-                    IsGrounded = false;
                     jumpCount--;
                 }
             }
         }
         
     }
-    
     public void StopRay()
     {
-        IsBorder = Physics.Raycast(transform.position,
+        IsEnemy = Physics.Raycast(transform.position,
             new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Enemy"));
+
+        IsWall = Physics.Raycast(transform.position,
+           new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Wall"));
     }
-    public void GroundRay()
-    {
-        Debug.DrawRay(transform.position,
-            new Vector3(0, -1f, 0), Color.green);
-        IsGrounded = Physics.Raycast(transform.position,
-            new Vector3(0, -1f, 0), 1, LayerMask.GetMask("Ground"));
-        Debug.Log(IsGrounded);
-    }
+    //public void GroundRay()
+    //{
+    //    Debug.DrawRay(transform.position,
+    //        new Vector3(0, -1f, 0), Color.green);
+    //    IsGrounded = Physics.Raycast(transform.position,
+    //        new Vector3(0, -1f, 0), 1, LayerMask.GetMask("Ground"));
+    //    Debug.Log(IsGrounded);
+    //}
 }
