@@ -27,8 +27,8 @@ public class FireTile : MonoBehaviour
             //use player onHit here
 
             //
-            Debug.Log("Fire");
-            Debug.Log(damage);
+            //Debug.Log("Fire");
+            //Debug.Log(damage);
 
         }
     }
