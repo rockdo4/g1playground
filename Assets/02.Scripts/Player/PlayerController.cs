@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     public float dashDuration = 0.1f;
     private float dashTimer;
     public bool IsBlocked { get; private set; }
-   
+
     public float jumpForce;
     public int jumpCount;
     public int maxJumpCount;
@@ -73,6 +73,35 @@ public class PlayerController : MonoBehaviour
         }
         Jump();
         currState.Update();
+
+        //Temporary KeyBoard
+        if (Input.GetKey(KeyCode.A))
+        {
+            SetMoveX(-1f);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            SetMoveX(1f);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SetMoveX(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (jumpCount >= maxJumpCount)
+                return;
+            playerRb.velocity = new Vector3(0, 0, 0);
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            SetState(new JumpState(this));
+            isGrounded = false;
+            jumpCount++;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Dash();
+        }
     }
 
     private void FixedUpdate()
@@ -97,9 +126,8 @@ public class PlayerController : MonoBehaviour
 
     public void Move(float speed)
     {
-        if (!IsBlocked)
-            transform.position += new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
-        // 새 위치 계산해서 새로운 위치, 이전 위치 사이에 물체 있으면 물체 앞으로 이동
+        //if (!IsBlocked)
+        playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
     }
 
     public void Dash()
@@ -110,7 +138,10 @@ public class PlayerController : MonoBehaviour
 
     public void CheckFrontObject()
     {
-        IsBlocked = Physics.Raycast(transform.position, new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Enemy"));
+        IsBlocked = Physics.Raycast(transform.position,
+            new Vector3(moveX, 0, 0),
+            1,
+            LayerMask.GetMask("Enemy"));
     }
 
     public void OnGround(bool isGrounded)
