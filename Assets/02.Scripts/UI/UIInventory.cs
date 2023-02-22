@@ -11,9 +11,10 @@ public class UIInventory : MonoBehaviour
 
     private List<UISlot> slotList = new List<UISlot>();
 
+    public UIItemInfo itemInfo;
+
     private void Awake()
     {
-        
     }
 
     public void OnEnable()
@@ -23,10 +24,14 @@ public class UIInventory : MonoBehaviour
 
     public void Init()
     {
-        for (int i = 0; i< slotCount; ++i)
+        for (int i = 0; i < slotCount; ++i)
         {
             var slot = Instantiate(uiSlotPrefab, content);
+            slot.SetEmpty();
             slotList.Add(slot);
+
+            var button = slot.GetComponent<Button>();
+            //button.onClick.AddListener(() => itemInfo.Set(slot.Data));
         }
     }
 }

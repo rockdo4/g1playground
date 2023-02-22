@@ -6,7 +6,14 @@ using TMPro;
 
 public class UIItemInfo : MonoBehaviour
 {
-    public Image image;
-    public TextMeshProUGUI itemName;
-    public TextMeshProUGUI itemDesc;
+    public Image equipImage;
+    public Image useImage;
+    public TextMeshProUGUI itemInfo;
+
+    public void SetEmpty()
+    {
+        equipImage.sprite = null;
+        useImage.sprite = null;
+        itemInfo.text = string.Empty;
+    }
 }

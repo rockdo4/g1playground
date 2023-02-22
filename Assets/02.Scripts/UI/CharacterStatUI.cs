@@ -55,13 +55,13 @@ public class CharacterStatUI : MonoBehaviour
         level.text = playerLv.ToString();
         expBar.fillAmount = (float)currExp / (float)maxExp;
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if(!IsPointerOverUIObject(Input.mousePosition))
-            {
-                ExpIncrease();
-            }            
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    if(!IsPointerOverUIObject(Input.mousePosition))
+        //    {
+        //        ExpIncrease();
+        //    }            
+        //}
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

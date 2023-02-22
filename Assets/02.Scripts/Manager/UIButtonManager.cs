@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIButtonManager : MonoBehaviour
 {
-    public GameObject[] popButton;
-    public PopupUI ui;
-    public GameObject[] saveDatas;
+    public GameObject[] buttons;
+    public GameObject[] popUps;
 
     private void Awake()
     {
@@ -18,10 +18,7 @@ public class UIButtonManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (!IsPointerOverUIObject(Input.mousePosition))
-            {
-                ui.gameObject.SetActive(false);
-            }
+            CheckArea();
         }
     }
 
@@ -30,23 +27,41 @@ public class UIButtonManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void OpenCloseUI()
+    public void PopUp(GameObject popup)
     {
-        if (!ui.gameObject.activeSelf)
-            ui.gameObject.SetActive(true);
+        if (!popup.gameObject.activeSelf)
+            popup.gameObject.SetActive(true);
         else
-            ui.gameObject.SetActive(false);
+            popup.gameObject.SetActive(false);
     }
 
-    public bool IsPointerOverUIObject(Vector2 touchPos)
+    public void AllClosePopUp()
     {
-        PointerEventData eventDataCurrPos = new PointerEventData(EventSystem.current);
-        eventDataCurrPos.position = touchPos;
+        foreach (var popup in popUps)
+            popup.gameObject.SetActive(false);
+    }
 
-        List<RaycastResult> results = new List<RaycastResult>();
+    public void CheckArea()
+    {
+        foreach (var button in buttons)
+        {
+            if (RectTransformUtility.RectangleContainsScreenPoint(button.GetComponent<RectTransform>(), Input.mousePosition, null))
+            {
+                return;
+            } 
+        }
+        foreach (var popup in popUps)
+        {
+            if (RectTransformUtility.RectangleContainsScreenPoint(popup.GetComponent<RectTransform>(), Input.mousePosition, null))
+            {
+                return;
+            }
+        }
+        AllClosePopUp();
+    }
 
-        EventSystem.current.RaycastAll(eventDataCurrPos, results);
-
-        return results.Count > 0;
+    public void SlotClick()
+    {
+        Debug.Log("click");
     }
 }
