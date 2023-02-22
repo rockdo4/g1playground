@@ -26,26 +26,26 @@ public class Player : MonoBehaviour
     public bool IsEnemy { get; private set; }
     public bool IsWall { get; private set; }
     public bool IsDash { get; set; } //dash
-    public bool IsJumping { get;  set; } //jump
+    public bool IsJumping { get; set; } //jump
     public bool IsGrounded { get; set; }
     private void Awake()
-    {  
+    {
         playerRb = GetComponent<Rigidbody>();
     }
     private void Update()
     {
-        if (jumpCount > 0) 
+        if (jumpCount > 0)
             Jump();
         Dash();
 
-        if(IsGrounded)
+        if (IsGrounded)
         {
             jumpCount = 2;
             IsJumping = false;
         }
 
 
-        if (moveX ==0)
+        if (moveX == 0)
         {
             IsMoving = false;
         }
@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         StopRay();
-        if(!IsEnemy && !IsWall)
+        if (!IsEnemy && !IsWall)
             transform.position += new Vector3(moveX, 0, 0) * speed * Time.fixedDeltaTime;
     }
     public void Move(float moveX)
@@ -70,14 +70,14 @@ public class Player : MonoBehaviour
     }
     public void Dash()
     {
-        if(IsDash)
+        if (IsDash)
         {
             speed = dashSpeed;
             dashTime = 0.1f;
             IsDash = false;
         }
-        
-        if(dashTime <0)
+
+        if (dashTime < 0)
         {
             speed = defaultSpeed;
         }
@@ -89,18 +89,18 @@ public class Player : MonoBehaviour
         foreach (var t in Input.touches)
         {
             var viewportPoint = Camera.main.ScreenToViewportPoint(t.position);
-           
-            if (viewportPoint.x > 0.5f&&viewportPoint.y <0.5f) 
+
+            if (viewportPoint.x > 0.5f && viewportPoint.y < 0.5f)
             {
                 if (t.phase == TouchPhase.Began)
                 {
-                    playerRb.velocity = new Vector3 (moveX,0,0);
+                    playerRb.velocity = new Vector3(moveX, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
                     jumpCount--;
                 }
             }
         }
-        
+
     }
     public void StopRay()
     {
@@ -110,12 +110,4 @@ public class Player : MonoBehaviour
         IsWall = Physics.Raycast(transform.position,
            new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Wall"));
     }
-    //public void GroundRay()
-    //{
-    //    Debug.DrawRay(transform.position,
-    //        new Vector3(0, -1f, 0), Color.green);
-    //    IsGrounded = Physics.Raycast(transform.position,
-    //        new Vector3(0, -1f, 0), 1, LayerMask.GetMask("Ground"));
-    //    Debug.Log(IsGrounded);
-    //}
 }

@@ -647,7 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546d774b16b75c648bdc18f0340cc157, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1911813953}
+  playerController: {fileID: 1911813955}
 --- !u!4 &617602940
 Transform:
   m_ObjectHideFlags: 0
@@ -973,7 +973,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerMovement
       value: 
-      objectReference: {fileID: 1911813953}
+      objectReference: {fileID: 0}
     - target: {fileID: 2664928345406777701, guid: 916d84cc1e0146741b42d3cb0d25a7bc,
         type: 3}
       propertyPath: m_RootOrder
@@ -1045,7 +1045,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AttackTemp
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2664928345406777700, guid: 916d84cc1e0146741b42d3cb0d25a7bc, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 916d84cc1e0146741b42d3cb0d25a7bc, type: 3}
 --- !u!4 &1130177105 stripped
 Transform:
@@ -1207,9 +1208,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1911813953}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Move
+        - m_Target: {fileID: 1911813955}
+          m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+          m_MethodName: SetMoveX
           m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1223,9 +1224,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1911813953}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Move
+        - m_Target: {fileID: 1911813955}
+          m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+          m_MethodName: SetMoveX
           m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1896,9 +1897,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1911813953}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Move
+        - m_Target: {fileID: 1911813955}
+          m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+          m_MethodName: SetMoveX
           m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1912,9 +1913,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1911813953}
-          m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-          m_MethodName: Move
+        - m_Target: {fileID: 1911813955}
+          m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+          m_MethodName: SetMoveX
           m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2200,7 +2201,7 @@ GameObject:
   - component: {fileID: 1911813950}
   - component: {fileID: 1911813949}
   - component: {fileID: 1911813954}
-  - component: {fileID: 1911813953}
+  - component: {fileID: 1911813955}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2287,24 +2288,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1911813953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911813948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c9e79d0e7a9d8547873f5f2bf0ffe64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  moveX: 0
-  dashSpeed: 30
-  dashTime: 0.1
-  jumpPower: 16
-  jumpCount: 2
 --- !u!54 &1911813954
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2321,3 +2304,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!114 &1911813955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911813948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e89e3bcd8ed68948b8c8c15089c5a65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveX: 0
+  moveSpeed: 10
+  dashSpeed: 50
+  dashCoolDown: 0.5
+  dashDuration: 0.2
+  jumpForce: 16
+  jumpCount: 0
+  maxJumpCount: 2
