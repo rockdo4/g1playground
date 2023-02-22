@@ -45,6 +45,8 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         state = EnemyState.Idle;
+        agent.speed = moveSpeed;
+        agent.stoppingDistance = attackRange;
     }
 
     private void Start()
@@ -60,35 +62,14 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        agent.SetDestination(player.position);
+        //agent.SetDestination(player.position);
 
-        //distance = Vector3.Distance(transform.position, player.position);
-
-        //if (isPattern)
-        //{
-        //    ChangePatteurn();
-        //}
-
-        //switch (state)
-        //{
-        //    case EnemyState.Idle:
-        //        IdleUpdate();
-        //        break;
-        //    case EnemyState.Chase:
-        //        ChaseUpdate();
-        //        break;
-        //    case EnemyState.Patrol:
-        //        PatrolUpdate();
-        //        break;
-        //    case EnemyState.Attack:
-        //        AttackUpdate();
-        //        break;
-        //}
-    }
-
-    private void Update()
-    {
         distance = Vector3.Distance(transform.position, player.position);
+
+        if (isPattern)
+        {
+            ChangePatteurn();
+        }
 
         switch (state)
         {
@@ -106,6 +87,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
+        //Debug.Log(state);
     }
 
     private void IdleUpdate()
@@ -115,6 +97,7 @@ public class Enemy : MonoBehaviour
             state = EnemyState.Chase;
             ResetPattern();
         }
+        agent.isStopped = true;
     }
 
     private void ChaseUpdate()
@@ -126,8 +109,9 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        Vector3 direction = (player.position - transform.position).normalized;
-        rb.velocity = direction * moveSpeed;
+        agent.SetDestination(player.position);
+        //Vector3 direction = (player.position - transform.position).normalized;
+        //rb.velocity = direction * moveSpeed;
     }
 
     private void PatrolUpdate()
@@ -139,27 +123,35 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        agent.isStopped = false;
+
         if (isGoingRight)
         {
-            Debug.Log("©Л");
-            transform.position = Vector3.MoveTowards(transform.position, endPos, Time.deltaTime * moveSpeed);
+            //Debug.Log("©Л");
+            agent.SetDestination(endPos);
 
-            if (Vector3.Distance(transform.position, endPos) <= 1f)
+            if (Vector3.Distance(transform.position, endPos) < 3f)
             {
                 isGoingRight = false;
+                agent.isStopped = true;
+
             }
+
         }
         else
         {
-            Debug.Log("аб");
+            //Debug.Log("аб");
+            agent.SetDestination(startPos);
 
-            transform.position = Vector3.MoveTowards(transform.position, startPos, Time.deltaTime * moveSpeed);
-
-            if (Vector3.Distance(transform.position, startPos) <= 1f)
+            if (Vector3.Distance(transform.position, startPos) < 3f)
             {
                 isGoingRight = true;
+                agent.isStopped = true;
+
             }
         }
+
+        Debug.Log(agent.destination);
     }
 
     private float floorLength;
@@ -189,7 +181,7 @@ public class Enemy : MonoBehaviour
             state = EnemyState.Chase;
         }
     }
-
+                           
     void ChangePatteurn()
     {
         StartCoroutine(PatternDelay(EnemyStatePattern[curCountPattern].second));

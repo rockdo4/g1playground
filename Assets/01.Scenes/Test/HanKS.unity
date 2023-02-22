@@ -282,7 +282,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!54 &470335072
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -295,7 +295,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -391,9 +391,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  attackRange: 0
+  attackRange: 1
   searchRange: 5
-  EnemyStatePattern: []
+  EnemyStatePattern:
+  - state: 1
+    second: 1
+  - state: 3
+    second: 1
 --- !u!114 &470335078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,7 +575,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622869446}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.22, y: 1.66, z: -2}
+  m_LocalPosition: {x: -27.03, y: 1.66, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -688,14 +692,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
-  m_LocalRotation: {x: -0.2187801, y: -0.06784866, z: 0.015270497, w: -0.9732927}
-  m_LocalPosition: {x: 3.4161992, y: 5.007847, z: -14.872732}
+  m_LocalRotation: {x: -0.21637356, y: -0.075170405, z: -0.017481364, w: -0.9732555}
+  m_LocalPosition: {x: 6.1, y: 5.007847, z: -14.872732}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 24.743, y: 9.755, z: 4.203}
 --- !u!1 &1629314328
 GameObject:
   m_ObjectHideFlags: 0
