@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
         {
             SetMoveX(1f);
         }
-        if(!Input.GetKey(KeyCode.A)&& !Input.GetKey(KeyCode.D))
+        else if (Input.GetKeyUp(KeyCode.A)|| Input.GetKeyUp(KeyCode.D))
         {
             SetMoveX(0);
         }
