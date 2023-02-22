@@ -26,21 +26,21 @@ public class GameManager : MonoBehaviour
     }
 
     //player respawn func
-    public void Respawn()
-    {
-        SceneManager.LoadScene(PlayerDataManager.instance.lastMapId);
-        StartCoroutine(CoRespawn());
-    }
+    //public void Respawn()
+    //{
+    //    SceneManager.LoadScene(PlayerDataManager.instance.lastMapId);
+    //    StartCoroutine(CoRespawn());
+    //}
 
-    IEnumerator CoRespawn()
-    {
-        yield return null;
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null) { 
-            player.transform.position = PlayerDataManager.instance.lastPlayerPos;
-            //Todo: Fill player HP
-            //Todo: Fill player MP
-        }
+    //IEnumerator CoRespawn()
+    //{
+    //    yield return null;
+    //    var player = GameObject.FindGameObjectWithTag("Player");
+    //    if (player != null) { 
+    //        player.transform.position = PlayerDataManager.instance.lastPlayerPos;
+    //        //Todo: Fill player HP
+    //        //Todo: Fill player MP
+    //    }
 
-    }
+    //}
 }

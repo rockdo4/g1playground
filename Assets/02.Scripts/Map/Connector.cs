@@ -15,8 +15,8 @@ public class Connector : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
 
-            GameManager.instance.Respawn();
-            return;
+          //  GameManager.instance.Respawn();
+          //  return;
         }
     }
     private void Awake()
