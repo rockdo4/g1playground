@@ -15,6 +15,9 @@ public class BlockSwitchTile : MonoBehaviour
     [SerializeField] private BSwitchType type;
     [SerializeField] private float fadeTimer = 0.5f;
 
+    private bool isTriggered;
+    public bool IsTriggered { get { return isTriggered; } set { isTriggered = this; } }
+
     
     void Start()
     {
@@ -47,6 +50,7 @@ public class BlockSwitchTile : MonoBehaviour
         if (!animator.GetBool("Trigger") && (other.tag == "Player" || other.tag == "Pushable"))
         {
             //Debug.Log(other.tag);
+            IsTriggered = true;
             animator.SetBool("Trigger", true);
             SetBlocks();
         }
@@ -57,6 +61,7 @@ public class BlockSwitchTile : MonoBehaviour
     {
         if (animator.GetBool("Trigger") && type == BSwitchType.Temporary)
         {
+            IsTriggered = false;
             animator.SetBool("Trigger", false);
             SetBlocks();
         }
