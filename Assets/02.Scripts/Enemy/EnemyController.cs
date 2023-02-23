@@ -64,6 +64,15 @@ public class EnemyController : MonoBehaviour
             var prevState = state;
             state = value;
 
+            if (prevState != EnemyState.Idle && prevState != EnemyState.Patrol)
+            {
+                if (value == EnemyState.Idle || value == EnemyState.Patrol)
+                {
+                    SaveFloorLength();
+                    isPattern = true;
+                }
+            }
+
             if (prevState == state)
                 return;
 
@@ -71,9 +80,11 @@ public class EnemyController : MonoBehaviour
             {
                 case EnemyState.Idle:
                     agent.isStopped = true;
+                    rb.isKinematic = true;
                     break;
                 case EnemyState.Patrol:
                     agent.isStopped = false;
+                    rb.isKinematic = true;
                     if (isGoingRight)
                     {
                         agent.SetDestination(endPos);
@@ -92,11 +103,12 @@ public class EnemyController : MonoBehaviour
                     }
                     break;
                 case EnemyState.Chase:
-                    agent.speed = moveSpeed;
                     agent.isStopped = false;
+                    rb.isKinematic = false;
                     break;
                 case EnemyState.Attack:
                     agent.isStopped = true;
+                    rb.isKinematic = false;
                     break;
 
             }
@@ -108,6 +120,7 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        agent.speed = moveSpeed;
         agentTransform = agent.transform;
         agent.stoppingDistance = attackRange;
 
@@ -171,32 +184,32 @@ public class EnemyController : MonoBehaviour
 
     private void ChaseUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) < attackRange)
+        if (Vector3.Distance(transform.position, player.position) <= attackRange + 0.5f)
         {
             State = EnemyState.Attack;
-            ResetPattern();
-            lookDirection = (player.position - agentTransform.position).normalized;
-            lookDirection.y = 0f;
-            agentTransform.forward = lookDirection;
+            //ResetPattern();
+            //lookDirection = (player.position - agentTransform.position).normalized;
+            //lookDirection.y = 0f;
+            //agentTransform.forward = lookDirection;
             return;
         }
-        else if (Vector3.Distance(transform.position, player.position) > searchRange)
+
+        if (Vector3.Distance(transform.position, player.position) >= searchRange)
         {
-            ResetPattern();
-            isPattern = true;
+            State = EnemyState.Idle;
             return;
         }
-        agent.isStopped = false;
+
         agent.SetDestination(player.position);
     }
     private void AttackUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) > attackRange)
+        if (Vector3.Distance(transform.position, player.position) >= attackRange)
         {
-            animator.SetBool("Attack", false);
             State = EnemyState.Chase;
         }
-        isAttack = true;
+
+        animator.SetTrigger("Attack");
     }
 
     private void SaveFloorLength()
@@ -224,6 +237,13 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTime);
 
+        if (state != EnemyState.Idle && state != EnemyState.Patrol)
+        {
+            isPattern = false;
+            curCountPattern = 0;
+
+            yield break;
+        }
         //if (isAttack)
         //    yield break;
 
