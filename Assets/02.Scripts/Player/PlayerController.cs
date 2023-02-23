@@ -152,15 +152,15 @@ public class PlayerController : MonoBehaviour
             if (IsBlocked)
                 break;
         }
-        // temp.y -= 1;
-        // Debug.DrawRay(temp,
-        //new Vector3(moveX, 0, 0), Color.green);
+       // temp.y -= 1;
+       // Debug.DrawRay(temp,
+       //new Vector3(moveX, 0, 0), Color.green);
 
-        // Debug.DrawRay(transform.position,
-        //new Vector3(moveX, 0, 0), Color.green);
-        // temp.y -= 2;
-        // Debug.DrawRay(temp,
-        //    new Vector3(moveX, 0, 0), Color.green);
+       // Debug.DrawRay(transform.position,
+       //new Vector3(moveX, 0, 0), Color.green);
+       // temp.y -= 2;
+       // Debug.DrawRay(temp,
+       //    new Vector3(moveX, 0, 0), Color.green);
     }
 
     public void OnGround(bool isGrounded)
