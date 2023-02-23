@@ -6,14 +6,12 @@ public class PlayerGroundCollider : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Ground"))
-            return;
-        GameManager.instance.playerController.OnGround(true);
+        if (other.CompareTag("Ground") || other.CompareTag("Pushable")) 
+            GameManager.instance.playerController.OnGround(true);
     }
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Ground"))
-            return;
-        GameManager.instance.playerController.OnGround(false);
+        if (other.CompareTag("Ground") || other.CompareTag("Pushable")) 
+            GameManager.instance.playerController.OnGround(false);
     }
 }
