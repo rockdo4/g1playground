@@ -19,4 +19,6 @@ public class AttackExecutioner
                 break;
         }
     }
+
+    public virtual void ExecuteAttack(GameObject attacker, GameObject defender) { }
 }

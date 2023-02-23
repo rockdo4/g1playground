@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public State currState;
     private Rigidbody playerRb;
     public float moveX;
+    private float lastMoveX;
     public float moveSpeed = 10f;
     public float dashSpeed;
 
@@ -32,13 +33,14 @@ public class PlayerController : MonoBehaviour
     public float dashDuration = 0.1f;
     private float dashTimer;
     public bool IsBlocked { get; private set; }
-   
+
     public float jumpForce;
     public int jumpCount;
     public int maxJumpCount;
     public bool isGrounded;
 
-    public BasicAttack basicAttackTemp;
+    public Weapon1stBuild weapon;
+    public AttackExecutioner basicAttackTemp = new MeleeAttack(AttackDefinition.Types.Basic);
 
     private void SetState(State state)
     {
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
+        weapon.OnCollided = basicAttackTemp.ExecuteAttack;
     }
 
     private void Start()
@@ -70,6 +73,35 @@ public class PlayerController : MonoBehaviour
         }
         Jump();
         currState.Update();
+
+        //Temporary KeyBoard
+        if (Input.GetKey(KeyCode.A))
+        {
+            SetMoveX(-1f);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            SetMoveX(1f);
+        }
+        else if (Input.GetKeyUp(KeyCode.A)|| Input.GetKeyUp(KeyCode.D))
+        {
+            SetMoveX(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (jumpCount >= maxJumpCount)
+                return;
+            playerRb.velocity = new Vector3(0, 0, 0);
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            SetState(new JumpState(this));
+            isGrounded = false;
+            jumpCount++;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Dash();
+        }
     }
 
     private void FixedUpdate()
@@ -80,18 +112,22 @@ public class PlayerController : MonoBehaviour
     public void SetMoveX(float moveX)
     {
         this.moveX = moveX;
-        if (moveX < 0)
-            transform.eulerAngles = new Vector3(0, 180, 0);
-        else if (moveX > 0)
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        Debug.Log(moveX);
+        if (Mathf.Approximately(moveX, 0f))
+            return;
+        else
+        {
+            lastMoveX = moveX;
+            if (moveX < 0)
+                transform.eulerAngles = new Vector3(0, 180, 0);
+            else if (moveX > 0)
+                transform.eulerAngles = new Vector3(0, 0, 0);
+        }
     }
 
     public void Move(float speed)
     {
-        if (!IsBlocked)
-            transform.position += new Vector3(moveX, 0, 0) * speed * Time.deltaTime;
-        // 새 위치 계산해서 새로운 위치, 이전 위치 사이에 물체 있으면 물체 앞으로 이동
+        //if (!IsBlocked)
+        playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
     }
 
     public void Dash()
@@ -102,12 +138,14 @@ public class PlayerController : MonoBehaviour
 
     public void CheckFrontObject()
     {
-        IsBlocked = Physics.Raycast(transform.position, new Vector3(moveX, 0, 0), 1, LayerMask.GetMask("Enemy"));
+        IsBlocked = Physics.Raycast(transform.position,
+            new Vector3(moveX, 0, 0),
+            1,
+            LayerMask.GetMask("Enemy"));
     }
 
     public void OnGround(bool isGrounded)
     {
-        Debug.Log(isGrounded);
         this.isGrounded = isGrounded;
         if (isGrounded)
             jumpCount = 0;
@@ -125,12 +163,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (t.phase == TouchPhase.Began)
                 {
-                    playerRb.velocity = new Vector3(moveX, 0, 0);
+                    playerRb.velocity = new Vector3(0, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                     SetState(new JumpState(this));
                     isGrounded = false;
                     jumpCount++;
-                    Debug.Log("jump");
                 }
             }
         }
@@ -152,13 +189,14 @@ public class PlayerController : MonoBehaviour
                 playerController.SetState(new MoveState(playerController));
                 return;
             }
-            //else if (Attack~~~)
-            //        attack~~~
+            else if (Physics.Raycast(playerController.transform.position, new Vector3(playerController.lastMoveX, 0f, 0f), 3, LayerMask.GetMask("Enemy")))
+            {
+                playerController.SetState(new AttackState(playerController));
+                return;
+            }
         }
 
-        public override void Exit()
-        {
-        }
+        public override void Exit() { }
     }
 
     public class MoveState : State
@@ -232,22 +270,48 @@ public class PlayerController : MonoBehaviour
 
     public class AttackState : State
     {
+        // for 1st build
+        private float duration = 1f;
+        private float rotateY;
+
         public AttackState(PlayerController controller) : base(controller) { }
 
         protected override void Enter()
         {
             // attack animation trigger
+            // for 1st build
+            playerController.weapon.Activate(true);
+            playerController.weapon.Normal();
+            duration = 1f;
+            rotateY = -playerController.transform.right.x;
+            playerController.transform.eulerAngles = new Vector3(0f, 90f, 0f);
         }
 
         public override void Update()
         {
-            if (Mathf.Approximately(playerController.moveX, 0f))
+            // for 1st build
+            duration -= Time.deltaTime;
+            playerController.transform.eulerAngles += new Vector3(0f, rotateY * 180f * Time.deltaTime, 0f);
+            if (duration < 0f)
+            {
+                playerController.SetState(new IdleState(playerController));
+                return;
+            }
+            if (!Mathf.Approximately(playerController.moveX, 0f))
             {
                 playerController.SetState(new MoveState(playerController));
                 return;
             }
         }
 
-        public override void Exit() { }
+        public override void Exit()
+        {
+            // for 1st build
+            playerController.weapon.Activate(false);
+            if (playerController.lastMoveX < 0)
+                playerController.transform.eulerAngles = new Vector3(0, 180, 0);
+            else
+                playerController.transform.eulerAngles = new Vector3(0, 0, 0);
+        }
     }
 }

@@ -1,43 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class Connector : MonoBehaviour
-{
-    [SerializeField]
-    private string nextStageName;
-    private bool isActive = true;
-    private void Update()
+{    public enum DoorType
     {
-       
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-
-            GameManager.instance.Respawn();
-            return;
-        }
+        Walk,
+        Portal,
     }
-    private void Awake()
+
+    [SerializeField]
+    private GameObject nextStageRoomPrefab;
+    [SerializeField]
+    // private GameObject nextDoorPrefab;
+    private bool isActive = false;
+    public bool IsActive { set { isActive = value; } get { return isActive; } }
+    public DoorType doortype;
+
+    private void OnEnable()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if (ConnectorManager.instance.GetPreviousMapName() != null && ConnectorManager.instance.GetPreviousMapName() == nextStageName)
-        {
-            player.transform.position = transform.position;
-            isActive = false;
-        }
-
+        isActive = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player" && nextStageName != null)
+        if (other.transform.CompareTag("Player") && nextStageRoomPrefab != null)
         {
-            if (isActive)
+
+            if (!nextStageRoomPrefab.active)
             {
-                ConnectorManager.instance.SetPreviousMapName(SceneManager.GetActiveScene().name);
-                SceneManager.LoadScene(nextStageName);
+                nextStageRoomPrefab.SetActive(true);
+            }
+            else if (nextStageRoomPrefab.active)
+            {
+                if (MapManager.instance.GetCurrentMapName().CompareTo(transform.parent.name) != 0)
+                {
+                    nextStageRoomPrefab.SetActive(false);
+                    MapManager.instance.SetCurrentMapName(transform.parent.name);
+                }
+
             }
         }
     }
@@ -45,6 +48,7 @@ public class Connector : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         isActive = true;
+
     }
 
 }
