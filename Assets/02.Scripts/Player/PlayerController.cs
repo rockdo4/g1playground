@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
     public void CheckFrontObject()
     {
         var playerPosition = transform.position;
-        playerPosition.y -= 1;
+        playerPosition.y -= 0.9f;
 
         var temp = transform.position;
         for (int i = 0; i < 3; i++)
