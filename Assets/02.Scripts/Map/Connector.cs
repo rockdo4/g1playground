@@ -14,6 +14,8 @@ public class Connector : MonoBehaviour
 
     [SerializeField]
     private GameObject nextStageRoomPrefab;
+
+    public GameObject NextStage { get{ return nextStageRoomPrefab; } }
     [SerializeField]
     // private GameObject nextDoorPrefab;
     private bool isActive = false;
@@ -38,8 +40,8 @@ public class Connector : MonoBehaviour
             {
                 if (MapManager.instance.GetCurrentMapName().CompareTo(transform.parent.name) != 0)
                 {
-                    nextStageRoomPrefab.SetActive(false);
                     MapManager.instance.SetCurrentMapName(transform.parent.name);
+
                 }
 
             }
@@ -48,7 +50,7 @@ public class Connector : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        isActive = true;
+      //  isActive = true;
 
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BlockSwitchTile : MonoBehaviour
@@ -15,10 +16,19 @@ public class BlockSwitchTile : MonoBehaviour
     [SerializeField] private BSwitchType type;
     [SerializeField] private float fadeTimer = 0.5f;
 
+    bool isActive = false;
     
     void Start()
     {
         animator = GetComponent<Animator>();
+    }
+
+    private void OnEnable()
+    {
+        if (isActive)
+        {
+            animator.SetBool("Trigger", true);
+        }
     }
 
     public void SetBlocks()
@@ -38,7 +48,6 @@ public class BlockSwitchTile : MonoBehaviour
             }
 
         }
-        Debug.Log("Block");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,6 +57,7 @@ public class BlockSwitchTile : MonoBehaviour
         {
             //Debug.Log(other.tag);
             animator.SetBool("Trigger", true);
+            isActive = true;
             SetBlocks();
         }
 
@@ -58,6 +68,7 @@ public class BlockSwitchTile : MonoBehaviour
         if (animator.GetBool("Trigger") && type == BSwitchType.Temporary)
         {
             animator.SetBool("Trigger", false);
+            isActive = false;
             SetBlocks();
         }
 
