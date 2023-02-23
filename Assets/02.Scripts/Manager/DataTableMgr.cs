@@ -10,7 +10,8 @@ public class DataTableMgr
 
     public static void LoadAll()
     {
-        //tables.Add(typeof(데이터), new DataTable<데이터형>(경로));
+        tables.Add(typeof(ItemData), new DataTable<ItemData>("DataTables/ItemTable"));
+        //tables.Add(typeof(SkillData), new DataTable<SkillData>("DataTables/SkillTable"));
         isLoaded = true;
     }
 

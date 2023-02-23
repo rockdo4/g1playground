@@ -8,7 +8,6 @@ using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System;
-using UnityEditor.Build.Content;
 
 public static class SaveLoadSystem
 {
