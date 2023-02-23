@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
         {
             SetMoveX(1f);
         }
-        else if (Input.GetKeyUp(KeyCode.A)|| Input.GetKeyUp(KeyCode.D))
+        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
             SetMoveX(0);
         }
@@ -126,8 +126,8 @@ public class PlayerController : MonoBehaviour
 
     public void Move(float speed)
     {
-        //if (!IsBlocked)
-        playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
+        if (!IsBlocked)
+            playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
     }
 
     public void Dash()
@@ -138,10 +138,29 @@ public class PlayerController : MonoBehaviour
 
     public void CheckFrontObject()
     {
-        IsBlocked = Physics.Raycast(transform.position,
+        var playerPosition = transform.position;
+        playerPosition.y -= 1;
+
+        var temp = transform.position;
+        for (int i = 0; i < 3; i++)
+        {
+            IsBlocked = Physics.Raycast(playerPosition,
             new Vector3(moveX, 0, 0),
             1,
-            LayerMask.GetMask("Enemy"));
+            LayerMask.GetMask("Ground"));
+            playerPosition.y++;
+            if (IsBlocked)
+                break;
+        }
+       // temp.y -= 1;
+       // Debug.DrawRay(temp,
+       //new Vector3(moveX, 0, 0), Color.green);
+
+       // Debug.DrawRay(transform.position,
+       //new Vector3(moveX, 0, 0), Color.green);
+       // temp.y -= 2;
+       // Debug.DrawRay(temp,
+       //    new Vector3(moveX, 0, 0), Color.green);
     }
 
     public void OnGround(bool isGrounded)
