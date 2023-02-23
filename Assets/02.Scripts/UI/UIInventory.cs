@@ -11,12 +11,14 @@ public class UIInventory : MonoBehaviour
 
     private List<UIItemSlot> slotList = new List<UIItemSlot>();
     private DataTable<ItemData> itemTable;
+    //private DataTable<SkillData> skillTable;
 
     public UIItemInfo itemInfo;
 
     private void Awake()
     {
         itemTable = DataTableMgr.GetTable<ItemData>();
+        //skillTable = DataTableMgr.GetTable<SkillData>();
     }
 
     public void OnEnable()

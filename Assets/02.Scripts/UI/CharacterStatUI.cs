@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class CharacterStatUI : MonoBehaviour
 {
@@ -41,12 +38,12 @@ public class CharacterStatUI : MonoBehaviour
 
     private void Update()
     {
-        hp.text = currHp.ToString();
-        mHp.text = maxHp.ToString();
+        hp.text = currHp.ToString() + " ";
+        mHp.text = "/ " + maxHp.ToString();
         hpBar.fillAmount = (float)currHp / (float)maxHp;
 
-        mp.text = currMp.ToString();
-        mMp.text = maxMp.ToString();
+        mp.text = currMp.ToString() + " ";
+        mMp.text = "/ " + maxMp.ToString();
         mpBar.fillAmount = (float)currMp / (float)maxMp;
 
         level.text = playerLv.ToString();
