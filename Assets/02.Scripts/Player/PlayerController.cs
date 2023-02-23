@@ -113,7 +113,10 @@ public class PlayerController : MonoBehaviour
     {
         this.moveX = moveX;
         if (Mathf.Approximately(moveX, 0f))
+        {
+            playerRb.velocity = new Vector3(0, playerRb.velocity.y, 0);
             return;
+        }
         else
         {
             lastMoveX = moveX;
