@@ -48,7 +48,7 @@ public class UIButtonManager : MonoBehaviour
             if (RectTransformUtility.RectangleContainsScreenPoint(button.GetComponent<RectTransform>(), Input.mousePosition, null))
             {
                 return;
-            } 
+            }
         }
         foreach (var popup in popUps)
         {

@@ -35,10 +35,10 @@ RectTransform:
   m_Father: {fileID: 8597598468930869779}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -540}
-  m_SizeDelta: {x: 350, y: 60}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -240}
+  m_SizeDelta: {x: -150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8597598467547997811
 CanvasRenderer:
@@ -121,7 +121,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8597598467547997820}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1830548688, guid: f91472a57214858478bfd132164d3952, type: 3}
+        m_TargetAssemblyTypeName: UIButtonManager, Assembly-CSharp
+        m_MethodName: PopUp
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8597598467607328916
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,10 +305,10 @@ RectTransform:
   m_Father: {fileID: 8597598468930869779}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -220}
-  m_SizeDelta: {x: 350, y: 60}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 80}
+  m_SizeDelta: {x: -150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8597598467848018226
 CanvasRenderer:
@@ -385,8 +397,7 @@ MonoBehaviour:
         m_MethodName: PopUp
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 5701705634868485286, guid: 99cb8a710812d5e4b829f771043c4e85,
-            type: 3}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -700,10 +711,10 @@ RectTransform:
   m_Father: {fileID: 8597598468930869779}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -140}
-  m_SizeDelta: {x: 350, y: 60}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 160}
+  m_SizeDelta: {x: -150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8597598468008895839
 CanvasRenderer:
@@ -792,8 +803,7 @@ MonoBehaviour:
         m_MethodName: PopUp
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 3208318997727331466, guid: 8592006c2b6dc0a4ab03c5fa44bb22ee,
-            type: 3}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -971,10 +981,10 @@ RectTransform:
   m_Father: {fileID: 8597598468930869779}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -380}
-  m_SizeDelta: {x: 350, y: 60}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -80}
+  m_SizeDelta: {x: -150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8597598468377945948
 CanvasRenderer:
@@ -1063,8 +1073,7 @@ MonoBehaviour:
         m_MethodName: PopUp
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 3311289391740933508, guid: d1564a7e2cb985842a16338bc156f8ea,
-            type: 3}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -1106,10 +1115,10 @@ RectTransform:
   m_Father: {fileID: 8597598468930869779}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -60}
-  m_SizeDelta: {x: 350, y: 60}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 240}
+  m_SizeDelta: {x: -150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8597598468482677704
 CanvasRenderer:
@@ -1198,8 +1207,7 @@ MonoBehaviour:
         m_MethodName: PopUp
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 287961969898126177, guid: e329cb453bd37e949a92719cd985bd2f,
-            type: 3}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -1241,10 +1249,10 @@ RectTransform:
   m_Father: {fileID: 8597598468930869779}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -460}
-  m_SizeDelta: {x: 350, y: 60}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -160}
+  m_SizeDelta: {x: -150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8597598468588140276
 CanvasRenderer:
@@ -1333,8 +1341,7 @@ MonoBehaviour:
         m_MethodName: PopUp
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 5695764496054723053, guid: 2e21f758231ffd241b74be0d159c6d8c,
-            type: 3}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -1376,10 +1383,10 @@ RectTransform:
   m_Father: {fileID: 8597598468930869779}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -300}
-  m_SizeDelta: {x: 350, y: 60}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8597598468693246132
 CanvasRenderer:
@@ -1468,8 +1475,7 @@ MonoBehaviour:
         m_MethodName: PopUp
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 6986218287985277540, guid: 454c9be96c96f6b408631803d8b9c572,
-            type: 3}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -1759,7 +1765,7 @@ GameObject:
   - component: {fileID: 8597598468930869779}
   - component: {fileID: 8597598468930869777}
   - component: {fileID: 8597598468930869778}
-  - component: {fileID: 8597598468930869776}
+  - component: {fileID: 4305424983175970113}
   m_Layer: 5
   m_Name: Option
   m_TagString: Untagged
@@ -1774,7 +1780,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8597598468930869788}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7799999, y: 0.7799999, z: 0.7799999}
   m_ConstrainProportionsScale: 0
@@ -1832,7 +1838,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8597598468930869776
+--- !u!114 &4305424983175970113
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1845,21 +1851,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons:
-  - {fileID: 4522435521080608740, guid: 0b9106b10a81d1c4fa4b68513c70d6a1, type: 3}
-  - {fileID: 4479631251219355272, guid: 73bf89bc56e9c78448084961322ce830, type: 3}
-  - {fileID: 6875590085014257690, guid: d717dfcc26e47394784f6602f6c7eea9, type: 3}
-  - {fileID: 2282604396240097868, guid: 7cd56a3a2629c3f4c9819f859354ee87, type: 3}
-  - {fileID: 1508890213249851844, guid: 976bedbdeb080f54382aae0937c2abc4, type: 3}
-  - {fileID: 7193844295973001965, guid: 8684592a1e417cc428f34c2f0a005e90, type: 3}
-  - {fileID: 3901429456405869634, guid: 155c7b5c1ecc7a54f907bb9d9a8552b4, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   popUps:
-  - {fileID: 287961969898126177, guid: e329cb453bd37e949a92719cd985bd2f, type: 3}
-  - {fileID: 3208318997727331466, guid: 8592006c2b6dc0a4ab03c5fa44bb22ee, type: 3}
-  - {fileID: 5701705634868485286, guid: 99cb8a710812d5e4b829f771043c4e85, type: 3}
-  - {fileID: 6986218287985277540, guid: 454c9be96c96f6b408631803d8b9c572, type: 3}
-  - {fileID: 3311289391740933508, guid: d1564a7e2cb985842a16338bc156f8ea, type: 3}
-  - {fileID: 5695764496054723053, guid: 2e21f758231ffd241b74be0d159c6d8c, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 8597598468930869788}
+  - {fileID: 0}
 --- !u!1 &8597598469159657218
 GameObject:
   m_ObjectHideFlags: 0
