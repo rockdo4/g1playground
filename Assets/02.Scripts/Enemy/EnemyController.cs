@@ -35,15 +35,15 @@ public class EnemyController : MonoBehaviour
     public float moveSpeed;
     public float attackRange;
     public float searchRange;
+    public float attackCool;
+    private float time = 0f;
 
     private int curCountPattern;
     private int countPattern;
     private bool isPattern;
-    private bool isAttack;
 
     private Transform player;
-    Transform agentTransform;
-    Vector3 lookDirection;
+
 
     private float floorLength;
     private Vector3 startPos;
@@ -85,22 +85,6 @@ public class EnemyController : MonoBehaviour
                 case EnemyState.Patrol:
                     agent.isStopped = false;
                     rb.isKinematic = true;
-                    if (isGoingRight)
-                    {
-                        agent.SetDestination(endPos);
-                        if (Vector3.Distance(transform.position, endPos) < 3f)
-                        {
-                            isGoingRight = false;
-                        }
-                    }
-                    else
-                    {
-                        agent.SetDestination(startPos);
-                        if (Vector3.Distance(transform.position, startPos) < 3f)
-                        {
-                            isGoingRight = true;
-                        }
-                    }
                     break;
                 case EnemyState.Chase:
                     agent.isStopped = false;
@@ -121,7 +105,6 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         agent.speed = moveSpeed;
-        agentTransform = agent.transform;
         agent.stoppingDistance = attackRange;
 
     }
@@ -138,7 +121,6 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-
         if (isPattern)
         {
             ChangePatteurn();
@@ -180,6 +162,23 @@ public class EnemyController : MonoBehaviour
             State = EnemyState.Chase;
             return;
         }
+
+        if (isGoingRight)
+        {
+            agent.SetDestination(endPos);
+            if (Vector3.Distance(transform.position, endPos) < 3f)
+            {
+                isGoingRight = false;
+            }
+        }
+        else
+        {
+            agent.SetDestination(startPos);
+            if (Vector3.Distance(transform.position, startPos) < 3f)
+            {
+                isGoingRight = true;
+            }
+        }
     }
 
     private void ChaseUpdate()
@@ -204,12 +203,17 @@ public class EnemyController : MonoBehaviour
     }
     private void AttackUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) >= attackRange)
+        time += Time.deltaTime;
+        if (Vector3.Distance(transform.position, player.position) >= attackRange + 0.5f)
         {
             State = EnemyState.Chase;
         }
 
-        animator.SetTrigger("Attack");
+        if (time > attackCool)
+        {
+            animator.SetTrigger("Attack");
+            time = 0f;
+        }
     }
 
     private void SaveFloorLength()
@@ -244,8 +248,6 @@ public class EnemyController : MonoBehaviour
 
             yield break;
         }
-        //if (isAttack)
-        //    yield break;
 
         if (countPattern == curCountPattern)
         {
@@ -258,12 +260,5 @@ public class EnemyController : MonoBehaviour
 
         isPattern = true;
         State = EnemyStatePattern[curCountPattern].state;
-    }
-
-    private void ResetPattern()
-    {
-        curCountPattern = 0;
-        isPattern = false;
-        isAttack = false;
     }
 }
