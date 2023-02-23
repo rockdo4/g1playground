@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using static Enemy;
@@ -36,8 +37,10 @@ public class Enemy : MonoBehaviour
     private bool isPattern;
     private bool isAttack;
 
-    private float distance;
+    //private float distance;
     private Transform player;
+    Transform agentTransform;
+    Vector3 lookDirection;
 
     [Header("<Only Idle and Patrol>")]
     [SerializeField]
@@ -48,6 +51,7 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        agentTransform = agent.transform;
         agent.speed = moveSpeed;
         agent.stoppingDistance = attackRange;
 
@@ -56,19 +60,18 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
-        state = EnemyState.Idle;
+        state = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
-        state = EnemyStatePattern[0].state;
         isPattern = true;
         isAttack = false;
 
         SaveFloorLength();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        distance = Vector3.Distance(transform.position, player.position);
+        //distance = Vector3.Distance(transform.position, player.position);
 
         if (!isAttack)
         {
@@ -83,12 +86,6 @@ public class Enemy : MonoBehaviour
         if (isPattern)
         {
             ChangePatteurn();
-        }
-
-
-        if (isAttack)
-        {
-            agent.isStopped = true;
         }
 
         switch (state)
@@ -146,7 +143,6 @@ public class Enemy : MonoBehaviour
             {
                 isGoingRight = false;
                 agent.isStopped = true;
-
             }
         }
         else
@@ -161,38 +157,48 @@ public class Enemy : MonoBehaviour
 
             }
         }
-
         //Debug.Log(agent.destination);
     }
 
     private void ChaseUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) <= attackRange)
+        if (Vector3.Distance(transform.position, player.position) < attackRange)
         {
             state = EnemyState.Attack;
+            animator.SetBool("Run", false);
+            animator.SetBool("Idle", false);
             animator.SetBool("Attack", true);
+            agent.isStopped = true;
             ResetPattern();
+            lookDirection = (player.position - agentTransform.position).normalized;
+            lookDirection.y = 0f;
+            //lookDirection = new Vector3(0f, 0f, z).normalized;
+            agentTransform.forward = lookDirection;
             return;
         }
         else if (Vector3.Distance(transform.position, player.position) > searchRange)
         {
             ResetPattern();
             animator.SetBool("Run", false);
+            isPattern = true;
             return;
         }
 
+        agent.isStopped = false;
         animator.SetBool("Run", true);
         agent.SetDestination(player.position);
+
     }
     private void AttackUpdate()
     {
-        if (distance > attackRange)
+
+        if (Vector3.Distance(transform.position, player.position) > attackRange)
         {
             animator.SetBool("Attack", false);
             state = EnemyState.Chase;
         }
+        isAttack = true;
     }
-
 
     private float floorLength;
     private Vector3 startPos;
@@ -214,8 +220,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
-
     void ChangePatteurn()
     {
         StartCoroutine(PatternDelay(EnemyStatePattern[curCountPattern].second));
@@ -226,8 +230,8 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTime);
 
-        if(isAttack)
-            yield return null;
+        if (isAttack)
+            yield break;
 
         if (countPattern == curCountPattern)
         {
@@ -244,6 +248,7 @@ public class Enemy : MonoBehaviour
 
     private void ResetPattern()
     {
+        //countPattern = 0;
         curCountPattern = 0;
         isPattern = false;
         isAttack = false;
