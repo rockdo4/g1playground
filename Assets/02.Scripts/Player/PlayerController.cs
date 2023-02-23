@@ -39,8 +39,11 @@ public class PlayerController : MonoBehaviour
     public int maxJumpCount;
     public bool isGrounded;
 
+    public Transform skillPivot;
     public Weapon1stBuild weapon;
-    public AttackExecutioner basicAttackTemp = new MeleeAttack(AttackDefinition.Types.Basic);
+    public BasicAttack basicAttack;
+    public SkillAttack skillAttack;
+    private float skillTimer = 0f;
 
     private void SetState(State state)
     {
@@ -52,7 +55,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
-        weapon.OnCollided = basicAttackTemp.ExecuteAttack;
+        weapon.OnCollided = basicAttack.ExecuteAttack;
     }
 
     private void Start()
@@ -60,8 +63,28 @@ public class PlayerController : MonoBehaviour
         SetState(new IdleState(this));
     }
 
+    public void UseSkill()
+    {
+        switch (skillAttack)
+        {
+            case StraightSpell:
+                ((StraightSpell)skillAttack).Fire(gameObject, skillPivot.position, new Vector3(lastMoveX, 0f, 0f));
+                break;
+        }
+    }
+
     private void Update()
     {
+        if (skillTimer < skillAttack.CoolDown)
+        {
+            skillTimer += Time.deltaTime;
+            if (skillTimer > skillAttack.CoolDown)
+            {
+                skillTimer = 0f;
+                UseSkill();
+            }
+        }
+
         if (DashOnCool)
         {
             dashCoolTimer += Time.deltaTime;
@@ -281,7 +304,6 @@ public class PlayerController : MonoBehaviour
             // attack animation trigger
             // for 1st build
             playerController.weapon.Activate(true);
-            playerController.weapon.Normal();
             duration = 1f;
             rotateY = -playerController.transform.right.x;
             playerController.transform.eulerAngles = new Vector3(0f, 90f, 0f);

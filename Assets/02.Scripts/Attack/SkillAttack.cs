@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SkillAttack : AttackDefinition
 {
-    protected float damageFigure;
-    protected float criticalChance;
-    protected float criticalDamage;
-    protected bool isStunnable;
-    protected float stunTime;
-    protected float coolDown;
+    public float damageFigure = 1.2f;
+    public float criticalChance = 0.5f;
+    public float criticalDamage = 2f;
+    public float range = 10f;
+    public float speed = 5f;
+    public bool isStunnable = true;
+    public float stunTime = 2f;
+    public float CoolDown { get; protected set; } = 1f;
 
     public void SetSkill(string id)
     {
@@ -26,5 +29,32 @@ public class SkillAttack : AttackDefinition
             damage *= (attacker.CriticalDamage + this.criticalDamage);  // temporary
         }
         return new Attack((int)damage);
+    }
+
+    public override void ExecuteAttack(GameObject attacker, GameObject defender)
+    {
+        if (attacker == null || defender == null)
+            return;
+
+        var aStat = attacker.GetComponent<Status>();
+        var dStat = defender.GetComponent<Status>();
+        if (aStat == null || dStat == null)
+            return;
+
+        var attack = CreateAttack(aStat, dStat);
+
+        var attackables = defender.GetComponents<IAttackable>();
+        foreach (var attackable in attackables)
+        {
+            attackable.OnAttack(attacker, attack);
+        }
+        if (isStunnable)
+        {
+            var stunnables = defender.GetComponents<IStunnable>();
+            foreach (var stunnable in stunnables)
+            {
+                stunnable.OnStunned(stunTime);
+            }
+        }
     }
 }
