@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class AttackDefinition
 {
+    public float coolDown;
     public enum Types
     {
         Basic,
