@@ -67,7 +67,7 @@ public class EnemyController : MonoBehaviour
             if (prevState == state)
                 return;
 
-            switch (state)
+            switch (State)
             {
                 case EnemyState.Idle:
                     agent.isStopped = true;
@@ -116,14 +116,20 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
-        state = EnemyStatePattern[0].state;
+        State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
+        isPattern = true;
+        SaveFloorLength();
     }
 
     void Update()
     {
 
+        if (isPattern)
+        {
+            ChangePatteurn();
+        }
 
         switch (state)
         {
@@ -140,27 +146,34 @@ public class EnemyController : MonoBehaviour
                 AttackUpdate();
                 break;
         }
+
+        Debug.Log(state);
+        animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
     private void IdleUpdate()
     {
-        agent.isStopped = true;
-        animator.SetBool("Run", false);
-        animator.SetBool("Idle", true);
+        if (Vector3.Distance(transform.position, player.position) < searchRange)
+        {
+            State = EnemyState.Chase;
+            return;
+        }
     }
 
     private void PatrolUpdate()
     {
-        agent.isStopped = false;
-        animator.SetBool("Idle", false);
-        animator.SetBool("Run", true);
+        if (Vector3.Distance(transform.position, player.position) < searchRange)
+        {
+            State = EnemyState.Chase;
+            return;
+        }
     }
 
     private void ChaseUpdate()
     {
         if (Vector3.Distance(transform.position, player.position) < attackRange)
         {
-            state = EnemyState.Attack;
+            State = EnemyState.Attack;
             ResetPattern();
             lookDirection = (player.position - agentTransform.position).normalized;
             lookDirection.y = 0f;
@@ -181,7 +194,7 @@ public class EnemyController : MonoBehaviour
         if (Vector3.Distance(transform.position, player.position) > attackRange)
         {
             animator.SetBool("Attack", false);
-            state = EnemyState.Chase;
+            State = EnemyState.Chase;
         }
         isAttack = true;
     }
@@ -211,8 +224,8 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTime);
 
-        if (isAttack)
-            yield break;
+        //if (isAttack)
+        //    yield break;
 
         if (countPattern == curCountPattern)
         {
@@ -224,7 +237,7 @@ public class EnemyController : MonoBehaviour
         }
 
         isPattern = true;
-        state = EnemyStatePattern[curCountPattern].state;
+        State = EnemyStatePattern[curCountPattern].state;
     }
 
     private void ResetPattern()
