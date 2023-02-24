@@ -18,6 +18,8 @@ public class CharacterStatUI : MonoBehaviour
     public int maxMp = 300;
     public int currMp;
 
+    private Status status;
+
     //현재
     public int currExp;
     //레벨업에 필요한
@@ -29,6 +31,7 @@ public class CharacterStatUI : MonoBehaviour
 
     private void Start()
     {
+        status = GetComponent<Status>();
         currHp = maxHp;
         currMp = maxMp;
         currExp = 0;
@@ -48,11 +51,6 @@ public class CharacterStatUI : MonoBehaviour
 
         level.text = playerLv.ToString();
         expBar.fillAmount = (float)currExp / (float)maxExp;
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
     }
 
     private void ExpIncrease()
