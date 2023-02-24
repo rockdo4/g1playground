@@ -13,12 +13,10 @@ public class CharacterStatUI : MonoBehaviour
     public Text mMp;
     public Text level;
 
-    public int maxHp;
+    public int maxHp = 300;
     public int currHp;
-    public int maxMp;
+    public int maxMp = 300;
     public int currMp;
-
-    private Status status;
 
     //ÇöÀç
     public int currExp;
@@ -31,7 +29,6 @@ public class CharacterStatUI : MonoBehaviour
 
     private void Start()
     {
-        status = GetComponent<Status>();
         currHp = maxHp;
         currMp = maxMp;
         currExp = 0;
@@ -51,11 +48,11 @@ public class CharacterStatUI : MonoBehaviour
 
         level.text = playerLv.ToString();
         expBar.fillAmount = (float)currExp / (float)maxExp;
-    }
 
-    public void PlayerHpBar(int maxHp, int currHp)
-    {
-
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     private void ExpIncrease()

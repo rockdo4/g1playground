@@ -65,23 +65,24 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag(attacker.tag))
+        if (CompareTag(attacker.tag))
             return;
-        if (OnCollided != null)
-            OnCollided(attacker, other.gameObject);
 
-        Vector3 pos = other.ClosestPoint(transform.position);
-        Quaternion rot = Quaternion.LookRotation(transform.forward);
-        //Vector3 pos = contact.point + contact.normal;
+        if (OnCollided != null)
+            OnCollided(attacker, collision.gameObject);
+
+        ContactPoint contact = collision.contacts[0];
+        Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
+        Vector3 pos = contact.point + contact.normal;
         rb.velocity = Vector3.zero;
         if (hitEffect != null)
         {
             var hit = GameManager.instance.effectManager.GetEffect(hitEffect);
             hit.transform.position = pos;
             hit.transform.rotation = rot;
-            //hit.transform.LookAt(contact.point + contact.normal);
+            hit.transform.LookAt(contact.point + contact.normal);
 
             var hitPs = hit.GetComponent<ParticleSystem>();
             if (hitPs != null)

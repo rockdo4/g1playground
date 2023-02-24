@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class UIButtonManager : MonoBehaviour
 {
-    public static bool gamePaused = false;
-
     public GameObject[] buttons;
     public GameObject[] popUps;
 
@@ -32,22 +30,15 @@ public class UIButtonManager : MonoBehaviour
     public void PopUp(GameObject popup)
     {
         if (!popup.gameObject.activeSelf)
-        {
             popup.gameObject.SetActive(true);
-        }
         else
-        {
             popup.gameObject.SetActive(false);
-            Time.timeScale = 1f;
-        }
     }
 
     public void AllClosePopUp()
     {
         foreach (var popup in popUps)
-        {
             popup.gameObject.SetActive(false);
-        }
     }
 
     public void CheckArea()
@@ -63,16 +54,14 @@ public class UIButtonManager : MonoBehaviour
         {
             if (RectTransformUtility.RectangleContainsScreenPoint(popup.GetComponent<RectTransform>(), Input.mousePosition, null))
             {
-                if(popup.gameObject.activeSelf)
-                {
-                    Time.timeScale = 0f;
-                    return;
-                }
-                else
-                    Time.timeScale = 1f;
+                return;
             }
         }
-        Time.timeScale = 1f;
         AllClosePopUp();
+    }
+
+    public void SlotClick()
+    {
+        Debug.Log("click");
     }
 }

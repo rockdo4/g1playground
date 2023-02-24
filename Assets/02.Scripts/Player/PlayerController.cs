@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PlayerController : MonoBehaviour, IAttackable
+public class PlayerController : MonoBehaviour
 {
     public abstract class State
     {
@@ -22,7 +24,7 @@ public class PlayerController : MonoBehaviour, IAttackable
     public State currState;
     private Rigidbody playerRb;
     public float moveX;
-    private float lastMoveX = 1f;
+    private float lastMoveX;
     public float moveSpeed = 10f;
     public float dashSpeed;
 
@@ -43,8 +45,6 @@ public class PlayerController : MonoBehaviour, IAttackable
     public BasicAttack basicAttack;
     public SkillAttack skillAttack;
     private float skillTimer = 0f;
-
-    public float hitDuration = 0.5f;
 
     private void SetState(State state)
     {
@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour, IAttackable
                 DashOnCool = false;
             }
         }
+        Jump();
         currState.Update();
 
         //Temporary KeyBoard
@@ -170,9 +171,17 @@ public class PlayerController : MonoBehaviour, IAttackable
         var temp = transform.position;
         for (int i = 0; i < 3; i++)
         {
-            IsBlocked = Physics.Raycast(playerPosition,
-            new Vector3(moveX, 0, 0),
-            1);
+            RaycastHit hit;
+            IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0),
+            out hit, 1);
+            if (hit.collider != null)
+            {
+                if (hit.transform.CompareTag("Pushable"))
+                {
+                    IsBlocked = false;
+                    break;
+                }
+            }
             playerPosition.y++;
             if (IsBlocked)
                 break;
@@ -193,6 +202,10 @@ public class PlayerController : MonoBehaviour, IAttackable
         this.isGrounded = isGrounded;
         if (isGrounded)
             jumpCount = 0;
+        else
+        {
+            jumpCount = 1;
+        }
     }
 
     public void Jump()
@@ -205,21 +218,16 @@ public class PlayerController : MonoBehaviour, IAttackable
 
             if (viewportPoint.x > 0.5f && viewportPoint.y < 0.5f)
             {
-                if (t.phase == TouchPhase.Began)
+                if (t.phase == TouchPhase.Began&& !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                 {
                     playerRb.velocity = new Vector3(0, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                     SetState(new JumpState(this));
-                    isGrounded = false;
-                    jumpCount++;
+                    if (jumpCount == 1)
+                        jumpCount = 2;
                 }
             }
         }
-    }
-
-    public void OnAttack(GameObject attacker, Attack attack)
-    {
-        SetState(new HitState(this));
     }
 
     public class IdleState : State
@@ -243,7 +251,6 @@ public class PlayerController : MonoBehaviour, IAttackable
                 playerController.SetState(new AttackState(playerController));
                 return;
             }
-            playerController.Jump();
         }
 
         public override void Exit() { }
@@ -265,8 +272,8 @@ public class PlayerController : MonoBehaviour, IAttackable
                 playerController.SetState(new IdleState(playerController));
                 return;
             }
-            playerController.Move(playerController.moveSpeed);
-            playerController.Jump();
+            else
+                playerController.Move(playerController.moveSpeed);
         }
 
         public override void Exit() { }
@@ -291,7 +298,6 @@ public class PlayerController : MonoBehaviour, IAttackable
                 return;
             }
             playerController.Move(playerController.dashSpeed);
-            playerController.Jump();
         }
 
         public override void Exit() { }
@@ -314,7 +320,6 @@ public class PlayerController : MonoBehaviour, IAttackable
                 return;
             }
             playerController.Move(playerController.moveSpeed);
-            playerController.Jump();
         }
 
         public override void Exit() { }
@@ -353,7 +358,6 @@ public class PlayerController : MonoBehaviour, IAttackable
                 playerController.SetState(new MoveState(playerController));
                 return;
             }
-            playerController.Jump();
         }
 
         public override void Exit()
@@ -365,26 +369,5 @@ public class PlayerController : MonoBehaviour, IAttackable
             else
                 playerController.transform.eulerAngles = new Vector3(0, 0, 0);
         }
-    }
-
-    public class HitState : State
-    {
-        private float hitTimer;
-
-        public HitState(PlayerController controller) : base(controller) { }
-
-        protected override void Enter() => hitTimer = 0f;
-
-        public override void Update()
-        {
-            hitTimer += Time.deltaTime;
-            if (hitTimer > playerController.hitDuration)
-            {
-                playerController.SetState(new IdleState(playerController));
-                return;
-            }
-        }
-
-        public override void Exit() { }
     }
 }
