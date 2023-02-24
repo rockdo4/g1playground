@@ -149,8 +149,7 @@ public class PlayerController : MonoBehaviour
         {
             IsBlocked = Physics.Raycast(playerPosition,
             new Vector3(moveX, 0, 0),
-            1,
-            LayerMask.GetMask("Ground"));
+            1);
             playerPosition.y++;
             if (IsBlocked)
                 break;
