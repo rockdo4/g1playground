@@ -170,9 +170,17 @@ public class PlayerController : MonoBehaviour
         var temp = transform.position;
         for (int i = 0; i < 3; i++)
         {
-            IsBlocked = Physics.Raycast(playerPosition,
-            new Vector3(moveX, 0, 0),
-            1);
+            RaycastHit hit;
+            IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0),
+            out hit, 1);
+            if (hit.collider != null)
+            {
+                if (hit.transform.CompareTag("Pushable"))
+                {
+                    IsBlocked = false;
+                    break;
+                }
+            }
             playerPosition.y++;
             if (IsBlocked)
                 break;
@@ -193,6 +201,10 @@ public class PlayerController : MonoBehaviour
         this.isGrounded = isGrounded;
         if (isGrounded)
             jumpCount = 0;
+        else
+        {
+            jumpCount = 1;
+        }
     }
 
     public void Jump()
@@ -210,8 +222,8 @@ public class PlayerController : MonoBehaviour
                     playerRb.velocity = new Vector3(0, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                     SetState(new JumpState(this));
-                    isGrounded = false;
-                    jumpCount++;
+                    if (jumpCount == 1)
+                        jumpCount = 2;
                 }
             }
         }
