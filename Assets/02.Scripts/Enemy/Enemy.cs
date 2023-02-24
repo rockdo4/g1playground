@@ -134,7 +134,7 @@ public class Enemy : MonoBehaviour
 
         if (isGoingRight)
         {
-            //Debug.Log("©Л");
+            //Debug.Log("О©╫О©╫");
             agent.SetDestination(endPos);
 
             if (Vector3.Distance(transform.position, endPos) < 3f)
@@ -145,7 +145,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            //Debug.Log("аб");
+            //Debug.Log("О©╫О©╫");
             agent.SetDestination(startPos);
 
             if (Vector3.Distance(transform.position, startPos) < 3f)
