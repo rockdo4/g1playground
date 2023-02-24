@@ -18,7 +18,10 @@ public class UIButtonManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            CheckArea();
+            if(EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            {
+                CheckArea();
+            }
         }
     }
 
