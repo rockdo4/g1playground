@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -171,17 +169,9 @@ public class PlayerController : MonoBehaviour
         var temp = transform.position;
         for (int i = 0; i < 3; i++)
         {
-            RaycastHit hit;
-            IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0),
-            out hit, 1);
-            if (hit.collider != null)
-            {
-                if (hit.transform.CompareTag("Pushable"))
-                {
-                    IsBlocked = false;
-                    break;
-                }
-            }
+            IsBlocked = Physics.Raycast(playerPosition,
+            new Vector3(moveX, 0, 0),
+            1);
             playerPosition.y++;
             if (IsBlocked)
                 break;
@@ -202,10 +192,6 @@ public class PlayerController : MonoBehaviour
         this.isGrounded = isGrounded;
         if (isGrounded)
             jumpCount = 0;
-        else
-        {
-            jumpCount = 1;
-        }
     }
 
     public void Jump()
@@ -218,13 +204,13 @@ public class PlayerController : MonoBehaviour
 
             if (viewportPoint.x > 0.5f && viewportPoint.y < 0.5f)
             {
-                if (t.phase == TouchPhase.Began&& !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                if (t.phase == TouchPhase.Began)
                 {
                     playerRb.velocity = new Vector3(0, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                     SetState(new JumpState(this));
-                    if (jumpCount == 1)
-                        jumpCount = 2;
+                    isGrounded = false;
+                    jumpCount++;
                 }
             }
         }

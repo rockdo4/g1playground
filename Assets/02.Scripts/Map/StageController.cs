@@ -13,61 +13,32 @@ public class StageController : MonoBehaviour
     }
 
     private List<Connector> doors;
-    private List<EnemyController> enemies;
+    private List<Enemy> enemies;   
     public UnLockRequirement lockRequirement;
-    [SerializeField] private List<GameObject> blocks;
-    [SerializeField] private List<GameObject> switches;
-    private bool canOpen;
 
     private void OnEnable()
     {
-        //doors = gameObject.transform.GetComponentsInChildren<Connector>().ToList();
-        //foreach (var door in doors)
-        //{
-        //    door.gameObject.SetActive(false);
-        //}
-        enemies=new List<EnemyController>();
-        doors=new List<Connector>();
+        doors=gameObject.transform.GetComponentsInChildren<Connector>().ToList();
+        foreach (var door in doors)
+        {
+            door.gameObject.SetActive(false);
+        }
+
+        enemies = gameObject.GetComponentsInChildren<Enemy>().ToList();
+
     }
 
     private void Update()
     {
-        canOpen = true;
         enemies.Clear();
-        enemies = gameObject.GetComponentsInChildren<EnemyController>().ToList();
-        foreach (var swit in switches)
-        {
-            if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
-            {
-                canOpen = false;
-                break;
-            }
-        }
+        enemies = gameObject.GetComponentsInChildren<Enemy>().ToList();
 
-        if (canOpen && enemies.Count == 0)
+        if (enemies.Count==0)
         {
-
             foreach (var door in doors)
             {
                 door.gameObject.SetActive(true);
             }
-
-            if (blocks != null)
-            {
-                foreach (var block in blocks)
-                {
-
-                    block.SetActive(false);
-
-                }
-
-            }
-
-        }
-
-        if (lockRequirement == UnLockRequirement.Heal)
-        {
-            //
         }
     }
 
