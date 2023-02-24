@@ -21,14 +21,13 @@ public class StageController : MonoBehaviour
 
     private void OnEnable()
     {
-        doors = gameObject.transform.GetComponentsInChildren<Connector>().ToList();
-        foreach (var door in doors)
-        {
-            door.gameObject.SetActive(false);
-        }
-
-        enemies = gameObject.GetComponentsInChildren<EnemyController>().ToList();
-
+        //doors = gameObject.transform.GetComponentsInChildren<Connector>().ToList();
+        //foreach (var door in doors)
+        //{
+        //    door.gameObject.SetActive(false);
+        //}
+        enemies=new List<EnemyController>();
+        doors=new List<Connector>();
     }
 
     private void Update()
