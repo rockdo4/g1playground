@@ -76,7 +76,7 @@ public class Projectile : MonoBehaviour
         ContactPoint contact = collision.contacts[0];
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
         Vector3 pos = contact.point + contact.normal;
-
+        rb.velocity = Vector3.zero;
         if (hitEffect != null)
         {
             var hit = GameManager.instance.effectManager.GetEffect(hitEffect);
