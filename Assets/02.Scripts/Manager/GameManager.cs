@@ -28,15 +28,23 @@ public class GameManager : MonoBehaviour
     public void Respawn()
     {
         var player = GameObject.FindWithTag("Player");
-        GameObject.Find(MapManager.instance.GetCurrentMapName()).SetActive(false);
-        GameObject.FindWithTag("Map").transform.Find(PlayerDataManager.instance.lastMapId).gameObject.SetActive(true);           
-
-        MapManager.instance.SetCurrentMapName(PlayerDataManager.instance.lastMapId);
+        // GameObject.Find(MapManager.instance.GetCurrentMapName()).SetActive(false);
+        GameObject.FindWithTag("Map").transform.Find(PlayerDataManager.instance.lastMapId).gameObject.SetActive(true);
         player.transform.position = PlayerDataManager.instance.lastPlayerPos;
+        MapManager.instance.SetCurrentMapName(PlayerDataManager.instance.lastMapId);
         //Todo: Fill player HP
         //Todo: Fill player MP
         //
         // StartCoroutine(CoRespawn());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("fuck");
+            Respawn();
+        }
     }
 
     IEnumerator CoRespawn()
