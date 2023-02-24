@@ -219,7 +219,7 @@ public class PlayerController : MonoBehaviour
 
             if (viewportPoint.x > 0.5f && viewportPoint.y < 0.5f)
             {
-                if (t.phase == TouchPhase.Began&& !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                if (t.phase == TouchPhase.Began&& !EventSystem.current.IsPointerOverGameObject(t.fingerId))
                 {
                     playerRb.velocity = new Vector3(0, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);

@@ -133,7 +133,7 @@ MonoBehaviour:
   searchRange: 7
   attackCool: 2
   basicAttack: {fileID: 11400000, guid: ce9a528c46b70ec4ea31256e7df76c9f, type: 2}
-  status: {fileID: 0}
+  status: {fileID: 734586776602143944}
   EnemyStatePattern:
   - state: 1
     second: 3
@@ -151,7 +151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4cce4536f12014ba442bbe49be272e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currHp: 100
+  AtkPower: 10
+  SkillPower: 20
+  CriticalChance: 0.3
+  CriticalDamage: 1.5
+  Defense: 5
+  MaxHp: 1000
+  currHp: 0
 --- !u!114 &734586776602143951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   up: 1
-  force: 10
+  force: 30
 --- !u!114 &734586776602143945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,7 +306,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056274971255219437}
-  m_LocalRotation: {x: -0.12278795, y: -0.6963643, z: 0.122787744, w: 0.6963643}
+  m_LocalRotation: {x: -0.12278794, y: -0.6963642, z: 0.12278773, w: 0.6963642}
   m_LocalPosition: {x: -0, y: 0.000000019669532, z: -0.22821327}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10018,7 +10024,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6582862070685031374}
-  m_LocalRotation: {x: 0.12278795, y: 0.6963643, z: 0.122787744, w: 0.6963643}
+  m_LocalRotation: {x: 0.12278794, y: 0.6963642, z: 0.12278773, w: 0.6963642}
   m_LocalPosition: {x: -0, y: 0.00000002026558, z: 0.22821327}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
