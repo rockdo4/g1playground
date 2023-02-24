@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class AttackDefinition : ScriptableObject
 {
+    public float coolDown;
     public enum Types
     {
         Basic,
