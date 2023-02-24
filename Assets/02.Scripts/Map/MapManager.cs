@@ -46,8 +46,6 @@ public class MapManager : MonoBehaviour
             if (map.name != currentMapName)
                 map.SetActive(false);
         }
-
-
         var tempCurrentDoors = GameObject.Find(currentMapName).GetComponentsInChildren<Connector>();
         foreach (var map in tempCurrentDoors)
         {

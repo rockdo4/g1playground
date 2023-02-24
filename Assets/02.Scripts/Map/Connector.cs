@@ -16,6 +16,7 @@ public class Connector : MonoBehaviour
     private GameObject nextStageRoomPrefab;
 
     public GameObject NextStage { get { return nextStageRoomPrefab; } }
+
     [SerializeField]
     // private GameObject nextDoorPrefab;
     private bool isActive = false;
@@ -47,7 +48,5 @@ public class Connector : MonoBehaviour
             }
         }
     }
-
-    
 
 }

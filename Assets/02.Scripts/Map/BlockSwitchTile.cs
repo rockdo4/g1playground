@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BlockSwitchTile : MonoBehaviour
@@ -15,17 +16,26 @@ public class BlockSwitchTile : MonoBehaviour
     [SerializeField] private BSwitchType type;
     [SerializeField] private float fadeTimer = 0.5f;
 
+    bool isActive = false;
+
     private bool isTriggered;
     public bool IsTriggered { get { return isTriggered; } set { isTriggered = this; } }
 
     //private static bool isState = true;
-
-    
+  
     void Start()
     {
         animator = GetComponent<Animator>();        
     }
 
+
+    private void OnEnable()
+    {
+        if (isTriggered)
+        {
+            animator.SetBool("Trigger", true);
+        }
+    }
     public void SetBlocks()
     {
         if (blocks != null)
