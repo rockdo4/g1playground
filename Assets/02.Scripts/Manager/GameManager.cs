@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     }
 
     public PlayerController playerController;
+    public EffectManager effectManager;
 
     private void Awake()
     {

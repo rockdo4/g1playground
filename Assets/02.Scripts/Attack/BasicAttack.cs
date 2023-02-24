@@ -12,4 +12,23 @@ public class BasicAttack : AttackDefinition
             damage *= attacker.CriticalDamage;
         return new Attack((int)damage);
     }
+
+    public override void ExecuteAttack(GameObject attacker, GameObject defender)
+    {
+        if (attacker == null || defender == null)
+            return;
+
+        var aStat = attacker.GetComponent<Status>();
+        var dStat = defender.GetComponent<Status>();
+        if (aStat == null || dStat == null)
+            return;
+
+        var attack = CreateAttack(aStat, dStat);
+
+        var attackables = defender.GetComponents<IAttackable>();
+        foreach (var attackable in attackables)
+        {
+            attackable.OnAttack(attacker, attack);
+        }
+    }
 }
