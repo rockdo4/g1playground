@@ -54,7 +54,8 @@ public class UIButtonManager : MonoBehaviour
         {
             if (RectTransformUtility.RectangleContainsScreenPoint(popup.GetComponent<RectTransform>(), Input.mousePosition, null))
             {
-                return;
+                if(popup.gameObject.activeSelf)
+                    return;
             }
         }
         AllClosePopUp();
