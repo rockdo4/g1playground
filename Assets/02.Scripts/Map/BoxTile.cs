@@ -46,7 +46,7 @@ public class BoxTile : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= pushTime)
             {
-                //Debug.Log("push");
+                Debug.Log("push");
                 Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
                 pushDirection.z = 0;
                 pushDirection.Normalize();

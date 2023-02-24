@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public State currState;
     private Rigidbody playerRb;
     public float moveX;
-    private float lastMoveX;
+    private float lastMoveX = 1f;
     public float moveSpeed = 10f;
     public float dashSpeed;
 
@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
     public BasicAttack basicAttack;
     public SkillAttack skillAttack;
     private float skillTimer = 0f;
+
+    public float hitDuration = 0.5f;
 
     private void SetState(State state)
     {
@@ -95,7 +97,6 @@ public class PlayerController : MonoBehaviour
                 DashOnCool = false;
             }
         }
-        Jump();
         currState.Update();
 
         //Temporary KeyBoard
@@ -251,6 +252,7 @@ public class PlayerController : MonoBehaviour
                 playerController.SetState(new AttackState(playerController));
                 return;
             }
+            playerController.Jump();
         }
 
         public override void Exit() { }
@@ -272,8 +274,8 @@ public class PlayerController : MonoBehaviour
                 playerController.SetState(new IdleState(playerController));
                 return;
             }
-            else
-                playerController.Move(playerController.moveSpeed);
+            playerController.Move(playerController.moveSpeed);
+            playerController.Jump();
         }
 
         public override void Exit() { }
@@ -298,6 +300,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             playerController.Move(playerController.dashSpeed);
+            playerController.Jump();
         }
 
         public override void Exit() { }
@@ -320,6 +323,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             playerController.Move(playerController.moveSpeed);
+            playerController.Jump();
         }
 
         public override void Exit() { }
@@ -358,6 +362,7 @@ public class PlayerController : MonoBehaviour
                 playerController.SetState(new MoveState(playerController));
                 return;
             }
+            playerController.Jump();
         }
 
         public override void Exit()
@@ -369,5 +374,26 @@ public class PlayerController : MonoBehaviour
             else
                 playerController.transform.eulerAngles = new Vector3(0, 0, 0);
         }
+    }
+
+    public class HitState : State
+    {
+        private float hitTimer;
+
+        public HitState(PlayerController controller) : base(controller) { }
+
+        protected override void Enter() => hitTimer = 0f;
+
+        public override void Update()
+        {
+            hitTimer += Time.deltaTime;
+            if (hitTimer > playerController.hitDuration)
+            {
+                playerController.SetState(new IdleState(playerController));
+                return;
+            }
+        }
+
+        public override void Exit() { }
     }
 }

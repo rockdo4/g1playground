@@ -148,6 +148,9 @@ public class EnemyController : MonoBehaviour, IAttackable
             case EnemyState.Attack:
                 AttackUpdate();
                 break;
+            case EnemyState.TakeDamage:
+                TakeDamageUpdate();
+                break;
         }
 
         //Debug.Log(state);
