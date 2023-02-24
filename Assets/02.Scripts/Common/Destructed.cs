@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Destructed : MonoBehaviour, IDestructible
 {
-    public void OnDestroy()
+    public void OnDestroyObj()
     {
         gameObject.SetActive(false);
         //Destroy(gameObject);

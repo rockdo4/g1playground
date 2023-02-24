@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestructedEvent : IDestructible
+public class DestructedEvent : MonoBehaviour, IDestructible
 {
     public System.Action OnDestroyEvent;
 
-    public void OnDestroy()
+    public void OnDestroyObj()
     {
         OnDestroyEvent?.Invoke();
     }

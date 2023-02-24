@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IAttackable
 {
     [System.Serializable]
     public class EnemyStateData
@@ -50,7 +50,8 @@ public class EnemyController : MonoBehaviour
     private Vector3 endPos;
     private bool isGoingRight;
 
-    public AttackDefinition attackDef;
+    public BasicAttack basicAttack;
+    public Status status;
 
     [Header("<Only Idle and Patrol>")]
     [SerializeField]
@@ -94,6 +95,10 @@ public class EnemyController : MonoBehaviour
                     agent.isStopped = true;
                     rb.isKinematic = false;
                     break;
+                case EnemyState.TakeDamage:
+                    agent.isStopped = true;
+                    rb.isKinematic = false;
+                    break;
 
             }
         }
@@ -104,9 +109,10 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        status = GetComponent<Status>();
         agent.speed = moveSpeed;
-        agent.stoppingDistance = attackRange;
-
+        //agent.stoppingDistance = attackRange;
+        GetComponent<DestructedEvent>().OnDestroyEvent = OnDestroyObj;
     }
 
     void Start()
@@ -121,6 +127,8 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        time += Time.deltaTime;
+
         if (isPattern)
         {
             ChangePatteurn();
@@ -142,7 +150,7 @@ public class EnemyController : MonoBehaviour
                 break;
         }
 
-        Debug.Log(state);
+        //Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
@@ -186,10 +194,6 @@ public class EnemyController : MonoBehaviour
         if (Vector3.Distance(transform.position, player.position) <= attackRange + 0.5f)
         {
             State = EnemyState.Attack;
-            //ResetPattern();
-            //lookDirection = (player.position - agentTransform.position).normalized;
-            //lookDirection.y = 0f;
-            //agentTransform.forward = lookDirection;
             return;
         }
 
@@ -203,11 +207,14 @@ public class EnemyController : MonoBehaviour
     }
     private void AttackUpdate()
     {
-        time += Time.deltaTime;
         if (Vector3.Distance(transform.position, player.position) >= attackRange + 0.5f)
         {
             State = EnemyState.Chase;
         }
+
+        var lookDirection = (player.position - transform.position).normalized;
+        lookDirection.y = 0f;
+        transform.forward = lookDirection;
 
         if (time > attackCool)
         {
@@ -233,11 +240,11 @@ public class EnemyController : MonoBehaviour
 
     void ChangePatteurn()
     {
-        StartCoroutine(PatternDelay(EnemyStatePattern[curCountPattern].second));
+        StartCoroutine(CoPatternDelay(EnemyStatePattern[curCountPattern].second));
         isPattern = false;
     }
 
-    IEnumerator PatternDelay(float delayTime)
+    IEnumerator CoPatternDelay(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
 
@@ -260,5 +267,51 @@ public class EnemyController : MonoBehaviour
 
         isPattern = true;
         State = EnemyStatePattern[curCountPattern].state;
+    }
+
+    public void Attack()
+    {
+        Debug.Log(1);
+        switch (basicAttack)
+        {
+            case EnemyMeleeAttack:
+                {
+                    if (Vector3.Distance(transform.position, player.position) <= attackRange + 0.5f)
+                    {
+                        basicAttack.ExecuteAttack(gameObject, player.gameObject);
+                        return;
+                    }
+                }
+                break;
+        }
+    }
+
+    private float takeDamageCool = 0.5f;
+    private float takeDamageCoolTime = 0f;
+    public void TakeDamageUpdate()
+    {
+        takeDamageCoolTime += Time.deltaTime;
+
+        if (takeDamageCool < takeDamageCoolTime)
+        {
+            State = EnemyState.Idle;
+        }
+    }
+
+    public void OnAttack(GameObject attacker, Attack attack)
+    {
+        State = EnemyState.TakeDamage;
+        animator.SetTrigger("TakeDamage");
+    }
+
+    public void OnDestroyObj()
+    {
+        State = EnemyState.Die;
+        animator.SetTrigger("Die");
+    }
+
+    private void EnemyDie()
+    {
+        gameObject.SetActive(false);
     }
 }
