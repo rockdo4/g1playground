@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public State currState;
     private Rigidbody playerRb;
     public float moveX;
-    private float lastMoveX;
+    private float lastMoveX = 1f;
     public float moveSpeed = 10f;
     public float dashSpeed;
 
