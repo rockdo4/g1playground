@@ -103,8 +103,6 @@ public class Enemy : MonoBehaviour
                 AttackUpdate();
                 break;
         }
-
-        Debug.Log(state);
     }
 
     private void IdleUpdate()

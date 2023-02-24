@@ -4,17 +4,14 @@ using UnityEngine.UI;
 
 public class UIPopupManager : MonoBehaviour
 {
-    //public PopupUI inventoryPopup;
-    //public PopupUI skillPopup;
-    //public PopupUI characterStatsPopup;
-    //public PopupUI settingPopup;
-
-    //public Button inventoryButton;
-    //public Button skillButton;
-    //public Button charStatsButton;
-    //public Button settingButton;
-
-    public GameObject[] popUp;
+    public PopupUI optionPopup;
+    public PopupUI skillPopup;
+    public PopupUI equipInventoryPopup;
+    public PopupUI useInventoryPopup;
+    public PopupUI magicBookPopup;
+    public PopupUI monsterBookPopup;
+    public PopupUI settingPopup;
+    public PopupUI messageBoxPopup;
 
     [Space]
 
@@ -30,7 +27,7 @@ public class UIPopupManager : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(escapeKey))
+        //if (Input.GetKeyDown(KeyCode.Escape))
         //{
         //    if (activePopupLList.Count > 0)
         //    {
@@ -43,7 +40,7 @@ public class UIPopupManager : MonoBehaviour
     {
         //allPopupList = new List<PopupUI>()
         //    {
-        //        inventoryPopup, skillPopup, characterStatsPopup, settingPopup
+        //    optionPopup, skillPopup, equipInventoryPopup, useInventoryPopup, magicBookPopup, monsterBookPopup, settingPopup, messageBoxPopup,
         //    };
 
         //foreach (var popup in allPopupList)
@@ -59,49 +56,49 @@ public class UIPopupManager : MonoBehaviour
         //}
     }
 
-    //private void InitCloseAll()
-    //{
-    //    foreach (var popup in allPopupList)
-    //    {
-    //        ClosePopup(popup);
-    //    }
-    //}
+    private void InitCloseAll()
+    {
+        //foreach (var popup in allPopupList)
+        //{
+        //    ClosePopup(popup);
+        //}
+    }
 
-    //private void ToggleKeyDownAction(in KeyCode key, PopupUI popup)
-    //{
-    //    if (Input.GetKeyDown(key))
-    //    {
-    //        ToggleOpenClosePopup(popup);
-    //    }
-    //}
+    private void ToggleKeyDownAction(in KeyCode key, PopupUI popup)
+    {
+        //if (Input.GetKeyDown(key))
+        //{
+        //    ToggleOpenClosePopup(popup);
+        //}
+    }
 
-    //private void ToggleOpenClosePopup(PopupUI popup)
-    //{
-    //    if (!popup.gameObject.activeSelf)
-    //        OpenPopup(popup);
-    //    else
-    //        ClosePopup(popup);
-    //}
+    private void ToggleOpenClosePopup(PopupUI popup)
+    {
+        //if (!popup.gameObject.activeSelf)
+        //    OpenPopup(popup);
+        //else
+        //    ClosePopup(popup);
+    }
 
-    //public void OpenPopup(PopupUI popup)
-    //{
-    //    activePopupLList.AddFirst(popup);
-    //    popup.gameObject.SetActive(true);
-    //    RefreshAllPopupDepth();
-    //}
+    public void OpenPopup(PopupUI popup)
+    {
+        //activePopupLList.AddFirst(popup);
+        //popup.gameObject.SetActive(true);
+        //RefreshAllPopupDepth();
+    }
 
-    //public void ClosePopup(PopupUI popup)
-    //{
-    //    activePopupLList.Remove(popup);
-    //    popup.gameObject.SetActive(false);
-    //    RefreshAllPopupDepth();
-    //}
+    public void ClosePopup(PopupUI popup)
+    {
+        //activePopupLList.Remove(popup);
+        //popup.gameObject.SetActive(false);
+        //RefreshAllPopupDepth();
+    }
 
-    //private void RefreshAllPopupDepth()
-    //{
-    //    foreach (var popup in activePopupLList)
-    //    {
-    //        popup.transform.SetAsFirstSibling();
-    //    }
-    //}
+    private void RefreshAllPopupDepth()
+    {
+        //foreach (var popup in activePopupLList)
+        //{
+        //    popup.transform.SetAsFirstSibling();
+        //}
+    }
 }

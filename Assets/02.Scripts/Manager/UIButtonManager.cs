@@ -59,9 +59,4 @@ public class UIButtonManager : MonoBehaviour
         }
         AllClosePopUp();
     }
-
-    public void SlotClick()
-    {
-        Debug.Log("click");
-    }
 }
