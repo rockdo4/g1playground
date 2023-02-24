@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -217,7 +218,7 @@ public class PlayerController : MonoBehaviour
 
             if (viewportPoint.x > 0.5f && viewportPoint.y < 0.5f)
             {
-                if (t.phase == TouchPhase.Began)
+                if (t.phase == TouchPhase.Began&& !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
                 {
                     playerRb.velocity = new Vector3(0, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
