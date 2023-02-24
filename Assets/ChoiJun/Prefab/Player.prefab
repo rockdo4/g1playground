@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4975199305243523654}
   m_Layer: 10
   m_Name: CollisionBlocker
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4975199305913363491}
   m_Layer: 6
   m_Name: GroundCollider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,6 +168,8 @@ GameObject:
   - component: {fileID: 4975199306639642969}
   - component: {fileID: 4975199306639642968}
   - component: {fileID: 4975199306639642974}
+  - component: {fileID: 1305650550}
+  - component: {fileID: 1305650551}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -299,6 +301,7 @@ MonoBehaviour:
   weapon: {fileID: 4975199306559219471}
   basicAttack: {fileID: 11400000, guid: 76f9362697e47d84a94c889418d2d2df, type: 2}
   skillAttack: {fileID: 11400000, guid: 1f3e90b15c89f6a44b67a385881b5690, type: 2}
+  hitDuration: 0.5
 --- !u!114 &4975199306639642974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,7 +314,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4cce4536f12014ba442bbe49be272e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AtkPower: 10
+  SkillPower: 20
+  CriticalChance: 0.2
+  CriticalDamage: 1.4
+  Defense: 5
+  MaxHp: 100
   currHp: 0
+--- !u!114 &1305650550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4975199306639642919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d01c580d1639a1c45b992f6251e5df49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1305650551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4975199306639642919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a45da68ca56f0b44cac1acb8750c7131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  up: 1
+  force: 10
 --- !u!1 &4975199306841981416
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,7 +360,7 @@ GameObject:
   - component: {fileID: 4975199306841981421}
   m_Layer: 6
   m_Name: Fairy
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -407,7 +442,7 @@ GameObject:
   - component: {fileID: 4975199307088940113}
   m_Layer: 6
   m_Name: SkillPivot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -518,6 +553,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2664928345406777706, guid: 916d84cc1e0146741b42d3cb0d25a7bc,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2664928345406777700, guid: 916d84cc1e0146741b42d3cb0d25a7bc, type: 3}
