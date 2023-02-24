@@ -22,11 +22,6 @@ public class UIButtonManager : MonoBehaviour
         {
             CheckArea();
         }
-
-        //if(gamePaused)
-        //    Time.timeScale = 0f;
-        //else
-        //    Time.timeScale = 1f;
     }
 
     public void OnApplicationQuit()
