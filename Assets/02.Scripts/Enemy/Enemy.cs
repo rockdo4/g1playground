@@ -22,6 +22,9 @@ public class Enemy : MonoBehaviour
         Chase,
         Patrol,
         Attack,
+        TakeDamage,
+        Stun,
+        Die,
     }
     private Rigidbody rb;
     private EnemyState state;
