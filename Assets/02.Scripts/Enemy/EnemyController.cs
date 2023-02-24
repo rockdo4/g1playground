@@ -98,6 +98,7 @@ public class EnemyController : MonoBehaviour, IAttackable
                 case EnemyState.TakeDamage:
                     agent.isStopped = true;
                     rb.isKinematic = false;
+                    takeDamageCoolTime = 0f;
                     break;
 
             }
