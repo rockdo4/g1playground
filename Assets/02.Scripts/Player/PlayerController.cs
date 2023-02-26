@@ -167,35 +167,38 @@ public class PlayerController : MonoBehaviour
     public void CheckFrontObject()
     {
         var playerPosition = transform.position;
-        playerPosition.y -= 0.9f;
+        playerPosition.y -= 0.4f;
+        var k = 0.4f;
 
         var temp = transform.position;
+        temp.y -= 0.4f;
         for (int i = 0; i < 3; i++)
         {
             RaycastHit hit;
             IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0),
             out hit, 1);
+            Debug.DrawRay(playerPosition,
+      new Vector3(moveX, 0, 0), Color.green);
             if (hit.collider != null)
             {
-                if (hit.transform.CompareTag("Pushable"))
+                if (hit.transform.CompareTag("Pushable")||hit.transform.CompareTag("Door"))
                 {
                     IsBlocked = false;
                     break;
                 }
             }
-            playerPosition.y++;
+            playerPosition.y += k;
             if (IsBlocked)
                 break;
         }
-        temp.y -= 0.9f;
-        Debug.DrawRay(temp,
-       new Vector3(moveX, 0, 0), Color.green);
-
-        Debug.DrawRay(transform.position,
-       new Vector3(moveX, 0, 0), Color.green);
-        temp.y += 2;
-        Debug.DrawRay(temp,
-           new Vector3(moveX, 0, 0), Color.green);
+       // Debug.DrawRay(temp,
+       //new Vector3(moveX, 0, 0), Color.green);
+       // temp.y += k;
+       // Debug.DrawRay(transform.position,
+       //new Vector3(moveX, 0, 0), Color.green);
+       // temp.y += k;
+       // Debug.DrawRay(temp,
+       //    new Vector3(moveX, 0, 0), Color.green);
     }
 
     public void OnGround(bool isGrounded)
