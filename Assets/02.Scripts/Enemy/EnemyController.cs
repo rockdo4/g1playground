@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -100,6 +101,10 @@ public class EnemyController : MonoBehaviour, IAttackable
                     rb.isKinematic = false;
                     takeDamageCoolTime = 0f;
                     break;
+                case EnemyState.Die:
+                    agent.isStopped = true;
+                    rb.isKinematic = false;
+                    break;
 
             }
         }
@@ -126,9 +131,98 @@ public class EnemyController : MonoBehaviour, IAttackable
         SaveFloorLength();
     }
 
-    void Update()
+    //void Update()
+    //{
+    //    if(Input.GetKeyDown(KeyCode.Z))
+    //    {
+    //        //State = EnemyState.Die;
+    //        //animator.SetTrigger("Die");
+    //        State = EnemyState.TakeDamage;
+    //        animator.SetTrigger("TakeDamage");
+
+    //        var dir = transform.position - player.transform.position;
+    //        dir.y += 1;
+    //        dir.Normalize();
+    //        agent.SetDestination(transform.position);
+    //        agent.isStopped = true;
+    //        rb.isKinematic = false;
+    //        agent.updatePosition = false;
+    //        agent.updateRotation = false;
+    //        agent.enabled = false;
+    //        rb.velocity= Vector3.zero;
+    //        rb.AddForce(dir * 30, ForceMode.Impulse);
+
+    //    }
+
+    //    time += Time.deltaTime;
+
+    //    if (isPattern)
+    //    {
+    //        ChangePatteurn();
+    //    }
+
+    //    switch (state)
+    //    {
+    //        case EnemyState.Idle:
+    //            IdleUpdate();
+    //            break;
+    //        case EnemyState.Chase:
+    //            ChaseUpdate();
+    //            break;
+    //        case EnemyState.Patrol:
+    //            PatrolUpdate();
+    //            break;
+    //        case EnemyState.Attack:
+    //            AttackUpdate();
+    //            break;
+    //        case EnemyState.TakeDamage:
+    //            TakeDamageUpdate();
+    //            break;
+    //    }
+
+    //    Debug.Log(state); 
+    //    //Debug.Log(rb.velocity);
+    //    animator.SetFloat("Move", agent.velocity.magnitude);
+    //}
+    private void FixedUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            //State = EnemyState.Die;
+            //animator.SetTrigger("Die");
+            State = EnemyState.TakeDamage;
+            animator.SetTrigger("TakeDamage");
+
+            //Vector3 pushBackDirection = transform.position - player.transform.position;
+            //pushBackDirection.y += 5f;
+            //pushBackDirection = pushBackDirection.normalized;
+            //agent.velocity = pushBackDirection * 10;
+            //rb.AddForce(Vector3.up * 30, ForceMode.Impulse);
+
+            var dir = transform.position - player.transform.position;
+            dir.y += 5;
+            dir.Normalize();
+            //agent.destination = Vector3.zero;
+            //agent.updatePosition = false;
+            //agent.updateRotation = false;
+            agent.isStopped = true;
+            //agent.enabled= false;
+            //agent.Move(dir * 10);
+            //rb.isKinematic = false;
+            //rb.AddForce(dir * 10, ForceMode.Impulse);
+
+        }
+
         time += Time.deltaTime;
+
+        if (State == EnemyState.TakeDamage)
+        {
+            var dir = transform.position - player.transform.position;
+            dir.y += 35;
+            dir.Normalize();
+            //rb.AddForce(dir * 10, ForceMode.Impulse);
+            agent.Move(dir );
+        }
 
         if (isPattern)
         {
@@ -155,6 +249,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
 
         //Debug.Log(state);
+        Debug.Log(rb.velocity);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
