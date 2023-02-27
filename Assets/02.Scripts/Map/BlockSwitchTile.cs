@@ -45,7 +45,7 @@ public class BlockSwitchTile : MonoBehaviour
                 if (block.activeSelf)
                 {
                     block.SetActive(false);
-                    //gameObject.GetComponent<BoxCollider>().enabled = false;
+                    gameObject.GetComponent<BoxCollider>().enabled = false;
                 }
                 else
                 {
