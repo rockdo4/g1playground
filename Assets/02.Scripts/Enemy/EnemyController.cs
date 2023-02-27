@@ -43,7 +43,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     private int countPattern;
     private bool isPattern;
 
-    private Transform player;
+    private GameObject player;
 
 
     private float floorLength;
@@ -74,9 +74,16 @@ public class EnemyController : MonoBehaviour, IAttackable
                     isPattern = true;
                 }
             }
+            if(State!= EnemyState.TakeDamage)
+            {
+                //rb.isKinematic = true;
+                //rb.velocity = Vector3.zero;
+                agent.enabled = false;
+            }
 
             if (prevState == state)
                 return;
+
 
             switch (State)
             {
@@ -86,19 +93,20 @@ public class EnemyController : MonoBehaviour, IAttackable
                     break;
                 case EnemyState.Patrol:
                     agent.isStopped = false;
-                    rb.isKinematic = true;
+                    rb.isKinematic = false;
                     break;
                 case EnemyState.Chase:
                     agent.isStopped = false;
-                    rb.isKinematic = false;
+                    rb.isKinematic = true;
                     break;
                 case EnemyState.Attack:
                     agent.isStopped = true;
-                    rb.isKinematic = false;
+                    rb.isKinematic = true;
                     break;
                 case EnemyState.TakeDamage:
                     agent.isStopped = true;
                     rb.isKinematic = false;
+                    agent.enabled = true;
                     takeDamageCoolTime = 0f;
                     break;
                 case EnemyState.Die:
@@ -123,7 +131,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = GameObject.FindWithTag("Player");
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
@@ -131,98 +139,10 @@ public class EnemyController : MonoBehaviour, IAttackable
         SaveFloorLength();
     }
 
-    //void Update()
-    //{
-    //    if(Input.GetKeyDown(KeyCode.Z))
-    //    {
-    //        //State = EnemyState.Die;
-    //        //animator.SetTrigger("Die");
-    //        State = EnemyState.TakeDamage;
-    //        animator.SetTrigger("TakeDamage");
-
-    //        var dir = transform.position - player.transform.position;
-    //        dir.y += 1;
-    //        dir.Normalize();
-    //        agent.SetDestination(transform.position);
-    //        agent.isStopped = true;
-    //        rb.isKinematic = false;
-    //        agent.updatePosition = false;
-    //        agent.updateRotation = false;
-    //        agent.enabled = false;
-    //        rb.velocity= Vector3.zero;
-    //        rb.AddForce(dir * 30, ForceMode.Impulse);
-
-    //    }
-
-    //    time += Time.deltaTime;
-
-    //    if (isPattern)
-    //    {
-    //        ChangePatteurn();
-    //    }
-
-    //    switch (state)
-    //    {
-    //        case EnemyState.Idle:
-    //            IdleUpdate();
-    //            break;
-    //        case EnemyState.Chase:
-    //            ChaseUpdate();
-    //            break;
-    //        case EnemyState.Patrol:
-    //            PatrolUpdate();
-    //            break;
-    //        case EnemyState.Attack:
-    //            AttackUpdate();
-    //            break;
-    //        case EnemyState.TakeDamage:
-    //            TakeDamageUpdate();
-    //            break;
-    //    }
-
-    //    Debug.Log(state); 
-    //    //Debug.Log(rb.velocity);
-    //    animator.SetFloat("Move", agent.velocity.magnitude);
-    //}
-    private void FixedUpdate()
+ 
+    void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            //State = EnemyState.Die;
-            //animator.SetTrigger("Die");
-            State = EnemyState.TakeDamage;
-            animator.SetTrigger("TakeDamage");
-
-            //Vector3 pushBackDirection = transform.position - player.transform.position;
-            //pushBackDirection.y += 5f;
-            //pushBackDirection = pushBackDirection.normalized;
-            //agent.velocity = pushBackDirection * 10;
-            //rb.AddForce(Vector3.up * 30, ForceMode.Impulse);
-
-            var dir = transform.position - player.transform.position;
-            dir.y += 5;
-            dir.Normalize();
-            //agent.destination = Vector3.zero;
-            //agent.updatePosition = false;
-            //agent.updateRotation = false;
-            agent.isStopped = true;
-            //agent.enabled= false;
-            //agent.Move(dir * 10);
-            //rb.isKinematic = false;
-            //rb.AddForce(dir * 10, ForceMode.Impulse);
-
-        }
-
         time += Time.deltaTime;
-
-        if (State == EnemyState.TakeDamage)
-        {
-            var dir = transform.position - player.transform.position;
-            dir.y += 35;
-            dir.Normalize();
-            //rb.AddForce(dir * 10, ForceMode.Impulse);
-            agent.Move(dir );
-        }
 
         if (isPattern)
         {
@@ -248,14 +168,94 @@ public class EnemyController : MonoBehaviour, IAttackable
                 break;
         }
 
-        //Debug.Log(state);
-        Debug.Log(rb.velocity);
+        Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
+    //private void FixedUpdate()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Z))
+    //    {
+    //        State = EnemyState.TakeDamage;
+
+    //        agent.enabled = false;
+
+    //        rb.isKinematic = false;
+    //        rb.velocity = Vector3.zero;
+
+    //        var force = -transform.forward;
+    //        force.y = 3.5f;
+    //        force = force.normalized * 10;
+
+    //        rb.AddForce(force, ForceMode.Impulse);
+
+    //        //State = EnemyState.Die;
+    //        //animator.SetTrigger("Die");
+    //        //State = EnemyState.TakeDamage;
+    //        //animator.SetTrigger("TakeDamage");
+
+    //        //Vector3 pushBackDirection = transform.position - player.transform.position;
+    //        //pushBackDirection.y += 5f;
+    //        //pushBackDirection = pushBackDirection.normalized;
+    //        //agent.velocity = pushBackDirection * 10;
+    //        //rb.AddForce(Vector3.up * 30, ForceMode.Impulse);
+
+    //        //var dir = transform.position - player.transform.position;
+    //        //dir.y += 5;
+    //        //dir.Normalize();
+    //        //agent.destination = Vector3.zero;
+    //        //agent.updatePosition = false;
+    //        //agent.updateRotation = false;
+    //        //agent.isStopped = true;
+    //        //agent.enabled = false;
+    //        //agent.Move(dir * 10);
+    //        //rb.isKinematic = false;
+    //        //rb.AddForce(dir * 10, ForceMode.Impulse);
+
+    //    }
+
+    //    time += Time.deltaTime;
+
+    //    //if (State == EnemyState.TakeDamage)
+    //    //{
+    //    //    var dir = transform.position - player.transform.position;
+    //    //    dir.y += 35;
+    //    //    dir.Normalize();
+    //    //    rb.AddForce(dir * 10, ForceMode.Impulse);
+    //    //    //agent.Move(dir);
+    //    //}
+
+    //    if (isPattern)
+    //    {
+    //        ChangePatteurn();
+    //    }
+
+    //    switch (state)
+    //    {
+    //        case EnemyState.Idle:
+    //            IdleUpdate();
+    //            break;
+    //        case EnemyState.Chase:
+    //            ChaseUpdate();
+    //            break;
+    //        case EnemyState.Patrol:
+    //            PatrolUpdate();
+    //            break;
+    //        case EnemyState.Attack:
+    //            AttackUpdate();
+    //            break;
+    //        case EnemyState.TakeDamage:
+    //            TakeDamageUpdate();
+    //            break;
+    //    }
+
+    //    //Debug.Log(state);
+    //    Debug.Log(state);
+    //    animator.SetFloat("Move", agent.velocity.magnitude);
+    //}
 
     private void IdleUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) < searchRange)
+        if (Vector3.Distance(transform.position, player.transform.position) < searchRange)
         {
             State = EnemyState.Chase;
             return;
@@ -264,7 +264,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     private void PatrolUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) < searchRange)
+        if (Vector3.Distance(transform.position, player.transform.position) < searchRange)
         {
             State = EnemyState.Chase;
             return;
@@ -275,6 +275,7 @@ public class EnemyController : MonoBehaviour, IAttackable
             agent.SetDestination(endPos);
             if (Vector3.Distance(transform.position, endPos) < 3f)
             {
+                transform.rotation = Quaternion.LookRotation(-transform.forward);
                 isGoingRight = false;
             }
         }
@@ -283,6 +284,7 @@ public class EnemyController : MonoBehaviour, IAttackable
             agent.SetDestination(startPos);
             if (Vector3.Distance(transform.position, startPos) < 3f)
             {
+                transform.rotation = Quaternion.LookRotation(-transform.forward);
                 isGoingRight = true;
             }
         }
@@ -290,28 +292,31 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     private void ChaseUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) <= attackRange + 0.5f)
+        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
         {
             State = EnemyState.Attack;
             return;
         }
 
-        if (Vector3.Distance(transform.position, player.position) >= searchRange)
+        if (Vector3.Distance(transform.position, player.transform.position) >= searchRange)
         {
             State = EnemyState.Idle;
             return;
         }
 
-        agent.SetDestination(player.position);
+        agent.SetDestination(player.transform.position);
+        transform.LookAt(transform.position + agent.desiredVelocity);
     }
     private void AttackUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) >= attackRange + 0.5f)
+        var isGround = player.GetComponent<PlayerController>().isGrounded;
+
+        if (Vector3.Distance(transform.position, player.transform.position) >= attackRange + 0.5f)
         {
             State = EnemyState.Chase;
         }
 
-        var lookDirection = (player.position - transform.position).normalized;
+        var lookDirection = (player.transform.position - transform.position).normalized;
         lookDirection.y = 0f;
         transform.forward = lookDirection;
 
@@ -375,7 +380,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         {
             case EnemyMeleeAttack:
                 {
-                    if (Vector3.Distance(transform.position, player.position) <= attackRange + 0.5f)
+                    if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
                     {
                         basicAttack.ExecuteAttack(gameObject, player.gameObject);
                         return;
@@ -385,7 +390,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
     }
 
-    private float takeDamageCool = 0.5f;
+    private float takeDamageCool = 0.8f;
     private float takeDamageCoolTime = 0f;
     public void TakeDamageUpdate()
     {
