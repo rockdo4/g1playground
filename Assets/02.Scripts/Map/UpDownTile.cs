@@ -15,6 +15,8 @@ public class UpDownTile : MonoBehaviour
 
     [SerializeField] private float stopTime = 0.5f;
     private float timer;
+    public float Timer { get { return timer; } set { timer = 0f; } }
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,30 +28,28 @@ public class UpDownTile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (massA > massB)
+        timer += Time.deltaTime;
+        //Debug.Log(timer);
+        if (timer >= stopTime)
         {
-            Debug.Log("A");
-            timer = 0f;
-            blockA.transform.Translate(Vector3.down * speed);
-            blockB.transform.Translate(Vector3.up * speed);
-            blockA.GetComponent<WeightScaler>().IsMovDown = true;
-            blockB.GetComponent<WeightScaler>().IsMovUp = true;
+            if (massA > massB )
+            {
+                //Debug.Log("A");
+                //timer = 0f;
+                BlockBUp();
+            }
+            else if (massA < massB )
+            {
+                //Debug.Log("B");
+                //timer = 0f;
+                BlockAUp();
+            }
+            else
+            {
+                ResetBlockPosition();
+            }
         }
-        else if (massA < massB)
-        {
-            Debug.Log("B");
-            timer = 0f;
-            blockA.transform.Translate(Vector3.up * speed);
-            blockB.transform.Translate(Vector3.down * speed);
-            blockA.GetComponent<WeightScaler>().IsMovUp = true;
-            blockB.GetComponent<WeightScaler>().IsMovDown = true;
-        }
-        else
-        {
-            timer += Time.deltaTime;
-            
-            ResetBlockPosition();
-        }
+        
 
     }
 
@@ -59,38 +59,52 @@ public class UpDownTile : MonoBehaviour
         massB = blockB.GetComponent<WeightScaler>().CalculatedMass;
     }
 
-    private void MoveBlock()
+    private void BlockAUp()
     {
+        if (blockA.GetComponent<WeightScaler>().IsMovAble && blockB.GetComponent<WeightScaler>().IsMovAble)
+        {
+            blockA.transform.Translate(Vector3.up * speed);
+            blockB.transform.Translate(Vector3.down * speed);
+            blockA.GetComponent<WeightScaler>().IsMovUp = true;
+            blockB.GetComponent<WeightScaler>().IsMovDown = true;
+        }
+    }
+
+    private void BlockBUp()
+    {
+        if (blockA.GetComponent<WeightScaler>().IsMovAble && blockB.GetComponent<WeightScaler>().IsMovAble)
+        {
+            blockA.transform.Translate(Vector3.down * speed);
+            blockB.transform.Translate(Vector3.up * speed);
+            blockA.GetComponent<WeightScaler>().IsMovDown = true;
+            blockB.GetComponent<WeightScaler>().IsMovUp = true;
+        }
+        
 
     }
 
     private void ResetBlockPosition()
     {
-        if (blockA.transform.position.y != blockB.transform.position.y && timer >= stopTime) 
+        if (Mathf.Approximately(blockA.transform.position.y, blockB.transform.position.y))
         {
+            timer = 0f;
             Debug.Log("AB");
-
-            if (blockA.transform.position.y > blockB.transform.position.y)
-            {
-                blockA.transform.Translate(Vector3.down * speed);
-                blockB.transform.Translate(Vector3.up * speed);
-                blockA.GetComponent<WeightScaler>().IsMovDown = true;
-                blockB.GetComponent<WeightScaler>().IsMovUp = true;
-            }
-            else
-            {
-                blockA.transform.Translate(Vector3.up * speed);
-                blockB.transform.Translate(Vector3.down * speed);
-                blockA.GetComponent<WeightScaler>().IsMovUp = true;
-                blockB.GetComponent<WeightScaler>().IsMovDown = true;
-            }
-        }
-        else
-        {
             blockA.GetComponent<WeightScaler>().IsMovDown = false;
             blockA.GetComponent<WeightScaler>().IsMovUp = false;
             blockB.GetComponent<WeightScaler>().IsMovDown = false;
             blockB.GetComponent<WeightScaler>().IsMovUp = false;
         }
+        if (blockA.transform.position.y != blockB.transform.position.y)
+        {
+            if (blockA.transform.position.y > blockB.transform.position.y)
+            {
+                BlockBUp();
+            }
+            else if (blockA.transform.position.y < blockB.transform.position.y)
+            {
+                BlockAUp();
+            }
+           
+        }        
     }
 }

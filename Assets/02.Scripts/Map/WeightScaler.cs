@@ -18,6 +18,7 @@ public class WeightScaler : MonoBehaviour
     private float currentDeltaTime;
     private float lastDeltaTime;
 
+    public bool IsMovAble { get; set; }
     public bool IsMovUp { get; set; }
     public bool IsMovDown { get; set; }
 
@@ -26,6 +27,7 @@ public class WeightScaler : MonoBehaviour
         forceToMass = 1f / Physics.gravity.magnitude;
         IsMovUp = false;
         IsMovDown = false;
+        IsMovAble = true;
     }
 
     void UpdateWeight()
@@ -41,26 +43,25 @@ public class WeightScaler : MonoBehaviour
         calculatedMass = (float)(combinedForce * forceToMass);
     }
 
+    //
     private void UdateObjectMovement()
     {
         if (IsMovUp)
         {
             foreach (var obj in impulsePerRigidBody.Keys)
             {
-                obj.gameObject.transform.Translate(Vector3.up * gameObject.GetComponentInParent<UpDownTile>().Speed);
+                obj.gameObject.transform.parent = transform;
+                
             }
-            Debug.Log("up");
-            //gameObject
         }
-
-        if (IsMovDown)
+        else if (IsMovDown)
         {
-            Debug.Log("down");
+            
             foreach (var obj in impulsePerRigidBody.Keys)
             {
-                obj.gameObject.transform.Translate(Vector3.down * gameObject.GetComponentInParent<UpDownTile>().Speed);
-            }
-            //gameObject.transform.Translate(Vector3.down * this.gameObject.GetComponentInParent<UpDownTile>().Speed);
+                obj.gameObject.transform.parent = transform;
+                
+            }  
         }
     }
 
@@ -87,6 +88,13 @@ public class WeightScaler : MonoBehaviour
     {
         if (collision.rigidbody != null)
         {
+            if (collision.gameObject.tag == "Ground")
+            {
+                Debug.Log("enter");
+                IsMovAble = false;
+                return;
+            }
+            
             if (impulsePerRigidBody.ContainsKey(collision.rigidbody))
                 impulsePerRigidBody[collision.rigidbody] = collision.impulse.y / lastDeltaTime;
             else
@@ -100,9 +108,15 @@ public class WeightScaler : MonoBehaviour
     {
         if (collision.rigidbody != null)
         {
+            if (collision.gameObject.tag == "Ground")
+            {
+                Debug.Log("exit");
+                IsMovAble = true;
+                return;
+            }
             impulsePerRigidBody.Remove(collision.rigidbody);
             UpdateWeight();
-            UdateObjectMovement();
+            //UdateObjectMovement();
         }
     }
 }
