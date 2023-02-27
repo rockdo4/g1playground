@@ -128,7 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5b4a2982b5266f4bbe24833e3494d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  chaseSpeed: 5
+  patrolSpeed: 3
   attackRange: 2
   searchRange: 7
   attackCool: 2
@@ -208,10 +209,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7f0bf233a51442ea2a8e2e66e95d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Method: 2
+  m_Method: 3
   m_Curve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 7.00494
+      outSlope: 7.00494
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.14456439
+      value: 1.0126649
+      inSlope: 0.9549366
+      outSlope: 0.9549366
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.76847434
+      value: 1.0017982
+      inSlope: -1.6332148
+      outSlope: -1.6332148
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.98124695
+      value: -0.0072669983
+      inSlope: -2.98656
+      outSlope: -2.98656
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.36305535
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

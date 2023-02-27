@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 
 public class EnemyController : MonoBehaviour, IAttackable
@@ -33,7 +34,8 @@ public class EnemyController : MonoBehaviour, IAttackable
     private NavMeshAgent agent;
     private Animator animator;
 
-    public float moveSpeed;
+    public float chaseSpeed;
+    public float patrolSpeed;
     public float attackRange;
     public float searchRange;
     public float attackCool;
@@ -51,7 +53,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     private Vector3 endPos;
     private bool isGoingRight;
 
-    public BasicAttack basicAttack;
+    public SkillAttack basicAttack;
     public Status status;
 
     [Header("<Only Idle and Patrol>")]
@@ -74,11 +76,11 @@ public class EnemyController : MonoBehaviour, IAttackable
                     isPattern = true;
                 }
             }
-            if(State!= EnemyState.TakeDamage)
+            if (State != EnemyState.TakeDamage)
             {
                 //rb.isKinematic = true;
                 //rb.velocity = Vector3.zero;
-                agent.enabled = false;
+                agent.enabled = true;
             }
 
             if (prevState == state)
@@ -92,10 +94,13 @@ public class EnemyController : MonoBehaviour, IAttackable
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Patrol:
+                    SaveFloorLength();
+                    agent.speed = patrolSpeed;
                     agent.isStopped = false;
                     rb.isKinematic = false;
                     break;
                 case EnemyState.Chase:
+                    agent.speed = chaseSpeed;
                     agent.isStopped = false;
                     rb.isKinematic = true;
                     break;
@@ -105,8 +110,9 @@ public class EnemyController : MonoBehaviour, IAttackable
                     break;
                 case EnemyState.TakeDamage:
                     agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
                     rb.isKinematic = false;
-                    agent.enabled = true;
+                    agent.enabled = false;
                     takeDamageCoolTime = 0f;
                     break;
                 case EnemyState.Die:
@@ -124,7 +130,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         status = GetComponent<Status>();
-        agent.speed = moveSpeed;
+        agent.speed = chaseSpeed;
         //agent.stoppingDistance = attackRange;
         GetComponent<DestructedEvent>().OnDestroyEvent = OnDestroyObj;
     }
@@ -139,7 +145,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         SaveFloorLength();
     }
 
- 
+
     void Update()
     {
         time += Time.deltaTime;
@@ -168,106 +174,36 @@ public class EnemyController : MonoBehaviour, IAttackable
                 break;
         }
 
-        Debug.Log(state);
+        //Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
-    //private void FixedUpdate()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Z))
-    //    {
-    //        State = EnemyState.TakeDamage;
-
-    //        agent.enabled = false;
-
-    //        rb.isKinematic = false;
-    //        rb.velocity = Vector3.zero;
-
-    //        var force = -transform.forward;
-    //        force.y = 3.5f;
-    //        force = force.normalized * 10;
-
-    //        rb.AddForce(force, ForceMode.Impulse);
-
-    //        //State = EnemyState.Die;
-    //        //animator.SetTrigger("Die");
-    //        //State = EnemyState.TakeDamage;
-    //        //animator.SetTrigger("TakeDamage");
-
-    //        //Vector3 pushBackDirection = transform.position - player.transform.position;
-    //        //pushBackDirection.y += 5f;
-    //        //pushBackDirection = pushBackDirection.normalized;
-    //        //agent.velocity = pushBackDirection * 10;
-    //        //rb.AddForce(Vector3.up * 30, ForceMode.Impulse);
-
-    //        //var dir = transform.position - player.transform.position;
-    //        //dir.y += 5;
-    //        //dir.Normalize();
-    //        //agent.destination = Vector3.zero;
-    //        //agent.updatePosition = false;
-    //        //agent.updateRotation = false;
-    //        //agent.isStopped = true;
-    //        //agent.enabled = false;
-    //        //agent.Move(dir * 10);
-    //        //rb.isKinematic = false;
-    //        //rb.AddForce(dir * 10, ForceMode.Impulse);
-
-    //    }
-
-    //    time += Time.deltaTime;
-
-    //    //if (State == EnemyState.TakeDamage)
-    //    //{
-    //    //    var dir = transform.position - player.transform.position;
-    //    //    dir.y += 35;
-    //    //    dir.Normalize();
-    //    //    rb.AddForce(dir * 10, ForceMode.Impulse);
-    //    //    //agent.Move(dir);
-    //    //}
-
-    //    if (isPattern)
-    //    {
-    //        ChangePatteurn();
-    //    }
-
-    //    switch (state)
-    //    {
-    //        case EnemyState.Idle:
-    //            IdleUpdate();
-    //            break;
-    //        case EnemyState.Chase:
-    //            ChaseUpdate();
-    //            break;
-    //        case EnemyState.Patrol:
-    //            PatrolUpdate();
-    //            break;
-    //        case EnemyState.Attack:
-    //            AttackUpdate();
-    //            break;
-    //        case EnemyState.TakeDamage:
-    //            TakeDamageUpdate();
-    //            break;
-    //    }
-
-    //    //Debug.Log(state);
-    //    Debug.Log(state);
-    //    animator.SetFloat("Move", agent.velocity.magnitude);
-    //}
 
     private void IdleUpdate()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) < searchRange)
+        Ray ray = new Ray(transform.position, transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, searchRange))
         {
-            State = EnemyState.Chase;
-            return;
+            if (hit.collider.tag == "Player")
+            {
+                State = EnemyState.Chase;
+                return;
+            }
+            //isGoingRight = true;
         }
     }
 
     private void PatrolUpdate()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) < searchRange)
+        Ray ray = new Ray(transform.position, transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, searchRange))
         {
-            State = EnemyState.Chase;
-            return;
+            if (hit.collider.tag == "Player")
+            {
+                State = EnemyState.Chase;
+                return;
+            }
         }
 
         if (isGoingRight)
@@ -276,6 +212,7 @@ public class EnemyController : MonoBehaviour, IAttackable
             if (Vector3.Distance(transform.position, endPos) < 3f)
             {
                 transform.rotation = Quaternion.LookRotation(-transform.forward);
+                agent.velocity = Vector3.zero;
                 isGoingRight = false;
             }
         }
@@ -285,6 +222,8 @@ public class EnemyController : MonoBehaviour, IAttackable
             if (Vector3.Distance(transform.position, startPos) < 3f)
             {
                 transform.rotation = Quaternion.LookRotation(-transform.forward);
+                agent.velocity = Vector3.zero;
+
                 isGoingRight = true;
             }
         }
@@ -298,18 +237,20 @@ public class EnemyController : MonoBehaviour, IAttackable
             return;
         }
 
-        if (Vector3.Distance(transform.position, player.transform.position) >= searchRange)
+        if (Vector3.Distance(transform.position, player.transform.position) >= searchRange * 3)
         {
             State = EnemyState.Idle;
             return;
         }
+        var isGround = player.GetComponent<PlayerController>().isGrounded;
 
+        if (!isGround) { return; }
         agent.SetDestination(player.transform.position);
         transform.LookAt(transform.position + agent.desiredVelocity);
     }
     private void AttackUpdate()
     {
-        var isGround = player.GetComponent<PlayerController>().isGrounded;
+        //var isGround = player.GetComponent<PlayerController>().isGrounded;
 
         if (Vector3.Distance(transform.position, player.transform.position) >= attackRange + 0.5f)
         {
@@ -338,7 +279,13 @@ public class EnemyController : MonoBehaviour, IAttackable
             startPos = collider.bounds.center - (new Vector3((floorLength / 2), 0, 0));
             endPos = collider.bounds.center + (new Vector3((floorLength / 2), 0, 0));
 
-            isGoingRight = true;
+            //isGoingRight = true;
+        }
+        else
+        {
+#if UNITY_EDITOR
+            Debug.Log("NULL!!");
+#endif
         }
     }
 
@@ -375,11 +322,11 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     public void Attack()
     {
-        Debug.Log(1);
         switch (basicAttack)
         {
             case EnemyMeleeAttack:
                 {
+
                     if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
                     {
                         basicAttack.ExecuteAttack(gameObject, player.gameObject);
@@ -398,7 +345,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
         if (takeDamageCool < takeDamageCoolTime)
         {
-            State = EnemyState.Idle;
+            State = EnemyState.Chase;
         }
     }
 
