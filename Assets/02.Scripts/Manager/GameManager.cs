@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
             player.transform.position = PlayerDataManager.instance.lastPlayerPos;
            
         }
-
     }
+
+    public void RestartGame() => SceneManager.LoadScene("BuildMap");
 }
