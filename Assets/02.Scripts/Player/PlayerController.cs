@@ -100,33 +100,33 @@ public class PlayerController : MonoBehaviour
         currState.Update();
 
         //Temporary KeyBoard
-        //if (Input.GetKey(KeyCode.A))
-        //{
-        //    SetMoveX(-1f);
-        //}
-        //else if (Input.GetKey(KeyCode.D))
-        //{
-        //    SetMoveX(1f);
-        //}
-        //else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
-        //{
-        //    SetMoveX(0);
-        //}
+        if (Input.GetKey(KeyCode.A))
+        {
+            SetMoveX(-1f);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            SetMoveX(1f);
+        }
+        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        {
+            SetMoveX(0);
+        }
 
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    if (jumpCount >= maxJumpCount)
-        //        return;
-        //    playerRb.velocity = new Vector3(0, 0, 0);
-        //    playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        //    SetState(new JumpState(this));
-        //    isGrounded = false;
-        //    jumpCount++;
-        //}
-        //if (Input.GetKeyDown(KeyCode.LeftShift))
-        //{
-        //    Dash();
-        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (jumpCount >= maxJumpCount)
+                return;
+            playerRb.velocity = new Vector3(0, 0, 0);
+            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            SetState(new JumpState(this));
+            isGrounded = false;
+            jumpCount++;
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Dash();
+        }
     }
 
     private void FixedUpdate()
