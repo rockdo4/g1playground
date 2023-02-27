@@ -50,7 +50,7 @@ public class BoxTile : MonoBehaviour
                 Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
                 pushDirection.z = 0;
                 pushDirection.Normalize();
-                gameObject.GetComponent<SphereCollider>().attachedRigidbody.velocity = pushDirection * pushForce;
+                gameObject.GetComponent<Collider>().attachedRigidbody.velocity = pushDirection * pushForce;
                 
             }
         }
