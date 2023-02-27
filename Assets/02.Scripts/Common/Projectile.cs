@@ -67,7 +67,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(attacker.tag))
+        if (!other.gameObject.activeSelf || other.CompareTag(attacker.tag))
             return;
         if (OnCollided != null)
             OnCollided(attacker, other.gameObject);
