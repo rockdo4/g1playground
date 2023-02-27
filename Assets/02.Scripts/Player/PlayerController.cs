@@ -181,7 +181,8 @@ public class PlayerController : MonoBehaviour
       new Vector3(moveX, 0, 0), Color.green);
             if (hit.collider != null)
             {
-                if (hit.transform.CompareTag("Pushable")||hit.transform.CompareTag("Door"))
+                if (hit.transform.CompareTag("Pushable") && isGrounded ||
+                    hit.transform.CompareTag("Door"))
                 {
                     IsBlocked = false;
                     break;
