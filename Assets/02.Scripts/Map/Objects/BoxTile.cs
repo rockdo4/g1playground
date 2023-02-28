@@ -60,7 +60,7 @@ public class BoxTile : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            Debug.Log("exit");
+            //Debug.Log("exit");
             //Reset timer to make player has to push again to move the block
             timer = 0f;
         }

@@ -1,19 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class WeightScaler : MonoBehaviour
 {
-    float forceToMass;
+    //private FixedJoint joint;
+
+    //float forceToMass;
 
     private float combinedForce;
 
-    [SerializeField] private float calculatedMass;
+    private float calculatedMass;
     public float CalculatedMass { get { return calculatedMass; } set { calculatedMass = value; } }
 
     //private int registeredRigidbodies;
 
-    private Dictionary<Rigidbody, float> impulsePerRigidBody = new Dictionary<Rigidbody, float>();
+    public List<Rigidbody> objects = new List<Rigidbody>();
+
+    //[SerializeField] private float speed = 1f;
+    //public float Speed { get { return speed; } }
 
     private float currentDeltaTime;
     private float lastDeltaTime;
@@ -24,99 +30,77 @@ public class WeightScaler : MonoBehaviour
 
     private void Awake()
     {
-        forceToMass = 1f / Physics.gravity.magnitude;
+        //joint = GetComponent<FixedJoint>();
+       
+        //forceToMass = 1f / Physics.gravity.magnitude;
         IsMovUp = false;
         IsMovDown = false;
         IsMovAble = true;
     }
 
-    void UpdateWeight()
-    {
-        //registeredRigidbodies = impulsePerRigidBody.Count;
-        combinedForce = 0;
-
-        foreach (var force in impulsePerRigidBody.Values)
-        {
-            combinedForce += force;
-        }
-
-        calculatedMass = (float)(combinedForce * forceToMass);
-    }
-
     //
     private void UdateObjectMovement()
     {
-        if (IsMovUp)
+        if (objects != null) 
         {
-            foreach (var obj in impulsePerRigidBody.Keys)
+            foreach (var obj in objects)
             {
-                obj.gameObject.transform.parent = transform;
-                
+                obj.velocity = gameObject.GetComponent<Rigidbody>().velocity;
+                //obj.MovePosition(obj.position + Vector3.up * 3f * Time.fixedDeltaTime);
+
             }
         }
-        else if (IsMovDown)
-        {
-            
-            foreach (var obj in impulsePerRigidBody.Keys)
-            {
-                obj.gameObject.transform.parent = transform;
-                
-            }  
-        }
+
     }
 
     private void FixedUpdate()
     {
         lastDeltaTime = currentDeltaTime;
         currentDeltaTime = Time.deltaTime;
+        //aUdateObjectMovement();
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.rigidbody != null)
+        if (other.tag == "Ground")
         {
-            if (impulsePerRigidBody.ContainsKey(collision.rigidbody))
-                impulsePerRigidBody[collision.rigidbody] = collision.impulse.y / lastDeltaTime;
-            else
-                impulsePerRigidBody.Add(collision.rigidbody, collision.impulse.y / lastDeltaTime);
+            Debug.Log("ground");
+            IsMovAble = false;
 
-            UpdateWeight();
-            UdateObjectMovement();
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Ground")
+        {
+            //Debug.Log("ground");
+            IsMovAble = true;
+
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
+        
         if (collision.rigidbody != null)
         {
-            if (collision.gameObject.tag == "Ground")
-            {
-                Debug.Log("enter");
-                IsMovAble = false;
-                return;
-            }
-            
-            if (impulsePerRigidBody.ContainsKey(collision.rigidbody))
-                impulsePerRigidBody[collision.rigidbody] = collision.impulse.y / lastDeltaTime;
-            else
-                impulsePerRigidBody.Add(collision.rigidbody, collision.impulse.y / lastDeltaTime);
+            collision.transform.SetParent(transform);
+            calculatedMass += collision.rigidbody.mass;
+            //joint.connectedBody = collision.rigidbody;
+            objects.Add(collision.rigidbody);
 
-            UpdateWeight();
-            UdateObjectMovement();
         }
     }
     private void OnCollisionExit(Collision collision)
-    {
+    {     
         if (collision.rigidbody != null)
         {
-            if (collision.gameObject.tag == "Ground")
-            {
-                Debug.Log("exit");
-                IsMovAble = true;
-                return;
-            }
-            impulsePerRigidBody.Remove(collision.rigidbody);
-            UpdateWeight();
-            //UdateObjectMovement();
+            Debug.Log("exit");
+            //joint.connectedBody = null;
+            collision.transform.SetParent(null);
+            calculatedMass -= collision.rigidbody.mass;
+            objects.Remove(collision.rigidbody);
         }
     }
 }

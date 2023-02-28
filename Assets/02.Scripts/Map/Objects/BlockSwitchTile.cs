@@ -60,7 +60,7 @@ public class BlockSwitchTile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
+        //Debug.Log(other.tag);
         //Triggers Switch when pushed by Player object or Pushable objects
         if (!animator.GetBool("Trigger") && (other.tag == "Player" || other.tag == "Pushable")) 
         {

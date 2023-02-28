@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class UpDownTile : MonoBehaviour
@@ -15,8 +16,6 @@ public class UpDownTile : MonoBehaviour
 
     [SerializeField] private float stopTime = 0.5f;
     private float timer;
-    public float Timer { get { return timer; } set { timer = 0f; } }
-
 
     // Start is called before the first frame update
     void Start()
@@ -25,23 +24,21 @@ public class UpDownTile : MonoBehaviour
         massB = blockB.GetComponent<WeightScaler>().CalculatedMass;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        timer += Time.deltaTime;
-        //Debug.Log(timer);
+        massA = blockA.GetComponent<WeightScaler>().CalculatedMass;
+        massB = blockB.GetComponent<WeightScaler>().CalculatedMass;
+
+        timer += Time.fixedDeltaTime;
+
         if (timer >= stopTime)
         {
-            if (massA > massB )
+            if (massA > massB)
             {
-                //Debug.Log("A");
-                //timer = 0f;
                 BlockBUp();
             }
-            else if (massA < massB )
+            else if (massA < massB)
             {
-                //Debug.Log("B");
-                //timer = 0f;
                 BlockAUp();
             }
             else
@@ -49,38 +46,63 @@ public class UpDownTile : MonoBehaviour
                 ResetBlockPosition();
             }
         }
-        
 
-    }
-
-    private void FixedUpdate()
-    {
-        massA = blockA.GetComponent<WeightScaler>().CalculatedMass;
-        massB = blockB.GetComponent<WeightScaler>().CalculatedMass;
     }
 
     private void BlockAUp()
     {
         if (blockA.GetComponent<WeightScaler>().IsMovAble && blockB.GetComponent<WeightScaler>().IsMovAble)
         {
-            blockA.transform.Translate(Vector3.up * speed);
-            blockB.transform.Translate(Vector3.down * speed);
-            blockA.GetComponent<WeightScaler>().IsMovUp = true;
-            blockB.GetComponent<WeightScaler>().IsMovDown = true;
+            Rigidbody rbA = blockA.GetComponent<Rigidbody>();
+            Rigidbody rbB = blockB.GetComponent<Rigidbody>();
+
+            blockA.GetComponent<Rigidbody>().MovePosition(rbA.position + Vector3.up * speed * Time.fixedDeltaTime);
+            blockB.GetComponent<Rigidbody>().MovePosition(rbB.position + Vector3.down * speed * Time.fixedDeltaTime);
+            
+            moveAObjects();
         }
+        
     }
 
     private void BlockBUp()
     {
         if (blockA.GetComponent<WeightScaler>().IsMovAble && blockB.GetComponent<WeightScaler>().IsMovAble)
         {
-            blockA.transform.Translate(Vector3.down * speed);
-            blockB.transform.Translate(Vector3.up * speed);
-            blockA.GetComponent<WeightScaler>().IsMovDown = true;
-            blockB.GetComponent<WeightScaler>().IsMovUp = true;
+            Rigidbody rbA = blockA.GetComponent<Rigidbody>();
+            Rigidbody rbB = blockB.GetComponent<Rigidbody>();  
+
+            blockA.GetComponent<Rigidbody>().MovePosition(rbA.position + Vector3.down * speed * Time.fixedDeltaTime);
+            blockB.GetComponent<Rigidbody>().MovePosition(rbB.position + Vector3.up * speed * Time.fixedDeltaTime);
+
+            moveBObjects();
         }
         
+    }
 
+    private void moveAObjects()
+    {
+        foreach (var rbs in blockA.GetComponent<WeightScaler>().objects)
+        {
+            rbs.MovePosition(rbs.position + Vector3.up * speed * Time.fixedDeltaTime);       
+        }
+
+        foreach (var rbs in blockB.GetComponent<WeightScaler>().objects)
+        {
+            rbs.MovePosition(rbs.position + Vector3.down * speed * Time.fixedDeltaTime);    
+        }
+    }
+
+    private void moveBObjects()
+    {
+        foreach (var rbs in blockA.GetComponent<WeightScaler>().objects)
+        {
+            rbs.MovePosition(rbs.position + Vector3.down * speed * Time.fixedDeltaTime);            
+        }
+
+        foreach (var rbs in blockB.GetComponent<WeightScaler>().objects)
+        {
+            rbs.MovePosition(rbs.position + Vector3.up * speed * Time.fixedDeltaTime);
+        }
     }
 
     private void ResetBlockPosition()
@@ -88,23 +110,33 @@ public class UpDownTile : MonoBehaviour
         if (Mathf.Approximately(blockA.transform.position.y, blockB.transform.position.y))
         {
             timer = 0f;
-            Debug.Log("AB");
+            //Debug.Log("AB");
             blockA.GetComponent<WeightScaler>().IsMovDown = false;
             blockA.GetComponent<WeightScaler>().IsMovUp = false;
             blockB.GetComponent<WeightScaler>().IsMovDown = false;
             blockB.GetComponent<WeightScaler>().IsMovUp = false;
+
+            return;
         }
-        if (blockA.transform.position.y != blockB.transform.position.y)
+
+        if (blockA.transform.position.y != blockB.transform.position.y) 
         {
-            if (blockA.transform.position.y > blockB.transform.position.y)
+            blockA.GetComponent<WeightScaler>().IsMovAble = true;
+            blockB.GetComponent<WeightScaler>().IsMovAble = true;
+
+            if (Mathf.Abs(blockA.transform.position.y) > Mathf.Abs(blockB.transform.position.y)) 
             {
+                
+                //Debug.Log("A");
                 BlockBUp();
             }
-            else if (blockA.transform.position.y < blockB.transform.position.y)
+            else if (Mathf.Abs(blockA.transform.position.y) < Mathf.Abs(blockB.transform.position.y))
             {
+                //Debug.Log("B");
                 BlockAUp();
             }
-           
-        }        
+
+        }
+
     }
 }
