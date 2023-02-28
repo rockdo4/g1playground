@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
                 playerController.SetState(new MoveState(playerController));
                 return;
             }
-            else if (Physics.Raycast(playerController.transform.position, new Vector3(playerController.lastMoveX, 0f, 0f), 3, LayerMask.GetMask("Enemy")))
+            else if (Physics.Raycast(playerController.transform.position, new Vector3(playerController.lastMoveX, 0f, 0f), 2, LayerMask.GetMask("Enemy")))
             {
                 playerController.SetState(new AttackState(playerController));
                 return;
