@@ -16,7 +16,7 @@ public class AttackedKnockBack : MonoBehaviour, IAttackable
     public void OnAttack(GameObject attacker, Attack attack)
     {
         var dir = transform.position - attacker.transform.position;
-        dir.y += up;
+        dir.y += up * dir.magnitude;
         dir.Normalize();
         rb.AddForce(dir * force, ForceMode.Impulse);
     }
