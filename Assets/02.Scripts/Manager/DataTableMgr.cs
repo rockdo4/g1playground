@@ -12,7 +12,18 @@ public class DataTableMgr
     {
         tables.Add(typeof(ItemData), new DataTable<ItemData>("DataTables/ItemTable"));
         //tables.Add(typeof(SkillData), new DataTable<SkillData>("DataTables/SkillTable"));
+
         isLoaded = true;
+    }
+
+    public static DataTable<T> Load<T>(DataTable<T> table,string filepath) where T : ICSVParsing, new()
+    {
+        if (tables.Count != 0 && tables.ContainsKey(typeof(T)))
+        {
+            tables.Remove(typeof(T));
+        }
+        tables.Add(typeof(T), new DataTable<T>(filepath));
+        return tables[typeof(T)] as DataTable<T>;
     }
 
     public static DataTable<T> GetTable<T>() where T : ICSVParsing, new()

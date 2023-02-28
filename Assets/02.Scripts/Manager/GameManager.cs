@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("fuck");
             Respawn();
         }
     }
