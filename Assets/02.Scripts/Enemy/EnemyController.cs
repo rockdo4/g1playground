@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 
 public class EnemyController : MonoBehaviour, IAttackable
@@ -32,7 +33,8 @@ public class EnemyController : MonoBehaviour, IAttackable
     private NavMeshAgent agent;
     private Animator animator;
 
-    public float moveSpeed;
+    public float chaseSpeed;
+    public float patrolSpeed;
     public float attackRange;
     public float searchRange;
     public float attackCool;
@@ -42,7 +44,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     private int countPattern;
     private bool isPattern;
 
-    private Transform player;
+    private GameObject player;
 
 
     private float floorLength;
@@ -73,9 +75,16 @@ public class EnemyController : MonoBehaviour, IAttackable
                     isPattern = true;
                 }
             }
+            if (State != EnemyState.TakeDamage)
+            {
+                //rb.isKinematic = true;
+                //rb.velocity = Vector3.zero;
+                agent.enabled = true;
+            }
 
             if (prevState == state)
                 return;
+
 
             switch (State)
             {
@@ -84,21 +93,31 @@ public class EnemyController : MonoBehaviour, IAttackable
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Patrol:
+                    SaveFloorLength();
+                    agent.speed = patrolSpeed;
+                    agent.isStopped = false;
+                    rb.isKinematic = false;
+                    break;
+                case EnemyState.Chase:
+                    agent.speed = chaseSpeed;
                     agent.isStopped = false;
                     rb.isKinematic = true;
                     break;
-                case EnemyState.Chase:
-                    agent.isStopped = false;
-                    rb.isKinematic = false;
-                    break;
                 case EnemyState.Attack:
                     agent.isStopped = true;
-                    rb.isKinematic = false;
+                    rb.isKinematic = true;
                     break;
                 case EnemyState.TakeDamage:
                     agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
                     rb.isKinematic = false;
+                    agent.enabled = false;
                     takeDamageCoolTime = 0f;
+                    break;
+                case EnemyState.Die:
+                    agent.enabled = true;
+                    agent.isStopped = true;
+                    rb.isKinematic = true;
                     break;
 
             }
@@ -111,20 +130,22 @@ public class EnemyController : MonoBehaviour, IAttackable
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         status = GetComponent<Status>();
-        agent.speed = moveSpeed;
+        agent.speed = chaseSpeed;
         //agent.stoppingDistance = attackRange;
         GetComponent<DestructedEvent>().OnDestroyEvent = OnDestroyObj;
     }
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = GameManager.instance.playerController.gameObject;
+        //player = GameObject.FindWithTag("Player");
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
         isPattern = true;
         SaveFloorLength();
     }
+
 
     void Update()
     {
@@ -160,19 +181,30 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     private void IdleUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) < searchRange)
+        Ray ray = new Ray(transform.position, transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, searchRange))
         {
-            State = EnemyState.Chase;
-            return;
+            if (hit.collider.tag == "Player")
+            {
+                State = EnemyState.Chase;
+                return;
+            }
+            //isGoingRight = true;
         }
     }
 
     private void PatrolUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) < searchRange)
+        Ray ray = new Ray(transform.position, transform.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, searchRange))
         {
-            State = EnemyState.Chase;
-            return;
+            if (hit.collider.tag == "Player")
+            {
+                State = EnemyState.Chase;
+                return;
+            }
         }
 
         if (isGoingRight)
@@ -180,6 +212,8 @@ public class EnemyController : MonoBehaviour, IAttackable
             agent.SetDestination(endPos);
             if (Vector3.Distance(transform.position, endPos) < 3f)
             {
+                transform.rotation = Quaternion.LookRotation(-transform.forward);
+                agent.velocity = Vector3.zero;
                 isGoingRight = false;
             }
         }
@@ -188,6 +222,9 @@ public class EnemyController : MonoBehaviour, IAttackable
             agent.SetDestination(startPos);
             if (Vector3.Distance(transform.position, startPos) < 3f)
             {
+                transform.rotation = Quaternion.LookRotation(-transform.forward);
+                agent.velocity = Vector3.zero;
+
                 isGoingRight = true;
             }
         }
@@ -195,28 +232,33 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     private void ChaseUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) <= attackRange + 0.5f)
+        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
         {
             State = EnemyState.Attack;
             return;
         }
 
-        if (Vector3.Distance(transform.position, player.position) >= searchRange)
+        if (Vector3.Distance(transform.position, player.transform.position) >= searchRange * 3)
         {
             State = EnemyState.Idle;
             return;
         }
+        var isGround = player.GetComponent<PlayerController>().isGrounded;
 
-        agent.SetDestination(player.position);
+        if (!isGround) { return; }
+        agent.SetDestination(player.transform.position);
+        transform.LookAt(transform.position + agent.desiredVelocity);
     }
     private void AttackUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) >= attackRange + 0.5f)
+        //var isGround = player.GetComponent<PlayerController>().isGrounded;
+
+        if (Vector3.Distance(transform.position, player.transform.position) >= attackRange + 0.5f)
         {
             State = EnemyState.Chase;
         }
 
-        var lookDirection = (player.position - transform.position).normalized;
+        var lookDirection = (player.transform.position - transform.position).normalized;
         lookDirection.y = 0f;
         transform.forward = lookDirection;
 
@@ -238,7 +280,13 @@ public class EnemyController : MonoBehaviour, IAttackable
             startPos = collider.bounds.center - (new Vector3((floorLength / 2), 0, 0));
             endPos = collider.bounds.center + (new Vector3((floorLength / 2), 0, 0));
 
-            isGoingRight = true;
+            //isGoingRight = true;
+        }
+        else
+        {
+#if UNITY_EDITOR
+            Debug.Log("NULL!!");
+#endif
         }
     }
 
@@ -275,12 +323,12 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     public void Attack()
     {
-        Debug.Log(1);
         switch (basicAttack)
         {
             case EnemyMeleeAttack:
                 {
-                    if (Vector3.Distance(transform.position, player.position) <= attackRange + 0.5f)
+
+                    if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
                     {
                         basicAttack.ExecuteAttack(gameObject, player.gameObject);
                         return;
@@ -290,7 +338,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
     }
 
-    private float takeDamageCool = 0.5f;
+    private float takeDamageCool = 0.8f;
     private float takeDamageCoolTime = 0f;
     public void TakeDamageUpdate()
     {
@@ -298,7 +346,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
         if (takeDamageCool < takeDamageCoolTime)
         {
-            State = EnemyState.Idle;
+            State = EnemyState.Chase;
         }
     }
 

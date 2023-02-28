@@ -11,7 +11,7 @@ public class SkillAttack : AttackDefinition
     public float speed = 5f;
     public bool isStunnable = true;
     public float stunTime = 2f;
-    public float CoolDown { get; protected set; } = 1f;
+    public float CoolDown = 3f;
 
     public void SetSkill(string id)
     {
