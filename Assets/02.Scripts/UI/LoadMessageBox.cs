@@ -18,11 +18,9 @@ public class LoadMessageBox : MonoBehaviour
 
     public GameObject popupView;
     
-    public Text m_MessageType;
-    public TextMeshProUGUI m_Msg;
-    public Button Btn_Exit;
-    public Button Btn_OK;
-    public Button Btn_Cancle;
+    public TextMeshProUGUI Msg;
+    public Button yesBt;
+    public Button noBt;
 
     // Use this for initialization
     void Start()
@@ -46,16 +44,16 @@ public class LoadMessageBox : MonoBehaviour
 
     public void PopupCheckWindowOpen(UnityEngine.Events.UnityAction action, string actionName, MsgType msgtype, string msg)
     {
-        Btn_OK.gameObject.SetActive(true);
-        Btn_Cancle.gameObject.SetActive(true);
-        Btn_OK.onClick.AddListener(delegate { ConfirmEvent(this, new PopupCheckConfirmEventArgs() { events = action, eventName = actionName }); });
+        yesBt.gameObject.SetActive(true);
+        noBt.gameObject.SetActive(true);
+        yesBt.onClick.AddListener(delegate { ConfirmEvent(this, new PopupCheckConfirmEventArgs() { events = action, eventName = actionName }); });
         PopupWindowOpen(msgtype, msg);
     }
 
     public void OnConfirmOnClick(object sender, PopupCheckConfirmEventArgs e)
     {
         e.events();
-        Btn_OK.onClick.RemoveAllListeners();
+        yesBt.onClick.RemoveAllListeners();
     }
 
 
@@ -65,27 +63,19 @@ public class LoadMessageBox : MonoBehaviour
 
         if (msgtype == MsgType.error)
         {
-            m_MessageType.text = "에러";
-            m_Msg.text = msg;
-            m_MessageType.color = Color.red;
+            Msg.text = msg;
         }
         else if (msgtype == MsgType.warning)
         {
-            m_MessageType.text = "알림";
-            m_Msg.text = msg;
-            m_MessageType.color = Color.yellow;
+            Msg.text = msg;
         }
         else if (msgtype == MsgType.exit)
         {
-            m_MessageType.text = "나가기";
-            m_Msg.text = msg;
-            m_MessageType.color = Color.yellow;
+            Msg.text = msg;
         }
         else
         {
-            m_MessageType.text = "Notice";
-            m_Msg.text = msg;
-            m_MessageType.color = Color.white;
+            Msg.text = msg;
         }
     }
 }

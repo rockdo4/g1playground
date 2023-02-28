@@ -269,7 +269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1975623294779904351
 RectTransform:
   m_ObjectHideFlags: 0
@@ -475,7 +475,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1975623295316974747}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UIButtonManager, Assembly-CSharp
+        m_MethodName: PopUp
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2831904969736750956}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2592605017115572058
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6512788959616800655
 RectTransform:
   m_ObjectHideFlags: 0
