@@ -53,7 +53,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     private Vector3 endPos;
     private bool isGoingRight;
 
-    public SkillAttack basicAttack;
+    public BasicAttack basicAttack;
     public Status status;
 
     [Header("<Only Idle and Patrol>")]
@@ -116,8 +116,9 @@ public class EnemyController : MonoBehaviour, IAttackable
                     takeDamageCoolTime = 0f;
                     break;
                 case EnemyState.Die:
+                    agent.enabled = true;
                     agent.isStopped = true;
-                    rb.isKinematic = false;
+                    rb.isKinematic = true;
                     break;
 
             }
