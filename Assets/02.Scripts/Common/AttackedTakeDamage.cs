@@ -20,7 +20,7 @@ public class AttackedTakeDamage : MonoBehaviour, IAttackable
             var destructibles = GetComponents<IDestructible>();
             foreach (var destructible in destructibles)
             {
-                destructible.OnDestroyObj   ();
+                destructible.OnDestroyObj();
             }
         }
     }
