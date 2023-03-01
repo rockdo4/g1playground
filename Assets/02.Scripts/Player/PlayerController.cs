@@ -251,6 +251,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         public override void Enter()
         {
             playerController.dashTimer = 0f;
+            playerController.playerRb.constraints = ~RigidbodyConstraints.FreezePositionX;
         }
 
         public override void Update()
@@ -265,7 +266,10 @@ public class PlayerController : MonoBehaviour, IAttackable
             playerController.Jump();
         }
 
-        public override void Exit() { }
+        public override void Exit()
+        {
+            playerController.playerRb.constraints = ~RigidbodyConstraints.FreezePositionX & ~RigidbodyConstraints.FreezePositionY;
+        }
     }
 
     public class JumpState : State
