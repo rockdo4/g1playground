@@ -5,38 +5,67 @@ using UnityEngine;
 public class BoxTile : MonoBehaviour
 {
     private new Rigidbody rigidbody;
-    //[Header("Delay Push Time")]
-    public float pushTime = 1f;
+    public Collider colliderTrigger;
+    private float originMass;
+    public GameObject connectedObject;
+
+    [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
-    //[Header("Force")]
+    
     [SerializeField] private float pushForce = 1f;
+
+    public bool IsConnected { get; set; }
 
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        originMass = rigidbody.mass;
+        IsConnected = false;
     }
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.tag == "Player")
-    //    {
-    //        timer += Time.deltaTime;
-    //        if (timer >= pushTime)
-    //        {
-    //            rigidbody.mass = 1;
-    //            //Push(other.transform.position);
-    //        }
-    //    }
-    //}
+    public void AddMass(float mass)
+    {
+        rigidbody.mass += mass;
+    }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.tag == "Player")
-    //    {
-    //        timer = 0f;
-    //        rigidbody.mass = 100;
-    //    }
-    //}
+    public void RemoveMass()
+    {
+        rigidbody.mass = originMass;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Pushable")
+        {
+            //Debug.Log("True");
+            if (other.gameObject.GetComponent<BoxTile>().IsConnected)
+            {
+                Debug.Log(other.gameObject .name+ " "+gameObject.name);
+                //Debug.Log("True");
+                other.gameObject.GetComponent<BoxTile>().AddMass(rigidbody.mass);
+                IsConnected = other.GetComponent<BoxTile>().IsConnected;
+                connectedObject = other.gameObject;
+                //if (connectedObject == null)
+                //{
+                    
+                //}
+                
+            }
+           
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Pushable")
+        {
+            //transform.SetParent(null);
+            //other.gameObject.transform.SetParent(null);
+            other.GetComponent<BoxTile>().RemoveMass();
+            IsConnected = false;
+            connectedObject = null;
+        }
+    }
 
     private void OnCollisionStay(Collision collision)
     {
@@ -44,9 +73,9 @@ public class BoxTile : MonoBehaviour
         {
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
+
             if (timer >= pushTime)
             {
-                Debug.Log("push");
                 Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
                 pushDirection.z = 0;
                 pushDirection.Normalize();
@@ -60,8 +89,8 @@ public class BoxTile : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            //Debug.Log("exit");
             //Reset timer to make player has to push again to move the block
+
             timer = 0f;
         }
     }
