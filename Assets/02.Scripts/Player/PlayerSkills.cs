@@ -5,34 +5,43 @@ using UnityEngine;
 public class PlayerSkills : MonoBehaviour
 {
     private PlayerController playerController;
-    public SkillAttack skillAttack;
     public Transform skillPivot;
-    private float skillTimer = 0f;
+    private int skillCount = 0;
+    public SkillAttack[] skillAttacks;
+    private float[] skillTimers;
 
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
+        skillCount = skillAttacks.Length;
+        skillTimers = new float[skillCount];
     }
 
     private void Update()
     {
-        if (skillTimer < skillAttack.CoolDown)
+        for (int i = 0; i < skillCount; ++i)
         {
-            skillTimer += Time.deltaTime;
-            if (skillTimer > skillAttack.CoolDown)
+            if (skillTimers[i] < skillAttacks[i].CoolDown)
             {
-                skillTimer = 0f;
-                UseSkill();
+                skillTimers[i] += Time.deltaTime;
+                if (skillTimers[i] > skillAttacks[i].CoolDown)
+                {
+                    skillTimers[i] = 0f;
+                    UseSkill(skillAttacks[i]);
+                }
             }
         }
     }
 
-    public void UseSkill()
+    public void UseSkill(SkillAttack skill)
     {
-        switch (skillAttack)
+        switch (skill)
         {
             case StraightSpell:
-                ((StraightSpell)skillAttack).Fire(gameObject, skillPivot.position, new Vector3(playerController.LastMoveX, 0f, 0f));
+                ((StraightSpell)skill).Fire(gameObject, skillPivot.position, new Vector3(playerController.LastMoveX, 0f, 0f));
+                break;
+            case BoomerangSpell:
+                ((BoomerangSpell)skill).Fire(gameObject, skillPivot.position, new Vector3(playerController.LastMoveX, 0f, 0f));
                 break;
         }
     }

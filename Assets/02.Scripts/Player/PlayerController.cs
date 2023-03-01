@@ -135,6 +135,8 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         if (!IsBlocked)
             playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
+        else
+            playerRb.velocity = new Vector3(0f, playerRb.velocity.y, 0f);
     }
 
     public void Dash()

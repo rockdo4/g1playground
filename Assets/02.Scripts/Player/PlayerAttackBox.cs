@@ -13,10 +13,7 @@ public class PlayerAttackBox : MonoBehaviour
             return;
         playerAttack.StartAttack();
         if (isAttacking)
-        {
             playerAttack.AttackTarget(other.gameObject);
-            Debug.Log("Attack");
-        }
     }
 
     public void ExecuteAttack() => StartCoroutine(CoExecuteAttack());

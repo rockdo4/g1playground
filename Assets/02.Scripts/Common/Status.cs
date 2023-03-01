@@ -16,10 +16,13 @@ public class Status : MonoBehaviour
     public int Defense; //{ get; protected set; }
     public int MaxHp; //{ get; protected set; }
     public int currHp;
+    public int MaxMp; //{ get; protected set; }
+    public int currMp;
 
     private void Start()
     {
         //load from dataTable, virtual / player dmg += weapon, player defense += armor
         currHp = MaxHp;
+        currMp = MaxMp;
     }
 }
