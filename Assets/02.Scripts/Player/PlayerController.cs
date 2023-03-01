@@ -6,7 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IAttackable
 {
     public abstract class State
     {
@@ -20,11 +20,11 @@ public class PlayerController : MonoBehaviour
         public abstract void Update();
         public abstract void Exit();
     }
-
     public State currState;
     private Rigidbody playerRb;
+    private Animator playerAnimator;
     public float moveX;
-    private float lastMoveX = 1f;
+    public float LastMoveX { get; private set; } = 1f;
     public float moveSpeed = 10f;
     public float dashSpeed;
 
@@ -40,12 +40,6 @@ public class PlayerController : MonoBehaviour
     public int maxJumpCount;
     public bool isGrounded;
 
-    public Transform skillPivot;
-    public Weapon1stBuild weapon;
-    public BasicAttack basicAttack;
-    public SkillAttack skillAttack;
-    private float skillTimer = 0f;
-
     public float hitDuration = 0.5f;
 
     private void SetState(State state)
@@ -58,7 +52,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody>();
-        weapon.OnCollided = basicAttack.ExecuteAttack;
+        playerAnimator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -66,28 +60,8 @@ public class PlayerController : MonoBehaviour
         SetState(new IdleState(this));
     }
 
-    public void UseSkill()
-    {
-        switch (skillAttack)
-        {
-            case StraightSpell:
-                ((StraightSpell)skillAttack).Fire(gameObject, skillPivot.position, new Vector3(lastMoveX, 0f, 0f));
-                break;
-        }
-    }
-
     private void Update()
     {
-        if (skillTimer < skillAttack.CoolDown)
-        {
-            skillTimer += Time.deltaTime;
-            if (skillTimer > skillAttack.CoolDown)
-            {
-                skillTimer = 0f;
-                UseSkill();
-            }
-        }
-
         if (DashOnCool)
         {
             dashCoolTimer += Time.deltaTime;
@@ -98,6 +72,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         currState.Update();
+        playerAnimator.SetFloat("MoveX", moveX);
 
         //Temporary KeyBoard
         if (Input.GetKey(KeyCode.A))
@@ -144,11 +119,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            lastMoveX = moveX;
-            if (moveX < 0)
-                transform.eulerAngles = new Vector3(0, 180, 0);
-            else if (moveX > 0)
-                transform.eulerAngles = new Vector3(0, 0, 0);
+            LastMoveX = moveX;
+            transform.forward = new Vector3(moveX, 0, 0);
         }
     }
 
@@ -167,21 +139,18 @@ public class PlayerController : MonoBehaviour
     public void CheckFrontObject()
     {
         var playerPosition = transform.position;
-        playerPosition.y -= 0.4f;
-        var k = 0.4f;
+        playerPosition.y += 0.06f;
+        var k = 0.294f;
 
-        var temp = transform.position;
-        temp.y -= 0.4f;
         for (int i = 0; i < 3; i++)
         {
             RaycastHit hit;
-            IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0),
-            out hit, 1);
-            Debug.DrawRay(playerPosition,
-      new Vector3(moveX, 0, 0), Color.green);
+            IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0), out hit, 1);
+            Debug.DrawRay(playerPosition, new Vector3(moveX, 0, 0), Color.green);
             if (hit.collider != null)
             {
-                if (hit.transform.CompareTag("Pushable") && isGrounded ||
+                if (hit.transform.CompareTag("Player") ||
+                    (hit.transform.CompareTag("Pushable") && isGrounded) ||
                     hit.transform.CompareTag("Door"))
                 {
                     IsBlocked = false;
@@ -192,14 +161,6 @@ public class PlayerController : MonoBehaviour
             if (IsBlocked)
                 break;
         }
-       // Debug.DrawRay(temp,
-       //new Vector3(moveX, 0, 0), Color.green);
-       // temp.y += k;
-       // Debug.DrawRay(transform.position,
-       //new Vector3(moveX, 0, 0), Color.green);
-       // temp.y += k;
-       // Debug.DrawRay(temp,
-       //    new Vector3(moveX, 0, 0), Color.green);
     }
 
     public void OnGround(bool isGrounded)
@@ -225,7 +186,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (t.phase == TouchPhase.Began&& !EventSystem.current.IsPointerOverGameObject(t.fingerId))
                 {
-                    playerRb.velocity = new Vector3(0, 0, 0);
+                    playerRb.velocity = new Vector3(moveX, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                     SetState(new JumpState(this));
                     if (jumpCount == 1)
@@ -234,6 +195,8 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public void OnAttack(GameObject attacker, Attack attack) => SetState(new HitState(this));
 
     public class IdleState : State
     {
@@ -249,11 +212,6 @@ public class PlayerController : MonoBehaviour
             if (!Mathf.Approximately(playerController.moveX, 0f))
             {
                 playerController.SetState(new MoveState(playerController));
-                return;
-            }
-            else if (Physics.Raycast(playerController.transform.position, new Vector3(playerController.lastMoveX, 0f, 0f), 2, LayerMask.GetMask("Enemy")))
-            {
-                playerController.SetState(new AttackState(playerController));
                 return;
             }
             playerController.Jump();
@@ -333,60 +291,17 @@ public class PlayerController : MonoBehaviour
         public override void Exit() { }
     }
 
-    public class AttackState : State
-    {
-        // for 1st build
-        private float duration = 1f;
-        private float rotateY;
-
-        public AttackState(PlayerController controller) : base(controller) { }
-
-        protected override void Enter()
-        {
-            // attack animation trigger
-            // for 1st build
-            playerController.weapon.Activate(true);
-            duration = 1f;
-            rotateY = -playerController.transform.right.x;
-            playerController.transform.eulerAngles = new Vector3(0f, 90f, 0f);
-        }
-
-        public override void Update()
-        {
-            // for 1st build
-            duration -= Time.deltaTime;
-            playerController.transform.eulerAngles += new Vector3(0f, rotateY * 180f * Time.deltaTime, 0f);
-            if (duration < 0f)
-            {
-                playerController.SetState(new IdleState(playerController));
-                return;
-            }
-            if (!Mathf.Approximately(playerController.moveX, 0f))
-            {
-                playerController.SetState(new MoveState(playerController));
-                return;
-            }
-            playerController.Jump();
-        }
-
-        public override void Exit()
-        {
-            // for 1st build
-            playerController.weapon.Activate(false);
-            if (playerController.lastMoveX < 0)
-                playerController.transform.eulerAngles = new Vector3(0, 180, 0);
-            else
-                playerController.transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-    }
-
     public class HitState : State
     {
         private float hitTimer;
 
         public HitState(PlayerController controller) : base(controller) { }
 
-        protected override void Enter() => hitTimer = 0f;
+        protected override void Enter()
+        {
+            playerController.playerAnimator.SetBool("Hit", true);
+            hitTimer = 0f;
+        }
 
         public override void Update()
         {
@@ -398,6 +313,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        public override void Exit() { }
+        public override void Exit() => playerController.playerAnimator.SetBool("Hit", false);
     }
 }
