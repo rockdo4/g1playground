@@ -7,13 +7,30 @@ using UnityEngine;
 public class DungeonManager : MonoBehaviour
 {
     // Start is called before the first frame update
+    private static DungeonManager m_instance;
+    public static DungeonManager instance
+    {
+        get
+        {
+            if (m_instance == null)
+                m_instance = FindObjectOfType<DungeonManager>();
+            return m_instance;
+        }
+    }
 
     private DataTable<DungeonTable> dungeonTable;
-      
+    public DataTable<DungeonTable> DungeonTable { get { return dungeonTable; }}
+    private string dungeonname;
+    [SerializeField]
+    private Canvas DungeonLevel;
+    [SerializeField]
+    private Canvas DungeonDay;
+
+    private int todayPlayCount;
 
     void Start()
-    {
-       
+    { 
+      
 
     }
 
@@ -24,9 +41,27 @@ public class DungeonManager : MonoBehaviour
 
     }
 
-    public void EnterDungeon(string path)
+    public void SelectDungeonDay(string path)
     {
-        DataTableMgr.Load(dungeonTable, path);
-        
+        dungeonTable = DataTableMgr.Load(dungeonTable, path);
+        DungeonDay.gameObject.SetActive(false);
+        DungeonLevel.gameObject.SetActive(true);
+        SetLevelUi();
     }
+
+    public void JoinDungeon()
+    {
+
+        //write the Dungeon scene name on a table or should I Attach Day and Level names and then change to the attached name scene?
+
+
+
+    }
+
+    private void SetLevelUi()
+    {
+        //search how many unlock level and clickable each level
+    }
+
+   
 }

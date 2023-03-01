@@ -30,7 +30,6 @@ public class DungeonSelect : MonoBehaviour
             transform.Find(tomorrow.ToString()).Find("Lock").Find("Time").gameObject.SetActive(true);
             tomorrowtime = transform.Find(tomorrow.ToString()).Find("Lock").Find("Time").GetComponentInChildren<TextMeshProUGUI>();
         }
-        // Debug.Log( DateTime.Now.Subtract(DateTime.Today));
         remainingtime.Clear();
         remainingtime.Append(DateTime.MaxValue.Subtract(DateTime.Now).Hours.ToString());
         remainingtime.Append(" : ");
