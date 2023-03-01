@@ -11,7 +11,7 @@ public class CharacterStatUI : MonoBehaviour
     public Text mp;
     public Text mHp;
     public Text mMp;
-    public Text level;
+    //public Text level;
 
     public int maxHp = 300;
     public int currHp;
@@ -49,7 +49,7 @@ public class CharacterStatUI : MonoBehaviour
         mMp.text = "/ " + maxMp.ToString();
         mpBar.fillAmount = (float)currMp / (float)maxMp;
 
-        level.text = playerLv.ToString();
+        //level.text = playerLv.ToString();
         expBar.fillAmount = (float)currExp / (float)maxExp;
     }
 

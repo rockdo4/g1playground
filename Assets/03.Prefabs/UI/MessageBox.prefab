@@ -417,7 +417,6 @@ GameObject:
   - component: {fileID: 3027738628125383697}
   - component: {fileID: 3027738628125383706}
   - component: {fileID: 3027738628125383701}
-  - component: {fileID: 3027738628125383700}
   - component: {fileID: 3027738628125383703}
   - component: {fileID: 2028646433}
   m_Layer: 5
@@ -426,7 +425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3027738628125383697
 RectTransform:
   m_ObjectHideFlags: 0
@@ -490,21 +489,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3027738628125383700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3027738628125383696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!114 &3027738628125383703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,11 +515,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupView: {fileID: 3027738628125383696}
-  m_MessageType: {fileID: 0}
-  m_Msg: {fileID: 1464692648409496876}
-  Btn_Exit: {fileID: 0}
-  Btn_OK: {fileID: 2361988474073963531}
-  Btn_Cancle: {fileID: 2546699979269678717}
+  Msg: {fileID: 1464692648409496876}
+  yesBt: {fileID: 2361988474073963531}
+  noBt: {fileID: 2546699979269678717}
 --- !u!1 &3517016825034017465
 GameObject:
   m_ObjectHideFlags: 0

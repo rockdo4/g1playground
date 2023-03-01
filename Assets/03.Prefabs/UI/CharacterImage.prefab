@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3901429456405869663}
   - component: {fileID: 3901429456405869660}
   - component: {fileID: 7161742428369488254}
+  - component: {fileID: 2063034320}
   m_Layer: 5
   m_Name: CharacterImage
   m_TagString: Untagged
@@ -128,8 +129,7 @@ MonoBehaviour:
         m_MethodName: PopUp
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8597598468930869788, guid: 17416a38d9efbb54dbb78b2a46cb11e3,
-            type: 3}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 3901429456405869634}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -170,6 +170,32 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &2063034320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3901429456405869634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4633de3830684f429cc38256251cfab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBar: {fileID: 0}
+  mpBar: {fileID: 0}
+  expBar: {fileID: 0}
+  hp: {fileID: 0}
+  mp: {fileID: 0}
+  mHp: {fileID: 0}
+  mMp: {fileID: 0}
+  maxHp: 300
+  currHp: 0
+  maxMp: 300
+  currMp: 0
+  currExp: 0
+  maxExp: 0
+  playerLv: 0
 --- !u!1 &3901429457779503468
 GameObject:
   m_ObjectHideFlags: 0
