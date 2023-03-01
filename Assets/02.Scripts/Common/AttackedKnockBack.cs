@@ -18,6 +18,7 @@ public class AttackedKnockBack : MonoBehaviour, IAttackable
         var dir = transform.position - attacker.transform.position;
         dir.y += up * dir.magnitude;
         dir.Normalize();
+        rb.velocity = Vector3.zero;
         rb.AddForce(dir * force, ForceMode.Impulse);
     }
 }

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static PlayerController;
 
 public class PlayerController : MonoBehaviour, IAttackable
 {
@@ -14,12 +15,12 @@ public class PlayerController : MonoBehaviour, IAttackable
         public State(PlayerController controller)
         {
             playerController = controller;
-            Enter();
         }
-        protected abstract void Enter();
+        public abstract void Enter();
         public abstract void Update();
         public abstract void Exit();
     }
+    private Dictionary<Type, State> states = new Dictionary<Type, State>();
     public State currState;
     private Rigidbody playerRb;
     private Animator playerAnimator;
@@ -42,11 +43,12 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     public float hitDuration = 0.5f;
 
-    private void SetState(State state)
+    private void SetState<T>() where T : State
     {
         if (currState != null)
             currState.Exit();
-        currState = state;
+        currState = states[typeof(T)];
+        currState.Enter();
     }
 
     private void Awake()
@@ -57,7 +59,12 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     private void Start()
     {
-        SetState(new IdleState(this));
+        states.Add(typeof(IdleState), new IdleState(this));
+        states.Add(typeof(MoveState), new MoveState(this));
+        states.Add(typeof(DashState), new DashState(this));
+        states.Add(typeof(JumpState), new JumpState(this));
+        states.Add(typeof(HitState), new HitState(this));
+        SetState<IdleState>();
     }
 
     private void Update()
@@ -92,9 +99,9 @@ public class PlayerController : MonoBehaviour, IAttackable
         {
             if (jumpCount >= maxJumpCount)
                 return;
-            playerRb.velocity = new Vector3(0, 0, 0);
+            playerRb.velocity = new Vector3(moveX, 0, 0);
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            SetState(new JumpState(this));
+            SetState<JumpState>();
             isGrounded = false;
             jumpCount++;
         }
@@ -132,7 +139,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     public void Dash()
     {
-        SetState(new DashState(this));
+        SetState<DashState>();
         dashDuration = 0.1f;
     }
 
@@ -188,7 +195,7 @@ public class PlayerController : MonoBehaviour, IAttackable
                 {
                     playerRb.velocity = new Vector3(moveX, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                    SetState(new JumpState(this));
+                    SetState<JumpState>();
                     if (jumpCount == 1)
                         jumpCount = 2;
                 }
@@ -196,22 +203,19 @@ public class PlayerController : MonoBehaviour, IAttackable
         }
     }
 
-    public void OnAttack(GameObject attacker, Attack attack) => SetState(new HitState(this));
+    public void OnAttack(GameObject attacker, Attack attack) => SetState<HitState>();
 
     public class IdleState : State
     {
         public IdleState(PlayerController controller) : base(controller) { }
 
-        protected override void Enter()
-        {
-            // idle animation trigger
-        }
+        public override void Enter() { }
 
         public override void Update()
         {
             if (!Mathf.Approximately(playerController.moveX, 0f))
             {
-                playerController.SetState(new MoveState(playerController));
+                playerController.SetState<MoveState>();
                 return;
             }
             playerController.Jump();
@@ -224,16 +228,13 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         public MoveState(PlayerController controller) : base(controller) { }
 
-        protected override void Enter()
-        {
-            // move animation trigger
-        }
+        public override void Enter() { }
 
         public override void Update()
         {
             if (Mathf.Approximately(playerController.moveX, 0f))
             {
-                playerController.SetState(new IdleState(playerController));
+                playerController.SetState<IdleState>();
                 return;
             }
             playerController.Move(playerController.moveSpeed);
@@ -247,9 +248,8 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         public DashState(PlayerController controller) : base(controller) { }
 
-        protected override void Enter()
+        public override void Enter()
         {
-            // dash animation trigger
             playerController.dashTimer = 0f;
         }
 
@@ -258,7 +258,7 @@ public class PlayerController : MonoBehaviour, IAttackable
             playerController.dashTimer += Time.deltaTime;
             if (playerController.dashTimer > playerController.dashDuration)
             {
-                playerController.SetState(new IdleState(playerController));
+                playerController.SetState<IdleState>();
                 return;
             }
             playerController.Move(playerController.dashSpeed);
@@ -272,16 +272,13 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         public JumpState(PlayerController controller) : base(controller) { }
 
-        protected override void Enter()
-        {
-            // jump/fall animation trigger
-        }
+        public override void Enter() { }
 
         public override void Update()
         {
             if (playerController.isGrounded)
             {
-                playerController.SetState(new IdleState(playerController));
+                playerController.SetState<IdleState>();
                 return;
             }
             playerController.Move(playerController.moveSpeed);
@@ -297,7 +294,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public HitState(PlayerController controller) : base(controller) { }
 
-        protected override void Enter()
+        public override void Enter()
         {
             playerController.playerAnimator.SetBool("Hit", true);
             hitTimer = 0f;
@@ -308,7 +305,7 @@ public class PlayerController : MonoBehaviour, IAttackable
             hitTimer += Time.deltaTime;
             if (hitTimer > playerController.hitDuration)
             {
-                playerController.SetState(new IdleState(playerController));
+                playerController.SetState<IdleState>();
                 return;
             }
         }
