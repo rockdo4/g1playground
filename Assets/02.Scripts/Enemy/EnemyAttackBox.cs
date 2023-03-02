@@ -20,7 +20,8 @@ public class EnemyAttackBox : MonoBehaviour
 
     private void OnTriggerExit(Collider collider)
     {
-        enemyController.GetAttackBoxCollExit(collider, boxCollider);
+        if (collider.tag == "Player")
+            enemyController.GetAttackBoxCollExit(collider, boxCollider);
     }
 
 }

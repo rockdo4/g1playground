@@ -84,10 +84,9 @@ public class EnemyController : MonoBehaviour, IAttackable
                 //rb.velocity = Vector3.zero;
                 agent.enabled = true;
             }
-
-            if (prevState == state && State != EnemyState.TakeDamage)
+           
+            if (prevState == state && state == EnemyState.TakeDamage)
                 return;
-
 
             switch (State)
             {
@@ -118,8 +117,9 @@ public class EnemyController : MonoBehaviour, IAttackable
                     takeDamageCoolTime = 0f;
                     break;
                 case EnemyState.Die:
-                    agent.enabled = true;
+                    agent.velocity = Vector3.zero;
                     agent.isStopped = true;
+                    agent.enabled = false;
                     rb.isKinematic = true;
                     break;
 
@@ -175,9 +175,11 @@ public class EnemyController : MonoBehaviour, IAttackable
             case EnemyState.TakeDamage:
                 TakeDamageUpdate();
                 break;
+            case EnemyState.Die:
+                break;
         }
 
-        //Debug.Log(state);
+        Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
@@ -278,36 +280,6 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
     }
 
-    //private void OnTriggerEnter(Collider collider)
-    //{
-    //    if (state == EnemyState.Attack)
-    //        return;
-
-    //    if (attackBoxColl.tag == "HitBox")
-    //    {
-    //        if (collider.tag == "Player")
-    //        {
-    //            State = EnemyState.Attack;
-    //            return;
-    //        }
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider collider)
-    //{
-    //    if (state == EnemyState.Chase)
-    //        return;
-
-    //    if (attackBoxColl.tag == "HitBox")
-    //    {
-    //        if (collider.tag == "Player")
-    //        {
-    //            State = EnemyState.Chase;
-    //            return;
-    //        }
-    //    }
-    //}
-
     private void SaveFloorLength()
     {
         RaycastHit hit;
@@ -377,7 +349,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
     }
 
-    private float takeDamageCool = 0.8f;
+    private float takeDamageCool = 2.8f;
     private float takeDamageCoolTime = 0f;
     public void TakeDamageUpdate()
     {
@@ -412,7 +384,7 @@ public class EnemyController : MonoBehaviour, IAttackable
             return;
         if (state == EnemyState.Attack)
             return;
-        if (attackBoxColl.tag == "AttackBox")
+        //if (attackBoxColl.tag == "AttackBox")
         {
             if (collider.tag == "Player")
             {
