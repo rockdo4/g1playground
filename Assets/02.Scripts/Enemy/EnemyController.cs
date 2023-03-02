@@ -31,10 +31,10 @@ public class EnemyController : MonoBehaviour, IAttackable
     }
 
     private Rigidbody rb;
-    private EnemyState state;
     private NavMeshAgent agent;
     private Animator animator;
-    private BoxCollider hitBoxColl;
+
+    private EnemyState state;
 
     public float chaseSpeed;
     public float patrolSpeed;
@@ -141,10 +141,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     void Start()
     {
-        hitBoxColl = GetComponent<BoxCollider>();
-        hitBoxColl.tag = "HitBox";
         player = GameManager.instance.playerController.gameObject;
-        //player = GameObject.FindWithTag("Player");
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
@@ -277,35 +274,35 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (state == EnemyState.Attack)
-            return;
+    //private void OnTriggerEnter(Collider collider)
+    //{
+    //    if (state == EnemyState.Attack)
+    //        return;
 
-        if (hitBoxColl.tag == "HitBox")
-        {
-            if (collider.tag == "Player")
-            {
-                State = EnemyState.Attack;
-                return;
-            }
-        }
-    }
+    //    if (attackBoxColl.tag == "HitBox")
+    //    {
+    //        if (collider.tag == "Player")
+    //        {
+    //            State = EnemyState.Attack;
+    //            return;
+    //        }
+    //    }
+    //}
 
-    private void OnTriggerExit(Collider collider)
-    {
-        if (state == EnemyState.Chase)
-            return;
+    //private void OnTriggerExit(Collider collider)
+    //{
+    //    if (state == EnemyState.Chase)
+    //        return;
 
-        if (hitBoxColl.tag == "HitBox")
-        {
-            if (collider.tag == "Player")
-            {
-                State = EnemyState.Chase;
-                return;
-            }
-        }
-    }
+    //    if (attackBoxColl.tag == "HitBox")
+    //    {
+    //        if (collider.tag == "Player")
+    //        {
+    //            State = EnemyState.Chase;
+    //            return;
+    //        }
+    //    }
+    //}
 
     private void SaveFloorLength()
     {
@@ -403,5 +400,34 @@ public class EnemyController : MonoBehaviour, IAttackable
     private void EnemyDie()
     {
         gameObject.SetActive(false);
+    }
+
+    public void GetAttackBoxCollEnter(Collider collider, Collider attackBoxColl)
+    {
+        if (state == EnemyState.Attack)
+            return;
+
+        if (attackBoxColl.tag == "AttackBox")
+        {
+            if (collider.tag == "Player")
+            {
+                State = EnemyState.Attack;
+                return;
+            }
+        }
+    }
+    public void GetAttackBoxCollExit(Collider collider, Collider attackBoxColl)
+    {
+        if (state == EnemyState.Chase)
+            return;
+
+        if (attackBoxColl.tag == "AttackBox")
+        {
+            if (collider.tag == "Player")
+            {
+                State = EnemyState.Chase;
+                return;
+            }
+        }
     }
 }
