@@ -141,8 +141,6 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     void Start()
     {
-        hitBoxColl = GetComponent<BoxCollider>();
-        hitBoxColl.tag = "HitBox";
         player = GameManager.instance.player;
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
@@ -180,7 +178,7 @@ public class EnemyController : MonoBehaviour, IAttackable
                 break;
         }
 
-        Debug.Log(state);
+        //Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
@@ -255,8 +253,13 @@ public class EnemyController : MonoBehaviour, IAttackable
         var isGround = player.GetComponent<PlayerController>().isGrounded;
 
         if (!isGround) { return; }
+
+        Vector3 dir = player.transform.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir);
+
         agent.SetDestination(player.transform.position);
-        transform.LookAt(transform.position + agent.desiredVelocity);
+        //transform.LookAt(transform.position + agent.desiredVelocity);
     }
     private void AttackUpdate()
     {
@@ -404,8 +407,10 @@ public class EnemyController : MonoBehaviour, IAttackable
         gameObject.SetActive(false);
     }
 
-    public void GetAttackBoxCollEnter(Collider collider, Collider attackBoxColl)
+    public void GetAttackBoxCollStay(Collider collider, Collider attackBoxColl)
     {
+        if (state == EnemyState.TakeDamage)
+            return;
         if (state == EnemyState.Attack)
             return;
 

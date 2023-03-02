@@ -13,14 +13,14 @@ public class EnemyAttackBox : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnTriggerStay(Collider collider)
     {
-        enemyController.GetAttackBoxCollEnter(collider, boxCollider);
+        enemyController.GetAttackBoxCollStay(collider, boxCollider);
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        enemyController.GetAttackBoxCollEnter(collider, boxCollider);
+        enemyController.GetAttackBoxCollExit(collider, boxCollider);
     }
 
 }
