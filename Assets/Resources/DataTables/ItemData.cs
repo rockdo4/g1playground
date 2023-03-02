@@ -8,24 +8,29 @@ public enum ItemTypes
     Armor,
     Consumable,
 }
+public enum ItemClass
+{
+    Normal,
+    Rare,
+    Unique,
+    Legendary,
+}
 
 public class ItemData : ICSVParsing
 {
     public string id { get; set; }
-    public ItemTypes type;
     public string name; //  ID
     public string desc; //  ID
-    public string iconSpriteId; //  Resources °æ·Î
+    public string iconSpriteId; //  Resources ï¿½ï¿½ï¿½
 
     public Sprite iconSprite;
 
-    public void Parse(Dictionary<string, string> line)
+    public virtual void Parse(Dictionary<string, string> line)
     {
         id = line["ID"];
-        type = (ItemTypes)System.Enum.Parse(typeof(ItemTypes), line["Type"]);
-        name = line["Name"];
-        desc = line["Desc"];
-        iconSpriteId = line["IconSpriteId"];
+        name = line["Name_ID"];
+        desc = line["Desc_ID"];
+        iconSpriteId = line["Icon_ID"];
 
         iconSprite = Resources.Load<Sprite>(iconSpriteId);
     }

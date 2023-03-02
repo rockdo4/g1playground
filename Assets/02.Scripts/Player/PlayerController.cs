@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     public float hitDuration = 0.5f;
 
     private DataTable<WeaponData> weaponData;
+    private DataTable<ArmorData> armorData;
 
     private void SetState(State state)
     {
@@ -63,18 +64,12 @@ public class PlayerController : MonoBehaviour
         weapon.OnCollided = basicAttack.ExecuteAttack;
 
         weaponData = DataTableMgr.GetTable<WeaponData>();
+        armorData = DataTableMgr.GetTable<ArmorData>();
     }
 
     private void Start()
     {
         SetState(new IdleState(this));
-
-        foreach (var i in weaponData.GetAllIds())
-        {
-            Debug.Log(i);
-            var k = weaponData.Get(i);
-            Debug.Log(k.id);
-        }
     }
 
     public void UseSkill()

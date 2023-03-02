@@ -20,11 +20,11 @@ public class CharacterStatUI : MonoBehaviour
 
     private Status status;
 
-    //ÇöÀç
+    //ï¿½ï¿½ï¿½ï¿½
     public int currExp;
-    //·¹º§¾÷¿¡ ÇÊ¿äÇÑ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½
     public int maxExp;
-    //¸ó½ºÅÍ »ç³É½Ã ÇöÀç °æÇèÄ¡ + Áõ°¡·®
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½É½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ + ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private int increaseExp = 15;
 
     public int playerLv;

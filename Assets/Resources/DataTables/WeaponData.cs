@@ -10,24 +10,14 @@ public enum WeaponTypes
     Blunt,
     Spear,
 }
-public enum WeaponClass
+public class WeaponData : ItemData
 {
-    Normal,
-    Rare,
-    Unique,
-    Legendary,
-}
-public class WeaponData : ICSVParsing
-{
-    public string id { get; set; }
-    public WeaponTypes type;
-    public WeaponClass weaponClass;
+    public WeaponTypes weaponType;
+    public ItemClass weaponClass;
     public float attackSpeed;
     public float attackDistance;
     public int reinforce;
     public int maxReinforce;
-    public string name;
-    public string desc;
     public string iconId;
     public int maximumAttack;
 
@@ -43,20 +33,15 @@ public class WeaponData : ICSVParsing
     public float addSkillCriChance;
     public float addSkillCriDamage;
 
-    public Sprite iconSprite;
-
-    public void Parse(Dictionary<string, string> line)
+    public override void Parse(Dictionary<string, string> line)
     {
-        id = line["ID"];
-        type = (WeaponTypes)System.Enum.Parse(typeof(WeaponTypes), line["Type"]);
-        weaponClass = (WeaponClass)System.Enum.Parse(typeof(WeaponClass), line["Class"]);
+        base.Parse(line);
+        weaponType = (WeaponTypes)System.Enum.Parse(typeof(WeaponTypes), line["Type"]);
+        weaponClass = (ItemClass)System.Enum.Parse(typeof(ItemClass), line["Class"]);
         attackSpeed = float.Parse(line["Atk_speed"]);
         attackDistance = float.Parse(line["Atk_Distance"]);
         reinforce = int.Parse(line["Wea_Reinforce"]);
         maxReinforce = int.Parse(line["max_Wea_Reinforce"]);
-        name = line["Name_ID"];
-        desc = line["Desc_ID"];
-        iconId = line["Icon_ID"];
         maximumAttack = int.Parse(line["Maximum_atk"]);
 
         sellable = int.Parse(line["Sellable"]);
@@ -70,7 +55,5 @@ public class WeaponData : ICSVParsing
         addMeleeCriDamage = float.Parse(line["addMeleeCriDamage"]);
         addSkillCriChance = float.Parse(line["addSkillCriChance"]);
         addSkillCriDamage = float.Parse(line["addSkillCriDamage"]);
-
-        iconSprite = Resources.Load<Sprite>(iconId);
     }
 }
