@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DungeonTable : ICSVParsing
+public class DungeonData : ICSVParsing
 {
     public string id { get; set; }
     public string week;

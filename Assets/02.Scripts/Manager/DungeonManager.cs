@@ -18,8 +18,8 @@ public class DungeonManager : MonoBehaviour
         }
     }
 
-    private DataTable<DungeonTable> dungeonTable;
-    public DataTable<DungeonTable> DungeonTable { get { return dungeonTable; }}
+    private DataTable<DungeonData> dungeonTable;
+    public DataTable<DungeonData> DungeonTable { get { return dungeonTable; }}
     private string dungeonname;
     [SerializeField]
     private Canvas DungeonLevel;
