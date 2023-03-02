@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class Projectile : MonoBehaviour
 {
     private Rigidbody rb;
     private GameObject attacker;
     public System.Action<GameObject, GameObject> OnCollided;
-    private Vector3 startPos;
-    private float distance;
+    private float lifeTime;
+    private float timer;
     public string[] detachedEffects;
     public List<GameObject> effects = new List<GameObject>();
     public string hitEffect;
     public string flashEffect;
-    private IObjectPool<Projectile> pool;
-
-    public void SetPool(IObjectPool<Projectile> pool) => this.pool = pool;
+    private bool isPenetrable = false;
+    private bool isReturnable = false;
+    private bool isReturning = false;
+    private List<GameObject> attackedList = new List<GameObject>();
 
     private void Awake()
     {
@@ -27,6 +28,20 @@ public class Projectile : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        timer += Time.deltaTime;
+        if (isReturnable && !isReturning && timer > lifeTime * 0.5f)
+        {
+            isReturning = true;
+            attackedList.Clear();
+            rb.velocity = -rb.velocity;
+            transform.forward = -transform.forward;
+        }
+        if (timer > lifeTime)
+            GameManager.instance.projectileManager.Release(this);
+    }
+
     private void FixedUpdate()
     {
         foreach(var effect in effects)
@@ -34,18 +49,22 @@ public class Projectile : MonoBehaviour
             effect.transform.position = transform.position;
             effect.transform.forward = transform.forward;
         }
-        if (Vector3.Distance(transform.position, startPos) > distance)
-            pool.Release(this);
     }
 
-    public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction, float distance, float speed)
+    public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction, float distance, float lifeTime, bool isPenetrable, bool isReturnable)
     {
+        timer = 0f;
+        isReturning = false;
+        attackedList.Clear();
         this.attacker = attacker;
-        this.startPos = startPos;
-        this.distance = distance;
+        this.lifeTime = lifeTime;
+        this.isPenetrable = isPenetrable;
+        this.isReturnable = isReturnable;
         transform.position = startPos;
         transform.forward = direction;
-        rb.velocity = transform.forward * speed;
+        rb.velocity = distance / lifeTime * transform.forward;
+        if (isReturnable)
+            rb.velocity *= 2f;
 
         if (flashEffect != null)
         {
@@ -67,15 +86,19 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.activeSelf || other.CompareTag(attacker.tag))
+        if (!other.gameObject.activeSelf || other.CompareTag(attacker.tag) || attackedList.Contains(other.gameObject))
             return;
+        var isAttackable = other.CompareTag("Player") || other.CompareTag("Enemy");
         if (OnCollided != null)
+        {
             OnCollided(attacker, other.gameObject);
+            if (isAttackable)
+                attackedList.Add(other.gameObject);
+        }
 
         Vector3 pos = other.ClosestPoint(transform.position);
         Quaternion rot = Quaternion.LookRotation(transform.forward);
         //Vector3 pos = contact.point + contact.normal;
-        rb.velocity = Vector3.zero;
         if (hitEffect != null)
         {
             var hit = GameManager.instance.effectManager.GetEffect(hitEffect);
@@ -94,6 +117,7 @@ public class Projectile : MonoBehaviour
                 GameManager.instance.effectManager.ReturnEffectOnTime(hitEffect, hit, hitPsParts.main.duration);
             }
         }
-        pool.Release(this);
+        if (!isPenetrable || !isAttackable)
+            GameManager.instance.projectileManager.Release(this);
     }
 }

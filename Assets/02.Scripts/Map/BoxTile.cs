@@ -48,6 +48,7 @@ public class BoxTile : MonoBehaviour
             {
                 Debug.Log("push");
                 Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
+                pushDirection.y = 0;
                 pushDirection.z = 0;
                 pushDirection.Normalize();
                 gameObject.GetComponent<Collider>().attachedRigidbody.velocity = pushDirection * pushForce;

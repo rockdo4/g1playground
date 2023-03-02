@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 734586776602143950}
   - component: {fileID: 734586776602143945}
   - component: {fileID: 6688384329773233849}
+  - component: {fileID: 5154164175067982217}
   m_Layer: 9
   m_Name: Death
   m_TagString: Enemy
@@ -128,6 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5b4a2982b5266f4bbe24833e3494d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitBox: {fileID: 5154164175067982217}
   chaseSpeed: 5
   patrolSpeed: 3
   attackRange: 2
@@ -252,6 +254,19 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &5154164175067982217
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106422162610566774}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0939701, z: 1.2215579}
+  m_Center: {x: -0.000000016335022, y: 1.0351826, z: 0.93085146}
 --- !u!1 &504965457161291942
 GameObject:
   m_ObjectHideFlags: 0

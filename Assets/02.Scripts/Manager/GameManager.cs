@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public PlayerController playerController;
     public EffectManager effectManager;
     public UIManager uiManager;
+    public ProjectileManager projectileManager;
 
     private void Awake()
     {
@@ -43,7 +44,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("fuck");
             Respawn();
         }
     }

@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.Rendering.DebugUI;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 
@@ -32,6 +34,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     private EnemyState state;
     private NavMeshAgent agent;
     private Animator animator;
+    private BoxCollider hitBoxColl;
 
     public float chaseSpeed;
     public float patrolSpeed;
@@ -96,7 +99,7 @@ public class EnemyController : MonoBehaviour, IAttackable
                     SaveFloorLength();
                     agent.speed = patrolSpeed;
                     agent.isStopped = false;
-                    rb.isKinematic = false;
+                    rb.isKinematic = true;
                     break;
                 case EnemyState.Chase:
                     agent.speed = chaseSpeed;
@@ -104,12 +107,13 @@ public class EnemyController : MonoBehaviour, IAttackable
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Attack:
+                    agent.velocity = Vector3.zero;
                     agent.isStopped = true;
                     rb.isKinematic = true;
                     break;
                 case EnemyState.TakeDamage:
-                    agent.isStopped = true;
                     agent.velocity = Vector3.zero;
+                    agent.isStopped = true;
                     rb.isKinematic = false;
                     agent.enabled = false;
                     takeDamageCoolTime = 0f;
@@ -137,6 +141,8 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     void Start()
     {
+        hitBoxColl = GetComponent<BoxCollider>();
+        hitBoxColl.tag = "HitBox";
         player = GameManager.instance.playerController.gameObject;
         //player = GameObject.FindWithTag("Player");
         State = EnemyStatePattern[0].state;
@@ -175,14 +181,17 @@ public class EnemyController : MonoBehaviour, IAttackable
                 break;
         }
 
-        //Debug.Log(state);
+        Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
     private void IdleUpdate()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
+        var pos = GetComponent<CapsuleCollider>();
+
+        Ray ray = new Ray(pos.bounds.max, pos.transform.forward);
         RaycastHit hit;
+        //Debug.DrawRay(ray.origin, ray.direction * searchRange, Color.red);
         if (Physics.Raycast(ray, out hit, searchRange))
         {
             if (hit.collider.tag == "Player")
@@ -190,14 +199,16 @@ public class EnemyController : MonoBehaviour, IAttackable
                 State = EnemyState.Chase;
                 return;
             }
-            //isGoingRight = true;
         }
     }
 
     private void PatrolUpdate()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
+        var pos = GetComponent<CapsuleCollider>();
+
+        Ray ray = new Ray(pos.bounds.max, pos.transform.forward);
         RaycastHit hit;
+        //Debug.DrawRay(ray.origin, ray.direction * searchRange, Color.red);
         if (Physics.Raycast(ray, out hit, searchRange))
         {
             if (hit.collider.tag == "Player")
@@ -224,7 +235,6 @@ public class EnemyController : MonoBehaviour, IAttackable
             {
                 transform.rotation = Quaternion.LookRotation(-transform.forward);
                 agent.velocity = Vector3.zero;
-
                 isGoingRight = true;
             }
         }
@@ -232,11 +242,11 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     private void ChaseUpdate()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
-        {
-            State = EnemyState.Attack;
-            return;
-        }
+        //if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
+        //{
+        //    State = EnemyState.Attack;
+        //    return;
+        //}
 
         if (Vector3.Distance(transform.position, player.transform.position) >= searchRange * 3)
         {
@@ -251,8 +261,6 @@ public class EnemyController : MonoBehaviour, IAttackable
     }
     private void AttackUpdate()
     {
-        //var isGround = player.GetComponent<PlayerController>().isGrounded;
-
         if (Vector3.Distance(transform.position, player.transform.position) >= attackRange + 0.5f)
         {
             State = EnemyState.Chase;
@@ -266,6 +274,36 @@ public class EnemyController : MonoBehaviour, IAttackable
         {
             animator.SetTrigger("Attack");
             time = 0f;
+        }
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (state == EnemyState.Attack)
+            return;
+
+        if (hitBoxColl.tag == "HitBox")
+        {
+            if (collider.tag == "Player")
+            {
+                State = EnemyState.Attack;
+                return;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (state == EnemyState.Chase)
+            return;
+
+        if (hitBoxColl.tag == "HitBox")
+        {
+            if (collider.tag == "Player")
+            {
+                State = EnemyState.Chase;
+                return;
+            }
         }
     }
 
