@@ -97,7 +97,7 @@ public class UpDownTile : MonoBehaviour
             blockA.GetComponent<Rigidbody>().MovePosition(rbA.position + Vector3.up * speed * Time.fixedDeltaTime);
             blockB.GetComponent<Rigidbody>().MovePosition(rbB.position + Vector3.down * speed * Time.fixedDeltaTime);
 
-            moveAObjects();
+            //moveAObjects();
         }
         
     }
@@ -112,7 +112,7 @@ public class UpDownTile : MonoBehaviour
             blockA.GetComponent<Rigidbody>().MovePosition(rbA.position + Vector3.down * speed * Time.fixedDeltaTime);
             blockB.GetComponent<Rigidbody>().MovePosition(rbB.position + Vector3.up * speed * Time.fixedDeltaTime);
 
-            moveBObjects();
+            //moveBObjects();
         }
 
     }

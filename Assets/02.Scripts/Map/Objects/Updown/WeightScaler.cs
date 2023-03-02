@@ -39,19 +39,7 @@ public class WeightScaler : MonoBehaviour
     {
         float temp = 0f;
 
-        //foreach (var mass in objects)
-        //{
-        //    if (mass.gameObject.GetComponent<ObjectMass>() != null) 
-        //    {
-
-        //        temp += mass.gameObject.GetComponent<ObjectMass>().Mass;
-        //    }
-            
-        //    //Debug.Log(temp);
-        //    //Debug.Log(mass.mass);
-        //}
         var objs = gameObject.GetComponentsInChildren<ObjectMass>();
-        //Debug.Log(objs.Length);
         
         foreach (var mass in objs)
         {
@@ -65,30 +53,6 @@ public class WeightScaler : MonoBehaviour
         detecter.EnableTrigger();
         //colliderTrigger.enabled = true;
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.tag == "Ground" || other.tag == "Pushable") 
-    //    {
-    //        IsMovAble = false;
-    //        colliderTrigger.enabled = false;
-    //    }
-    //    if (other.tag == "Player" || other.tag == "Pushable") 
-    //    {
-    //        Debug.Log(other.tag);
-    //        IsMovAble = false;
-
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.tag == "Player" || other.tag == "Pushable") 
-    //    {
-    //        IsMovAble = true;
-
-    //    }
-    //}
 
     private void OnCollisionEnter(Collision collision)
     {

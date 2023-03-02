@@ -61,7 +61,7 @@ public class BoxTile : MonoBehaviour
             {
                 IsPushing = true;
                 rigidbody.isKinematic = false;
-                transform.SetParent(null);
+                //transform.SetParent(null);
                 Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
                 pushDirection.y = 0;
                 pushDirection.z = 0;
@@ -76,6 +76,7 @@ public class BoxTile : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            //rigidbody.isKinematic = true;
             //Reset timer to make player has to push again to move the block
 
             timer = 0f;

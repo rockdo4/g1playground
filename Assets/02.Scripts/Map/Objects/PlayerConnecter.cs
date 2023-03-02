@@ -11,7 +11,7 @@ public class PlayerConnecter : MonoBehaviour
         //Debug.Log(gameObject.name);
         if (other.tag == "Pushable" )
         {
-            Debug.Log("connected");
+            //Debug.Log("connected");
             //Debug.Log(other.gameObject.name + " " + gameObject.name);
             //Debug.Log("True");
             other.GetComponent<ObjectMass>().AddMass(player.GetComponent<Rigidbody>().mass);
