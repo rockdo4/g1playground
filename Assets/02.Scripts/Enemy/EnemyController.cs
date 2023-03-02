@@ -107,12 +107,13 @@ public class EnemyController : MonoBehaviour, IAttackable
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Attack:
+                    agent.velocity = Vector3.zero;
                     agent.isStopped = true;
                     rb.isKinematic = true;
                     break;
                 case EnemyState.TakeDamage:
-                    agent.isStopped = true;
                     agent.velocity = Vector3.zero;
+                    agent.isStopped = true;
                     rb.isKinematic = false;
                     agent.enabled = false;
                     takeDamageCoolTime = 0f;
@@ -142,8 +143,8 @@ public class EnemyController : MonoBehaviour, IAttackable
     {
         hitBoxColl = GetComponent<BoxCollider>();
         hitBoxColl.tag = "HitBox";
-        //player = GameManager.instance.playerController.gameObject;
-        player = GameObject.FindWithTag("Player");
+        player = GameManager.instance.playerController.gameObject;
+        //player = GameObject.FindWithTag("Player");
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
@@ -180,14 +181,13 @@ public class EnemyController : MonoBehaviour, IAttackable
                 break;
         }
 
-        //Debug.Log(state);
+        Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
     private void IdleUpdate()
     {
         var pos = GetComponent<CapsuleCollider>();
-
 
         Ray ray = new Ray(pos.bounds.max, pos.transform.forward);
         RaycastHit hit;
@@ -199,14 +199,12 @@ public class EnemyController : MonoBehaviour, IAttackable
                 State = EnemyState.Chase;
                 return;
             }
-            //isGoingRight = true;
         }
     }
 
     private void PatrolUpdate()
     {
         var pos = GetComponent<CapsuleCollider>();
-
 
         Ray ray = new Ray(pos.bounds.max, pos.transform.forward);
         RaycastHit hit;
@@ -237,7 +235,6 @@ public class EnemyController : MonoBehaviour, IAttackable
             {
                 transform.rotation = Quaternion.LookRotation(-transform.forward);
                 agent.velocity = Vector3.zero;
-
                 isGoingRight = true;
             }
         }
@@ -256,9 +253,9 @@ public class EnemyController : MonoBehaviour, IAttackable
             State = EnemyState.Idle;
             return;
         }
-        //var isGround = player.GetComponent<PlayerController>().isGrounded;
+        var isGround = player.GetComponent<PlayerController>().isGrounded;
 
-        //if (!isGround) { return; }
+        if (!isGround) { return; }
         agent.SetDestination(player.transform.position);
         transform.LookAt(transform.position + agent.desiredVelocity);
     }
@@ -282,12 +279,29 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     private void OnTriggerEnter(Collider collider)
     {
+        if (state == EnemyState.Attack)
+            return;
 
         if (hitBoxColl.tag == "HitBox")
         {
             if (collider.tag == "Player")
             {
                 State = EnemyState.Attack;
+                return;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (state == EnemyState.Chase)
+            return;
+
+        if (hitBoxColl.tag == "HitBox")
+        {
+            if (collider.tag == "Player")
+            {
+                State = EnemyState.Chase;
                 return;
             }
         }
