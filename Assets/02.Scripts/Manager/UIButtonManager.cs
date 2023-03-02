@@ -11,6 +11,7 @@ public class UIButtonManager : MonoBehaviour
 
     public GameObject[] buttons;
     public GameObject[] popUps;
+    public GameObject exitMessage;
 
     private void Awake()
     {
@@ -22,11 +23,27 @@ public class UIButtonManager : MonoBehaviour
         {
             CheckArea();
         }
+
+
+        if (GameManager.instance.uiManager.popupStack.Count > 0 && Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.instance.uiManager.popupStack.Clear();
+            foreach (var popup in popUps)
+            {
+                popup.gameObject.SetActive(false);
+            }
+            
+        }
+
+        else if (GameManager.instance.uiManager.popupStack.Count == 0 && Input.GetKeyDown(KeyCode.Escape))
+        {
+            exitMessage.SetActive(true);
+        }
     }
 
     public void OnApplicationQuit()
     {
-        Application.Quit();
+        
     }
 
     public void PopUp(GameObject popup)
@@ -34,10 +51,12 @@ public class UIButtonManager : MonoBehaviour
         if (!popup.gameObject.activeSelf)
         {
             popup.gameObject.SetActive(true);
+            GameManager.instance.uiManager.AddPopUp(popup);
         }
         else
         {
             popup.gameObject.SetActive(false);
+            GameManager.instance.uiManager.RemovePopUp();
             Time.timeScale = 1f;
         }
     }

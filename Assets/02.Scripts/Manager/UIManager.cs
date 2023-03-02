@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance;
-
     public UIButtonManager btManager;
+    public UIPopupManager popupManager;
     public CharacterStatUI charStatUI;
 
-    private void Awake()
+    public Stack<GameObject> popupStack;
+
+    private void Start()
     {
-        instance = this;
+        popupStack = new Stack<GameObject>();
     }
+
     public void PlayerHpBar(int maxhp, int currhp)
     {
         charStatUI.maxHp = maxhp;
         charStatUI.currHp = currhp;
+    }
+
+    public void AddPopUp(GameObject popup)
+    {
+        popupStack.Push(popup);
+    }
+
+    public void RemovePopUp()
+    {
+        popupStack.Pop();
     }
 }
