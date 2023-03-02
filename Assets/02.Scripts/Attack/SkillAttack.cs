@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class SkillAttack : AttackDefinition
 {
-    public float damageFigure = 1.2f;
-    public float criticalChance = 0.5f;
-    public float criticalDamage = 2f;
-    public float range = 10f;
-    public float speed = 5f;
-    public bool isStunnable = true;
-    public float stunTime = 2f;
-    public float CoolDown = 3f;
+    public int reqMana;
+    public float damageFigure;
+    public float criticalChance;
+    public float criticalDamage;
+    public float range;
+    public float lifeTime;
+    public bool isKnockbackable;
+    public bool isStunnable;
+    public float stunTime;
+    public float CoolDown;
 
     public void SetSkill(string id)
     {
