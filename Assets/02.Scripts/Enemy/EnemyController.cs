@@ -141,8 +141,6 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     void Start()
     {
-        hitBoxColl = GetComponent<BoxCollider>();
-        hitBoxColl.tag = "HitBox";
         player = GameManager.instance.player;
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;

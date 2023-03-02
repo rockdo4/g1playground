@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
-    private int str;
-    private int dex;
-    //private int int;
-    private int atkPower;
-    public int skillPower;
-    public float criticalChance;
-    public float criticalDamage;
-    public int defense;
-    public int maxHp;
-    public int maxMp;
+    public string id;
+    protected int str;
+    protected int dex;
+    protected int intel;
+    protected int atkPower = 10;
+    protected int skillPower = 20;
+    protected float criticalChance = 0.5f;
+    protected float criticalDamage = 1f;
+    protected int defense = 2;
+    protected int maxHp = 1000;
+    protected int maxMp = 1000;
 
     public virtual int Str { get; protected set; }
     public virtual int Dex { get; protected set; }
@@ -28,15 +29,15 @@ public class Status : MonoBehaviour
     public int currHp;
     public int currMp;
 
-    public void LoadFromTable(string id)
+    public void LoadFromTable()
     {
-        // load from table
+
     }
 
     private void Start()
     {
         //load from dataTable, virtual / player dmg += weapon, player defense += armor
-        currHp = MaxHp;
-        currMp = MaxMp;
+        currHp = 1000;
+        currMp = 1000;
     }
 }
