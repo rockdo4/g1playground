@@ -2400,12 +2400,12 @@ PrefabInstance:
         type: 3}
       propertyPath: buttons.Array.data[18]
       value: 
-      objectReference: {fileID: 7161742428192102542}
+      objectReference: {fileID: 0}
     - target: {fileID: 1246018887048515679, guid: 0851c0a6805a5284fbea316484ab5142,
         type: 3}
       propertyPath: buttons.Array.data[19]
       value: 
-      objectReference: {fileID: 2672784007368024215}
+      objectReference: {fileID: 0}
     - target: {fileID: 1246018887048515679, guid: 0851c0a6805a5284fbea316484ab5142,
         type: 3}
       propertyPath: buttons.Array.data[20]
@@ -15034,6 +15034,7 @@ MonoBehaviour:
   playerController: {fileID: 1816301651}
   effectManager: {fileID: 1681771832}
   uiManager: {fileID: 571747564}
+  projectileManager: {fileID: 0}
 --- !u!4 &746880859
 Transform:
   m_ObjectHideFlags: 0
@@ -40726,12 +40727,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2133068914}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2672784007368024215 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1069931874203623745, guid: 00f43e2ece1935d41991954295923c74,
-    type: 3}
-  m_PrefabInstance: {fileID: 3156614020472127958}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3156614020472127958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41189,6 +41184,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: InGame UI
       objectReference: {fileID: 0}
+    - target: {fileID: 5582451736187957016, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5582451736187957016, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5582451736187957016, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5582451736187957016, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9118025743255644050, guid: 00f43e2ece1935d41991954295923c74,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
@@ -41205,12 +41220,6 @@ GameObject:
 --- !u!1 &7161742427922740719 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5236865516952351801, guid: 00f43e2ece1935d41991954295923c74,
-    type: 3}
-  m_PrefabInstance: {fileID: 3156614020472127958}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7161742428192102542 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5236865517221419352, guid: 00f43e2ece1935d41991954295923c74,
     type: 3}
   m_PrefabInstance: {fileID: 3156614020472127958}
   m_PrefabAsset: {fileID: 0}
