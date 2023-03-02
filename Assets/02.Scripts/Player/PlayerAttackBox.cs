@@ -21,7 +21,7 @@ public class PlayerAttackBox : MonoBehaviour
     private IEnumerator CoExecuteAttack()
     {
         isAttacking = true;
-        yield return null;
+        yield return new WaitForFixedUpdate();
         isAttacking = false;
     }
 }

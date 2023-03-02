@@ -85,7 +85,7 @@ public class EnemyController : MonoBehaviour, IAttackable
                 agent.enabled = true;
             }
 
-            if (prevState == state)
+            if (prevState == state && State != EnemyState.TakeDamage)
                 return;
 
 
@@ -112,7 +112,6 @@ public class EnemyController : MonoBehaviour, IAttackable
                     rb.isKinematic = true;
                     break;
                 case EnemyState.TakeDamage:
-                    agent.velocity = Vector3.zero;
                     agent.isStopped = true;
                     rb.isKinematic = false;
                     agent.enabled = false;
@@ -413,7 +412,6 @@ public class EnemyController : MonoBehaviour, IAttackable
             return;
         if (state == EnemyState.Attack)
             return;
-
         if (attackBoxColl.tag == "AttackBox")
         {
             if (collider.tag == "Player")
