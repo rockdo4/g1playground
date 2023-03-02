@@ -12,6 +12,8 @@ public class DataTableMgr
     {
         tables.Add(typeof(WeaponData), new DataTable<WeaponData>("DataTables/WeaponTable"));
         tables.Add(typeof(ArmorData), new DataTable<ArmorData>("DataTables/ArmorTable"));
+        tables.Add(typeof(PlayerData), new DataTable<PlayerData>("DataTables/PlayerTableTemp"));
+        tables.Add(typeof(EnemyData), new DataTable<EnemyData>("DataTables/EnemyTableTemp"));
 
         //tables.Add(typeof(SkillData), new DataTable<SkillData>("DataTables/SkillTable"));
 

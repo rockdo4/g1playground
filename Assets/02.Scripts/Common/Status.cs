@@ -1,43 +1,84 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Status : MonoBehaviour
 {
-    public string id;
-    protected int str;
-    protected int dex;
-    protected int intel;
-    protected int atkPower = 10;
-    protected int skillPower = 20;
-    protected float criticalChance = 0.5f;
-    protected float criticalDamage = 1f;
-    protected int defense = 2;
-    protected int maxHp = 1000;
-    protected int maxMp = 1000;
+    public enum Types
+    {
+        Player,
+        Monster,
+    }
+    public struct Value
+    {
+        public int str;
+        public int dex;
+        public int intel;
+        public int atkPower;
+        public int skillPower;
+        public float criticalChance;
+        public float criticalDamage;
+        public int defense;
+        public int maxHp;
+        public int maxMp;
 
-    public virtual int Str { get; protected set; }
-    public virtual int Dex { get; protected set; }
-    public virtual int Int { get; protected set; }
-    public virtual int AtkPower { get; protected set; }
-    public virtual int SkillPower { get; protected set; }
-    public virtual float CriticalChance { get; protected set; }
-    public virtual float CriticalDamage { get; protected set; }
-    public virtual int Defense { get; protected set; }
-    public virtual int MaxHp { get; protected set; }
-    public virtual int MaxMp { get; protected set; }
+        public static Value operator+(Value lhs, Value rhs)
+        {
+            Value newValue;
+            newValue.str = lhs.str + rhs.str;
+            newValue.dex = lhs.dex + rhs.dex;
+            newValue.intel = lhs.intel + rhs.intel;
+            newValue.atkPower = lhs.atkPower + rhs.atkPower;
+            newValue.skillPower = lhs.skillPower + rhs.skillPower;
+            newValue.criticalChance = lhs.criticalChance + rhs.criticalChance;
+            newValue.criticalDamage = lhs.criticalDamage + rhs.criticalDamage;
+            newValue.defense = lhs.defense + rhs.defense;
+            newValue.maxHp = lhs.maxHp + rhs.maxHp;
+            newValue.maxMp = lhs.maxMp + rhs.maxMp;
+            return newValue;
+        }
+    }
+
+    public Types type;
+    public string id;
+    private Value defaultValue;
+    public Value FinalValue { get; private set; }
     public int currHp;
     public int currMp;
 
-    public void LoadFromTable()
-    {
-
-    }
-
     private void Start()
     {
-        //load from dataTable, virtual / player dmg += weapon, player defense += armor
-        currHp = 1000;
-        currMp = 1000;
+        LoadFromTable();
+        currHp = FinalValue.maxHp;
+        currMp = FinalValue.maxMp;
     }
+
+    private void LoadFromTable()
+    {
+        StatusData data = null;
+        switch (type)
+        {
+            case Types.Player:
+                data = DataTableMgr.GetTable<PlayerData>().Get(id);
+                break;
+            case Types.Monster:
+                data = DataTableMgr.GetTable<EnemyData>().Get(id);
+                break;
+        }
+        defaultValue.str = data.str;
+        defaultValue.dex = data.dex;
+        defaultValue.intel = data.intel;
+        defaultValue.atkPower = data.attackPower;
+        defaultValue.skillPower = data.skillPower;
+        defaultValue.criticalChance = data.criticalChance;
+        defaultValue.criticalDamage = data.criticalDamage;
+        defaultValue.defense = data.defense;
+        defaultValue.maxHp = data.maxHp;
+        defaultValue.maxMp = data.maxMp;
+        FinalValue = defaultValue;
+    }
+
+    public void AddValue(Value addValue) => FinalValue = defaultValue + addValue;
 }

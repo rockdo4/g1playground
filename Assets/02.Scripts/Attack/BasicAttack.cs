@@ -6,10 +6,10 @@ public class BasicAttack : AttackDefinition
 {
     public override Attack CreateAttack(Status attacker, Status defenser)
     {
-        var isCritical = Random.value < attacker.CriticalChance;
-        float damage = attacker.AtkPower;
+        var isCritical = Random.value < attacker.FinalValue.criticalChance;
+        float damage = attacker.FinalValue.atkPower;
         if (isCritical)
-            damage *= attacker.CriticalDamage;
+            damage *= attacker.FinalValue.criticalDamage;
         return new Attack((int)damage);
     }
 
