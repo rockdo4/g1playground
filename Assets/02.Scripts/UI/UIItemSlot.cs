@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class UIItemSlot : MonoBehaviour
 {
+    public int index;
     public Image icon;
     public Button button;
 
@@ -19,8 +20,9 @@ public class UIItemSlot : MonoBehaviour
         icon.sprite = null;
     }
 
-    public void Set(ItemData data)
+    public void Set(int index, ItemData data)
     {
+        this.index = index;
         this.data = data;
         button.interactable = true;
         icon.sprite = data.iconSprite;

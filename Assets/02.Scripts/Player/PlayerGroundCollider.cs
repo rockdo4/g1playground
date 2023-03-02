@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class PlayerGroundCollider : MonoBehaviour
 {
+    private PlayerController playerController;
+
+    private void Start()
+    {
+        playerController = GetComponentInParent<PlayerController>();
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Ground") || other.CompareTag("Pushable")) 
-            GameManager.instance.playerController.OnGround(true);
+            playerController.OnGround(true);
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Ground") || other.CompareTag("Pushable"))
         {
-            GameManager.instance.playerController.OnGround(false);
+            playerController.OnGround(false);
         }
     }
 }
