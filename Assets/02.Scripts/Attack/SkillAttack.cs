@@ -22,12 +22,12 @@ public class SkillAttack : AttackDefinition
 
     public override Attack CreateAttack(Status attacker, Status defenser)
     {
-        var criticalChance = attacker.CriticalChance + this.criticalChance;
+        var criticalChance = attacker.FinalValue.criticalChance + this.criticalChance;
         var isCritical = Random.value < criticalChance;
-        float damage = attacker.SkillPower;
+        float damage = attacker.FinalValue.skillPower;
         if (isCritical)
         {
-            damage *= (attacker.CriticalDamage + this.criticalDamage);  // temporary
+            damage *= (attacker.FinalValue.criticalDamage + this.criticalDamage);  // temporary
         }
         return new Attack((int)damage);
     }

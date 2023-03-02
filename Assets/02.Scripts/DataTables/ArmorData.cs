@@ -15,6 +15,7 @@ public class ArmorData : ItemData
     public int addStr;
     public int addDex;
     public int addInt;
+    public int addDef;
 
     public override void Parse(Dictionary<string, string> line)
     {
@@ -28,5 +29,6 @@ public class ArmorData : ItemData
         addStr = int.Parse(line["addStr"]);
         addDex = int.Parse(line["addDex"]);
         addInt = int.Parse(line["addInt"]);
+        addDef = int.Parse(line["addDef"]);
     }
 }
