@@ -14,11 +14,11 @@ public class LoadMessageBox : MonoBehaviour
     public static LoadMessageBox instance;
     public static event EventHandler<PopupCheckConfirmEventArgs> ConfirmEvent;
 
-    public enum MsgType { notice, error, warning, exit };
+    public enum MsgType { Notice, Error, Warning, Exit };
 
     public GameObject popupView;
     
-    public TextMeshProUGUI Msg;
+    public TextMeshProUGUI msg;
     public Button yesBt;
     public Button noBt;
 
@@ -39,7 +39,7 @@ public class LoadMessageBox : MonoBehaviour
         {
             Application.Quit();
         }
-        instance.PopupCheckWindowOpen(action, "Exit", MsgType.exit, "종료 하시겠습니까?");
+        instance.PopupCheckWindowOpen(action, "Exit", MsgType.Exit, "종료 하시겠습니까?");
     }
 
     public void PopupCheckWindowOpen(UnityEngine.Events.UnityAction action, string actionName, MsgType msgtype, string msg)
@@ -57,25 +57,25 @@ public class LoadMessageBox : MonoBehaviour
     }
 
 
-    public void PopupWindowOpen(MsgType msgtype, string msg)
+    public void PopupWindowOpen(MsgType msgtype, string msgText)
     {
         popupView.SetActive(true);
 
-        if (msgtype == MsgType.error)
+        if (msgtype == MsgType.Error)
         {
-            Msg.text = msg;
+            msg.text = msgText;
         }
-        else if (msgtype == MsgType.warning)
+        else if (msgtype == MsgType.Warning)
         {
-            Msg.text = msg;
+            msg.text = msgText;
         }
-        else if (msgtype == MsgType.exit)
+        else if (msgtype == MsgType.Exit)
         {
-            Msg.text = msg;
+            msg.text = msgText;
         }
         else
         {
-            Msg.text = msg;
+            msg.text = msgText;
         }
     }
 }
