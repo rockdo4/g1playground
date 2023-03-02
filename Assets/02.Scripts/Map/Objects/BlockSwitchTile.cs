@@ -14,9 +14,9 @@ public class BlockSwitchTile : MonoBehaviour
     private Animator animator;
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private BSwitchType type;
-    [SerializeField] private float fadeTimer = 0.5f;
+    //[SerializeField] private float fadeTimer = 0.5f;
 
-    bool isActive = false;
+    //bool isActive = false;
 
     private bool isTriggered;
     public bool IsTriggered { get { return isTriggered; } set { isTriggered = this; } }

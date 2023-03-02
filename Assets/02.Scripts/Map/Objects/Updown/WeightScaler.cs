@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WeightScaler : MonoBehaviour
 {
-    [SerializeField] private Collider colliderTrigger;
+    [SerializeField] private UpDownDetecter detecter;
     
     private float calculatedMass;
     public float CalculatedMass { get { return calculatedMass; } set { calculatedMass = value; } }
@@ -39,39 +39,63 @@ public class WeightScaler : MonoBehaviour
     {
         float temp = 0f;
 
-        foreach (var mass in objects)
+        //foreach (var mass in objects)
+        //{
+        //    if (mass.gameObject.GetComponent<ObjectMass>() != null) 
+        //    {
+
+        //        temp += mass.gameObject.GetComponent<ObjectMass>().Mass;
+        //    }
+            
+        //    //Debug.Log(temp);
+        //    //Debug.Log(mass.mass);
+        //}
+        var objs = gameObject.GetComponentsInChildren<ObjectMass>();
+        //Debug.Log(objs.Length);
+        
+        foreach (var mass in objs)
         {
-            temp += mass.mass;
-            //Debug.Log(temp);
-            //Debug.Log(mass.mass);
+            temp += mass.Mass;
         }
         CalculatedMass = temp;
     }
 
     public void EnableTrigger()
-    { 
-        colliderTrigger.enabled = true;
+    {
+        detecter.EnableTrigger();
+        //colliderTrigger.enabled = true;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Ground")
-        {
-            IsMovAble = false;
-            colliderTrigger.enabled = false;
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Ground" || other.tag == "Pushable") 
+    //    {
+    //        IsMovAble = false;
+    //        colliderTrigger.enabled = false;
+    //    }
+    //    if (other.tag == "Player" || other.tag == "Pushable") 
+    //    {
+    //        Debug.Log(other.tag);
+    //        IsMovAble = false;
+
+    //    }
+    //}
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.tag == "Player" || other.tag == "Pushable") 
+    //    {
+    //        IsMovAble = true;
+
+    //    }
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {
         
         if (collision.rigidbody != null)
         {
-            if (collision.gameObject.tag == "Pushable")
-            {
-                Debug.Log("Tag");
-                collision.gameObject.GetComponent<BoxTile>().IsConnected = true;
-            }
+            
             collision.transform.SetParent(transform);
 
             
@@ -80,7 +104,14 @@ public class WeightScaler : MonoBehaviour
                 //CalculatedMass += collision.rigidbody.mass;
                 objects.Add(collision.rigidbody);
             }
-            
+
+            if (collision.gameObject.tag == "Pushable" && !collision.gameObject.GetComponent<BoxTile>().IsPushing)
+            {
+                
+                collision.rigidbody.isKinematic = true;
+                collision.gameObject.GetComponent<BoxTile>().IsConnected = true;
+            }
+
         }
     }
 
@@ -92,8 +123,11 @@ public class WeightScaler : MonoBehaviour
             {
                 collision.gameObject.GetComponent<BoxTile>().IsConnected = false;
             }
-            collision.transform.SetParent(null);
-
+            //collision.transform.SetParent(null);
+            if (collision.gameObject.tag == "Player")
+            {
+                collision.transform.SetParent(null);
+            }
 
             if (objects.Contains(collision.rigidbody))
             {

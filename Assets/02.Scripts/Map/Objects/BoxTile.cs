@@ -5,9 +5,9 @@ using UnityEngine;
 public class BoxTile : MonoBehaviour
 {
     private new Rigidbody rigidbody;
-    public Collider colliderTrigger;
+    //public Collider colliderTrigger;
     private float originMass;
-    public GameObject connectedObject;
+    //public GameObject connectedObject;
 
     [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
@@ -16,11 +16,15 @@ public class BoxTile : MonoBehaviour
 
     public bool IsConnected { get; set; }
 
+    public bool IsPushing { get; set; }
+
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         originMass = rigidbody.mass;
         IsConnected = false;
+        IsPushing = false;
+        //gameObject.GetComponent<ObjectMass>().Mass = rigidbody.mass;
     }
 
     public void AddMass(float mass)
@@ -33,39 +37,18 @@ public class BoxTile : MonoBehaviour
         rigidbody.mass = originMass;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void MoveBlock(Vector3 dir, float speed)
     {
-        if (other.tag == "Pushable")
-        {
-            //Debug.Log("True");
-            if (other.gameObject.GetComponent<BoxTile>().IsConnected)
-            {
-                Debug.Log(other.gameObject .name+ " "+gameObject.name);
-                //Debug.Log("True");
-                other.gameObject.GetComponent<BoxTile>().AddMass(rigidbody.mass);
-                IsConnected = other.GetComponent<BoxTile>().IsConnected;
-                connectedObject = other.gameObject;
-                //if (connectedObject == null)
-                //{
-                    
-                //}
-                
-            }
-           
-        }
+
+        gameObject.GetComponent<Rigidbody>().MovePosition(gameObject.GetComponent<Rigidbody>().position + dir * speed * Time.fixedDeltaTime);
     }
 
-    private void OnTriggerExit(Collider other)
+    public void SetKinematic(bool isKinematic)
     {
-        if (other.tag == "Pushable")
-        {
-            //transform.SetParent(null);
-            //other.gameObject.transform.SetParent(null);
-            other.GetComponent<BoxTile>().RemoveMass();
-            IsConnected = false;
-            connectedObject = null;
-        }
+        rigidbody.isKinematic = isKinematic;
     }
+
+
 
     private void OnCollisionStay(Collision collision)
     {
@@ -76,7 +59,11 @@ public class BoxTile : MonoBehaviour
 
             if (timer >= pushTime)
             {
+                IsPushing = true;
+                rigidbody.isKinematic = false;
+                transform.SetParent(null);
                 Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
+                pushDirection.y = 0;
                 pushDirection.z = 0;
                 pushDirection.Normalize();
                 gameObject.GetComponent<Collider>().attachedRigidbody.velocity = pushDirection * pushForce;

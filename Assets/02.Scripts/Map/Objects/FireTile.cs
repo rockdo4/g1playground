@@ -6,7 +6,7 @@ public class FireTile : MonoBehaviour
 {
     //give damage to player every hitRate sec
     [SerializeField] private float hitRate = 0.5f;
-    [SerializeField] private float damage = 1f;
+    [SerializeField] private int damage = 1;
 
     private float timer;
 
@@ -24,6 +24,11 @@ public class FireTile : MonoBehaviour
         if (other.tag == "Player" && timer >= hitRate)
         {
             timer = 0f;
+            var stat = other.GetComponent<Status>();
+            if (stat != null)
+            {
+                stat.currHp -= damage;
+            }
             //use player onHit here
 
             //
