@@ -10,7 +10,9 @@ public class DataTableMgr
 
     public static void LoadAll()
     {
-        tables.Add(typeof(ItemData), new DataTable<ItemData>("DataTables/ItemTable"));
+        tables.Add(typeof(WeaponData), new DataTable<WeaponData>("DataTables/WeaponTable"));
+        tables.Add(typeof(ArmorData), new DataTable<ArmorData>("DataTables/ArmorTable"));
+
         //tables.Add(typeof(SkillData), new DataTable<SkillData>("DataTables/SkillTable"));
 
         isLoaded = true;
