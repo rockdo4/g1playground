@@ -48,26 +48,27 @@ public class BoxTile : MonoBehaviour
         rigidbody.isKinematic = isKinematic;
     }
 
-
-
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
-
+            Debug.DrawRay(transform.position, Vector3.up, Color.green);
             if (timer >= pushTime)
             {
-                IsPushing = true;
-                rigidbody.isKinematic = false;
-                //transform.SetParent(null);
-                Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
-                pushDirection.y = 0;
-                pushDirection.z = 0;
-                pushDirection.Normalize();
-                gameObject.GetComponent<Collider>().attachedRigidbody.velocity = pushDirection * pushForce;
-                
+                if (!Physics.Raycast(transform.position, Vector3.up, 1f, LayerMask.GetMask("Player")))
+                {
+                    Debug.Log("ray");
+                    IsPushing = true;
+                    rigidbody.isKinematic = false;
+                    //transform.SetParent(null);
+                    Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
+                    pushDirection.y = 0;
+                    pushDirection.z = 0;
+                    pushDirection.Normalize();
+                    gameObject.GetComponent<Collider>().attachedRigidbody.velocity = pushDirection * pushForce;
+                }               
             }
         }
     }
