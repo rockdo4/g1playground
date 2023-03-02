@@ -2000,6 +2000,7 @@ GameObject:
   - component: {fileID: 7063421679481998300}
   - component: {fileID: 280082118}
   - component: {fileID: 280082119}
+  - component: {fileID: 388777449}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -2175,6 +2176,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basicAttack: {fileID: 11400000, guid: 76f9362697e47d84a94c889418d2d2df, type: 2}
   attackBox: {fileID: 250231273}
+--- !u!114 &388777449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7063421679481998240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba27b3d651054ff448491bd377d542c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - 1
+  armors: []
 --- !u!1 &7063421679712257275
 GameObject:
   m_ObjectHideFlags: 0
@@ -2276,7 +2292,6 @@ GameObject:
   - component: {fileID: 7063421681145087258}
   - component: {fileID: 7063421681145087259}
   - component: {fileID: 7063421681145087256}
-  - component: {fileID: 7063421681145087257}
   m_Layer: 6
   m_Name: GroundCollider
   m_TagString: Player
@@ -2324,19 +2339,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145f2d83669fb094e9e5dd60cc0a3fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!54 &7063421681145087257
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7063421681145087262}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
