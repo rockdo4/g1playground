@@ -137,7 +137,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     void Start()
     {
-        player = GameManager.instance.playerController.gameObject;
+        player = GameManager.instance.player;
         //player = GameObject.FindWithTag("Player");
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;

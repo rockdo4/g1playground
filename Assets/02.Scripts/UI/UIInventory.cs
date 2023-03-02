@@ -10,7 +10,9 @@ public class UIInventory : MonoBehaviour
     public RectTransform content;
 
     private List<UIItemSlot> slotList = new List<UIItemSlot>();
+    private PlayerInventory playerInventory;
     private DataTable<ItemData> itemTable;
+    public ItemTypes itemType;
     //private DataTable<SkillData> skillTable;
 
     public UIItemInfo itemInfo;
@@ -19,6 +21,11 @@ public class UIInventory : MonoBehaviour
     {
         itemTable = DataTableMgr.GetTable<ItemData>();
         //skillTable = DataTableMgr.GetTable<SkillData>();
+    }
+
+    private void Start()
+    {
+        playerInventory = GameManager.instance.player.GetComponent<PlayerInventory>();
     }
 
     public void OnEnable()
@@ -37,11 +44,27 @@ public class UIInventory : MonoBehaviour
             var button = slot.GetComponent<Button>();
             button.onClick.AddListener(() => itemInfo.Set(slot.Data));
         }
-        var itemIds = itemTable.GetAllIds();
-        for (int i = 0; i < 50; ++i)
+        SetInventory((int)itemType);
+    }
+
+    public void SetInventory(int itemType)
+    {
+        string[] ids = null;
+        switch ((ItemTypes)itemType)
         {
-            var index = Random.Range(0, itemIds.Count);
-            slotList[i].Set(itemTable.Get(itemIds[index]));
+            case ItemTypes.Weapon:
+                ids = playerInventory.weapons;
+                break;
+            case ItemTypes.Armor:
+                ids = playerInventory.armors;
+                break;
+            case ItemTypes.Consumable:
+                // consumable
+                break;
+        }
+        for (int i = 0; i < slotCount; ++i)
+        {
+            slotList[i].Set(i, itemTable.Get(ids[i]));
         }
     }
 }

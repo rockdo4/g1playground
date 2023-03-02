@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public PlayerController playerController;
+    public GameObject player;
     public EffectManager effectManager;
     public ProjectileManager projectileManager;
 
