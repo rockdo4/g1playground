@@ -253,8 +253,13 @@ public class EnemyController : MonoBehaviour, IAttackable
         var isGround = player.GetComponent<PlayerController>().isGrounded;
 
         if (!isGround) { return; }
+
+        Vector3 dir = player.transform.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir);
+
         agent.SetDestination(player.transform.position);
-        transform.LookAt(transform.position + agent.desiredVelocity);
+        //transform.LookAt(transform.position + agent.desiredVelocity);
     }
     private void AttackUpdate()
     {
@@ -402,8 +407,10 @@ public class EnemyController : MonoBehaviour, IAttackable
         gameObject.SetActive(false);
     }
 
-    public void GetAttackBoxCollEnter(Collider collider, Collider attackBoxColl)
+    public void GetAttackBoxCollStay(Collider collider, Collider attackBoxColl)
     {
+        if (state == EnemyState.TakeDamage)
+            return;
         if (state == EnemyState.Attack)
             return;
 

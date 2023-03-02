@@ -386,18 +386,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5b4a2982b5266f4bbe24833e3494d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseSpeed: 5
-  patrolSpeed: 3
+  chaseSpeed: 0
+  patrolSpeed: 0
   attackRange: 2
   searchRange: 7
-  attackCool: 2
+  attackCool: 3
   basicAttack: {fileID: 11400000, guid: ce9a528c46b70ec4ea31256e7df76c9f, type: 2}
   status: {fileID: 2340254287008586394}
   EnemyStatePattern:
   - state: 1
-    second: 3
-  - state: 3
-    second: 3
+    second: 4
 --- !u!114 &2340254287008586394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,8 +441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a45da68ca56f0b44cac1acb8750c7131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  up: 1
-  force: 7
+  up: 0
+  force: 0
 --- !u!114 &2340254287008586399
 MonoBehaviour:
   m_ObjectHideFlags: 0
