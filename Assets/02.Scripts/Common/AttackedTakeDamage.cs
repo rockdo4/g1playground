@@ -11,7 +11,7 @@ public class AttackedTakeDamage : MonoBehaviour, IAttackable
         stat = GetComponent<Status>();
     }
 
-    public void OnAttack(GameObject attacker, Attack attack)
+    public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
         stat.currHp -= attack.Damage;
         if (stat.currHp <= 0)

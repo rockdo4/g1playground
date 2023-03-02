@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         }
     }
 
-    public void OnAttack(GameObject attacker, Attack attack) => SetState<HitState>();
+    public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos) => SetState<HitState>();
 
     public class IdleState : State
     {

@@ -370,7 +370,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
                     if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
                     {
-                        basicAttack.ExecuteAttack(gameObject, player.gameObject);
+                        basicAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
                         return;
                     }
                 }
@@ -390,7 +390,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
     }
 
-    public void OnAttack(GameObject attacker, Attack attack)
+    public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
         State = EnemyState.TakeDamage;
         animator.SetTrigger("TakeDamage");

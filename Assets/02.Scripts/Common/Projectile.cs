@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
 {
     private Rigidbody rb;
     private GameObject attacker;
-    public System.Action<GameObject, GameObject> OnCollided;
+    public System.Action<GameObject, GameObject, Vector3> OnCollided;
     private float lifeTime;
     private float timer;
     public string[] detachedEffects;
@@ -22,10 +22,6 @@ public class Projectile : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        foreach (var d in detachedEffects)
-        {
-            effects.Add(GameManager.instance.effectManager.GetEffect(d));
-        }
     }
 
     private void Update()
@@ -56,6 +52,7 @@ public class Projectile : MonoBehaviour
         timer = 0f;
         isReturning = false;
         attackedList.Clear();
+        effects.Clear();
         this.attacker = attacker;
         this.lifeTime = lifeTime;
         this.isPenetrable = isPenetrable;
@@ -65,6 +62,11 @@ public class Projectile : MonoBehaviour
         rb.velocity = distance / lifeTime * transform.forward;
         if (isReturnable)
             rb.velocity *= 2f;
+
+        foreach (var d in detachedEffects)
+        {
+            effects.Add(GameManager.instance.effectManager.GetEffect(d));
+        }
 
         if (flashEffect != null)
         {
@@ -92,15 +94,16 @@ public class Projectile : MonoBehaviour
             attackedList.Contains(other.gameObject))
             return;
         var isAttackable = other.CompareTag("Player") || other.CompareTag("Enemy");
-        if (OnCollided != null)
-        {
-            OnCollided(attacker, other.gameObject);
-            if (isAttackable)
-                attackedList.Add(other.gameObject);
-        }
 
         Vector3 pos = other.ClosestPoint(transform.position);
         Quaternion rot = Quaternion.LookRotation(transform.forward);
+
+        if (OnCollided != null)
+        {
+            OnCollided(attacker, other.gameObject, pos);
+            if (isAttackable)
+                attackedList.Add(other.gameObject);
+        }
         //Vector3 pos = contact.point + contact.normal;
         if (hitEffect != null)
         {

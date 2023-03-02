@@ -15,5 +15,5 @@ public class PlayerAttack : MonoBehaviour
 
     public void StartAttack() => playerAnimator.SetTrigger("Attack");
     public void ExecuteAttack() => attackBox.ExecuteAttack();
-    public void AttackTarget(GameObject target) => basicAttack.ExecuteAttack(gameObject, target); 
+    public void AttackTarget(GameObject target, Vector3 attackPos) => basicAttack.ExecuteAttack(gameObject, target, attackPos); 
 }
