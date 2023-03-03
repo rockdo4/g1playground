@@ -23,15 +23,11 @@ public class UpDownTile : MonoBehaviour
     [SerializeField] private float stopTime = 0.5f;
     private float timer;
 
-    //private State state;
-    private State currState;
-
     // Start is called before the first frame update
     void Start()
     {
         massA = blockA.GetComponent<WeightScaler>().CalculatedMass;
         massB = blockB.GetComponent<WeightScaler>().CalculatedMass;
-        currState = State.Equal;
     }
 
     private void FixedUpdate()
@@ -45,31 +41,22 @@ public class UpDownTile : MonoBehaviour
         {
             if (massA > massB)
             {
-                SetState(State.BlockA);
-                //BlockBUp();
+                SetState(State.BlockA);    
             }
             else if (massA < massB)
             {
-                SetState(State.BlockB);
-                //BlockAUp();
+                SetState(State.BlockB);    
             }
             else
             {
                 SetState(State.Equal);
-                //ResetBlockPosition();
             }
         }
     }
 
     private void SetState(State state)
     {
-        //if (state == currState)
-        //{
-        //    Debug.Log("same");
-        //    return;
-        //}
-
-        currState = state;
+        //currState = state;
 
         switch (state)
         {
@@ -86,11 +73,11 @@ public class UpDownTile : MonoBehaviour
         }
     }
 
+    //Move BlockA up BlockB Down
     private void BlockAUp()
     {
         if (blockB.GetComponent<WeightScaler>().IsMovAble)
         {
-            //Debug.Log("A");
             Rigidbody rbA = blockA.GetComponent<Rigidbody>();
             Rigidbody rbB = blockB.GetComponent<Rigidbody>();
             
@@ -102,11 +89,11 @@ public class UpDownTile : MonoBehaviour
         
     }
 
+    //Move BlockB up BlockA Down
     private void BlockBUp()
     {
         if (blockA.GetComponent<WeightScaler>().IsMovAble)
         {
-            //Debug.Log("B");
             Rigidbody rbA = blockA.GetComponent<Rigidbody>();
             Rigidbody rbB = blockB.GetComponent<Rigidbody>();
             blockA.GetComponent<Rigidbody>().MovePosition(rbA.position + Vector3.down * speed * Time.fixedDeltaTime);
@@ -115,32 +102,6 @@ public class UpDownTile : MonoBehaviour
             //moveBObjects();
         }
 
-    }
-
-    private void moveAObjects()
-    {
-        foreach (var rbs in blockA.GetComponent<WeightScaler>().objects)
-        {
-            rbs.MovePosition(rbs.position + Vector3.up * speed * Time.fixedDeltaTime);       
-        }
-
-        foreach (var rbs in blockB.GetComponent<WeightScaler>().objects)
-        {
-            rbs.MovePosition(rbs.position + Vector3.down * speed * Time.fixedDeltaTime);    
-        }
-    }
-
-    private void moveBObjects()
-    {
-        foreach (var rbs in blockA.GetComponent<WeightScaler>().objects)
-        {
-            rbs.MovePosition(rbs.position + Vector3.down * speed * Time.fixedDeltaTime);            
-        }
-
-        foreach (var rbs in blockB.GetComponent<WeightScaler>().objects)
-        {
-            rbs.MovePosition(rbs.position + Vector3.up * speed * Time.fixedDeltaTime);
-        }
     }
 
     private void ResetBlockPosition()
@@ -161,7 +122,6 @@ public class UpDownTile : MonoBehaviour
         {
             if (Mathf.Abs(blockA.transform.position.y) > Mathf.Abs(blockB.transform.position.y))
             {
-
                 BlockBUp();
             }
             else if (Mathf.Abs(blockA.transform.position.y) < Mathf.Abs(blockB.transform.position.y))

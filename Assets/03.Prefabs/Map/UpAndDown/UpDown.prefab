@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 583612931}
   - component: {fileID: 583612930}
   m_Layer: 0
-  m_Name: Triggercollider (1)
+  m_Name: Triggercollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,8 +44,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 0.09707761, z: 1}
-  m_Center: {x: 0.5, y: -0.6023549, z: 0}
+  m_Size: {x: 2, y: 0.17965889, z: 1}
+  m_Center: {x: 0.5, y: -0.6436455, z: 0}
 --- !u!114 &583612930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 1188536300}
   - component: {fileID: 1188536301}
   m_Layer: 0
-  m_Name: Collider (1)
+  m_Name: Collider
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -262,7 +262,6 @@ MonoBehaviour:
   massB: 0
   speed: 1
   stopTime: 0.5
-  currState: 2
 --- !u!1 &829893980372356970
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +274,6 @@ GameObject:
   - component: {fileID: 566907631446142962}
   - component: {fileID: 1394987918}
   - component: {fileID: 1394987915}
-  - component: {fileID: 1080871032}
   m_Layer: 0
   m_Name: BlockB
   m_TagString: Untagged
@@ -345,19 +343,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detecter: {fileID: 583612930}
   objects: []
---- !u!65 &1080871032
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 829893980372356970}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 2.0017157, y: 0.30466628, z: 1}
-  m_Center: {x: 0.50085783, y: -0.54692614, z: 0}
 --- !u!1 &1705855881375060589
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +355,6 @@ GameObject:
   - component: {fileID: 5101179384172689745}
   - component: {fileID: 2055551428}
   - component: {fileID: 2055551425}
-  - component: {fileID: 797011639}
   m_Layer: 0
   m_Name: BlockA
   m_TagString: Untagged
@@ -440,19 +424,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detecter: {fileID: 1151089712}
   objects: []
---- !u!65 &797011639
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1705855881375060589}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1.9752188, y: 0.39561033, z: 1}
-  m_Center: {x: 0.4876094, y: -0.4937291, z: 0}
 --- !u!1001 &71087105027567565
 PrefabInstance:
   m_ObjectHideFlags: 0

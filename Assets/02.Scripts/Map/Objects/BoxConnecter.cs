@@ -5,25 +5,20 @@ using UnityEngine;
 public class BoxConnecter : MonoBehaviour
 {
     [SerializeField] private BoxTile boxTile;
-    public GameObject connectedObject;
+    private GameObject connectedObject;
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(gameObject.name);
+        //check if there is Pushable object under
         if (other.tag == "Pushable" && other.GetComponent<BoxTile>() != null) 
-        {
-            //Debug.Log(other.gameObject.name + " " + gameObject.name);
-            //Debug.Log("True");
-            //other.gameObject.GetComponent<ObjectMass>().AddMass(boxTile.GetComponent<ObjectMass>().Mass);
-            boxTile.IsConnected = other.GetComponent<BoxTile>().IsConnected;
-            //other.GetComponent<BoxTile>().SetConnectedBox(boxTile.gameObject);
+        {  
             boxTile.transform.SetParent(other.transform);
             connectedObject = other.gameObject;
-            //Debug.Log("True");
-            //boxTile.GetComponent<Rigidbody>().isKinematic = true;
+            
         }
-        else if (other.tag == "Ground")
+        else if (other.tag == "Ground")     //check if the box is on Ground
         {
+            //SetParent to Ground in Case of Box on top of UpDown Tile
             boxTile.transform.SetParent(other.transform);
             connectedObject = other.gameObject;
         }
@@ -32,31 +27,14 @@ public class BoxConnecter : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        //Reset when exit
         if (other.tag == "Pushable" || other.tag == "Ground") 
         {
             if (other.gameObject == connectedObject)
             {
-                Debug.Log("exit");
-                boxTile.IsConnected = false;
                 boxTile.transform.SetParent(null);
                 connectedObject = null;
             }
-            
-            //transform.SetParent(null);
-            //other.gameObject.transform.SetParent(null);
-            //other.GetComponent<ObjectMass>().ResetMass();
-            
-            //other.GetComponent<BoxTile>().connectedObject = null;
-            //boxTile.transform.SetParent(null);
-            //boxTile.GetComponent<Rigidbody>().isKinematic = false;
-        }
-
-
-        if (other.GetComponent<WeightScaler>() != null )
-        {
-            //Debug.Log("exit");
-            //boxTile.SetKinematic(false);
-            //boxTile.transform.SetParent(null);
         }
     }
 }

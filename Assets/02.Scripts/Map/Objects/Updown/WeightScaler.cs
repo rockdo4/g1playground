@@ -10,12 +10,7 @@ public class WeightScaler : MonoBehaviour
     private float calculatedMass;
     public float CalculatedMass { get { return calculatedMass; } set { calculatedMass = value; } }
 
-    
-    public List<Rigidbody> objects = new List<Rigidbody>();
-   
     public bool IsMovAble { get; set; }
-
-   
 
     private void Awake()
     {
@@ -23,35 +18,23 @@ public class WeightScaler : MonoBehaviour
         CalculatedMass = 0f;
     }
 
-    //
-    //private void UdateObjectMovement()
-    //{
-    //    if (objects != null) 
-    //    {
-    //        foreach (var obj in objects)
-    //        {
-    //            obj.velocity = gameObject.GetComponent<Rigidbody>().velocity;                                
-    //        }
-    //    }
-    //}
-
     private void FixedUpdate()
     {
+        //Find objects with Mass in Children
         float temp = 0f;
-
         var objs = gameObject.GetComponentsInChildren<ObjectMass>();
         
         foreach (var mass in objs)
         {
             temp += mass.Mass;
         }
+
         CalculatedMass = temp;
     }
 
     public void EnableTrigger()
     {
         detecter.EnableTrigger();
-        //colliderTrigger.enabled = true;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -59,21 +42,13 @@ public class WeightScaler : MonoBehaviour
         
         if (collision.rigidbody != null)
         {
-            
+            //SetParent the Entered object
             collision.transform.SetParent(transform);
 
-            
-            if (!objects.Contains(collision.rigidbody))
-            {
-                //CalculatedMass += collision.rigidbody.mass;
-                objects.Add(collision.rigidbody);
-            }
-
+            //turn off kinematic
             if (collision.gameObject.tag == "Pushable" && !collision.gameObject.GetComponent<BoxTile>().IsPushing)
-            {
-                
+            {  
                 collision.rigidbody.isKinematic = true;
-                collision.gameObject.GetComponent<BoxTile>().IsConnected = true;
             }
 
         }
@@ -82,22 +57,11 @@ public class WeightScaler : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {     
         if (collision.rigidbody != null)
-        {
-            if (collision.gameObject.tag == "Pushable")
-            {
-                collision.gameObject.GetComponent<BoxTile>().IsConnected = false;
-            }
-            //collision.transform.SetParent(null);
+        { 
             if (collision.gameObject.tag == "Player")
             {
                 collision.transform.SetParent(null);
             }
-
-            if (objects.Contains(collision.rigidbody))
-            {
-                //CalculatedMass -= collision.rigidbody.mass;
-                objects.Remove(collision.rigidbody);
-            }      
         }
     }
 }

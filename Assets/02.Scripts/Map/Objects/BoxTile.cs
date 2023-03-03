@@ -5,26 +5,22 @@ using UnityEngine;
 public class BoxTile : MonoBehaviour
 {
     private new Rigidbody rigidbody;
-    //public Collider colliderTrigger;
     private float originMass;
-    //public GameObject connectedObject;
 
     [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
     
     [SerializeField] private float pushForce = 1f;
 
-    public bool IsConnected { get; set; }
-
+   
     public bool IsPushing { get; set; }
 
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         originMass = rigidbody.mass;
-        IsConnected = false;
+       
         IsPushing = false;
-        //gameObject.GetComponent<ObjectMass>().Mass = rigidbody.mass;
     }
 
     public void AddMass(float mass)
@@ -54,15 +50,17 @@ public class BoxTile : MonoBehaviour
         {
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
-            Debug.DrawRay(transform.position, Vector3.up, Color.green);
+            
             if (timer >= pushTime)
             {
+                //Raycast to check if player is pushing the box on side
                 if (!Physics.Raycast(transform.position, Vector3.up, 1f, LayerMask.GetMask("Player")))
                 {
-                    Debug.Log("ray");
+                    
                     IsPushing = true;
                     rigidbody.isKinematic = false;
-                    //transform.SetParent(null);
+
+                    //find direction and push
                     Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
                     pushDirection.y = 0;
                     pushDirection.z = 0;
@@ -77,9 +75,8 @@ public class BoxTile : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            //rigidbody.isKinematic = true;
-            //Reset timer to make player has to push again to move the block
 
+            //Reset timer to make player has to push again to move the block
             timer = 0f;
         }
     }
