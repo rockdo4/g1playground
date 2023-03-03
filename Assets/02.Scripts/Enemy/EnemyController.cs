@@ -36,6 +36,8 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     private EnemyState state;
 
+    public GameObject attackPivot;
+
     public float chaseSpeed;
     public float patrolSpeed;
     public float attackRange;
@@ -346,6 +348,13 @@ public class EnemyController : MonoBehaviour, IAttackable
                         basicAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
                         return;
                     }
+                }
+                break;
+
+            case EnemyProjectileAttack:
+                {
+                    ((EnemyProjectileAttack)basicAttack).Fire(gameObject, attackPivot.transform.position,transform.forward);
+                    return;
                 }
                 break;
         }
