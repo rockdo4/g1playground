@@ -21,6 +21,12 @@ public class UIManager : MonoBehaviour
         charStatUI.currHp = currhp;
     }
 
+    public void PlayerMpBar(int maxMp, int currMp)
+    {
+        charStatUI.maxMp = maxMp;
+        charStatUI.currMp = currMp;
+    }
+
     public void AddPopUp(GameObject popup)
     {
         popupStack.Push(popup);

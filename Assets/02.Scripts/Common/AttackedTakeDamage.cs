@@ -14,6 +14,8 @@ public class AttackedTakeDamage : MonoBehaviour, IAttackable
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
         stat.currHp -= attack.Damage;
+        if (CompareTag("Player"))
+            stat.SetHpUi();
         if (stat.currHp <= 0)
         {
             stat.currHp = 0;

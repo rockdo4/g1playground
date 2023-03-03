@@ -183,7 +183,7 @@ public class EnemyController : MonoBehaviour, IAttackable
                 break;
         }
 
-        Debug.Log(state);
+        //Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
@@ -300,7 +300,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         else
         {
 #if UNITY_EDITOR
-            Debug.Log("NULL!!");
+            //Debug.Log("NULL!!");
 #endif
         }
     }

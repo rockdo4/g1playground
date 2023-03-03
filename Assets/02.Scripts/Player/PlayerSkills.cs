@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSkills : MonoBehaviour
 {
@@ -8,26 +9,39 @@ public class PlayerSkills : MonoBehaviour
     public Transform skillPivot;
     private int skillCount = 0;
     public SkillAttack[] skillAttacks;
+    private bool[] skillOn;
+    public Toggle[] toggles;
     private float[] skillTimers;
 
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
         skillCount = skillAttacks.Length;
+        skillOn = new bool[skillCount];
         skillTimers = new float[skillCount];
+        for (int i = 0; i < skillCount; i++)
+        {
+            if (toggles[i] == null)
+                return;
+            int n = i;
+            toggles[i].onValueChanged.AddListener(onOff => SkillOnOff(n, onOff));
+        }
     }
 
     private void Update()
     {
         for (int i = 0; i < skillCount; ++i)
         {
-            if (skillTimers[i] < skillAttacks[i].CoolDown)
+            if (skillOn[i])
             {
-                skillTimers[i] += Time.deltaTime;
-                if (skillTimers[i] > skillAttacks[i].CoolDown)
+                if (skillTimers[i] < skillAttacks[i].CoolDown)
                 {
-                    skillTimers[i] = 0f;
-                    UseSkill(skillAttacks[i]);
+                    skillTimers[i] += Time.deltaTime;
+                    if (skillTimers[i] > skillAttacks[i].CoolDown)
+                    {
+                        skillTimers[i] = 0f;
+                        UseSkill(skillAttacks[i]);
+                    }
                 }
             }
         }
@@ -45,4 +59,6 @@ public class PlayerSkills : MonoBehaviour
                 break;
         }
     }
+
+    public void SkillOnOff(int index, bool onOff) => skillOn[index] = onOff;
 }

@@ -53,6 +53,11 @@ public class Status : MonoBehaviour
         LoadFromTable();
         currHp = FinalValue.maxHp;
         currMp = FinalValue.maxMp;
+        if (CompareTag("Player"))
+        {
+            SetHpUi();
+            SetMpUi();
+        }
     }
 
     private void LoadFromTable()
@@ -81,4 +86,7 @@ public class Status : MonoBehaviour
     }
 
     public void AddValue(Value addValue) => FinalValue = defaultValue + addValue;
+
+    public void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, currHp);
+    public void SetMpUi() => GameManager.instance.uiManager.PlayerMpBar(FinalValue.maxMp, currMp);
 }

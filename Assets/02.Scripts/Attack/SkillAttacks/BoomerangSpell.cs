@@ -13,6 +13,8 @@ public class BoomerangSpell : SkillAttack
         if (aStat == null || aStat.currMp < reqMana)
             return;
         aStat.currMp -= reqMana;
+        if (attacker.CompareTag("Player"))
+            aStat.SetMpUi();
         var projectile = GameManager.instance.projectileManager.Get(projectileId);
         projectile.OnCollided = ExecuteAttack;
         projectile.Fire(attacker, startPos, direction, range, lifeTime, true, true);
