@@ -31,10 +31,10 @@ public class EnemyController : MonoBehaviour, IAttackable
     }
 
     private Rigidbody rb;
-    private EnemyState state;
     private NavMeshAgent agent;
     private Animator animator;
-    private BoxCollider hitBoxColl;
+
+    private EnemyState state;
 
     public float chaseSpeed;
     public float patrolSpeed;
@@ -141,10 +141,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     void Start()
     {
-        hitBoxColl = GetComponent<BoxCollider>();
-        hitBoxColl.tag = "HitBox";
-        player = GameManager.instance.playerController.gameObject;
-        //player = GameObject.FindWithTag("Player");
+        player = GameManager.instance.player;
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
@@ -181,7 +178,7 @@ public class EnemyController : MonoBehaviour, IAttackable
                 break;
         }
 
-        Debug.Log(state);
+        //Debug.Log(state);
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
 
@@ -256,8 +253,13 @@ public class EnemyController : MonoBehaviour, IAttackable
         var isGround = player.GetComponent<PlayerController>().isGrounded;
 
         if (!isGround) { return; }
+
+        Vector3 dir = player.transform.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir);
+
         agent.SetDestination(player.transform.position);
-        transform.LookAt(transform.position + agent.desiredVelocity);
+        //transform.LookAt(transform.position + agent.desiredVelocity);
     }
     private void AttackUpdate()
     {
@@ -277,35 +279,35 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (state == EnemyState.Attack)
-            return;
+    //private void OnTriggerEnter(Collider collider)
+    //{
+    //    if (state == EnemyState.Attack)
+    //        return;
 
-        if (hitBoxColl.tag == "HitBox")
-        {
-            if (collider.tag == "Player")
-            {
-                State = EnemyState.Attack;
-                return;
-            }
-        }
-    }
+    //    if (attackBoxColl.tag == "HitBox")
+    //    {
+    //        if (collider.tag == "Player")
+    //        {
+    //            State = EnemyState.Attack;
+    //            return;
+    //        }
+    //    }
+    //}
 
-    private void OnTriggerExit(Collider collider)
-    {
-        if (state == EnemyState.Chase)
-            return;
+    //private void OnTriggerExit(Collider collider)
+    //{
+    //    if (state == EnemyState.Chase)
+    //        return;
 
-        if (hitBoxColl.tag == "HitBox")
-        {
-            if (collider.tag == "Player")
-            {
-                State = EnemyState.Chase;
-                return;
-            }
-        }
-    }
+    //    if (attackBoxColl.tag == "HitBox")
+    //    {
+    //        if (collider.tag == "Player")
+    //        {
+    //            State = EnemyState.Chase;
+    //            return;
+    //        }
+    //    }
+    //}
 
     private void SaveFloorLength()
     {
@@ -403,5 +405,36 @@ public class EnemyController : MonoBehaviour, IAttackable
     private void EnemyDie()
     {
         gameObject.SetActive(false);
+    }
+
+    public void GetAttackBoxCollStay(Collider collider, Collider attackBoxColl)
+    {
+        if (state == EnemyState.TakeDamage)
+            return;
+        if (state == EnemyState.Attack)
+            return;
+
+        if (attackBoxColl.tag == "AttackBox")
+        {
+            if (collider.tag == "Player")
+            {
+                State = EnemyState.Attack;
+                return;
+            }
+        }
+    }
+    public void GetAttackBoxCollExit(Collider collider, Collider attackBoxColl)
+    {
+        if (state == EnemyState.Chase)
+            return;
+
+        if (attackBoxColl.tag == "AttackBox")
+        {
+            if (collider.tag == "Player")
+            {
+                State = EnemyState.Chase;
+                return;
+            }
+        }
     }
 }

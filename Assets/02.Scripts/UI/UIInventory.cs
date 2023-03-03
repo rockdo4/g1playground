@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,15 +11,19 @@ public class UIInventory : MonoBehaviour
     public RectTransform content;
 
     private List<UIItemSlot> slotList = new List<UIItemSlot>();
-    private DataTable<ItemData> itemTable;
+    private PlayerInventory playerInventory;
+    public ItemTypes itemType;
     //private DataTable<SkillData> skillTable;
 
     public UIItemInfo itemInfo;
 
     private void Awake()
     {
-        itemTable = DataTableMgr.GetTable<ItemData>();
-        //skillTable = DataTableMgr.GetTable<SkillData>();
+        playerInventory = GameManager.instance.player.GetComponent<PlayerInventory>();
+    }
+
+    private void Start()
+    {
     }
 
     public void OnEnable()
@@ -37,11 +42,34 @@ public class UIInventory : MonoBehaviour
             var button = slot.GetComponent<Button>();
             button.onClick.AddListener(() => itemInfo.Set(slot.Data));
         }
-        var itemIds = itemTable.GetAllIds();
-        for (int i = 0; i < 50; ++i)
+        SetInventory((int)itemType);
+    }
+
+    public void SetInventory(int itemType)
+    {
+        string[] ids = null;
+        int len = 0;
+        switch ((ItemTypes)itemType)
         {
-            var index = Random.Range(0, itemIds.Count);
-            slotList[i].Set(itemTable.Get(itemIds[index]));
+            case ItemTypes.Weapon:
+                ids = playerInventory.weapons;
+                len = playerInventory.weapons.Length;
+                for (int i = 0; i < len; ++i)
+                {
+                    slotList[i].Set(i, DataTableMgr.GetTable<WeaponData>().Get(ids[i]));
+                }
+                break;
+            case ItemTypes.Armor:
+                ids = playerInventory.armors;
+                len = playerInventory.armors.Length;
+                for (int i = 0; i < len; ++i)
+                {
+                    slotList[i].Set(i, DataTableMgr.GetTable<ArmorData>().Get(ids[i]));
+                }
+                break;
+            case ItemTypes.Consumable:
+                // consumable
+                break;
         }
     }
 }

@@ -149,16 +149,17 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         var playerPosition = transform.position;
         playerPosition.y += 0.06f;
-        var k = 0.294f;
+        var k = 0.296f;
 
         for (int i = 0; i < 3; i++)
         {
             RaycastHit hit;
-            IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0), out hit, 1);
-            Debug.DrawRay(playerPosition, new Vector3(moveX, 0, 0), Color.green);
+            IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0), out hit, 0.9f);
+            Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
             if (hit.collider != null)
             {
                 if (hit.transform.CompareTag("Player") ||
+                    hit.collider.CompareTag("AttackBox") ||
                     (hit.transform.CompareTag("Pushable") && isGrounded) ||
                     hit.transform.CompareTag("Door"))
                 {

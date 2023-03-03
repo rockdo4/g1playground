@@ -86,7 +86,10 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.activeSelf || other.CompareTag(attacker.tag) || attackedList.Contains(other.gameObject))
+        if (!other.gameObject.activeSelf ||
+            other.CompareTag("AttackBox") ||
+            (other.attachedRigidbody != null && other.attachedRigidbody.CompareTag(attacker.tag)) ||
+            attackedList.Contains(other.gameObject))
             return;
         var isAttackable = other.CompareTag("Player") || other.CompareTag("Enemy");
         if (OnCollided != null)
