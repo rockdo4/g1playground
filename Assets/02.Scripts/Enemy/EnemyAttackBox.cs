@@ -18,9 +18,13 @@ public class EnemyAttackBox : MonoBehaviour
         enemyController.GetAttackBoxCollStay(collider, boxCollider);
     }
 
-    private void OnTriggerExit(Collider collider)
-    {
-        enemyController.GetAttackBoxCollExit(collider, boxCollider);
-    }
+    //private void OnTriggerExit(Collider collider)
+    //{
+    //    if (collider.tag == "Player")
+    //    {
+    //        Debug.LogError("!");
+    //        enemyController.GetAttackBoxCollExit(collider, boxCollider);
+    //    }
+    //}
 
 }

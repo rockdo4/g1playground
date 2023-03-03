@@ -17,7 +17,6 @@ public class BasicAttack : AttackDefinition
     {
         if (attacker == null || defender == null)
             return;
-
         var aStat = attacker.GetComponent<Status>();
         var dStat = defender.GetComponent<Status>();
         if (aStat == null || dStat == null)
