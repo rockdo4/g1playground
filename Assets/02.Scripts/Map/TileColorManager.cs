@@ -7,7 +7,7 @@ public class TileColorManager : MonoBehaviour
     [Header("Material")]
     [SerializeField] private Material customMaterial;
     [SerializeField] private Material originMaterial;
-    public new string name;
+    //public new string name;
 
     private static TileColorManager m_instance;
     public static TileColorManager instance
@@ -33,19 +33,19 @@ public class TileColorManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.O))
+    //    {
 
-            ChangeTileMaterial(name, true);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
+    //        ChangeTileMaterial(name, true);
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.P))
+    //    {
 
-            ChangeTileMaterial(name, false);
-        }
-    }
+    //        ChangeTileMaterial(name, false);
+    //    }
+    //}
 
     public void ChangeTileMaterial(string name, bool isColor)
     {

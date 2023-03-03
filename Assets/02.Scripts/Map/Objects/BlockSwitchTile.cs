@@ -14,9 +14,9 @@ public class BlockSwitchTile : MonoBehaviour
     private Animator animator;
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private BSwitchType type;
-    [SerializeField] private float fadeTimer = 0.5f;
+    //[SerializeField] private float fadeTimer = 0.5f;
 
-    bool isActive = false;
+    //bool isActive = false;
 
     private bool isTriggered;
     public bool IsTriggered { get { return isTriggered; } set { isTriggered = this; } }
@@ -60,7 +60,7 @@ public class BlockSwitchTile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
+        //Debug.Log(other.tag);
         //Triggers Switch when pushed by Player object or Pushable objects
         if (!animator.GetBool("Trigger") && (other.tag == "Player" || other.tag == "Pushable")) 
         {
