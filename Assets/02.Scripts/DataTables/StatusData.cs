@@ -21,7 +21,7 @@ public class StatusData : ICSVParsing
     {
         id = line["ID"];
         attackPower = int.Parse(line["AttackPower"]);
-        attackPower = int.Parse(line["SkillPower"]);
+        skillPower = int.Parse(line["SkillPower"]);
         criticalChance = float.Parse(line["CriticalChance"]);
         criticalDamage = float.Parse(line["CriticalDamage"]);
         defense = int.Parse(line["Defense"]);

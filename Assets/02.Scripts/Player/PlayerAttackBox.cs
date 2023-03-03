@@ -13,7 +13,13 @@ public class PlayerAttackBox : MonoBehaviour
             return;
         playerAttack.StartAttack();
         if (isAttacking)
-            playerAttack.AttackTarget(other.gameObject);
+        {
+            Vector3 pos = other.ClosestPoint(transform.position);
+            playerAttack.AttackTarget(other.gameObject, pos);
+            var effect = GameManager.instance.effectManager.GetEffect("Sword Slash 1");
+            effect.transform.position = transform.position;
+            effect.transform.forward = transform.forward;
+        }
     }
 
     public void ExecuteAttack() => StartCoroutine(CoExecuteAttack());

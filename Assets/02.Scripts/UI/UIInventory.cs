@@ -45,8 +45,18 @@ public class UIInventory : MonoBehaviour
         SetInventory((int)itemType);
     }
 
+    public void ClearInventory()
+    {
+        foreach (var slot in slotList)
+        {
+            slot.SetEmpty();
+        }
+    }
+
     public void SetInventory(int itemType)
     {
+        // make Count in itemTypes, return if itemType >= ItemTypes.Count
+        ClearInventory();
         string[] ids = null;
         int len = 0;
         switch ((ItemTypes)itemType)

@@ -24,7 +24,7 @@ public class SkillAttack : AttackDefinition
     {
         var criticalChance = attacker.FinalValue.criticalChance + this.criticalChance;
         var isCritical = Random.value < criticalChance;
-        float damage = attacker.FinalValue.skillPower;
+        float damage = attacker.FinalValue.skillPower * damageFigure;
         if (isCritical)
         {
             damage *= (attacker.FinalValue.criticalDamage + this.criticalDamage);  // temporary
@@ -32,7 +32,7 @@ public class SkillAttack : AttackDefinition
         return new Attack((int)damage);
     }
 
-    public override void ExecuteAttack(GameObject attacker, GameObject defender)
+    public override void ExecuteAttack(GameObject attacker, GameObject defender, Vector3 attackPos)
     {
         if (attacker == null || defender == null)
             return;
@@ -47,7 +47,7 @@ public class SkillAttack : AttackDefinition
         var attackables = defender.GetComponents<IAttackable>();
         foreach (var attackable in attackables)
         {
-            attackable.OnAttack(attacker, attack);
+            attackable.OnAttack(attacker, attack, attackPos);
         }
         if (isStunnable)
         {

@@ -13,7 +13,7 @@ public class DoubleClick : MonoBehaviour, IPointerDownHandler
 
     private void Start()
     {
-        playerController = GameManager.instance.GetComponent<PlayerController>();
+        playerController = GameManager.instance.player.GetComponent<PlayerController>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
