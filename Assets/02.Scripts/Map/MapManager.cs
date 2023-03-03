@@ -41,11 +41,11 @@ public class MapManager : MonoBehaviour
     {
         maps = GameObject.FindGameObjectsWithTag("Stage").ToList();
         currentMapName = name;
-        foreach (var map in maps)
-        {
-            if (map.name != currentMapName)
-                map.SetActive(false);
-        }
+        //foreach (var map in maps)
+        //{
+        //    if (map.name != currentMapName)
+        //       // map.SetActive(false);
+        //}
         var tempCurrentDoors = GameObject.Find(currentMapName).GetComponentsInChildren<Connector>();
         foreach (var map in tempCurrentDoors)
         {
