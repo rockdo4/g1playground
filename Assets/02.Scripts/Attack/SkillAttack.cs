@@ -24,7 +24,7 @@ public class SkillAttack : AttackDefinition
     {
         var criticalChance = attacker.FinalValue.criticalChance + this.criticalChance;
         var isCritical = Random.value < criticalChance;
-        float damage = attacker.FinalValue.skillPower;
+        float damage = attacker.FinalValue.skillPower * damageFigure;
         if (isCritical)
         {
             damage *= (attacker.FinalValue.criticalDamage + this.criticalDamage);  // temporary
