@@ -148,28 +148,28 @@ public class PlayerController : MonoBehaviour, IAttackable
     public void CheckFrontObject()
     {
         var playerPosition = transform.position;
-        playerPosition.y += 0.06f;
-        var k = 0.296f;
-
+        playerPosition.y += 0.015f;
+        var k = 0.299f;
+        IsBlocked = false;
         for (int i = 0; i < 3; i++)
         {
-            RaycastHit hit;
-            IsBlocked = Physics.Raycast(playerPosition, new Vector3(moveX, 0, 0), out hit, 0.9f);
+            var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f);
             Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
-            if (hit.collider != null)
+            foreach (var hit in hits)
             {
-                if (hit.transform.CompareTag("Player") ||
-                    hit.collider.CompareTag("AttackBox") ||
-                    (hit.transform.CompareTag("Pushable") && isGrounded) ||
-                    hit.transform.CompareTag("Door"))
+                if (hit.collider != null)
                 {
-                    IsBlocked = false;
-                    break;
+                    if (!(hit.transform.CompareTag("Player") ||
+                        hit.collider.CompareTag("AttackBox") ||
+                        (hit.transform.CompareTag("Pushable") && isGrounded) ||
+                        hit.transform.CompareTag("Door")))
+                    {
+                        IsBlocked = true;
+                        return;
+                    }
                 }
             }
             playerPosition.y += k;
-            if (IsBlocked)
-                break;
         }
     }
 
