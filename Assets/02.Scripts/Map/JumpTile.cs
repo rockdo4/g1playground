@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class JumpTile : MonoBehaviour
 {
-    private PhysicMaterial physic;
+    [SerializeField] float force = 10f;
+
     // Start is called before the first frame update
     void Start()
     {

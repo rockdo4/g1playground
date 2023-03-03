@@ -17,7 +17,7 @@ public class UpDownDetecter : MonoBehaviour
         }
         if (other.tag == "Player" )
         {
-            Debug.Log(other.tag);
+            //Debug.Log(other.tag);
             block.IsMovAble = false;
 
         }
