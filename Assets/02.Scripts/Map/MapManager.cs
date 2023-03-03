@@ -25,7 +25,7 @@ public class MapManager : MonoBehaviour
 
         foreach (var map in maps)
         {
-            if (map.active)
+            if (map.activeSelf)
             {
                 SetCurrentMapName(map.name);
             }

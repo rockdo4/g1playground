@@ -33,11 +33,11 @@ public class Connector : MonoBehaviour
         if (other.transform.CompareTag("Player") && nextStageRoomPrefab != null)
         {
 
-            if (!nextStageRoomPrefab.active)
+            if (!nextStageRoomPrefab.activeSelf)
             {
                 nextStageRoomPrefab.SetActive(true);
             }
-            else if (nextStageRoomPrefab.active)
+            else if (nextStageRoomPrefab.activeSelf)
             {
                 if (MapManager.instance.GetCurrentMapName().CompareTo(transform.parent.name) != 0)
                 {

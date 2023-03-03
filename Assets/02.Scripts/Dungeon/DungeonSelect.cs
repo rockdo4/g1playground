@@ -4,26 +4,43 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DungeonSelect : MonoBehaviour
 {
     private DayOfWeek tomorrow;
     private TextMeshProUGUI tomorrowtime;
     StringBuilder remainingtime = new StringBuilder();
+    [SerializeField]
+    private List<GameObject> days;
+   
 
     // Start is called before the first frame update
     private void OnEnable()
     {
-        tomorrow = (DayOfWeek)((int)DateTime.Now.DayOfWeek + 1);
-        transform.Find(tomorrow.ToString()).Find("Lock").Find("Time").gameObject.SetActive(true);
-        tomorrowtime = transform.Find(tomorrow.ToString()).Find("Lock").Find("Time").GetComponentInChildren<TextMeshProUGUI>();
+        if (DateTime.Now.DayOfWeek != DayOfWeek.Friday)
+        {
+            tomorrow = (DayOfWeek)((int)DateTime.Now.DayOfWeek + 1);
+
+            for (int i = 0; i < days.Count; i++)
+            {
+                if (days[i].name == tomorrow.ToString())
+                {
+                    days[i].transform.Find("Lock").Find("Time").gameObject.SetActive(true);
+                    tomorrowtime = days[i].transform.Find("Lock").Find("Time").GetComponentInChildren<TextMeshProUGUI>();
+                    break;
+                }
+            }
+
+        }
+
         DungeionEnter();
     }
 
     private void Update()
     {
-        if (DateTime.Now.Minute==0&&DateTime.Now.DayOfWeek == tomorrow)
-        { 
+        if (DateTime.Now.Minute == 0 && DateTime.Now.DayOfWeek == tomorrow)
+        {
             transform.Find(((DayOfWeek)((int)DateTime.Now.DayOfWeek - 1)).ToString()).Find("Lock").gameObject.SetActive(true);
             transform.Find(tomorrow.ToString()).Find("Lock").gameObject.SetActive(false);
             tomorrow = (DayOfWeek)((int)DateTime.Now.DayOfWeek + 1);
@@ -36,7 +53,11 @@ public class DungeonSelect : MonoBehaviour
         remainingtime.Append(DateTime.MaxValue.Subtract(DateTime.Now).Minutes.ToString());
         remainingtime.Append(" : ");
         remainingtime.Append(DateTime.MaxValue.Subtract(DateTime.Now).Seconds.ToString());
-        tomorrowtime.text=remainingtime.ToString();
+        if (DateTime.Now.DayOfWeek != DayOfWeek.Friday)
+        {
+            tomorrowtime.text = remainingtime.ToString();
+        }
+
 
 
     }
@@ -44,32 +65,25 @@ public class DungeonSelect : MonoBehaviour
     private void DungeionEnter()
     {
         gameObject.SetActive(true);
-        switch (DateTime.Now.DayOfWeek)
-        {
-            case DayOfWeek.Monday:
-                transform.Find("Monday").Find("Lock").gameObject.SetActive(false);
-                // dungeonTable = DataTableMgr.Load(dungeonTable, "Resources\\DataTables\\Mon");
-                break;
-            case DayOfWeek.Tuesday:
-                transform.Find("Tuesday").Find("Lock").gameObject.SetActive(false);
-                break;
-            case DayOfWeek.Wednesday:
-                transform.Find("Wednesday").Find("Lock").gameObject.SetActive(false); ;
-                break;
-            case DayOfWeek.Thursday:
-                transform.Find("Thursday").Find("Lock").gameObject.SetActive(false); ;
-                break;
-            case DayOfWeek.Friday:
-                transform.Find("Friday").Find("Lock").gameObject.SetActive(false); ;
-                break;
-            default:
-                transform.Find("Monday").Find("Lock").gameObject.SetActive(false);
-                transform.Find("Tuesday").Find("Lock").gameObject.SetActive(false);
-                transform.Find("Thursday").Find("Lock").gameObject.SetActive(false);
-                transform.Find("Friday").Find("Lock").gameObject.SetActive(false);
-                transform.Find("Wednesday").Find("Lock").gameObject.SetActive(false);
-                break;
 
+        for (int i = 0; i < days.Count; i++)
+        {
+            if (DateTime.Now.DayOfWeek.ToString() == days[i].name)
+            {
+                days[i].transform.Find("Lock").gameObject.SetActive(false);
+                break;
+            }
+            else if (i == days.Count - 1)
+            {
+                days[0].transform.Find("Lock").gameObject.SetActive(false);
+                days[1].transform.Find("Lock").gameObject.SetActive(false);
+                days[2].transform.Find("Lock").gameObject.SetActive(false);
+                days[3].transform.Find("Lock").gameObject.SetActive(false);
+                days[4].transform.Find("Lock").gameObject.SetActive(false);
+                break;
+            }
         }
+
+
     }
 }
