@@ -67,6 +67,8 @@ public class EnemyController : MonoBehaviour, IAttackable
         get { return state; }
         private set
         {
+            if (State == EnemyState.Die)
+                return;
             var prevState = state;
             state = value;
 
@@ -384,7 +386,7 @@ public class EnemyController : MonoBehaviour, IAttackable
             return;
         if (state == EnemyState.Attack)
             return;
-        //if (attackBoxColl.tag == "AttackBox")
+        if (attackBoxColl.tag == "AttackBox")
         {
             if (collider.tag == "Player")
             {
@@ -393,18 +395,18 @@ public class EnemyController : MonoBehaviour, IAttackable
             }
         }
     }
-    public void GetAttackBoxCollExit(Collider collider, Collider attackBoxColl)
-    {
-        if (state == EnemyState.Chase)
-            return;
+    //public void GetAttackBoxCollExit(Collider collider, Collider attackBoxColl)
+    //{
+    //    if (state == EnemyState.Chase)
+    //        return;
 
-        if (attackBoxColl.tag == "AttackBox")
-        {
-            if (collider.tag == "Player")
-            {
-                State = EnemyState.Chase;
-                return;
-            }
-        }
-    }
+    //    if (attackBoxColl.tag == "AttackBox")
+    //    {
+    //        if (collider.tag == "Player")
+    //        {
+    //            State = EnemyState.Chase;
+    //            return;
+    //        }
+    //    }
+    //}
 }
