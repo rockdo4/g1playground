@@ -2111,15 +2111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4cce4536f12014ba442bbe49be272e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AtkPower: 10
-  SkillPower: 20
-  CriticalChance: 0.4
-  CriticalDamage: 1.5
-  Defense: 5
-  MaxHp: 1000
-  currHp: 0
-  MaxMp: 1000
-  currMp: 0
+  type: 0
+  id: 0
+  currHp: 1000
+  currMp: 1000
 --- !u!114 &7063421679481998303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2160,7 +2155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillPivot: {fileID: 7063421680363833031}
   skillAttacks:
-  - {fileID: 11400000, guid: 1f3e90b15c89f6a44b67a385881b5690, type: 2}
+  - {fileID: 11400000, guid: 53d2b9e23fe007043bd2ca8addac2c34, type: 2}
   - {fileID: 11400000, guid: fb24b316f545b574898f6e6cee040036, type: 2}
 --- !u!114 &280082119
 MonoBehaviour:
@@ -2190,7 +2185,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons:
   - 1
-  armors: []
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  armors:
+  - 1
+  - 2
+  - 3
+  - 4
 --- !u!1 &7063421679712257275
 GameObject:
   m_ObjectHideFlags: 0
@@ -2204,7 +2212,7 @@ GameObject:
   - component: {fileID: 250231273}
   m_Layer: 6
   m_Name: AttackBox
-  m_TagString: Player
+  m_TagString: AttackBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
