@@ -100,7 +100,7 @@ public class DungeonManager : MonoBehaviour
     public void ExitDungeon()
     {
         isDungeon = false;
-        SceneManager.LoadScene("Dungeon");
+        SceneManager.LoadScene("ParkMWTest");
         dungeonDay.gameObject.SetActive(true);
         dungeonLevel.gameObject.SetActive(false);
         GameObject.Find("DungeonManager").transform.Find("RemainingTime").gameObject.SetActive(false);

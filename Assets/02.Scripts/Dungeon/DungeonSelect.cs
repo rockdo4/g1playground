@@ -39,6 +39,8 @@ public class DungeonSelect : MonoBehaviour
 
     private void Update()
     {
+        if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+            return;
         if (DateTime.Now.Minute == 0 && DateTime.Now.DayOfWeek == tomorrow)
         {
             transform.Find(((DayOfWeek)((int)DateTime.Now.DayOfWeek - 1)).ToString()).Find("Lock").gameObject.SetActive(true);
