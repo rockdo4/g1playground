@@ -12,12 +12,14 @@ public class StageController : MonoBehaviour
         Heal,
     }
 
-    private List<Connector> doors;
     private List<EnemyController> enemies;
     public UnLockRequirement lockRequirement;
     [SerializeField] private List<GameObject> blocks;
     [SerializeField] private List<GameObject> switches;
     private bool canOpen;
+    [SerializeField]
+    private List<GameObject> nearStageRoomPrefab;
+
 
     private void OnEnable()
     {
@@ -27,10 +29,14 @@ public class StageController : MonoBehaviour
         //    door.gameObject.SetActive(false);
         //}
         enemies=new List<EnemyController>();
-        doors=new List<Connector>();
         enemies = gameObject.GetComponentsInChildren<EnemyController>().ToList();
 
     }
+
+    public List<GameObject> GetBlocks()
+    {
+        return blocks;
+    } 
 
     private void Update()
     {
@@ -38,7 +44,7 @@ public class StageController : MonoBehaviour
         foreach (var swit in switches)
         {
             if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
-            {
+            {                
                 canOpen = false;
                 break;
             }
@@ -54,11 +60,6 @@ public class StageController : MonoBehaviour
 
         if (canOpen)
         {
-
-            foreach (var door in doors)
-            {
-                door.gameObject.SetActive(true);
-            }
 
             if (blocks != null)
             {
@@ -79,6 +80,34 @@ public class StageController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
 
+        if (other.transform.CompareTag("Player") && nearStageRoomPrefab.Count != 0)
+        {
+            Debug.Log("Enter");
+            MapManager.instance.SetCurrentMapName(transform.name);
+
+            foreach (var near in nearStageRoomPrefab)
+            {
+                near.SetActive(true);
+                var nearwall = near.GetComponent<StageController>().GetBlocks();
+
+                foreach (var wall in nearwall)
+                {
+                    wall.gameObject.SetActive(true);
+                }
+
+            }
+
+            var mineBlocks = transform.GetComponent<StageController>().GetBlocks();
+
+            foreach (var mineblock in mineBlocks)
+            {
+                mineblock.SetActive(true);
+            }
+
+        }
+    }
 
 }

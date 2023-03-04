@@ -158,7 +158,8 @@ public class PlayerController : MonoBehaviour, IAttackable
             Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
             if (hit.collider != null)
             {
-                if (hit.transform.CompareTag("Player") ||
+                if (hit.transform.CompareTag("Stage")||
+                    hit.transform.CompareTag("Player") ||
                     hit.collider.CompareTag("AttackBox") ||
                     (hit.transform.CompareTag("Pushable") && isGrounded) ||
                     hit.transform.CompareTag("Door"))

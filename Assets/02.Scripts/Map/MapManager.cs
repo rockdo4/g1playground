@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
@@ -31,27 +32,20 @@ public class MapManager : MonoBehaviour
             }
         }
         if (instance != this)
-            Destroy(gameObject);
-        //  DontDestroyOnLoad(gameObject);
+            Destroy(gameObject);     
     }
 
 
-    //func for When the scene changes, find the door associated with the previous map in the new scene and set the player to that door position.
     public void SetCurrentMapName(string name)
-    {
+    {            
         maps = GameObject.FindGameObjectsWithTag("Stage").ToList();
         currentMapName = name;
         foreach (var map in maps)
-        {
-            if (map.name != currentMapName)
-                map.SetActive(false);
-        }
-        var tempCurrentDoors = GameObject.Find(currentMapName).GetComponentsInChildren<Connector>();
-        foreach (var map in tempCurrentDoors)
-        {
-            map.NextStage.SetActive(true);
-        }
-
+        {       
+            if (map.name != currentMapName) {
+              //  map.SetActive(false);
+            }
+        }  
 
     }
 
