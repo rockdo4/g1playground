@@ -28,13 +28,13 @@ public class StageController : MonoBehaviour
         //}
         enemies=new List<EnemyController>();
         doors=new List<Connector>();
+        enemies = gameObject.GetComponentsInChildren<EnemyController>().ToList();
+
     }
 
     private void Update()
     {
         canOpen = true;
-        enemies.Clear();
-        enemies = gameObject.GetComponentsInChildren<EnemyController>().ToList();
         foreach (var swit in switches)
         {
             if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
@@ -43,8 +43,16 @@ public class StageController : MonoBehaviour
                 break;
             }
         }
+        foreach (var enemy in enemies)
+        {
+            if (enemy.gameObject.activeSelf)
+            {
+                canOpen = false;
+                break;
+            }
+        }
 
-        if (canOpen && enemies.Count == 0)
+        if (canOpen)
         {
 
             foreach (var door in doors)
