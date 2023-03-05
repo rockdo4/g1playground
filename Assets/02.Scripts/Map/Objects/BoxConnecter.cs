@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoxConnecter : MonoBehaviour
 {
     [SerializeField] private BoxTile boxTile;
-    private GameObject connectedObject;
+    [SerializeField] private GameObject connectedObject;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -35,6 +35,7 @@ public class BoxConnecter : MonoBehaviour
                 boxTile.transform.SetParent(null);
                 connectedObject = null;
             }
+
         }
     }
 }
