@@ -325,7 +325,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         else
         {
 #if UNITY_EDITOR
-            Debug.Log("NULL!!");
+          //  Debug.Log("NULL!!");
 #endif
         }
     }

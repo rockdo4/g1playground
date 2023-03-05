@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class Portal : MonoBehaviour
 {
+    private static bool init = false;
     [SerializeField]
     private GameObject nextStage;
-    public bool IsClearroom { get; set; }
-    private bool canUse=true;
     public bool CanUse { get; set; }
     public string GetNextStageName()
     {
@@ -16,8 +16,14 @@ public class Portal : MonoBehaviour
 
     private void OnEnable()
     {
-        //CanUse = true;
+        if (!init)
+        {
+            init = true;
+            CanUse = true;
+        }
+       
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -29,15 +35,12 @@ public class Portal : MonoBehaviour
             var nextstageportals = nextStage.GetComponentsInChildren<Portal>();
             foreach (var portal in nextstageportals)
             {
-
                 if (portal.GetNextStageName() == transform.parent.name)
                 {
-                    CanUse = false;
-                    portal.CanUse = false;
-                    Debug.Log(portal.transform.parent.name);
-                    Debug.Log(portal.CanUse);
                     other.gameObject.transform.position = portal.gameObject.transform.position;
-                    GameObject.Find(portal.GetNextStageName()).SetActive(false);
+                    CanUse = false;
+                    transform.parent.gameObject.SetActive(false);
+
                 }
             }
 
@@ -49,7 +52,7 @@ public class Portal : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             CanUse = true;
-           
+
         }
 
     }
