@@ -59,6 +59,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     public BasicAttack basicAttack;
     public Status status;
+    private EnemyStateIcon icon;
 
     [Header("<Only Idle and Patrol>")]
     [SerializeField]
@@ -84,13 +85,13 @@ public class EnemyController : MonoBehaviour, IAttackable
             }
             if (State != EnemyState.TakeDamage)
             {
-                //rb.isKinematic = true;
-                //rb.velocity = Vector3.zero;
                 agent.enabled = true;
             }
-           
+
             if (prevState == state && state == EnemyState.TakeDamage)
                 return;
+
+            icon.ChangeIcon(State);
 
             switch (State)
             {
@@ -145,6 +146,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     void Start()
     {
         player = GameManager.instance.player;
+        icon = GetComponentInChildren<EnemyStateIcon>();
         State = EnemyStatePattern[0].state;
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
@@ -202,6 +204,28 @@ public class EnemyController : MonoBehaviour, IAttackable
                 return;
             }
         }
+        if (isGoingRight)
+        {
+            if (Vector3.Distance(transform.position, endPos) < 2f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized, Time.deltaTime * 10f);
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized) < 15f)
+                    isGoingRight = false;
+
+                return;
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(transform.position, startPos) < 2f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized, Time.deltaTime * 10f);
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) < 15f)
+                    isGoingRight = true;
+
+                return;
+            }
+        }
     }
 
     private void PatrolUpdate()
@@ -222,23 +246,33 @@ public class EnemyController : MonoBehaviour, IAttackable
 
         if (isGoingRight)
         {
-            agent.SetDestination(endPos);
-            if (Vector3.Distance(transform.position, endPos) < 3f)
+            if (Vector3.Distance(transform.position, endPos) < 1f)
             {
-                transform.rotation = Quaternion.LookRotation(-transform.forward);
                 agent.velocity = Vector3.zero;
-                isGoingRight = false;
+
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized, Time.deltaTime * 10f);
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized) < 15f)
+                    isGoingRight = false;
+
+                return;
             }
+            agent.SetDestination(endPos);
         }
         else
         {
-            agent.SetDestination(startPos);
-            if (Vector3.Distance(transform.position, startPos) < 3f)
+            if (Vector3.Distance(transform.position, startPos) < 1f)
             {
-                transform.rotation = Quaternion.LookRotation(-transform.forward);
                 agent.velocity = Vector3.zero;
-                isGoingRight = true;
+
+
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized, Time.deltaTime * 10f);
+
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) < 15f)
+                    isGoingRight = true;
+
+                return;
             }
+                agent.SetDestination(startPos);
         }
     }
 
@@ -261,10 +295,10 @@ public class EnemyController : MonoBehaviour, IAttackable
 
         Vector3 dir = player.transform.position - transform.position;
         dir.y = 0;
-        transform.rotation = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
 
-        agent.SetDestination(player.transform.position);
-        //transform.LookAt(transform.position + agent.desiredVelocity);
+        if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
+            agent.SetDestination(player.transform.position);
     }
     private void AttackUpdate()
     {
@@ -300,7 +334,8 @@ public class EnemyController : MonoBehaviour, IAttackable
         else
         {
 #if UNITY_EDITOR
-            //Debug.Log("NULL!!");
+            Debug.Log("NULL!!");
+
 #endif
         }
     }
@@ -315,7 +350,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     {
         yield return new WaitForSeconds(delayTime);
 
-        if (state != EnemyState.Idle && state != EnemyState.Patrol)
+        if (State != EnemyState.Idle && State != EnemyState.Patrol)
         {
             isPattern = false;
             curCountPattern = 0;
@@ -353,14 +388,14 @@ public class EnemyController : MonoBehaviour, IAttackable
 
             case EnemyProjectileAttack:
                 {
-                    ((EnemyProjectileAttack)basicAttack).Fire(gameObject, attackPivot.transform.position,transform.forward);
+                    ((EnemyProjectileAttack)basicAttack).Fire(gameObject, attackPivot.transform.position, transform.forward);
                     return;
                 }
                 break;
         }
     }
 
-    private float takeDamageCool = 2.8f;
+    private float takeDamageCool = 0.8f;
     private float takeDamageCoolTime = 0f;
     public void TakeDamageUpdate()
     {
@@ -374,6 +409,9 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
+        if (State == EnemyState.Die)
+            return;
+
         State = EnemyState.TakeDamage;
         animator.SetTrigger("TakeDamage");
     }
@@ -418,4 +456,5 @@ public class EnemyController : MonoBehaviour, IAttackable
     //        }
     //    }
     //}
+
 }

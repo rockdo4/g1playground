@@ -41,7 +41,7 @@ public class PlayerInventory : MonoBehaviour
             SetWeapon(0);
         if (Input.GetKeyDown(KeyCode.R))
             SetArmor(0);
-        //Debug.Log(status.FinalValue.str);
+
     }
 
     public void ApplyStatus()

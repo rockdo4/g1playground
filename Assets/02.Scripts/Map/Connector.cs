@@ -12,10 +12,9 @@ public class Connector : MonoBehaviour
         Portal,
     }
 
-    [SerializeField]
-    private GameObject nextStageRoomPrefab;
+   // private List<GameObject> nearStageRoomPrefab;
 
-    public GameObject NextStage { get { return nextStageRoomPrefab; } }
+    //public List<GameObject> nextStage { get { return nearStageRoomPrefab; } }
 
     [SerializeField]
     // private GameObject nextDoorPrefab;
@@ -28,25 +27,7 @@ public class Connector : MonoBehaviour
         isActive = false;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.CompareTag("Player") && nextStageRoomPrefab != null)
-        {
+   
 
-            if (!nextStageRoomPrefab.activeSelf)
-            {
-                nextStageRoomPrefab.SetActive(true);
-            }
-            else if (nextStageRoomPrefab.activeSelf)
-            {
-                if (MapManager.instance.GetCurrentMapName().CompareTo(transform.parent.name) != 0)
-                {
-                    MapManager.instance.SetCurrentMapName(transform.parent.name);
-
-                }
-
-            }
-        }
-    }
 
 }

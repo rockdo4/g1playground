@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static EnemyController;
 
 public class PlayerAutoMove : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PlayerAutoMove : MonoBehaviour
 
     private void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
+
         targetIndex = 0;
         StartCoroutine(SearchTarget()); 
     }
