@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour, IAttackable
     public bool DashOnCool { get; private set; }
     public float dashCoolDown;
     private float dashCoolTimer;
-    public float dashDuration = 0.1f;
+    public float dashDuration = 0.25f;
     private float dashTimer;
     public bool IsBlocked { get; private set; }
 
@@ -103,6 +103,7 @@ public class PlayerController : MonoBehaviour, IAttackable
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             SetState<JumpState>();
             isGrounded = false;
+            playerAnimator.SetTrigger("Jump");
             jumpCount++;
         }
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -114,6 +115,8 @@ public class PlayerController : MonoBehaviour, IAttackable
     private void FixedUpdate()
     {
         CheckFrontObject();
+        playerAnimator.SetBool("IsAttacking", false);
+        playerAnimator.SetBool("IsGrounded", isGrounded);
     }
 
     public void SetMoveX(float moveX)
@@ -149,7 +152,7 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         var playerPosition = transform.position;
         playerPosition.y += 0.015f;
-        var k = 0.299f;
+        var k = 0.935f;
         IsBlocked = false;
         for (int i = 0; i < 3; i++)
         {
@@ -201,6 +204,7 @@ public class PlayerController : MonoBehaviour, IAttackable
                 {
                     playerRb.velocity = new Vector3(moveX, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                    playerAnimator.SetTrigger("Jump");
                     SetState<JumpState>();
                     if (jumpCount == 1)
                         jumpCount = 2;
@@ -256,6 +260,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Enter()
         {
+            playerController.playerAnimator.SetBool("IsDashing", true);
             playerController.dashTimer = 0f;
             playerController.playerRb.constraints = ~RigidbodyConstraints.FreezePositionX;
         }
@@ -274,6 +279,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Exit()
         {
+            playerController.playerAnimator.SetBool("IsDashing", false);
             playerController.playerRb.constraints = ~RigidbodyConstraints.FreezePositionX & ~RigidbodyConstraints.FreezePositionY;
         }
     }
@@ -306,7 +312,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Enter()
         {
-            playerController.playerAnimator.SetBool("Hit", true);
+            playerController.playerAnimator.SetTrigger("Hit");
             hitTimer = 0f;
         }
 
@@ -320,6 +326,6 @@ public class PlayerController : MonoBehaviour, IAttackable
             }
         }
 
-        public override void Exit() => playerController.playerAnimator.SetBool("Hit", false);
+        public override void Exit() => playerController.playerAnimator.SetTrigger("EndHit");
     }
 }

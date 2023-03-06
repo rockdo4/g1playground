@@ -13,7 +13,7 @@ public class PlayerAttack : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
     }
 
-    public void StartAttack() => playerAnimator.SetTrigger("Attack");
+    public void StartAttack() => playerAnimator.SetBool("IsAttacking", true);
     public void ExecuteAttack() => attackBox.ExecuteAttack();
     public void AttackTarget(GameObject target, Vector3 attackPos) => basicAttack.ExecuteAttack(gameObject, target, attackPos); 
 }
