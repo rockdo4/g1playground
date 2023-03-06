@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     {
         if (instance != this)
             Destroy(gameObject);
+        player.GetComponent<DestructedEvent>().OnDestroyEvent = RestartGame;
     }
 
     public void Respawn()
@@ -58,5 +59,5 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RestartGame() => SceneManager.LoadScene("BuildMap");
+    public void RestartGame() => SceneManager.LoadScene("Scene01");
 }
