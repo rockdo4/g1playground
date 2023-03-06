@@ -19,6 +19,11 @@ public class PlayerSkills : MonoBehaviour
         skillCount = skillAttacks.Length;
         skillOn = new bool[skillCount];
         skillTimers = new float[skillCount];
+        for (int i = 0; i < skillCount; ++i)
+        {
+            skillTimers[i] = skillAttacks[i].CoolDown;
+        }
+
         for (int i = 0; i < skillCount; i++)
         {
             if (toggles[i] == null)
@@ -35,13 +40,11 @@ public class PlayerSkills : MonoBehaviour
             if (skillOn[i])
             {
                 if (skillTimers[i] < skillAttacks[i].CoolDown)
-                {
                     skillTimers[i] += Time.deltaTime;
-                    if (skillTimers[i] > skillAttacks[i].CoolDown)
-                    {
-                        skillTimers[i] = 0f;
-                        UseSkill(skillAttacks[i]);
-                    }
+                else
+                {
+                    skillTimers[i] = 0f;
+                    UseSkill(skillAttacks[i]);
                 }
             }
         }

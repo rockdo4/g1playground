@@ -137,7 +137,17 @@ public class PlayerController : MonoBehaviour, IAttackable
     public void Move(float speed)
     {
         if (!IsBlocked)
-            playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
+        {
+            switch (currState)
+            {
+                case DashState:
+                    playerRb.velocity = new Vector3(LastMoveX * speed, playerRb.velocity.y, 0);
+                    break;
+                default:
+                    playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
+                    break;
+            }
+        }
         else
             playerRb.velocity = new Vector3(0f, playerRb.velocity.y, 0f);
     }
@@ -282,6 +292,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         {
             playerController.playerAnimator.SetBool("IsDashing", false);
             playerController.playerRb.constraints = ~RigidbodyConstraints.FreezePositionX & ~RigidbodyConstraints.FreezePositionY;
+            playerController.playerRb.velocity = Vector3.zero;
         }
     }
 
