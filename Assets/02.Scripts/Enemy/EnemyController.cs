@@ -209,7 +209,7 @@ public class EnemyController : MonoBehaviour, IAttackable
             if (Vector3.Distance(transform.position, endPos) < 2f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized, Time.deltaTime * 10f);
-                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized) < 15f)
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized) < 1f)
                     isGoingRight = false;
 
                 return;
@@ -220,7 +220,7 @@ public class EnemyController : MonoBehaviour, IAttackable
             if (Vector3.Distance(transform.position, startPos) < 2f)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized, Time.deltaTime * 10f);
-                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) < 15f)
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) < 1f)
                     isGoingRight = true;
 
                 return;
@@ -251,7 +251,7 @@ public class EnemyController : MonoBehaviour, IAttackable
                 agent.velocity = Vector3.zero;
 
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized, Time.deltaTime * 10f);
-                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized) < 15f)
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized) < 1f)
                     isGoingRight = false;
 
                 return;
@@ -267,7 +267,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized, Time.deltaTime * 10f);
 
-                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) < 15f)
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) < 1f)
                     isGoingRight = true;
 
                 return;
