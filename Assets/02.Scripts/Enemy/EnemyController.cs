@@ -246,7 +246,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
         if (isGoingRight)
         {
-            if (Vector3.Distance(transform.position, endPos) < 2f)
+            if (Vector3.Distance(transform.position, endPos) < 1f)
             {
                 agent.velocity = Vector3.zero;
 
@@ -260,7 +260,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         }
         else
         {
-            if (Vector3.Distance(transform.position, startPos) < 2f)
+            if (Vector3.Distance(transform.position, startPos) < 1f)
             {
                 agent.velocity = Vector3.zero;
 
@@ -408,6 +408,9 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
+        if (State == EnemyState.Die)
+            return;
+
         State = EnemyState.TakeDamage;
         animator.SetTrigger("TakeDamage");
     }
