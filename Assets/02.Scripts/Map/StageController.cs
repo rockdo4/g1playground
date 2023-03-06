@@ -79,6 +79,9 @@ public class StageController : MonoBehaviour
         }
     }
 
-
+    public List<EnemyController> GetEnemyList()
+    {
+        return enemies;
+    }
 
 }
