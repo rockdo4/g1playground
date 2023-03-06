@@ -97,14 +97,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (jumpCount >= maxJumpCount)
-                return;
-            playerRb.velocity = new Vector3(moveX, 0, 0);
-            playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            SetState<JumpState>();
-            isGrounded = false;
-            playerAnimator.SetTrigger("Jump");
-            jumpCount++;
+            Jump(jumpForce);
         }
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -211,6 +204,17 @@ public class PlayerController : MonoBehaviour, IAttackable
                 }
             }
         }
+    }
+    public void Jump(float force)
+    {
+        if (jumpCount >= maxJumpCount)
+            return;
+        playerRb.velocity = new Vector3(moveX, 0, 0);
+        playerRb.AddForce(Vector3.up * force, ForceMode.Impulse);
+        playerAnimator.SetTrigger("Jump");
+        SetState<JumpState>();
+        if (jumpCount == 1)
+            jumpCount = 2;
     }
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos) => SetState<HitState>();

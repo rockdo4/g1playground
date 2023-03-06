@@ -6,6 +6,7 @@ using static EnemyController;
 
 public class PlayerAutoMove : MonoBehaviour
 {
+    public StageController stageController;
     private List<EnemyController> enemies;
     private Transform target;
     private int targetIndex;
@@ -20,8 +21,21 @@ public class PlayerAutoMove : MonoBehaviour
         targetIndex = 0;
         StartCoroutine(SearchTarget()); 
     }
+    private void FixedUpdate()
+    {
+        if (target != null)
+        {
+            agent.SetDestination(target.position);
+            transform.forward = new Vector3(agent.velocity.x, 0, 0);
+        }
+    }
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            enemies = stageController.GetStageEnemies();
+            target = enemies[0].transform;
+        }
     }
 
     IEnumerator SearchTarget()
