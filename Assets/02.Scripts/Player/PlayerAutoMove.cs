@@ -12,6 +12,8 @@ public class PlayerAutoMove : MonoBehaviour
     private int targetIndex;
     private float[] distance;
 
+    public bool IsAuto { get; set; }
+
     private NavMeshAgent agent;
 
     private void Start()
@@ -50,7 +52,7 @@ public class PlayerAutoMove : MonoBehaviour
 
                 if (distance[targetIndex]<= distance[i+1])
                 {
-                    target = enemies[i].transform;
+                    target = enemies[targetIndex].transform;
                 }
                 else
                 {

@@ -39,18 +39,22 @@ public class UpDownTile : MonoBehaviour
 
         if (timer >= stopTime)
         {
-            if (massA > massB)
-            {
-                SetState(State.BlockA);    
-            }
-            else if (massA < massB)
-            {
-                SetState(State.BlockB);    
-            }
-            else
+            if (Mathf.Approximately(massA, massB))
             {
                 SetState(State.Equal);
             }
+            else
+            {
+                if (massA > massB)
+                {
+                    SetState(State.BlockA);
+                }
+                else
+                {
+                    SetState(State.BlockB);
+                }
+            }
+  
         }
     }
 
@@ -106,6 +110,7 @@ public class UpDownTile : MonoBehaviour
 
     private void ResetBlockPosition()
     {
+        //Debug.Log("equal");
         blockA.GetComponent<WeightScaler>().IsMovAble = true;
         blockB.GetComponent<WeightScaler>().IsMovAble = true;
 
@@ -120,12 +125,13 @@ public class UpDownTile : MonoBehaviour
         }
         else
         {
-            if (Mathf.Abs(blockA.transform.position.y) > Mathf.Abs(blockB.transform.position.y))
+            if (blockA.transform.position.y > blockB.transform.position.y)
             {
+                
                 BlockBUp();
             }
-            else if (Mathf.Abs(blockA.transform.position.y) < Mathf.Abs(blockB.transform.position.y))
-            {
+            else if (blockA.transform.position.y < blockB.transform.position.y)
+            { 
                 BlockAUp();
             }
         }
