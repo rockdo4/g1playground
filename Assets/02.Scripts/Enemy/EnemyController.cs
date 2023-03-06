@@ -33,6 +33,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     private Rigidbody rb;
     private NavMeshAgent agent;
     private Animator animator;
+    private CapsuleCollider capsuleCollider;
 
     private EnemyState state;
 
@@ -65,13 +66,16 @@ public class EnemyController : MonoBehaviour, IAttackable
     [SerializeField]
     public List<EnemyStateData> EnemyStatePattern = new List<EnemyStateData>();
 
+    private bool die = false;
     public EnemyState State
     {
         get { return state; }
         private set
         {
-            if (State == EnemyState.Die)
+            if (die)
                 return;
+
+
             var prevState = state;
             state = value;
 
@@ -126,6 +130,8 @@ public class EnemyController : MonoBehaviour, IAttackable
                     agent.isStopped = true;
                     agent.enabled = false;
                     rb.isKinematic = true;
+                    capsuleCollider.enabled = false;
+                    die = true;
                     break;
 
             }
@@ -138,6 +144,7 @@ public class EnemyController : MonoBehaviour, IAttackable
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         status = GetComponent<Status>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
         agent.speed = chaseSpeed;
         //agent.stoppingDistance = attackRange;
         GetComponent<DestructedEvent>().OnDestroyEvent = OnDestroyObj;
@@ -272,7 +279,7 @@ public class EnemyController : MonoBehaviour, IAttackable
 
                 return;
             }
-                agent.SetDestination(startPos);
+            agent.SetDestination(startPos);
         }
     }
 
@@ -373,6 +380,9 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     public void Attack()
     {
+        if (die)
+            return;
+
         switch (basicAttack)
         {
             case EnemyMeleeAttack:
@@ -418,6 +428,9 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     public void OnDestroyObj()
     {
+        if (State == EnemyState.Die)
+            return;
+
         State = EnemyState.Die;
         animator.SetTrigger("Die");
     }

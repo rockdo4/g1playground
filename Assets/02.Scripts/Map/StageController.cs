@@ -37,7 +37,7 @@ public class StageController : MonoBehaviour
                 break;
             }
         }
-        TileColorManager.instance.ChangeTileMaterial(transform.name, false);
+    //    TileColorManager.instance.ChangeTileMaterial(transform.name, false);
 
         foreach (var green in greenWall)
         {
