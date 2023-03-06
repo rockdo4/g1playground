@@ -309,7 +309,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Enter()
         {
-            playerController.playerAnimator.SetBool("GettingHit", true);
+            playerController.playerAnimator.SetTrigger("Hit");
             hitTimer = 0f;
         }
 
@@ -323,6 +323,6 @@ public class PlayerController : MonoBehaviour, IAttackable
             }
         }
 
-        public override void Exit() => playerController.playerAnimator.SetBool("GettingHit", false);
+        public override void Exit() => playerController.playerAnimator.SetTrigger("EndHit");
     }
 }
