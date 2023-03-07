@@ -31,8 +31,7 @@ public class UIButtonManager : MonoBehaviour
             foreach (var popup in popUps)
             {
                 popup.gameObject.SetActive(false);
-            }
-            
+            }            
         }
 
         else if (GameManager.instance.uiManager.popupStack.Count == 0 && Input.GetKeyDown(KeyCode.Escape))
