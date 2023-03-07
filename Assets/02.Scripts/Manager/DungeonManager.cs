@@ -95,7 +95,7 @@ public class DungeonManager : MonoBehaviour
 
                     winUI.gameObject.SetActive(true);
                     winUI.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - remaningtime.gameObject.GetComponent<FlowTime>().Times))).ToString();
-
+                    winUI.Find("Reward").transform.Find("RewardCount").GetComponent<TextMeshProUGUI>().text = dungeonTable.Get(SelectedLevel.ToString()).itemcount.ToString();
                     isDungeon = false;
                 }
 
