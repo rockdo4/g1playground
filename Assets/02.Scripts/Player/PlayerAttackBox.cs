@@ -6,6 +6,7 @@ public class PlayerAttackBox : MonoBehaviour
 {
     public PlayerAttack playerAttack;
     private bool isAttacking = false;
+    private List<GameObject> attackedList = new List<GameObject>();
 
     private void OnTriggerStay(Collider other)
     {
@@ -14,19 +15,28 @@ public class PlayerAttackBox : MonoBehaviour
         playerAttack.StartAttack();
         if (isAttacking)
         {
+            if (attackedList.Contains(other.gameObject))
+                return;
             Vector3 pos = other.ClosestPoint(transform.position);
             playerAttack.AttackTarget(other.gameObject, pos);
             var effect = GameManager.instance.effectManager.GetEffect("Sword Slash 1");
-            effect.transform.position = transform.position;
+            var effectPos = transform.position;
+            effect.transform.position = new Vector3(effectPos.x, effectPos.y + 1f, effectPos.z);
             effect.transform.forward = transform.forward;
+            attackedList.Add(other.gameObject);
         }
     }
 
-    public void ExecuteAttack() => StartCoroutine(CoExecuteAttack());
+    public void ExecuteAttack()
+    {
+        attackedList.Clear();
+        isAttacking = true;
+    }
+
+    public void EndAttackExecution() => isAttacking = false;
 
     private IEnumerator CoExecuteAttack()
     {
-        isAttacking = true;
         yield return new WaitForFixedUpdate();
         isAttacking = false;
     }
