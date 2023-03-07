@@ -9,6 +9,10 @@ public class BoxConnecter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (connectedObject != null)
+        {
+            return;
+        }
         //check if there is Pushable object under
         if (other.tag == "Pushable" && other.GetComponent<BoxTile>() != null) 
         {  

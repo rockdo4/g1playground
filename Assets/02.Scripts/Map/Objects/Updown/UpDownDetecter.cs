@@ -13,7 +13,7 @@ public class UpDownDetecter : MonoBehaviour
         if (other.tag == "Ground" || other.tag == "Pushable")
         {
             block.IsMovAble = false;
-            colliderTrigger.enabled = false;
+            //colliderTrigger.enabled = false;
         }
         if (other.tag == "Player" )
         {
@@ -27,6 +27,7 @@ public class UpDownDetecter : MonoBehaviour
     {
         if (other.tag == "Player" || other.tag == "Pushable")
         {
+            //Debug.Log("exit");
             block.IsMovAble = true;
 
         }
