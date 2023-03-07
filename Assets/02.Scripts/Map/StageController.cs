@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StageController : MonoBehaviour
@@ -12,24 +13,41 @@ public class StageController : MonoBehaviour
         Heal,
     }
 
-    private List<Connector> doors;
     private List<EnemyController> enemies;
     public UnLockRequirement lockRequirement;
-    [SerializeField] private List<GameObject> blocks;
+    private List<Portal> portals;
     [SerializeField] private List<GameObject> switches;
     private bool canOpen;
 
     private void OnEnable()
     {
-        //doors = gameObject.transform.GetComponentsInChildren<Connector>().ToList();
-        //foreach (var door in doors)
-        //{
-        //    door.gameObject.SetActive(false);
-        //}
-        enemies=new List<EnemyController>();
-        doors=new List<Connector>();
+        var switchcheck = false;
+        enemies = new List<EnemyController>();
         enemies = gameObject.GetComponentsInChildren<EnemyController>().ToList();
+        portals = gameObject.GetComponentsInChildren<Portal>().ToList();
 
+        foreach (var swit in switches)
+        {
+            if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
+            {
+                switchcheck = true;
+                break;
+            }
+        }
+
+        if (enemies.Count > 0 || switchcheck)
+            StartCoroutine(DisablePortal());
+
+    }
+
+    IEnumerator DisablePortal()
+    {
+        yield return null;
+        foreach (var portal in portals)
+        {
+            portal.gameObject.SetActive(false);
+            portal.CanUse = true;
+        }
     }
 
     private void Update()
@@ -55,30 +73,26 @@ public class StageController : MonoBehaviour
         if (canOpen)
         {
 
-            foreach (var door in doors)
+            if (portals != null)
             {
-                door.gameObject.SetActive(true);
-            }
-
-            if (blocks != null)
-            {
-                foreach (var block in blocks)
+                foreach (var portal in portals)
                 {
-
-                    block.SetActive(false);
-
+                    portal.gameObject.SetActive(true);
                 }
-
             }
-
         }
 
         if (lockRequirement == UnLockRequirement.Heal)
         {
             //
         }
+
+
     }
 
-
+    public List<EnemyController> GetStageEnemies()
+    {
+        return enemies;
+    }
 
 }

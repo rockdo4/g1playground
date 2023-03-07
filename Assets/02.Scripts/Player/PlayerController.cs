@@ -157,9 +157,12 @@ public class PlayerController : MonoBehaviour, IAttackable
             Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
             foreach (var hit in hits)
             {
+
                 if (hit.collider != null)
                 {
-                    if (!(hit.transform.CompareTag("Player") ||
+                    if (!(hit.transform.CompareTag("Portal") ||
+                    hit.transform.CompareTag("Stage") ||
+                        hit.transform.CompareTag("Player") ||
                         hit.collider.CompareTag("AttackBox") ||
                         (hit.transform.CompareTag("Pushable") && isGrounded) ||
                         hit.transform.CompareTag("Door")))
@@ -194,7 +197,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
             if (viewportPoint.x > 0.5f && viewportPoint.y < 0.5f)
             {
-                if (t.phase == TouchPhase.Began&& !EventSystem.current.IsPointerOverGameObject(t.fingerId))
+                if (t.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(t.fingerId))
                 {
                     playerRb.velocity = new Vector3(moveX, 0, 0);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
