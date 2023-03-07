@@ -13,7 +13,6 @@ public class UIInventory : MonoBehaviour
     private List<UIItemSlot> slotList = new List<UIItemSlot>();
     private PlayerInventory playerInventory;
     public ItemTypes itemType;
-    //private DataTable<SkillData> skillTable;
 
     public UIItemInfo itemInfo;
 
