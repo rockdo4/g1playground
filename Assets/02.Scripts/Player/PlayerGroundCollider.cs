@@ -13,12 +13,12 @@ public class PlayerGroundCollider : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Ground") || other.CompareTag("Pushable")) 
+        if (other.CompareTag("Ground") || other.CompareTag("Pushable") || other.CompareTag("Falling")) 
             playerController.OnGround(true);
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Ground") || other.CompareTag("Pushable"))
+        if (other.CompareTag("Ground") || other.CompareTag("Pushable") || other.CompareTag("Falling")) 
         {
             playerController.OnGround(false);
         }

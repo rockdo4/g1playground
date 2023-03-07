@@ -14,14 +14,15 @@ public class BoxConnecter : MonoBehaviour
             return;
         }
         //check if there is Pushable object under
-        if (other.tag == "Pushable" && other.GetComponent<BoxTile>() != null) 
-        {  
+        if (other.CompareTag("Pushable") && other.GetComponent<BoxTile>() != null)
+        {
             boxTile.transform.SetParent(other.transform);
             connectedObject = other.gameObject;
-            
+
         }
-        else if (other.tag == "Ground")     //check if the box is on Ground
+        else if (other.CompareTag("Ground") && !(other.GetComponent<FallingTile>() != null))     //check if the box is on Ground
         {
+            //Debug.Log("weight");
             //SetParent to Ground in Case of Box on top of UpDown Tile
             boxTile.transform.SetParent(other.transform);
             connectedObject = other.gameObject;
@@ -32,10 +33,11 @@ public class BoxConnecter : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         //Reset when exit
-        if (other.tag == "Pushable" || other.tag == "Ground") 
+        if (other.CompareTag("Pushable") || (other.CompareTag("Ground") && !(other.GetComponent<FallingTile>() != null))) 
         {
             if (other.gameObject == connectedObject)
             {
+                //Debug.Log("exit " + other.gameObject.name);
                 boxTile.transform.SetParent(null);
                 connectedObject = null;
             }
