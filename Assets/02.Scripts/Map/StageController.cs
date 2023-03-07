@@ -18,6 +18,9 @@ public class StageController : MonoBehaviour
     private List<Portal> portals;
     [SerializeField] private List<GameObject> switches;
     private bool canOpen;
+    [SerializeField]
+    private List<GameObject> greenWall;
+    private bool greenwallopen = false;
 
     private void OnEnable()
     {
@@ -33,6 +36,11 @@ public class StageController : MonoBehaviour
                 switchcheck = true;
                 break;
             }
+        }
+
+        foreach(var green in greenWall)
+        {
+            green.SetActive(true);
         }
 
         if (enemies.Count > 0 || switchcheck)
@@ -67,6 +75,26 @@ public class StageController : MonoBehaviour
             {
                 canOpen = false;
                 break;
+            }
+            else if (enemy == enemies.Last())
+            {
+                greenwallopen = true;
+            }
+        }
+
+        if (enemies.Count == 0 || greenwallopen)
+        {
+            foreach(var green in greenWall)
+            {
+                green.SetActive(false);
+            }
+        }
+
+        if (greenwallopen)
+        {
+            foreach (var green in greenWall)
+            {
+                green.SetActive(false);
             }
         }
 
