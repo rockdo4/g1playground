@@ -37,8 +37,9 @@ public class StageController : MonoBehaviour
                 break;
             }
         }
+        TileColorManager.instance.ChangeTileMaterial(transform.name, false);
 
-        foreach(var green in greenWall)
+        foreach (var green in greenWall)
         {
             green.SetActive(true);
         }
@@ -61,6 +62,8 @@ public class StageController : MonoBehaviour
     private void Update()
     {
         canOpen = true;
+        greenwallopen = true;
+
         foreach (var swit in switches)
         {
             if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
@@ -74,6 +77,7 @@ public class StageController : MonoBehaviour
             if (enemy.gameObject.activeSelf)
             {
                 canOpen = false;
+                greenwallopen = false;
                 break;
             }
             else if (enemy == enemies.Last())
@@ -84,7 +88,7 @@ public class StageController : MonoBehaviour
 
         if (enemies.Count == 0 || greenwallopen)
         {
-            foreach(var green in greenWall)
+            foreach (var green in greenWall)
             {
                 green.SetActive(false);
             }
@@ -95,6 +99,8 @@ public class StageController : MonoBehaviour
             foreach (var green in greenWall)
             {
                 green.SetActive(false);
+                TileColorManager.instance.ChangeTileMaterial(transform.name, true);
+
             }
         }
 
