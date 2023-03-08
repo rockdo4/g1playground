@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,12 +31,19 @@ public class DungeonManager : MonoBehaviour
     private string dungeonname;
     [SerializeField]
     private Canvas dungeonLevel;
+    public Canvas DungeonLevel { get { return dungeonLevel; } set { dungeonLevel = value; } }
     [SerializeField]
     private Canvas dungeonDay;
+    public Canvas DungeonDay { get { return dungeonDay; } set { dungeonDay = value; } }
+
+    [SerializeField]
+    private Canvas remaningtime;
+
     private List<GameObject> enemies;
     private int todayPlayCount;
     private bool isDungeon = false;
 
+    private event Action scene;
 
     void OnEnable()
     {
@@ -43,10 +52,21 @@ public class DungeonManager : MonoBehaviour
             SelectedLevel = new StringBuilder();
 
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += ExtiedDungeon;
         }
         else
+        {
             Destroy(gameObject);
+        }
 
+
+    }
+
+    private void ExtiedDungeon(Scene scene, LoadSceneMode mode)
+    {
+
+        if (scene.name == "Map1")
+            remaningtime.gameObject.SetActive(false);
 
     }
 
@@ -60,7 +80,7 @@ public class DungeonManager : MonoBehaviour
 
     private void Update()
     {
-        if (isDungeon)
+        if (isDungeon && enemies != null)
         {
             foreach (var enemy in enemies)
             {
@@ -74,6 +94,8 @@ public class DungeonManager : MonoBehaviour
                     var winUI = GameObject.Find("Result").transform.Find("Win");
 
                     winUI.gameObject.SetActive(true);
+                    winUI.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - remaningtime.gameObject.GetComponent<FlowTime>().Times))).ToString();
+
                     isDungeon = false;
                 }
 
@@ -102,14 +124,15 @@ public class DungeonManager : MonoBehaviour
     public void ExitDungeon()
     {
         isDungeon = false;
-        SceneManager.LoadScene("ParkMWTest");
         dungeonDay.gameObject.SetActive(true);
         dungeonLevel.gameObject.SetActive(false);
-        GameObject.Find("DungeonManager").transform.Find("RemainingTime").gameObject.SetActive(false);
+        SceneManager.LoadScene("Map1");
+
     }
 
     public void JoinDungeon()
     {
+        isDungeon = true;
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;
@@ -118,7 +141,7 @@ public class DungeonManager : MonoBehaviour
 
         }
         StringBuilder scenename = new StringBuilder();
-
+        dungeonLevel.gameObject.SetActive(false);
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
         scenename.Append("_");
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
@@ -126,8 +149,8 @@ public class DungeonManager : MonoBehaviour
 
         SceneManager.LoadScene(scenename.ToString());
 
-        GameObject.Find("DungeonManager").transform.Find("RemainingTime").gameObject.SetActive(true);
-        GameObject.Find("RemainingTime").GetComponentInChildren<FlowTime>().SetTime(dungeonTable.Get(SelectedLevel.ToString()).countdown);
+        remaningtime.gameObject.SetActive(true);
+        remaningtime.gameObject.GetComponentInChildren<FlowTime>().SetTime(dungeonTable.Get(SelectedLevel.ToString()).countdown);
         StartCoroutine(SetEnemy());
 
     }
@@ -137,7 +160,6 @@ public class DungeonManager : MonoBehaviour
         yield return null;
         enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
         isDungeon = true;
-        Debug.Log("steed");
     }
 
     private void SetLevelUi()
