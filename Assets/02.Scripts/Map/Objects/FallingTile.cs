@@ -10,6 +10,7 @@ public class FallingTile : MonoBehaviour
     //private new BoxCollider collider;
 
     [SerializeField] private float delay = 1f;
+    [SerializeField] private float destroyDelay = 3f;
     private float timer = 0f;
     private bool trigger = false;
 
@@ -37,7 +38,7 @@ public class FallingTile : MonoBehaviour
                 collider.isTrigger = trigger;
                 rb.isKinematic = false;
                 trigger = false;
-                
+                Destroy(gameObject, destroyDelay);
             }
         }        
     }
@@ -47,10 +48,16 @@ public class FallingTile : MonoBehaviour
         trigger = isTrigger;
     }    
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(originPos, boxScale);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireCube(originPos, boxScale);
+    //}
+
+    //private void OnBecameInvisible()
+    //{
+    //    Debug.Log("destroy");
+    //    Destroy(gameObject);
+    //}
 
     private void OnTriggerEnter(Collider other)
     {
