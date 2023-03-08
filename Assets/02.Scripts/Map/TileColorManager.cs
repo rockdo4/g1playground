@@ -7,6 +7,7 @@ public class TileColorManager : MonoBehaviour
     [Header("Material")]
     [SerializeField] private Material customMaterial;
     [SerializeField] private Material originMaterial;
+    [SerializeField] private Material invisibleMaterial;
     //public new string name;
 
     private static TileColorManager m_instance;
@@ -70,7 +71,7 @@ public class TileColorManager : MonoBehaviour
         }
     }
 
-    private void ToOriginalMaterial(GameObject stage)
+    public void ToOriginalMaterial(GameObject stage)
     {
         var tiles = stage.GetComponentsInChildren<LODGroup>();
         ///Debug.Log(tiles.Length);
@@ -85,7 +86,7 @@ public class TileColorManager : MonoBehaviour
         }
     }
 
-    private void ToCustomMaterial(GameObject stage)
+    public void ToCustomMaterial(GameObject stage)
     {
         var tiles = stage.GetComponentsInChildren<LODGroup>();
         //Debug.Log(tiles.Length);
@@ -99,5 +100,19 @@ public class TileColorManager : MonoBehaviour
             }
         }
     }
-   
+
+    public void ToInvisibleMaterial(GameObject gameObject)
+    {
+        var tiles = gameObject.GetComponentsInChildren<LODGroup>();
+        ///Debug.Log(tiles.Length);
+
+        foreach (var tile in tiles)
+        {
+            var meshRenderers = tile.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mesh in meshRenderers)
+            {
+                mesh.material = invisibleMaterial;
+            }
+        }
+    }
 }
