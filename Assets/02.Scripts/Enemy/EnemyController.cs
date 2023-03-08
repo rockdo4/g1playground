@@ -387,7 +387,6 @@ public class EnemyController : MonoBehaviour, IAttackable
         {
             case EnemyMeleeAttack:
                 {
-
                     if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
                     {
                         basicAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
