@@ -19,10 +19,6 @@ public class PlayerAttackBox : MonoBehaviour
                 return;
             Vector3 pos = other.ClosestPoint(transform.position);
             playerAttack.AttackTarget(other.gameObject, pos);
-            var effect = GameManager.instance.effectManager.GetEffect("Sword Slash 1");
-            var effectPos = transform.position;
-            effect.transform.position = new Vector3(effectPos.x, effectPos.y + 1f, effectPos.z);
-            effect.transform.forward = transform.forward;
             attackedList.Add(other.gameObject);
         }
     }
@@ -31,6 +27,10 @@ public class PlayerAttackBox : MonoBehaviour
     {
         attackedList.Clear();
         isAttacking = true;
+        var effect = GameManager.instance.effectManager.GetEffect("Sword Slash 1");
+        var effectPos = transform.position;
+        effect.transform.position = new Vector3(effectPos.x, effectPos.y + 1f, effectPos.z);
+        effect.transform.forward = transform.forward;
     }
 
     public void EndAttackExecution() => isAttacking = false;

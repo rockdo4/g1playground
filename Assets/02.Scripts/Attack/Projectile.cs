@@ -3,21 +3,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : AttackCollider
 {
     private Rigidbody rb;
-    private GameObject attacker;
-    public System.Action<GameObject, GameObject, Vector3> OnCollided;
-    private float lifeTime;
-    private float timer;
-    public string[] detachedEffects;
-    public List<GameObject> effects = new List<GameObject>();
-    public string hitEffect;
-    public string flashEffect;
     private bool isPenetrable = false;
     private bool isReturnable = false;
     private bool isReturning = false;
-    private List<GameObject> attackedList = new List<GameObject>();
 
     private void Awake()
     {
