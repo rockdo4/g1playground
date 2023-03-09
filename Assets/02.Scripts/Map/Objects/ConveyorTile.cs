@@ -50,7 +50,7 @@ public class ConveyorTile : MonoBehaviour
                 dir = Vector3.right;
                 break;
         }
-        Debug.Log(dir);
+        //Debug.Log(dir);
     }
 
     private void OnCollisionEnter(Collision collision)
