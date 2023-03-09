@@ -14,7 +14,7 @@ public class AttackCollider : MonoBehaviour
     public string flashEffect;
     protected List<GameObject> attackedList = new List<GameObject>();
 
-    private void OnTriggerStay(Collider other)
+    protected virtual void OnTriggerStay(Collider other)
     {
         
     }

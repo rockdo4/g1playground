@@ -77,7 +77,7 @@ public class Projectile : AttackCollider
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnTriggerStay(Collider other)
     {
         if (!other.gameObject.activeSelf ||
             other.CompareTag("AttackBox") ||
