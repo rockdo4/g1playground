@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using static PlayerController;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerController : MonoBehaviour, IAttackable
 {
@@ -43,6 +46,18 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     public float hitDuration = 0.5f;
 
+    public StageController stageController;
+    private List<EnemyController> enemies;
+    private Transform target;
+    private float[] distance;
+
+    public bool IsAuto { get; set; }
+
+    private NavMeshAgent agent;
+    private NavMeshPath path;
+
+    private Coroutine cor;
+
     private void SetState<T>() where T : State
     {
         if (currState != null)
@@ -55,6 +70,8 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         playerRb = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        path = new NavMeshPath();
     }
 
     private void Start()
@@ -64,7 +81,10 @@ public class PlayerController : MonoBehaviour, IAttackable
         states.Add(typeof(DashState), new DashState(this));
         states.Add(typeof(JumpState), new JumpState(this));
         states.Add(typeof(HitState), new HitState(this));
+        states.Add(typeof(AutoMoveState), new AutoMoveState(this));
         SetState<IdleState>();
+
+        enemies = stageController.GetStageEnemies();
     }
 
     private void Update()
@@ -79,7 +99,6 @@ public class PlayerController : MonoBehaviour, IAttackable
             }
         }
         currState.Update();
-        playerAnimator.SetFloat("MoveX", moveX);
 
         //Temporary KeyBoard
         if (Input.GetKey(KeyCode.A))
@@ -102,6 +121,25 @@ public class PlayerController : MonoBehaviour, IAttackable
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Dash();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            cor = StartCoroutine(SearchTarget());
+            IsAuto = true;
+            SetState<AutoMoveState>();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            StopCoroutine(cor);
+            cor = null;
+            IsAuto = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            agent.CalculatePath(transform.position + Vector3.right * 3f, path);
+            agent.SetDestination(transform.position + Vector3.right * 3f);
         }
     }
 
@@ -219,6 +257,47 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos) => SetState<HitState>();
 
+    public float GetLength(NavMeshPath path)
+    {
+        float pathLength = 0;
+        if (path.status == NavMeshPathStatus.PathComplete)
+        {
+            for (int i = 1; i < path.corners.Length; i++)
+            {
+                pathLength += Vector3.Distance(path.corners[i - 1], path.corners[i]);
+            }
+        }
+        return pathLength;
+    }
+    IEnumerator SearchTarget()
+    {
+        //Debug.Log("1");
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            float temp = 999999f;
+            var count = 0;
+            foreach (var enemy in enemies)
+            {
+                if (enemy.gameObject.activeSelf && agent.CalculatePath(enemy.transform.position, path))
+                {
+                    count++;
+                    var len = GetLength(path);
+                    if (temp >= len)
+                    {
+                        temp = len;
+                        target = enemy.transform;
+                    }
+                }
+            }
+            agent.SetDestination(target.transform.position);
+            //Debug.Log("!");
+            if (count == 0)
+                yield break;
+        }
+    }
+
     public class IdleState : State
     {
         public IdleState(PlayerController controller) : base(controller) { }
@@ -227,11 +306,14 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Update()
         {
+            if (playerController.IsAuto)
+                playerController.SetState<AutoMoveState>();
             if (!Mathf.Approximately(playerController.moveX, 0f))
             {
                 playerController.SetState<MoveState>();
                 return;
             }
+            playerController.playerAnimator.SetFloat("MoveX", playerController.moveX);
             playerController.Jump();
         }
 
@@ -246,16 +328,21 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Update()
         {
+            if (playerController.IsAuto)
+                playerController.SetState<AutoMoveState>();
             if (Mathf.Approximately(playerController.moveX, 0f))
             {
                 playerController.SetState<IdleState>();
                 return;
             }
+            playerController.playerAnimator.SetFloat("MoveX", playerController.moveX);
             playerController.Move(playerController.moveSpeed);
             playerController.Jump();
         }
 
-        public override void Exit() { }
+        public override void Exit() 
+        {
+        }
     }
 
     public class DashState : State
@@ -331,5 +418,25 @@ public class PlayerController : MonoBehaviour, IAttackable
         }
 
         public override void Exit() => playerController.playerAnimator.SetTrigger("EndHit");
+    }
+    public class AutoMoveState : State
+    {
+        public AutoMoveState(PlayerController controller) : base(controller) { }
+
+        public override void Enter() 
+        {
+            playerController.playerRb.isKinematic = true;
+        }
+
+        public override void Update()
+        {
+            playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
+            //Debug.Log( playerController.playerAnimator.GetFloat("MoveX"));
+        }
+
+        public override void Exit() 
+        {
+            playerController.playerRb.isKinematic = false;
+        }
     }
 }
