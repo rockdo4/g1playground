@@ -8,7 +8,7 @@ public class PlayerConnecter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Pushable" )
+        if (other.tag == "Pushable" && other.GetComponent<ObjectMass>() != null)
         {
             other.GetComponent<ObjectMass>().AddMass(player.GetComponent<Rigidbody>().mass);
         }
@@ -16,7 +16,7 @@ public class PlayerConnecter : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Pushable" )
+        if (other.tag == "Pushable" && other.GetComponent<ObjectMass>() != null)
         {   
             other.GetComponent<ObjectMass>().ResetMass(); 
         }

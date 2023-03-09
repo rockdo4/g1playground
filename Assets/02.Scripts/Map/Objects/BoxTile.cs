@@ -44,6 +44,7 @@ public class BoxTile : MonoBehaviour
         rigidbody.isKinematic = isKinematic;
     }
 
+
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Player")

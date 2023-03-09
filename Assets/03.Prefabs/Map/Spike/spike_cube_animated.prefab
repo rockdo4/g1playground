@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1916043666}
-  - component: {fileID: 1916043667}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Ground
@@ -32,19 +31,6 @@ Transform:
   m_Father: {fileID: 3499718098701290518}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1916043667
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1916043665}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3499718098701717552
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843c515905d1b42a392a5f8028a2baaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spike: {fileID: 0}
 --- !u!1 &3499718098701717560
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +232,7 @@ GameObject:
   - component: {fileID: 343846173}
   m_Layer: 0
   m_Name: deco_spike1_animated_LOD0
-  m_TagString: Untagged
+  m_TagString: Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -342,3 +327,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89eea58e94d046b897322b2049f0067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damagePercentage: 20
+  delay: 2

@@ -46,9 +46,13 @@ public class WeightScaler : MonoBehaviour
             collision.transform.SetParent(transform);
 
             //turn off kinematic
-            if (collision.gameObject.tag == "Pushable" && !collision.gameObject.GetComponent<BoxTile>().IsPushing)
-            {  
-                collision.rigidbody.isKinematic = true;
+            if (collision.gameObject.CompareTag("Pushable") && collision.gameObject.GetComponent<BoxTile>() != null) 
+            {
+                if (!collision.gameObject.GetComponent<BoxTile>().IsPushing)
+                {
+                    collision.rigidbody.isKinematic = true;
+                }
+                
             }
 
         }
@@ -58,7 +62,7 @@ public class WeightScaler : MonoBehaviour
     {     
         if (collision.rigidbody != null)
         { 
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.CompareTag("Player"))
             {
                 collision.transform.SetParent(null);
             }
