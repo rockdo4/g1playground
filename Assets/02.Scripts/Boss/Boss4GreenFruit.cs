@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using static EnemyController;
 
@@ -8,10 +9,13 @@ public class Boss4GreenFruit : BossController
 {
     private BossState state;
     public GameObject mask;
-    public GameObject AttackBox;
+    public GameObject attackBox;
     public GameObject dashBox;
+    public GameObject skillPivot;
 
-
+    public BasicAttack meleeAttack;
+    public BasicAttack meleeSkill;
+    public SkillAttack projectileSkill;
 
     public float moveSpeed;
     public float attackRange;
@@ -65,10 +69,9 @@ public class Boss4GreenFruit : BossController
                     rb.isKinematic = true;
                     break;
                 case BossState.Attack:
-                    agent.enabled = true;
-                    agent.velocity = Vector3.zero;
                     agent.isStopped = true;
-                    rb.isKinematic = true;
+                    rb.isKinematic = false;
+                    agent.enabled = false;
                     break;
                 case BossState.Skill:
                     agent.isStopped = true;
@@ -189,7 +192,7 @@ public class Boss4GreenFruit : BossController
                 {
                     animator.SetTrigger("ProjectileSkill");
                     isSkillType = true;
-                    dashCoolTime = 0f;
+                    projectileCoolTime = 0f;
                 }
                 State = BossState.Skill;
             }
@@ -214,7 +217,7 @@ public class Boss4GreenFruit : BossController
         }
         else
         {
-
+            return;
         }
     }
 
@@ -262,7 +265,7 @@ public class Boss4GreenFruit : BossController
     private void AttackDone()
     {
         ChaeckAttackCount();
-
+        attackBox.active = false;
         State = BossState.Idle;
     }
     private void DashSkillDone()
@@ -276,6 +279,11 @@ public class Boss4GreenFruit : BossController
     //    StartCoroutine(CorStopDash());
     //}
 
+    private void Bite()
+    {
+        attackBox.active = true;
+    }
+
     private float dashStopTime = 1f;
     IEnumerator CorStopDash()
     {
@@ -288,10 +296,10 @@ public class Boss4GreenFruit : BossController
 
 
     }
-    
+
     private void ProjectileSkill()
     {
-
+        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);
     }
 
     private void ProjectileSkillDone()
@@ -322,5 +330,16 @@ public class Boss4GreenFruit : BossController
             return true;
         else
             return false;
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.CompareTag("Player"))
+        {
+            if (State == BossState.Attack)
+                meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+            else if (State == BossState.Skill)
+                meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+        }
     }
 }
