@@ -15,12 +15,6 @@ public class MiniPortal : MonoBehaviour
         IsUsed = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public Vector3 GetSpawnPoint()
     {
         return spawnPoint.transform.position;
@@ -28,12 +22,12 @@ public class MiniPortal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !IsUsed)
+        if (other.GetComponent<ObjectMass>() != null && !IsUsed) //(other.CompareTag("Player") || other.CompareTag("Pushable")) && !IsUsed) 
         {
             IsUsed = true;                        
             linkedPortal.IsUsed = true;
-            other.gameObject.transform.position = linkedPortal.GetSpawnPoint();
-            other.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
+            other.transform.position = linkedPortal.GetSpawnPoint();
+            //other.GetComponent<Rigidbody>().velocity = new Vector3(0f, 0f, 0f);
 
         }
     }

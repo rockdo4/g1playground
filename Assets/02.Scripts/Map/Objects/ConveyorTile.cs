@@ -10,10 +10,10 @@ public class ConveyorTile : MonoBehaviour
         Right,
     }
 
-    [SerializeField] private float speed = 20f;
+    [SerializeField] private float speed = 0.5f;
     [SerializeField] private Direction direction;
 
-    private List<GameObject> movingObjects = new List<GameObject>();    
+    private List<Rigidbody> movingObjects = new List<Rigidbody>();    
     private Vector3 dir;
 
     // Start is called before the first frame update
@@ -29,12 +29,10 @@ public class ConveyorTile : MonoBehaviour
         {
             foreach (var massObj in movingObjects)
             {
-                massObj.GetComponent<Rigidbody>().velocity = speed * dir * Time.deltaTime;
-                //Debug.Log(massObj.name);
-                //if (massObj.GetComponent<BoxTile>() != null)
-                //{
-                //    //massObj.GetComponent<BoxTile>().rigidbody.velocity = speed * dir * Time.deltaTime;
-                //} 
+                if (Mathf.Abs(massObj.velocity.x) <= 7f)
+                {
+                    massObj.velocity += new Vector3(dir.x * speed, 0, 0);
+                }
                 
             }
         }
@@ -57,42 +55,18 @@ public class ConveyorTile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<ObjectMass>() != null) 
+        if (collision.rigidbody != null)
         {
-            movingObjects.Add(collision.gameObject);
-        }
+            //collision.rigidbody.velocity = new Vector3(dir.x * speed, 0, 0);
+            movingObjects.Add(collision.rigidbody);
+        }        
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (movingObjects.Contains(collision.gameObject))
+        if (movingObjects.Contains(collision.rigidbody))
         {
-            movingObjects.Remove(collision.gameObject);
+            movingObjects.Remove(collision.rigidbody);
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.GetComponent<ObjectMass>() != null) 
-    //    {
-    //        //SetParent the Entered object
-    //        movingObjects.Add(other.gameObject);
-
-    //        ////turn off kinematic
-    //        //if (other.CompareTag("Pushable") && !other.GetComponent<BoxTile>().IsPushing)
-    //        //{
-    //        //    other.GetComponent<Rigidbody>().isKinematic = true;
-    //        //}
-
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (movingObjects.Contains(other.gameObject)) 
-    //    {
-    //        movingObjects.Remove(other.gameObject);
-    //    }
-
-    //}
 }
