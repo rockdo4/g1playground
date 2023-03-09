@@ -11,6 +11,7 @@ public class BossController : MonoBehaviour
     {
         None,
         Spawn,
+        Motion,
         Idle,
         Patrol,
         Chase,
@@ -45,6 +46,7 @@ public class BossController : MonoBehaviour
     }
     protected virtual void Spawn() { }
     protected virtual void Idle() { }
+    protected virtual void Motion() { }
     protected virtual void Patrol() { }
     protected virtual void Chase() { }
     protected virtual void Attack() { }
@@ -63,5 +65,11 @@ public class BossController : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    protected void LookAtFront()
+    {
+        var front = Quaternion.Euler(0, 180, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, front, Time.deltaTime * 10f);
     }
 }
