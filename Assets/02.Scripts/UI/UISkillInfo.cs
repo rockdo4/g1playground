@@ -8,12 +8,27 @@ public class UISkillInfo : MonoBehaviour
 {
     public Image equipImage;
     public Image useImage;
-    public TextMeshProUGUI skillInfo;
+    public TextMeshProUGUI skillName;
+    public TextMeshProUGUI skillDesc;
 
     public void SetEmpty()
     {
         equipImage.sprite = null;
         useImage.sprite = null;
-        skillInfo.text = string.Empty;
+        skillName.text = string.Empty;
+        skillDesc.text = string.Empty;
+    }
+
+    public void Set(SkillData data)
+    {
+        if (data == null)
+        {
+            SetEmpty();
+            return;
+        }
+
+        equipImage.sprite = data.iconSprite;
+        skillName.text = data.name;
+        skillDesc.text = data.desc;
     }
 }

@@ -14,7 +14,7 @@ public abstract class AttackCollider : MonoBehaviour
     public string hitEffect;
     public string flashEffect;
     protected List<GameObject> attackedList = new List<GameObject>();
-    protected bool onlyCollideLivings = true;
+    protected bool onlyCollideLivings = false;
 
     public virtual void Reset()
     {

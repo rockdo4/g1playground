@@ -6,27 +6,39 @@ using UnityEngine.UI;
 
 public class PlayerSkills : MonoBehaviour
 {
+    public struct SkillState
+    {
+        public SkillAttack skill;
+        public bool skillOn;
+        public bool skillUsable;
+        public float skillTimer;
+
+        public void Set(SkillAttack skill)
+        {
+            this.skill = skill;
+            skillUsable = true;
+            skillTimer = 0f;
+        }
+    }
+
     private PlayerController playerController;
     public Transform skillPivot;
     public Transform playerCenter;
-    private int skillCount = 0;
-    public SkillAttack[] skillAttacks;
-    private bool[] skillOn;
-    private bool[] skillUsable;
+    public SkillAttack[] allSkills;
     public Toggle[] toggles;
-    private float[] skillTimers;
+    public string[] defaultSkills;
+    private SkillState[] skillStates;
+    private int skillCount = 0;
 
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
-        skillCount = skillAttacks.Length;
-        skillOn = new bool[skillCount];
-        skillUsable = new bool[skillCount];
-        skillTimers = new float[skillCount];
+        skillCount = toggles.Length;
+        skillStates = new SkillState[skillCount];
         for (int i = 0; i < skillCount; ++i)
         {
-            skillTimers[i] = 0f;
-            skillUsable[i] = true;
+            skillStates[i].skillTimer = 0f;
+            skillStates[i].skillUsable = true;
         }
 
         for (int i = 0; i < skillCount; i++)
@@ -36,6 +48,7 @@ public class PlayerSkills : MonoBehaviour
             int n = i;
             toggles[i].onValueChanged.AddListener(onOff => SkillOnOff(n, onOff));
             toggles[i].onValueChanged.AddListener(onOff => ToggleSkill(n, onOff));
+            SetSkill(i, defaultSkills[i]);
         }
     }
 
@@ -43,18 +56,18 @@ public class PlayerSkills : MonoBehaviour
     {
         for (int i = 0; i < skillCount; ++i)
         {
-            if (skillOn[i])
+            if (skillStates[i].skillOn)
             {
-                if (skillAttacks[i].isOnOffSkill)
-                    skillAttacks[i].Update();
+                if (skillStates[i].skill.isOnOffSkill)
+                    skillStates[i].skill.Update();
                 else
                 {
-                    if (skillTimers[i] < skillAttacks[i].CoolDown)
-                        skillTimers[i] += Time.deltaTime;
+                    if (skillStates[i].skillTimer < skillStates[i].skill.CoolDown)
+                        skillStates[i].skillTimer += Time.deltaTime;
                     else
                     {
-                        skillTimers[i] = 0f;
-                        skillUsable[i] = true;
+                        skillStates[i].skillTimer = 0f;
+                        skillStates[i].skillUsable = true;
                     }
                 }
                 UseSkill(i);
@@ -62,12 +75,21 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
+    public void SetSkill(int index, string id)
+    {
+        foreach (var skill in allSkills)
+        {
+            if (skill.id == id)
+                skillStates[index].Set(skill);
+        }
+    }
+
     public void UseSkill(int index)
     {
-        if (!skillUsable[index])
+        if (!skillStates[index].skillUsable)
             return;
-        skillUsable[index] = false;
-        var skill = skillAttacks[index];
+        skillStates[index].skillUsable = false;
+        var skill = skillStates[index].skill;
         switch (skill)
         {
             case StraightSpell:
@@ -87,24 +109,23 @@ public class PlayerSkills : MonoBehaviour
 
     public void EndSkill(int index)
     {
-        switch (skillAttacks[index])
+        switch (skillStates[index].skill)
         {
             case RotateAttacker:
-                skillUsable[index] = true;
-                ((RotateAttacker)skillAttacks[index]).Stop();
+                skillStates[index].skillUsable = true;
+                ((RotateAttacker)skillStates[index].skill).Stop();
                 break;
             default:
                 break;
         }
     }
 
-    public void SkillOnOff(int index, bool onOff) => skillOn[index] = onOff;
+    public void SkillOnOff(int index, bool onOff) => skillStates[index].skillOn = onOff;
     public void ToggleSkill(int index, bool skillOn)
     {
         if (skillOn)
             UseSkill(index);
         else
             EndSkill(index);
-
     }
 }
