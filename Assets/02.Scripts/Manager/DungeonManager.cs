@@ -114,8 +114,11 @@ public class DungeonManager : MonoBehaviour
     private void ExitedDungeon(Scene scene, LoadSceneMode mode)
     {
 
-        if (scene.name == "Map1")
+        if (scene.name == "Map1") { 
             remaningtime.gameObject.SetActive(false);
+            PlayerDataManager.instance.SetPlayerHpMp();
+            PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
+        }
 
     }
     private void LoadFile()
@@ -207,7 +210,7 @@ public class DungeonManager : MonoBehaviour
                     Result.transform.Find("Win").gameObject.SetActive(true);
                     Result.transform.Find("Win").transform.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - time))).ToString();
                     Result.transform.Find("Win").transform.Find("Reward").transform.Find("RewardCount").GetComponentInChildren<TextMeshProUGUI>().text = dungeonTable.Get(SelectedLevel.ToString()).itemcount.ToString();
-
+                   // Result.transform.Find("Win").transform.Find("Reward").GetComponentInChildren<UnityEngine.UI.Image>().sprite=
                     if (lv == instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level)
                         ++lv;
                     SaveFile();
@@ -258,7 +261,7 @@ public class DungeonManager : MonoBehaviour
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
         scenename.Append("_");
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
-
+        PlayerDataManager.instance.SavePlayerHpMp();       
 
         SceneManager.LoadScene(scenename.ToString());
 

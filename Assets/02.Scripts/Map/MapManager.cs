@@ -29,27 +29,33 @@ public class MapManager : MonoBehaviour
             if (map.activeSelf)
             {
                 SetCurrentMapName(map.name);
+                PlayerDataManager.instance.lastMapId = map.name;
             }
         }
         if (instance != this)
-            Destroy(gameObject);     
+            Destroy(gameObject);
     }
 
 
     public void SetCurrentMapName(string name)
-    {            
+    {
         maps = GameObject.FindGameObjectsWithTag("Stage").ToList();
         currentMapName = name;
 
-        foreach (var map in maps)
-        {       
-            if (map.name != currentMapName) {
-              //  map.SetActive(false);
-            }
-        }  
-
-
     }
+
+    public void SetLastCheckpointMapTurnOn()
+    {
+        foreach (var map in maps)
+        {
+            if (map.name != PlayerDataManager.instance.lastMapId)
+            {
+                if (map.activeSelf)
+                    map.SetActive(false);
+            }
+        }
+    }
+
 
     public string GetCurrentMapName()
     {

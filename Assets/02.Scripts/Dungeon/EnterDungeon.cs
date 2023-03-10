@@ -24,8 +24,7 @@ public class EnterDungeon : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             dungeon.GetComponent<DungeonManager>().DungeonDay.gameObject.SetActive(true);
-
-
+            PlayerDataManager.instance.SaveLastPos(MapManager.instance.GetCurrentMapName(),other.transform.position);
         }
     }
 }

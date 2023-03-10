@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,9 +15,12 @@ public class Checkpoint : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("leb");
+        
         if (other.CompareTag("Player"))
         {
             PlayerDataManager.instance.SaveLastPos(MapManager.instance.GetCurrentMapName(), transform.position);
+            
+
         }
     }
 

@@ -24,6 +24,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public string playerName;
     public int playerCurrHp;
+    public int playerCurrMp;
     public string lastMapId;
     public Vector3 lastPlayerPos;
 
@@ -52,6 +53,49 @@ public class PlayerDataManager : MonoBehaviour
     {
         lastMapId = mapId;
         lastPlayerPos = pos;
-        SaveFile();
     }
+
+    public void MoveToLastPos(GameObject go)
+    {
+        //if (lastMapId == null)
+        //{
+        //    LoadFile();
+        //}
+        MapManager.instance.SetLastCheckpointMapTurnOn();
+        go.transform.position = lastPlayerPos;
+
+    }
+
+    public void SavePlayerHpMp()
+    {
+        var playerStatus = GameManager.instance.player.GetComponent<Status>();
+        playerCurrHp = playerStatus.currHp;
+        playerCurrMp = playerStatus.currMp;
+
+    }
+
+    public void SetPlayerHpMp()
+    {
+        var playerStatus = GameManager.instance.player.GetComponent<Status>();
+        playerStatus.currHp = playerCurrHp;
+        playerStatus.currMp = playerCurrMp;
+
+    }
+
+    public void SetPlayerHpMp(int hp, int mp)
+    {
+        var playerStatus = GameManager.instance.player.GetComponent<Status>();
+        playerStatus.currHp = hp;
+        playerStatus.currMp = mp;
+
+    }
+
+    public void FillPlayerHpMp()
+    {
+        var playerStatus = GameManager.instance.player.GetComponent<Status>();
+        playerStatus.currHp = playerStatus.FinalValue.maxHp;
+        playerStatus.currMp = playerStatus.FinalValue.maxMp;
+
+    }
+
 }

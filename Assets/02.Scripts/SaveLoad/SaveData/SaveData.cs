@@ -10,6 +10,7 @@ public class SaveData
         Player,
         Option,
         Dungeon,
+        CheckPoint,
     }
     public Types type = Types.None;
     public int version;

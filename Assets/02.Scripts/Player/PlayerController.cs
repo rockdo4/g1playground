@@ -173,7 +173,8 @@ public class PlayerController : MonoBehaviour, IAttackable
 
                 if (hit.collider != null)
                 {
-                    if (!(/*hit.transform.CompareTag("Enemy") ||*/
+                    if (!(hit.transform.CompareTag("CheckPoint") ||
+                        hit.transform.CompareTag("Falling") ||
                         hit.transform.CompareTag("Portal") ||
                     hit.transform.CompareTag("Stage") ||
                         hit.transform.CompareTag("Player") ||
