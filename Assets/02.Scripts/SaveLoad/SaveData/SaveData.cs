@@ -9,6 +9,7 @@ public class SaveData
         None = -1,
         Player,
         Option,
+        Dungeon,
     }
     public Types type = Types.None;
     public int version;

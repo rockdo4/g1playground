@@ -10,6 +10,7 @@ public class SavePlayerData : SaveData
     }
 }
 
+
 public class SavePlayerDataVer1 : SavePlayerData
 {
     public SavePlayerDataVer1()

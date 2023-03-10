@@ -25,8 +25,8 @@ public class FlowTime : MonoBehaviour
         }
         else if(time<=0)
         {
-            Time.timeScale = 0;
-            GameObject.Find("Result").transform.Find("Lose").gameObject.SetActive(true);
+            Time.timeScale = 0;         
+            
         }
     }
 

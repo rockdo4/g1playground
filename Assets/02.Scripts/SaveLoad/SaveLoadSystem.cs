@@ -22,7 +22,8 @@ public static class SaveLoadSystem
     public static readonly Dictionary<SaveData.Types, int> CurrentVersion = new Dictionary<SaveData.Types, int>
     {
         { SaveData.Types.Player, 1 },
-        { SaveData.Types.Option, 0 }
+        { SaveData.Types.Option, 0 },
+        { SaveData.Types.Dungeon, 1 }
     };
     public static string FilePath = string.Empty;
     public static readonly string DirectoryName = "Save";
@@ -51,6 +52,9 @@ public static class SaveLoadSystem
             case SaveData.Types.Option:
                 mode = Modes.Json;
                 break;
+            case SaveData.Types.Dungeon:
+                mode = Modes.Binary;
+                break;
         }
         FilePath = GetSaveFileName(type, mode);
 
@@ -73,12 +77,16 @@ public static class SaveLoadSystem
             case SaveData.Types.Player:
                 mode = Modes.Binary;
                 break;
+            case SaveData.Types.Dungeon:
+                mode = Modes.Binary;
+                break;
             case SaveData.Types.Option:
                 mode = Modes.Json;
                 break;
         }
         FilePath = GetSaveFileName(type, mode);
-
+        if (!File.Exists(FilePath))
+            return null;
         switch (mode)
         {
             case Modes.Json:
@@ -112,6 +120,7 @@ public static class SaveLoadSystem
     public static SaveData BinaryLoad()
     {
         SaveData data = null;
+      
         var bytes = File.ReadAllBytes(FilePath);
         var cypher = Convert.ToBase64String(bytes);
         var plain = Decrypt(cypher, AesKey);
@@ -147,6 +156,14 @@ public static class SaveLoadSystem
                     }
                     break;
                 case SaveData.Types.Option:
+                    break;
+                case SaveData.Types.Dungeon:
+                    switch (fileVersion)
+                    {
+                        case 1:
+                            t = typeof(SaveDugeonDataVer1);
+                            break;
+                    }
                     break;
                 default:
                     return null;
