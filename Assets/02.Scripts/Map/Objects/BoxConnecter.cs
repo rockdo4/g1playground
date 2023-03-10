@@ -33,7 +33,7 @@ public class BoxConnecter : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         //Reset when exit
-        if (other.CompareTag("Pushable") || (other.CompareTag("Ground") && !(other.GetComponent<FallingTile>() != null))) 
+        if (other.CompareTag("Pushable") || (other.CompareTag("Ground") && !(other.GetComponent<FallingTile>() != null)))
         {
             if (other.gameObject == connectedObject)
             {
