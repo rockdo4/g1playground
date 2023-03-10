@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static EnemyController;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Boss4GreenFruit : BossController
 {
