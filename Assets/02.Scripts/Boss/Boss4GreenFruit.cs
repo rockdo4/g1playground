@@ -103,6 +103,10 @@ public class Boss4GreenFruit : BossController
         base.Start();
     }
 
+    public void TempFuc()
+    {
+        State = BossState.Spawn;
+    }
     public void Update()
     {
         //var pos = transform.position;
@@ -122,17 +126,16 @@ public class Boss4GreenFruit : BossController
         dashCoolTime += Time.deltaTime;
         projectileCoolTime += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            State = BossState.Spawn;
-        }
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    State = BossState.Spawn;
+        //}
         //if (Input.GetKeyDown(KeyCode.F))
         //{
         //    State = BossState.Die;
         //}
         switch (State)
         {
-
             case BossState.Spawn:
                 Spawn();
                 break;
