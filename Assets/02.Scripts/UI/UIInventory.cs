@@ -61,27 +61,36 @@ public class UIInventory : MonoBehaviour
         switch ((ItemTypes)itemType)
         {
             case ItemTypes.Weapon:
-                ids = playerInventory.weapons;
-                len = playerInventory.weapons.Length;
-                for (int i = 0; i < len; ++i)
                 {
-                    slotList[i].Set(i, DataTableMgr.GetTable<WeaponData>().Get(ids[i]));
+                    var table = DataTableMgr.GetTable<WeaponData>();
+                    ids = playerInventory.weapons;
+                    len = playerInventory.weapons.Length;
+                    for (int i = 0; i < len; ++i)
+                    {
+                        slotList[i].Set(i, table.Get(ids[i]));
+                    }
                 }
                 break;
             case ItemTypes.Armor:
-                ids = playerInventory.armors;
-                len = playerInventory.armors.Length;
-                for (int i = 0; i < len; ++i)
                 {
-                    slotList[i].Set(i, DataTableMgr.GetTable<ArmorData>().Get(ids[i]));
+                    var table = DataTableMgr.GetTable<ArmorData>();
+                    ids = playerInventory.armors;
+                    len = playerInventory.armors.Length;
+                    for (int i = 0; i < len; ++i)
+                    {
+                        slotList[i].Set(i, table.Get(ids[i]));
+                    }
                 }
                 break;
             case ItemTypes.Consumable:
-                ids = playerInventory.consumes;
-                len = playerInventory.consumes.Length;
-                for (int i = 0; i < len; ++i)
                 {
-                    slotList[i].Set(i, DataTableMgr.GetTable<ConsumeData>().Get(ids[i]));
+                    var table = DataTableMgr.GetTable<ConsumeData>();
+                    ids = playerInventory.consumes;
+                    len = playerInventory.consumes.Length;
+                    for (int i = 0; i < len; ++i)
+                    {
+                        slotList[i].Set(i, table.Get(ids[i]));
+                    }
                 }
                 break;
         }

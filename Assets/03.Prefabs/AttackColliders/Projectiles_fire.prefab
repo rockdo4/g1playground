@@ -9738,7 +9738,7 @@ GameObject:
   - component: {fileID: 2801549037471970607}
   - component: {fileID: 2124618237345088723}
   - component: {fileID: 1610723824740031713}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Projectiles_fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14657,7 +14657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detachedEffects: []
-  hitEffect: Hit_Fire
+  hitEffect: Hit_fire
   flashEffect: 
 --- !u!1 &383413181392015
 GameObject:
@@ -14669,7 +14669,6 @@ GameObject:
   m_Component:
   - component: {fileID: 383413181392014}
   - component: {fileID: 383413181392013}
-  - component: {fileID: 5902131887649282454}
   m_Layer: 0
   m_Name: trail
   m_TagString: Untagged
@@ -14809,21 +14808,6 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &5902131887649282454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 383413181392015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 993abc9b17d83a8488efa7d8aedd96d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  materialId: 0
-  scrollSpeedX: -6
-  scrollSpeedY: 0
 --- !u!1 &347647108332435116
 GameObject:
   m_ObjectHideFlags: 0

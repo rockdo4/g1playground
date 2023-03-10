@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillAttack : AttackDefinition
 {
+    public string id;
     public int reqMana;
     public float damageFigure;
     public float criticalChance;
