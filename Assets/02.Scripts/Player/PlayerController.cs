@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         playerRb.AddForce(Vector3.up * force, ForceMode.Impulse);
         playerAnimator.SetTrigger("Jump");
         SetState<JumpState>();
-        if (jumpCount == 1)
+        //if (jumpCount == 1)
             jumpCount = 2;
     }
 
