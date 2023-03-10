@@ -39,6 +39,7 @@ public class Portal : MonoBehaviour
                 {
                     other.gameObject.transform.position = portal.gameObject.transform.position;
                     CanUse = false;
+                    MapManager.instance.SetCurrentMapName(portal.name);
                     transform.parent.gameObject.SetActive(false);
 
                 }
