@@ -179,8 +179,13 @@ public class DungeonManager : MonoBehaviour
 
     private void Update()
     {
+
         if (isDungeon && enemies != null)
         {
+            Time.timeScale = 1;
+            Result.gameObject.SetActive(false);
+            Result.transform.Find("Win").gameObject.SetActive(false);
+            Result.transform.Find("Lose").gameObject.SetActive(false);
             if (time > 0)
             {
                 text.text = ((int)(time -= Time.deltaTime)).ToString();
@@ -255,7 +260,9 @@ public class DungeonManager : MonoBehaviour
     {
         isDungeon = true;
 
-
+        Result.gameObject.SetActive(false);
+        Result.transform.Find("Win").gameObject.SetActive(false);
+        Result.transform.Find("Lose").gameObject.SetActive(false);
         StringBuilder scenename = new StringBuilder();
         dungeonLevel.gameObject.SetActive(false);
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
@@ -281,17 +288,19 @@ public class DungeonManager : MonoBehaviour
 
     public void Restart()
     {
+
         Time.timeScale = 1;
         Result.transform.Find("Win").gameObject.SetActive(false);
         Result.transform.Find("Lose").gameObject.SetActive(false);
-        Result.gameObject.SetActive(false);
-        isDungeon = true;
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
-        foreach (var enemy in enemies)
-        {
-            enemy.gameObject.SetActive(true);
-        }
+
+        JoinDungeon();
+
+        //foreach (var enemy in enemies)
+        //{
+        //    enemy.gameObject.SetActive(true);
+        //}
 
 
     }
