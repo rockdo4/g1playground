@@ -24,6 +24,8 @@ public class DungeonLevel : MonoBehaviour
         // StringBuilder selectedLevel = new StringBuilder();
         StringBuilder text = new StringBuilder("레벨 ");
 
+        DungeonManager.instance.SelectedLevel.Clear();
+
         DungeonManager.instance.SelectedLevel.Append("Level");
         DungeonManager.instance.SelectedLevel.Append(level);
       
