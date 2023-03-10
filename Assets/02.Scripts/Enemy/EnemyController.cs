@@ -67,6 +67,7 @@ public class EnemyController : MonoBehaviour, IAttackable
     public List<EnemyStateData> EnemyStatePattern = new List<EnemyStateData>();
 
     private bool die = false;
+
     public EnemyState State
     {
         get { return state; }
@@ -164,7 +165,12 @@ public class EnemyController : MonoBehaviour, IAttackable
 
     void OnEnable()
     {
-
+        player = GameManager.instance.player;
+        icon = GetComponentInChildren<EnemyStateIcon>();
+        State = EnemyStatePattern[0].state;
+        countPattern = EnemyStatePattern.Count - 1;
+        curCountPattern = 0;
+        isPattern = true;
         StartCoroutine(CSaveFloorLength());
     }
 
@@ -172,11 +178,15 @@ public class EnemyController : MonoBehaviour, IAttackable
     {
         yield return null;
         SaveFloorLength();
+
+
     }
 
 
     void Update()
     {
+
+       
         time += Time.deltaTime;
 
         if (isPattern)
