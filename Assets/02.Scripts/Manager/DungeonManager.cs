@@ -251,7 +251,7 @@ public class DungeonManager : MonoBehaviour
         result.gameObject.SetActive(false);
         dungeonDay.gameObject.SetActive(false);
         dungeonLevel.gameObject.SetActive(false);
-
+        Time.timeScale = 1;
         SceneManager.LoadScene("Map1");
 
     }

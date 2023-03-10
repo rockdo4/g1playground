@@ -37,7 +37,9 @@ public class Portal : MonoBehaviour
             {
                 if (portal.GetNextStageName() == transform.parent.name)
                 {
-                    other.gameObject.transform.position = portal.gameObject.transform.position;
+                    other.gameObject.transform.position = portal.gameObject.transform.position;    
+                    other.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
                     CanUse = false;
                     Camera.main.transform.position=portal.gameObject.transform.position;
                     MapManager.instance.SetCurrentMapName(portal.name);

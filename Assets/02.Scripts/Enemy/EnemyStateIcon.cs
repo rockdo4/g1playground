@@ -27,9 +27,9 @@ public class EnemyStateIcon : MonoBehaviour
     {
         switch (state)
         {
-            case EnemyState.Idle:
-                curIcon.sprite = idle;
-                break;
+            //case EnemyState.Idle:
+            //    curIcon.sprite = idle;
+            //    break;
             case EnemyState.Patrol:
                 curIcon.sprite = patrol;
                 break;

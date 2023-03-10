@@ -158,6 +158,19 @@ public class EnemyController : MonoBehaviour, IAttackable
         countPattern = EnemyStatePattern.Count - 1;
         curCountPattern = 0;
         isPattern = true;
+
+        SaveFloorLength();
+    }
+
+    void OnEnable()
+    {
+
+        StartCoroutine(CSaveFloorLength());
+    }
+
+    IEnumerator CSaveFloorLength()
+    {
+        yield return null;
         SaveFloorLength();
     }
 
