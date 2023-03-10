@@ -15,7 +15,7 @@ public class EnemyProjectileAttack : BasicAttack
         var aStat = attacker.GetComponent<Status>();
         if (aStat == null )
             return;
-        var projectile = GameManager.instance.projectileManager.Get(projectileId);
+        var projectile = GameManager.instance.attackColliderManager.Get<Projectile>(projectileId);
         projectile.OnCollided = ExecuteAttack;
         projectile.Fire(attacker, startPos, direction, range, lifeTime, false, false);
     }

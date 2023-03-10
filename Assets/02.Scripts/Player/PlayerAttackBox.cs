@@ -26,6 +26,7 @@ public class PlayerAttackBox : MonoBehaviour
     public void ExecuteAttack()
     {
         attackedList.Clear();
+        StopCoroutine(CoEndAttackExecution());
         isAttacking = true;
         var effect = GameManager.instance.effectManager.GetEffect("Sword Slash 1");
         var effectPos = transform.position;
@@ -33,9 +34,9 @@ public class PlayerAttackBox : MonoBehaviour
         effect.transform.forward = transform.forward;
     }
 
-    public void EndAttackExecution() => isAttacking = false;
+    public void EndAttackExecution() => StartCoroutine(CoEndAttackExecution());
 
-    private IEnumerator CoExecuteAttack()
+    private IEnumerator CoEndAttackExecution()
     {
         yield return new WaitForFixedUpdate();
         isAttacking = false;

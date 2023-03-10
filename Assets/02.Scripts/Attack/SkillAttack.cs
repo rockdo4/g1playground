@@ -14,11 +14,14 @@ public class SkillAttack : AttackDefinition
     public bool isStunnable;
     public float stunTime;
     public float CoolDown;
+    public bool isOnOffSkill = false;
 
     public void SetSkill(string id)
     {
         // loadFromSkillTable
     }
+
+    public virtual void Update() { }
 
     public override Attack CreateAttack(Status attacker, Status defenser)
     {
