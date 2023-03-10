@@ -7,11 +7,11 @@ public class PlayerInventory : MonoBehaviour
     private Status status;
     public string[] weapons;    // for test
     public string[] armors;     // for test
+    public string[] consumes;   // for test
     //private List<string> weapons = new LinkedList<string>();
     //private List<string> slots = new LinkedList<string>();
     public string CurrWeapon { get; private set; }
     public string CurrArmor { get; private set; }
-
     private void Awake()
     {
         status = GetComponent<Status>();

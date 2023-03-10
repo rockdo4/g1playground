@@ -77,7 +77,12 @@ public class UIInventory : MonoBehaviour
                 }
                 break;
             case ItemTypes.Consumable:
-                // consumable
+                ids = playerInventory.consumes;
+                len = playerInventory.consumes.Length;
+                for (int i = 0; i < len; ++i)
+                {
+                    slotList[i].Set(i, DataTableMgr.GetTable<ConsumeData>().Get(ids[i]));
+                }
                 break;
         }
     }
