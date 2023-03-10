@@ -10,7 +10,7 @@ public class JumpTile : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<ObjectMass>() != null) 
         {
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
@@ -19,7 +19,8 @@ public class JumpTile : MonoBehaviour
             {
                 //Debug.Log("jump");
                 //Add player jump here//
-                collision.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * force, ForceMode.Impulse); // Replace this line
+                collision.gameObject.GetComponent<PlayerController>().Jump(force);
+                                                                     //.AddForce(Vector3.up * force, ForceMode.Impulse); // Replace this line
                 ///////////////////////
 
                 timer = 0f;
