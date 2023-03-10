@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static EnemyController;
 using static UnityEngine.RuleTile.TilingRuleOutput;
@@ -27,7 +28,6 @@ public class Boss4GreenFruit : BossController
     public float projectileTime;
     private float dashCoolTime;
     private float projectileCoolTime;
-
 
     public override BossState State
     {
@@ -86,14 +86,17 @@ public class Boss4GreenFruit : BossController
                     animator.SetTrigger("Die");
                     break;
             }
-
         }
     }
 
     protected override void Awake()
     {
         base.Awake();
-
+        mask = GameObject.Find(gameObject.name + "/Mask");
+        attackBox = GameObject.Find(gameObject.name + "/AttackBox");
+        dashBox = GameObject.Find(gameObject.name + "/DashBox");
+        skillPivot = GameObject.Find(gameObject.name + "/SkillPivot");
+        indicatorBox = GameObject.Find(gameObject.name + "/IndicatorBox");
         State = BossState.None;
     }
 
@@ -104,44 +107,19 @@ public class Boss4GreenFruit : BossController
         base.Start();
     }
 
-    public void TempFuc()
-    {
-        State = BossState.Spawn;
-    }
     public void Update()
     {
         if (State == BossState.None)
         {
             if (Vector3.Distance(player.transform.position, transform.position) <= 20f)
             {
-                TempFuc();
+                State = BossState.Spawn;
             }
         }
-        //var pos = transform.position;
-        //pos.y += 1f;
-        //pos.z += indicatorBox.transform.localPosition.z;
-        //Ray ray = new Ray(pos, transform.forward);
-        //RaycastHit hit;
-
-        //var currentScale = indicatorBox.transform.localScale;
-        //var layermask = LayerMask.GetMask("Ground");
-        //if (Physics.Raycast(ray, out hit, 7f, layermask))
-        //{
-        //    Debug.Log("ground");
-        //}
-        //Debug.DrawRay(ray.origin, transform.forward*7, Color.red);
 
         dashCoolTime += Time.deltaTime;
         projectileCoolTime += Time.deltaTime;
 
-        //if (Input.GetKeyDown(KeyCode.G))
-        //{
-        //    State = BossState.Spawn;
-        //}
-        //if (Input.GetKeyDown(KeyCode.F))
-        //{
-        //    State = BossState.Die;
-        //}
         switch (State)
         {
             case BossState.Spawn:
@@ -242,11 +220,9 @@ public class Boss4GreenFruit : BossController
     {
         if (isSkillType)
         {
-
         }
         else
         {
-            return;
         }
     }
 
@@ -262,7 +238,7 @@ public class Boss4GreenFruit : BossController
 
     private void SpawnDone()
     {
-        mask.active = false;
+        mask.SetActive(false);
         State = BossState.Motion;
         animator.SetTrigger("Motion");
 
@@ -270,7 +246,7 @@ public class Boss4GreenFruit : BossController
 
     private void DieDone()
     {
-        gameObject.active = false;
+        gameObject.SetActive(false);
     }
 
     private int motionCount = 0;
@@ -283,7 +259,6 @@ public class Boss4GreenFruit : BossController
             return;
         }
 
-
         if (motionCount == maxMotionCount)
         {
             State = BossState.Chase;
@@ -293,26 +268,23 @@ public class Boss4GreenFruit : BossController
     }
     private void AttackDone()
     {
-        ChaeckAttackCount();
-        attackBox.active = false;
-        attackBox.GetComponent<BoxCollider>().enabled = false;
-        State = BossState.Idle;
+        if (!ChaeckAttackCount())
+            State = BossState.Idle;
+
+        //attackBox.GetComponent<BoxCollider>().enabled = false;
+        attackBox.SetActive(false);
     }
     private void DashSkillDone()
     {
         State = BossState.Idle;
-        dashBox.active = false;
+        dashBox.SetActive(false);
 
     }
-    //private void StopDash()
-    //{
-    //    StartCoroutine(CorStopDash());
-    //}
 
     private void Bite()
     {
-        attackBox.active = true;
-        attackBox.GetComponent<BoxCollider>().enabled = true;
+        attackBox.SetActive(true);
+        //attackBox.GetComponent<BoxCollider>().enabled = true;
 
     }
 
@@ -320,7 +292,7 @@ public class Boss4GreenFruit : BossController
     IEnumerator CorStopDash()
     {
         animator.speed = 0f;
-        indicatorBox.active = true;
+        indicatorBox.SetActive(true);
         SetIndicatorBoxScale();
 
         var rot = transform.eulerAngles;
@@ -331,15 +303,12 @@ public class Boss4GreenFruit : BossController
             rot.y = 90f;
         transform.rotation = Quaternion.Euler(rot);
 
-
         yield return new WaitForSeconds(dashStopTime);
 
         animator.speed = 1f;
-        indicatorBox.active = false;
-        dashBox.active = true;
+        indicatorBox.SetActive(false);
+        dashBox.SetActive(true);
         rb.AddForce(transform.forward * 20f, ForceMode.Impulse);
-
-
     }
 
     private void ProjectileSkill()
@@ -359,13 +328,14 @@ public class Boss4GreenFruit : BossController
 
         ChaeckAttackCount();
     }
-    private void ChaeckAttackCount()
+    private bool ChaeckAttackCount()
     {
         if (attackCount == 0)
-            return;
+            return false;
 
         animator.SetTrigger("Attack");
         --attackCount;
+        return true;
     }
 
 
@@ -378,23 +348,8 @@ public class Boss4GreenFruit : BossController
     }
     protected void SetIndicatorBoxScale()
     {
-        //var pos = transform.position;
-        //pos.y += 1f;
-        //pos.z += indicatorBox.transform.localPosition.z;
-        //Ray ray = new Ray(pos, transform.forward);
-        //RaycastHit hit;
-
-        //var currentScale = indicatorBox.transform.localScale;
-        //var layermask = LayerMask.GetMask("Ground");
-        //if (Physics.Raycast(ray, out hit, 7f, layermask))
-        //{
-        //    Debug.Log("ground");
-        //}
-        //Debug.DrawRay(ray.origin, transform.forward*7, Color.red);
-
         var centerPos = transform.position;
         centerPos.y += 1f;
-        //centerPos.z = indicatorBox.transform.localPosition.z;
         var temp = transform;
         transform.position = centerPos;
         Ray ray = new Ray(centerPos, transform.TransformDirection(Vector3.forward));
@@ -419,7 +374,6 @@ public class Boss4GreenFruit : BossController
 
         if (indicatorBox.activeSelf)
             return;
-
 
         if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
         {

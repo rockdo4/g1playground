@@ -179,7 +179,7 @@ public class DungeonManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(Time.timeScale);
+        //Debug.Log(Time.timeScale);
         if (isDungeon && enemies != null)
         {
             Time.timeScale = 1;
