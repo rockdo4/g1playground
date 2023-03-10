@@ -166,7 +166,8 @@ public class PlayerController : MonoBehaviour, IAttackable
         IsBlocked = false;
         for (int i = 0; i < 3; i++)
         {
-            var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f);
+            int layerMask = ~LayerMask.GetMask("Projectile");
+            var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f, layerMask);
             Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
             foreach (var hit in hits)
             {

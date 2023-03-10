@@ -15,9 +15,9 @@ public class Projectile : AttackCollider
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    protected override void Update()
     {
-        timer += Time.deltaTime;
+        base.Update();
         if (isReturnable && !isReturning && timer > lifeTime * 0.5f)
         {
             isReturning = true;
@@ -25,8 +25,6 @@ public class Projectile : AttackCollider
             rb.velocity = -rb.velocity;
             transform.forward = -transform.forward;
         }
-        if (timer > lifeTime)
-            GameManager.instance.projectileManager.Release(this);
     }
 
     private void FixedUpdate()
@@ -40,10 +38,7 @@ public class Projectile : AttackCollider
 
     public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction, float distance, float lifeTime, bool isPenetrable, bool isReturnable)
     {
-        timer = 0f;
         isReturning = false;
-        attackedList.Clear();
-        effects.Clear();
         this.attacker = attacker;
         this.lifeTime = lifeTime;
         this.isPenetrable = isPenetrable;
@@ -59,7 +54,7 @@ public class Projectile : AttackCollider
             effects.Add(GameManager.instance.effectManager.GetEffect(d));
         }
 
-        if (flashEffect != null)
+        if (!string.IsNullOrEmpty(flashEffect))
         {
             var flash = GameManager.instance.effectManager.GetEffect(flashEffect);
             flash.transform.position = transform.position;
@@ -77,44 +72,14 @@ public class Projectile : AttackCollider
         }
     }
 
-    protected override void OnTriggerStay(Collider other)
+    protected override bool OnTriggerStay(Collider other)
     {
-        if (!other.gameObject.activeSelf ||
-            other.CompareTag("AttackBox") ||
-            (other.attachedRigidbody != null && other.attachedRigidbody.CompareTag(attacker.tag)) ||
-            attackedList.Contains(other.gameObject))
-            return;
+        if (!base.OnTriggerStay(other))
+            return false;
+
         var isAttackable = other.CompareTag("Player") || other.CompareTag("Enemy");
-
-        Vector3 pos = other.ClosestPoint(transform.position);
-        Quaternion rot = Quaternion.LookRotation(transform.forward);
-
-        if (OnCollided != null)
-        {
-            OnCollided(attacker, other.gameObject, pos);
-            if (isAttackable)
-                attackedList.Add(other.gameObject);
-        }
-        //Vector3 pos = contact.point + contact.normal;
-        if (hitEffect != null)
-        {
-            var hit = GameManager.instance.effectManager.GetEffect(hitEffect);
-            hit.transform.position = pos;
-            hit.transform.rotation = rot;
-            //hit.transform.LookAt(contact.point + contact.normal);
-
-            var hitPs = hit.GetComponent<ParticleSystem>();
-            if (hitPs != null)
-            {
-                GameManager.instance.effectManager.ReturnEffectOnTime(hitEffect, hit, hitPs.main.duration);
-            }
-            else
-            {
-                var hitPsParts = hit.transform.GetChild(0).GetComponent<ParticleSystem>();
-                GameManager.instance.effectManager.ReturnEffectOnTime(hitEffect, hit, hitPsParts.main.duration);
-            }
-        }
         if (!isPenetrable || !isAttackable)
-            GameManager.instance.projectileManager.Release(this);
+            GameManager.instance.attackColliderManager.Release(this);
+        return true;
     }
 }

@@ -5,15 +5,24 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CloseRange", menuName = "SkillAttack/CloseRange")]
 public class CloseRange : SkillAttack
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool isAttachedToAttacker = false;
+    public string rangeColliderId;
+    public bool isContinuousAttack = false;
+    public float interval;
 
-    // Update is called once per frame
-    void Update()
+    public void Fire(GameObject attacker, Transform attackPivot)
     {
-        
+        var aStat = attacker.GetComponent<Status>();
+        if (aStat == null || aStat.currMp < reqMana)
+            return;
+        aStat.currMp -= reqMana;
+        if (attacker.CompareTag("Player"))
+            aStat.SetMpUi();
+        var rangeCollider = GameManager.instance.attackColliderManager.Get<RangeCollider>(rangeColliderId);
+        rangeCollider.OnCollided = ExecuteAttack;
+        if (isAttachedToAttacker)
+            rangeCollider.Fire(attacker, attackPivot, true, lifeTime, isContinuousAttack, interval);
+        else
+            rangeCollider.Fire(attacker, attackPivot.position, attackPivot.forward, true, lifeTime, isContinuousAttack, interval);
     }
 }
