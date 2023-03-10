@@ -21,7 +21,7 @@ public class BlockSwitchTile : MonoBehaviour
     private bool isTriggered;
     public bool IsTriggered { get { return isTriggered; } set { isTriggered = this; } }
 
-    //private static bool isState = true;
+    private List<GameObject> objects = new List<GameObject>();
   
     void Start()
     {
@@ -44,28 +44,23 @@ public class BlockSwitchTile : MonoBehaviour
             {
                 if (block.activeSelf)
                 {
-                    block.SetActive(false);
-                    gameObject.GetComponent<BoxCollider>().enabled = false;
+                    block.SetActive(false); 
                 }
                 else
                 {
-                    block.SetActive(true);
-                    //gameObject.GetComponent<BoxCollider>().enabled = false;
+                    block.SetActive(true); 
                 }
             }
 
         }
-       // Debug.Log("Block");
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.tag);
-        //Triggers Switch when pushed by Player object or Pushable objects
-        if (!animator.GetBool("Trigger") && (other.tag == "Player" || other.tag == "Pushable")) 
+        //Triggers Switch when pushed by ObjectMass objects
+        if (!animator.GetBool("Trigger") && (other.GetComponent<ObjectMass>() != null)) 
         {
-            //isState = false;
-            //Debug.Log(other.tag);
+            objects.Add(other.gameObject);
             IsTriggered = true;
             animator.SetBool("Trigger", true);
             SetBlocks();
@@ -77,10 +72,20 @@ public class BlockSwitchTile : MonoBehaviour
     {
         if (animator.GetBool("Trigger") && type == BSwitchType.Temporary)
         {
-            //isState = true;
-            IsTriggered = false;
-            animator.SetBool("Trigger", false);
-            SetBlocks();
+            if (objects.Contains(other.gameObject))
+            {
+                objects.Remove(other.gameObject);
+            }
+
+            if (objects.Count <= 0)
+            {
+                Debug.Log("exit");
+                //isState = true;
+                IsTriggered = false;
+                animator.SetBool("Trigger", false);
+                SetBlocks();
+            }
+            
         }
 
     }
