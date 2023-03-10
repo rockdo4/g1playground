@@ -295,8 +295,16 @@ public class DungeonManager : MonoBehaviour
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
 
-        JoinDungeon();
+        StringBuilder scenename = new StringBuilder();
+        dungeonLevel.gameObject.SetActive(false);
+        scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
+        scenename.Append("_");
+        scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
+        SceneManager.LoadScene(scenename.ToString());
 
+        remaningtime.gameObject.SetActive(true);
+        time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
+        StartCoroutine(SetEnemy());
         //foreach (var enemy in enemies)
         //{
         //    enemy.gameObject.SetActive(true);
