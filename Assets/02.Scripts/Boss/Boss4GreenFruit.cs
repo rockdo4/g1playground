@@ -100,6 +100,7 @@ public class Boss4GreenFruit : BossController
     protected override void Start()
     {
         agent.speed = moveSpeed;
+        GetComponent<DestructedEvent>().OnDestroyEvent = () => State = BossState.Die;
         base.Start();
     }
 
@@ -109,6 +110,13 @@ public class Boss4GreenFruit : BossController
     }
     public void Update()
     {
+        if (State == BossState.None)
+        {
+            if (Vector3.Distance(player.transform.position, transform.position) <= 20f)
+            {
+                TempFuc();
+            }
+        }
         //var pos = transform.position;
         //pos.y += 1f;
         //pos.z += indicatorBox.transform.localPosition.z;

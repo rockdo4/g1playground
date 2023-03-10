@@ -114,7 +114,7 @@ public class DungeonManager : MonoBehaviour
     private void ExitedDungeon(Scene scene, LoadSceneMode mode)
     {
 
-        if (scene.name == "Map1") { 
+        if (scene.name == "Scene02") { 
             remaningtime.gameObject.SetActive(false);
             PlayerDataManager.instance.SetPlayerHpMp();
             PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
@@ -179,7 +179,7 @@ public class DungeonManager : MonoBehaviour
 
     private void Update()
     {
-
+        Debug.Log(Time.timeScale);
         if (isDungeon && enemies != null)
         {
             Time.timeScale = 1;
@@ -192,7 +192,7 @@ public class DungeonManager : MonoBehaviour
             }
             else if (time <= 0)
             {
-                Time.timeScale = 0;
+               // Time.timeScale = 0;
                 Result.gameObject.SetActive(true);
                 Result.transform.Find("Lose").gameObject.SetActive(true);
                 Result.transform.Find("Lose").transform.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - time))).ToString();
@@ -209,7 +209,7 @@ public class DungeonManager : MonoBehaviour
                 }
                 if (enemy.Equals(enemies.Last()))
                 {
-                    Time.timeScale = 0;
+                  //  Time.timeScale = 0;
 
                     Result.gameObject.SetActive(true);
                     Result.transform.Find("Win").gameObject.SetActive(true);
@@ -252,7 +252,7 @@ public class DungeonManager : MonoBehaviour
         dungeonDay.gameObject.SetActive(false);
         dungeonLevel.gameObject.SetActive(false);
         Time.timeScale = 1;
-        SceneManager.LoadScene("Map1");
+        SceneManager.LoadScene("Scene02");
 
     }
 

@@ -39,7 +39,7 @@ public class LoadMessageBox : MonoBehaviour
         {
             Application.Quit();
         }
-        instance.PopupCheckWindowOpen(action, "Exit", MsgType.Exit, "Á¾·á ÇÏ½Ã°Ú½À´Ï±î?");
+        instance.PopupCheckWindowOpen(action, "Exit", MsgType.Exit, "ì¢…ë£Œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?");
     }
 
     public void PopupCheckWindowOpen(UnityEngine.Events.UnityAction action, string actionName, MsgType msgtype, string msg)

@@ -2271,6 +2271,7 @@ MonoBehaviour:
   maxJumpCount: 2
   isGrounded: 0
   hitDuration: 0.5
+  stageController: {fileID: 0}
 --- !u!114 &1674795210733244912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2319,12 +2320,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillPivot: {fileID: 5067821678180614050}
   playerCenter: {fileID: 1225491548}
-  skillAttacks:
+  allSkills:
+  - {fileID: 11400000, guid: 3ba22a0c0ad2e0e44b8f0612d5bd44a6, type: 2}
+  - {fileID: 11400000, guid: 1f3e90b15c89f6a44b67a385881b5690, type: 2}
+  - {fileID: 11400000, guid: fb24b316f545b574898f6e6cee040036, type: 2}
   - {fileID: 11400000, guid: 8e46024c5cacb964b9ab41c9e82130b8, type: 2}
+  - {fileID: 11400000, guid: 7a60b3529dfee584a9fad7eabcdfc3b9, type: 2}
+  - {fileID: 11400000, guid: 4acf676fbfd55234696aed2489e21772, type: 2}
   - {fileID: 11400000, guid: 9a9d40a78629aa84d99bf332f4a8ed3b, type: 2}
+  - {fileID: 11400000, guid: 8c600f486472fef4291cc707fe7cbb05, type: 2}
+  - {fileID: 11400000, guid: 53d2b9e23fe007043bd2ca8addac2c34, type: 2}
   toggles:
   - {fileID: 0}
   - {fileID: 0}
+  defaultSkills:
+  - 10001
+  - 10002
 --- !u!114 &1674795210733244911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2353,6 +2364,7 @@ MonoBehaviour:
   - 2
   - 3
   - 4
+  consumes: []
 --- !u!114 &1674795210733244910
 MonoBehaviour:
   m_ObjectHideFlags: 0

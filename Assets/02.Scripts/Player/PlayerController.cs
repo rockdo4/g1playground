@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     private void Start()
     {
+
         states.Add(typeof(IdleState), new IdleState(this));
         states.Add(typeof(MoveState), new MoveState(this));
         states.Add(typeof(DashState), new DashState(this));
@@ -83,7 +84,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         states.Add(typeof(HitState), new HitState(this));
         states.Add(typeof(AutoMoveState), new AutoMoveState(this));
         SetState<IdleState>();
-
+        GetComponent<DestructedEvent>().OnDestroyEvent = GameManager.instance.Respawn;
         enemies = stageController.GetStageEnemies();
     }
 

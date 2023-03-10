@@ -25,7 +25,7 @@ public class FlowTime : MonoBehaviour
         }
         else if(time<=0)
         {
-            Time.timeScale = 0;         
+           // Time.timeScale = 0;         
             
         }
     }
