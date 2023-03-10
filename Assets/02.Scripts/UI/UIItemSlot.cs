@@ -5,7 +5,7 @@ public class UIItemSlot : MonoBehaviour
 {
     public int index;
     public Image icon;
-    public Button infoButton;
+    public Button button;
 
     private ItemData data;
 
@@ -16,7 +16,7 @@ public class UIItemSlot : MonoBehaviour
 
     public void SetEmpty()
     {
-        infoButton.interactable = false;
+        button.interactable = false;
         icon.sprite = null;
     }
 
@@ -24,7 +24,7 @@ public class UIItemSlot : MonoBehaviour
     {
         this.index = index;
         this.data = data;
-        infoButton.interactable = true;
+        button.interactable = true;
         icon.sprite = data.iconSprite;
     }
 }
