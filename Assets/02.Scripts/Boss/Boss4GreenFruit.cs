@@ -63,8 +63,8 @@ public class Boss4GreenFruit : BossController
                     agent.isStopped = true;
                     break;
                 case BossState.Chase:
-                    agent.isStopped = false;
                     agent.enabled = true;
+                    agent.isStopped = false;
                     rb.isKinematic = true;
                     break;
                 case BossState.TakeDamage:
@@ -92,11 +92,15 @@ public class Boss4GreenFruit : BossController
     protected override void Awake()
     {
         base.Awake();
+        Debug.Log(gameObject.name);
         mask = GameObject.Find(gameObject.name + "/Mask");
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
+        attackBox.SetActive(false);
         dashBox = GameObject.Find(gameObject.name + "/DashBox");
+        dashBox.SetActive(false);
         skillPivot = GameObject.Find(gameObject.name + "/SkillPivot");
-        indicatorBox = GameObject.Find(gameObject.name + "/IndicatorBox");
+        indicatorBox = GameObject.Find(gameObject.name + "/IndicatorBoxPivot");
+        indicatorBox.SetActive(false);
         State = BossState.None;
     }
 
@@ -105,6 +109,15 @@ public class Boss4GreenFruit : BossController
         agent.speed = moveSpeed;
         GetComponent<DestructedEvent>().OnDestroyEvent = () => State = BossState.Die;
         base.Start();
+    }
+
+    protected void OnEnable()
+    {
+        attackBox.SetActive(false);
+        dashBox.SetActive(false);
+        indicatorBox.SetActive(false);
+
+        State = BossState.None;
     }
 
     public void Update()
