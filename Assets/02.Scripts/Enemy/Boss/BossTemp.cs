@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossTemp : BossController
+public class BossTemp : Enemy
 {
-    public override BossState State
+    public override EnemyState State
     {
         get { return State; }
         protected set
@@ -13,21 +13,21 @@ public class BossTemp : BossController
 
             switch (State)
             {
-                case BossState.None:
+                case EnemyState.None:
                     break;
-                case BossState.Spawn:
+                case EnemyState.Spawn:
                     break;
-                case BossState.Idle:
+                case EnemyState.Idle:
                     break;
-                case BossState.Chase:
+                case EnemyState.Chase:
                     break;
-                case BossState.TakeDamage:
+                case EnemyState.TakeDamage:
                     break;
-                case BossState.Attack:
+                case EnemyState.Attack:
                     break;
-                case BossState.Skill:
+                case EnemyState.Skill:
                     break;
-                case BossState.Die:
+                case EnemyState.Die:
                     break;
             }
 
@@ -37,7 +37,7 @@ public class BossTemp : BossController
     protected override void Awake()
     {
         base.Awake();
-        State = BossState.None;
+        State = EnemyState.None;
     }
 
     protected override void Start()
@@ -49,28 +49,28 @@ public class BossTemp : BossController
     {
         switch (State)
         {
-            case BossState.Spawn:
+            case EnemyState.Spawn:
                 Spawn();
                 break;
-            case BossState.Idle:
+            case EnemyState.Idle:
                 Idle();
                 break;
-            case BossState.Patrol:
+            case EnemyState.Patrol:
                 Patrol();
                 break;
-            case BossState.Chase:
+            case EnemyState.Chase:
                 Chase();
                 break;
-            case BossState.Attack:
+            case EnemyState.Attack:
                 Attack();
                 break;
-            case BossState.Skill:
+            case EnemyState.Skill:
                 Skill();
                 break;
-            case BossState.TakeDamage:
+            case EnemyState.TakeDamage:
                 TakeDamage();
                 break;
-            case BossState.Die:
+            case EnemyState.Die:
                 Die();
                 break;
         }

@@ -4,12 +4,12 @@ using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
-using static EnemyController;
+using static EnemyControllerTemp;
 
 public class PlayerAutoMove : MonoBehaviour
 {
     public StageController stageController;
-    private List<EnemyController> enemies;
+    private List<EnemyControllerTemp> enemies;
     private Rigidbody rb;
     private Transform target;
     private int targetIndex;

@@ -13,7 +13,7 @@ public class StageController : MonoBehaviour
         Heal,
     }
 
-    private List<EnemyController> enemies;
+    private List<EnemyControllerTemp> enemies;
     public UnLockRequirement lockRequirement;
     private List<Portal> portals;
     [SerializeField] private List<GameObject> switches;
@@ -25,8 +25,8 @@ public class StageController : MonoBehaviour
     private void OnEnable()
     {
         var switchcheck = false;
-        enemies = new List<EnemyController>();
-        enemies = gameObject.GetComponentsInChildren<EnemyController>().ToList();
+        enemies = new List<EnemyControllerTemp>();
+        enemies = gameObject.GetComponentsInChildren<EnemyControllerTemp>().ToList();
         portals = gameObject.GetComponentsInChildren<Portal>().ToList();
 
         foreach (var swit in switches)
@@ -124,7 +124,7 @@ public class StageController : MonoBehaviour
 
     }
 
-    public List<EnemyController> GetStageEnemies()
+    public List<EnemyControllerTemp> GetStageEnemies()
     {
         return enemies;
     }

@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static EnemyController;
+using static EnemyControllerTemp;
 
 public class EnemyAttackBox : MonoBehaviour
 {
-    private EnemyController enemyController;
+    private EnemyControllerTemp enemyController;
     private BoxCollider boxCollider;
     private void Awake()
     {
-        enemyController = GetComponentInParent<EnemyController>();
+        enemyController = GetComponentInParent<EnemyControllerTemp>();
         boxCollider = GetComponent<BoxCollider>();
     }
 

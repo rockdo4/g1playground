@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static EnemyController;
+using static EnemyControllerTemp;
 
 public class EnemyStateIcon : MonoBehaviour
 {
@@ -15,11 +15,11 @@ public class EnemyStateIcon : MonoBehaviour
     public Sprite die;
 
     private EnemyState currentState;
-    private EnemyController controller;
+    private EnemyControllerTemp controller;
     void Start()
     {
         curIcon = GetComponent<Image>();
-        controller = GetComponentInParent<EnemyController>();
+        controller = GetComponentInParent<EnemyControllerTemp>();
         currentState = controller.State;
     }
 

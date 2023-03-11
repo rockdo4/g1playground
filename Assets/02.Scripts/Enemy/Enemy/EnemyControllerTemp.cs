@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.Rendering.DebugUI;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
-
-public class EnemyController : MonoBehaviour, IAttackable
+public class EnemyControllerTemp : MonoBehaviour, IAttackable
 {
     [System.Serializable]
     public class EnemyStateData

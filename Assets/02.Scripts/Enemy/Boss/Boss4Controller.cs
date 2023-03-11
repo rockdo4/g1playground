@@ -5,12 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
-using static EnemyController;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class Boss4GreenFruit : BossController
+public class Boss4Controller : Enemy
 {
-    private BossState state;
     public GameObject mask;
     public GameObject attackBox;
     public GameObject dashBox;
@@ -29,7 +26,7 @@ public class Boss4GreenFruit : BossController
     private float dashCoolTime;
     private float projectileCoolTime;
 
-    public override BossState State
+    public override EnemyState State
     {
         get { return state; }
         protected set
@@ -42,47 +39,47 @@ public class Boss4GreenFruit : BossController
 
             switch (State)
             {
-                case BossState.None:
+                case EnemyState.None:
                     rb.isKinematic = true;
                     agent.enabled = true;
                     break;
-                case BossState.Spawn:
+                case EnemyState.Spawn:
                     rb.isKinematic = true;
                     agent.enabled = true;
                     break;
-                case BossState.Motion:
+                case EnemyState.Motion:
                     agent.enabled = true;
                     agent.velocity = Vector3.zero;
                     agent.isStopped = true;
                     rb.isKinematic = true;
                     break;
-                case BossState.Idle:
+                case EnemyState.Idle:
                     rb.isKinematic = true;
                     agent.velocity = Vector3.zero;
                     agent.enabled = true;
                     agent.isStopped = true;
                     break;
-                case BossState.Chase:
+                case EnemyState.Chase:
                     agent.enabled = true;
                     agent.isStopped = false;
                     rb.isKinematic = true;
                     break;
-                case BossState.TakeDamage:
+                case EnemyState.TakeDamage:
                     agent.enabled = true;
                     rb.isKinematic = true;
                     break;
-                case BossState.Attack:
+                case EnemyState.Attack:
                     agent.isStopped = true;
                     rb.isKinematic = false;
                     agent.enabled = false;
                     break;
-                case BossState.Skill:
+                case EnemyState.Skill:
                     agent.isStopped = true;
                     agent.velocity = Vector3.zero;
                     rb.isKinematic = false;
                     agent.enabled = false;
                     break;
-                case BossState.Die:
+                case EnemyState.Die:
                     animator.SetTrigger("Die");
                     break;
             }
@@ -92,7 +89,7 @@ public class Boss4GreenFruit : BossController
     protected override void Awake()
     {
         base.Awake();
-        Debug.Log(gameObject.name);
+        //Debug.Log(gameObject.name);
         mask = GameObject.Find(gameObject.name + "/Mask");
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
         attackBox.SetActive(false);
@@ -101,32 +98,35 @@ public class Boss4GreenFruit : BossController
         skillPivot = GameObject.Find(gameObject.name + "/SkillPivot");
         indicatorBox = GameObject.Find(gameObject.name + "/IndicatorBoxPivot");
         indicatorBox.SetActive(false);
-        State = BossState.None;
+        State = EnemyState.None;
     }
 
     protected override void Start()
     {
-        agent.speed = moveSpeed;
-        GetComponent<DestructedEvent>().OnDestroyEvent = () => State = BossState.Die;
         base.Start();
+
+        agent.speed = moveSpeed;
+
     }
 
-    protected void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
+        mask.SetActive(true);
         attackBox.SetActive(false);
         dashBox.SetActive(false);
         indicatorBox.SetActive(false);
-
-        State = BossState.None;
+        State = EnemyState.None;
     }
 
     public void Update()
     {
-        if (State == BossState.None)
+        if (State == EnemyState.None)
         {
             if (Vector3.Distance(player.transform.position, transform.position) <= 20f)
             {
-                State = BossState.Spawn;
+                State = EnemyState.Spawn;
             }
         }
 
@@ -135,31 +135,31 @@ public class Boss4GreenFruit : BossController
 
         switch (State)
         {
-            case BossState.Spawn:
+            case EnemyState.Spawn:
                 Spawn();
                 break;
-            case BossState.Idle:
+            case EnemyState.Idle:
                 Idle();
                 break;
-            case BossState.Motion:
+            case EnemyState.Motion:
                 Motion();
                 break;
-            case BossState.Patrol:
+            case EnemyState.Patrol:
                 Patrol();
                 break;
-            case BossState.Chase:
+            case EnemyState.Chase:
                 Chase();
                 break;
-            case BossState.Attack:
+            case EnemyState.Attack:
                 Attack();
                 break;
-            case BossState.Skill:
+            case EnemyState.Skill:
                 Skill();
                 break;
-            case BossState.TakeDamage:
+            case EnemyState.TakeDamage:
                 TakeDamage();
                 break;
-            case BossState.Die:
+            case EnemyState.Die:
                 Die();
                 break;
         }
@@ -177,14 +177,13 @@ public class Boss4GreenFruit : BossController
     private float idleCool = 0f;
     protected override void Idle()
     {
-
         idleCool += Time.deltaTime;
 
         //if (LookAtTarget())
         if (idleCool >= idleTime)
         {
             idleCool = 0f;
-            State = BossState.Motion;
+            State = EnemyState.Motion;
             animator.SetTrigger("Motion");
         }
     }
@@ -214,11 +213,11 @@ public class Boss4GreenFruit : BossController
                     isSkillType = true;
                     projectileCoolTime = 0f;
                 }
-                State = BossState.Skill;
+                State = EnemyState.Skill;
             }
             else
             {
-                State = BossState.Attack;
+                State = EnemyState.Attack;
                 RandomAttack();
             }
         }
@@ -239,22 +238,18 @@ public class Boss4GreenFruit : BossController
         }
     }
 
-    protected override void TakeDamage()
-    {
-
-    }
+    protected override void TakeDamage() { }
 
     protected override void Die()
     {
-
+        base.Die();
     }
 
     private void SpawnDone()
     {
         mask.SetActive(false);
-        State = BossState.Motion;
+        State = EnemyState.Motion;
         animator.SetTrigger("Motion");
-
     }
 
     private void DieDone()
@@ -274,7 +269,7 @@ public class Boss4GreenFruit : BossController
 
         if (motionCount == maxMotionCount)
         {
-            State = BossState.Chase;
+            State = EnemyState.Chase;
             animator.SetTrigger("Chase");
             motionCount = 0;
         }
@@ -282,14 +277,14 @@ public class Boss4GreenFruit : BossController
     private void AttackDone()
     {
         if (!ChaeckAttackCount())
-            State = BossState.Idle;
+            State = EnemyState.Idle;
 
         //attackBox.GetComponent<BoxCollider>().enabled = false;
         attackBox.SetActive(false);
     }
     private void DashSkillDone()
     {
-        State = BossState.Idle;
+        State = EnemyState.Idle;
         dashBox.SetActive(false);
 
     }
@@ -331,7 +326,7 @@ public class Boss4GreenFruit : BossController
 
     private void ProjectileSkillDone()
     {
-        State = BossState.Idle;
+        State = EnemyState.Idle;
     }
 
     private int attackCount = 0;
@@ -392,9 +387,9 @@ public class Boss4GreenFruit : BossController
         {
             Debug.Log(State);
 
-            if (State == BossState.Attack)
+            if (State == EnemyState.Attack)
                 meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
-            else if (State == BossState.Skill)
+            else if (State == EnemyState.Skill)
                 meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
         }
     }
