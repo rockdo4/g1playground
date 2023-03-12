@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyController : Enemy
 {
@@ -23,25 +25,25 @@ public class EnemyController : Enemy
 
                     break;
                 case EnemyState.Spawn:
-                    
+
                     break;
                 case EnemyState.Motion:
-                   
+
                     break;
                 case EnemyState.Idle:
-                    
+
                     break;
                 case EnemyState.Chase:
-                    
+
                     break;
                 case EnemyState.TakeDamage:
-                    
+
                     break;
                 case EnemyState.Attack:
-                    
+
                     break;
                 case EnemyState.Skill:
-                    
+
                     break;
                 case EnemyState.Die:
                     break;
@@ -50,44 +52,112 @@ public class EnemyController : Enemy
     }
 
 
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+    protected override void Start()
+    {
+
+
+    }
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        State = EnemyState.None;
+    }
+    protected void Update()
+    {
+
+
+        switch (State)
+        {
+            case EnemyState.Spawn:
+                Spawn();
+                break;
+            case EnemyState.Idle:
+                Idle();
+                break;
+            case EnemyState.Motion:
+                Motion();
+                break;
+            case EnemyState.Patrol:
+                Patrol();
+                break;
+            case EnemyState.Chase:
+                Chase();
+                break;
+            case EnemyState.Attack:
+                Attack();
+                break;
+            case EnemyState.Skill:
+                Skill();
+                break;
+            case EnemyState.TakeDamage:
+                TakeDamage();
+                break;
+            case EnemyState.Die:
+                Die();
+                break;
+        }
+        animator.SetFloat("Move", agent.velocity.magnitude);
+    }
+    protected override void Spawn()
+    {
+    }
+    protected override void Motion()
+    {
+    }
+    protected override void Idle()
+    {
+
+    }
+
+    private bool isSkillType = false;
+    protected override void Chase()
+    {
+
+    }
+
+    protected override void Attack()
+    {
+    }
+
+    protected override void Skill()
+    {
+
+    }
+
+    protected override void TakeDamage()
+    {
+
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+    }
+
+    protected float floorLength;
+    protected Vector3 startPos;
+    protected Vector3 endPos;
+    private void SaveFloorLength()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        {
+            Collider collider = hit.collider;
+            floorLength = collider.bounds.size.x;
+            startPos = collider.bounds.center - new Vector3((floorLength / 2), 0, 0);
+            endPos = collider.bounds.center + new Vector3((floorLength / 2), 0, 0);
+        }
+        else
+        {
+#if UNITY_EDITOR
+            Debug.Log("NULL!!");
+#endif
+        }
+    }
 }
-
-//public class EnemyPatrol : MonoBehaviour
-//{
-//    NavMeshAgent agent;
-//    public float patrolSpeed = 1.0f;
-
-//    Vector3[] patrolPoints;
-//    int currentPoint = 0;
-
-//    void Start()
-//    {
-//        agent = GetComponent<NavMeshAgent>();
-//        agent.speed = patrolSpeed;
-
-//        // Get the points along the NavMesh surface
-//        NavMesh navMesh = GetComponent<NavMesh>();
-//        NavMeshHit hit;
-//        NavMesh.SamplePosition(transform.position, out hit, 20.0f, NavMesh.AllAreas);
-//        Vector3 start = hit.position;
-
-//        NavMesh.SamplePosition(transform.position + new Vector3(10.0f, 0.0f, 0.0f), out hit, 20.0f, NavMesh.AllAreas);
-//        Vector3 end = hit.position;
-
-//        // Create an array of patrol points
-//        patrolPoints = new Vector3[] { start, end };
-
-//        // Set the destination to the first patrol point
-//        agent.destination = patrolPoints[currentPoint];
-//    }
-
-//    void Update()
-//    {
-//        // If the agent is close enough to the patrol point, switch to the next one
-//        if (agent.remainingDistance <= agent.stoppingDistance)
-//        {
-//            currentPoint = (currentPoint + 1) % patrolPoints.Length;
-//            agent.destination = patrolPoints[currentPoint];
-//        }
-//    }
-//}
