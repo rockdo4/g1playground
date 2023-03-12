@@ -26,18 +26,12 @@ public class PlayerAttackBox : MonoBehaviour
     public void ExecuteAttack()
     {
         attackedList.Clear();
-        StopCoroutine(CoEndAttackExecution());
-        isAttacking = true;
-        var effect = GameManager.instance.effectManager.GetEffect("Sword Slash 1");
-        var effectPos = transform.position;
-        effect.transform.position = new Vector3(effectPos.x, effectPos.y + 1f, effectPos.z);
-        effect.transform.forward = transform.forward;
+        StartCoroutine(CoAttackExecution());
     }
 
-    public void EndAttackExecution() => StartCoroutine(CoEndAttackExecution());
-
-    private IEnumerator CoEndAttackExecution()
+    private IEnumerator CoAttackExecution()
     {
+        isAttacking = true;
         yield return new WaitForFixedUpdate();
         isAttacking = false;
     }

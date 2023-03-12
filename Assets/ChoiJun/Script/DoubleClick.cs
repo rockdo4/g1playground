@@ -7,13 +7,13 @@ using UnityEngine.EventSystems;
 
 public class DoubleClick : MonoBehaviour, IPointerDownHandler 
 {
-    private PlayerController playerController;
+    private PlayerInput playerInput;
     float interval = 0.3f;
     float doubleClickedTime = -1.0f;
 
     private void Start()
     {
-        playerController = GameManager.instance.player.GetComponent<PlayerController>();
+        playerInput = GameManager.instance.player.GetComponent<PlayerInput>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -21,7 +21,7 @@ public class DoubleClick : MonoBehaviour, IPointerDownHandler
         if ((Time.time - doubleClickedTime) < interval)
         {
             doubleClickedTime = -1.0f;
-            playerController.Dash();
+            playerInput.ExeDash();
         }
         else
         {

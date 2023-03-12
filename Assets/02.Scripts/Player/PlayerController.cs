@@ -7,8 +7,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
-using static PlayerController;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class PlayerController : MonoBehaviour, IAttackable
 {
@@ -23,6 +22,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         public abstract void Update();
         public abstract void Exit();
     }
+    private PlayerInput input;
     private Dictionary<Type, State> states = new Dictionary<Type, State>();
     public State currState;
     private Rigidbody playerRb;
@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     private void Awake()
     {
+        input = GetComponent<PlayerInput>();
         playerRb = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
@@ -76,7 +77,6 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     private void Start()
     {
-
         states.Add(typeof(IdleState), new IdleState(this));
         states.Add(typeof(MoveState), new MoveState(this));
         states.Add(typeof(DashState), new DashState(this));
@@ -101,28 +101,13 @@ public class PlayerController : MonoBehaviour, IAttackable
         }
         currState.Update();
 
-        //Temporary KeyBoard
-        if (Input.GetKey(KeyCode.A))
-        {
+        if (input.LeftMove)
             SetMoveX(-1f);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
+        else if (input.RightMove)
             SetMoveX(1f);
-        }
-        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
-        {
-            SetMoveX(0);
-        }
+        else
+            SetMoveX(0f);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump(jumpForce);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            Dash();
-        }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             cor = StartCoroutine(SearchTarget());
@@ -147,38 +132,29 @@ public class PlayerController : MonoBehaviour, IAttackable
     private void FixedUpdate()
     {
         CheckFrontObject();
-        playerAnimator.SetBool("IsAttacking", false);
         playerAnimator.SetBool("IsGrounded", isGrounded);
     }
 
-    public void SetMoveX(float moveX)
+    private void SetMoveX(float moveX)
     {
         this.moveX = moveX;
         if (Mathf.Approximately(moveX, 0f))
         {
-            playerRb.velocity = new Vector3(0, playerRb.velocity.y, 0);
+            //playerRb.velocity = new Vector3(0, playerRb.velocity.y, 0);
             return;
         }
-        else
-        {
-            LastMoveX = moveX;
-            transform.forward = new Vector3(moveX, 0, 0);
-        }
+        LastMoveX = moveX;
+        transform.forward = new Vector3(moveX, 0, 0);
     }
 
     public void Move(float speed)
     {
         if (!IsBlocked)
         {
-            switch (currState)
-            {
-                case DashState:
-                    playerRb.velocity = new Vector3(LastMoveX * speed, playerRb.velocity.y, 0);
-                    break;
-                default:
-                    playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
-                    break;
-            }
+            if (currState.GetType() == typeof(DashState))
+                playerRb.velocity = new Vector3(LastMoveX * speed, playerRb.velocity.y, 0);
+            else
+                playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
         }
         else
             playerRb.velocity = new Vector3(0f, playerRb.velocity.y, 0f);
@@ -186,6 +162,8 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     public void Dash()
     {
+        if (!input.Dash || DashOnCool)
+            return;
         SetState<DashState>();
         dashDuration = 0.1f;
     }
@@ -235,37 +213,17 @@ public class PlayerController : MonoBehaviour, IAttackable
         }
     }
 
-    public void Jump()
-    {
-        if (jumpCount >= maxJumpCount)
-            return;
-        foreach (var t in Input.touches)
-        {
-            var viewportPoint = Camera.main.ScreenToViewportPoint(t.position);
+    public void Jump() => Jump(jumpForce);
 
-            if (viewportPoint.x > 0.5f && viewportPoint.y < 0.5f)
-            {
-                if (t.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(t.fingerId))
-                {
-                    playerRb.velocity = new Vector3(moveX, 0, 0);
-                    playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                    playerAnimator.SetTrigger("Jump");
-                    SetState<JumpState>();
-                    if (jumpCount == 1)
-                        jumpCount = 2;
-                }
-            }
-        }
-    }
-    public void Jump(float force)
+    public void Jump(float force, bool forbidJumping = false)
     {
-        if (jumpCount >= maxJumpCount)
+        if (!input.Jump || jumpCount >= maxJumpCount)
             return;
         playerRb.velocity = new Vector3(moveX, 0, 0);
         playerRb.AddForce(Vector3.up * force, ForceMode.Impulse);
         playerAnimator.SetTrigger("Jump");
         SetState<JumpState>();
-        //if (jumpCount == 1)
+        if (jumpCount == 1 || forbidJumping)
             jumpCount = 2;
     }
 
@@ -328,6 +286,7 @@ public class PlayerController : MonoBehaviour, IAttackable
                 return;
             }
             playerController.playerAnimator.SetFloat("MoveX", playerController.moveX);
+            playerController.Dash();
             playerController.Jump();
         }
 
@@ -351,6 +310,7 @@ public class PlayerController : MonoBehaviour, IAttackable
             }
             playerController.playerAnimator.SetFloat("MoveX", playerController.moveX);
             playerController.Move(playerController.moveSpeed);
+            playerController.Dash();
             playerController.Jump();
         }
 
@@ -404,6 +364,7 @@ public class PlayerController : MonoBehaviour, IAttackable
                 return;
             }
             playerController.Move(playerController.moveSpeed);
+            playerController.Dash();
             playerController.Jump();
         }
 
