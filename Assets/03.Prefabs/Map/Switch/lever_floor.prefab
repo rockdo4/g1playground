@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9194712634233770565}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30.000002, y: 0, z: 0}
 --- !u!33 &9222313217547083707
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -178,9 +178,11 @@ GameObject:
   - component: {fileID: 9188763987384131339}
   - component: {fileID: 9142077378461875441}
   - component: {fileID: 9030438563239112761}
+  - component: {fileID: 9210488551812538386}
+  - component: {fileID: 9210488551812538385}
   m_Layer: 0
   m_Name: lever_floor
-  m_TagString: Untagged
+  m_TagString: Pushable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -253,6 +255,33 @@ LODGroup:
     - renderer: {fileID: 9212516701153912411}
     - renderer: {fileID: 9214025285837917299}
   m_Enabled: 1
+--- !u!65 &9210488551812538386
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9191066082812263729}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &9210488551812538385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9191066082812263729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6747c3e93c1314346a8b1c71a0f289da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerObject: {fileID: 0}
+  isTrigger: 1
 --- !u!1 &9191339836212654395
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +462,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9194807083860392605}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30.000002, y: 0, z: 0}
 --- !u!33 &9222380542005124301
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -548,7 +577,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9195153955954831763}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30.000002, y: 0, z: 0}
 --- !u!33 &9219446341743246097
 MeshFilter:
   m_ObjectHideFlags: 0
