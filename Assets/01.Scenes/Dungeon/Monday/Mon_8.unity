@@ -1726,7 +1726,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f066d284ca884f344a8aca57218a1129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btManager: {fileID: 1037984826}
+  btManager: {fileID: 0}
   popupManager: {fileID: 1799221626}
   charStatUI: {fileID: 1787915284}
 --- !u!4 &295106971 stripped
@@ -5409,7 +5409,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1037984826}
+      objectReference: {fileID: 0}
     - target: {fileID: 3156614020974359010, guid: 00f43e2ece1935d41991954295923c74,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -6387,7 +6387,7 @@ MonoBehaviour:
   player: {fileID: 1733655059}
   effectManager: {fileID: 535802088}
   uiManager: {fileID: 291402186}
-  projectileManager: {fileID: 1601967085}
+  attackColliderManager: {fileID: 0}
 --- !u!4 &751795159
 Transform:
   m_ObjectHideFlags: 0
@@ -8052,7 +8052,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -8649,18 +8649,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1816645466}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1037984826 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1246018887048515679, guid: 0851c0a6805a5284fbea316484ab5142,
-    type: 3}
-  m_PrefabInstance: {fileID: 1816645466}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1037984822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f70f9cf9eea9ae4380d3f7ffdfe0bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1090494293 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4490997221292430722, guid: 0851c0a6805a5284fbea316484ab5142,
@@ -9454,6 +9442,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customMaterial: {fileID: 2100000, guid: 510b89959f6284546b0b61011fc58d41, type: 2}
   originMaterial: {fileID: 2100000, guid: 067e560e11d1f4847beef5108ba2a9fc, type: 2}
+  invisibleMaterial: {fileID: 0}
 --- !u!1001 &1196167710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11734,6 +11723,7 @@ MonoBehaviour:
   projectilePrefabs:
   - {fileID: 5188155676063201482, guid: f51ae6af3aa2a7a4c874e609988954c5, type: 3}
   - {fileID: 7755482906051225743, guid: f75c77a3c6683ec4ca1f09423fad63d6, type: 3}
+  rangeColliderPrefabs: []
 --- !u!4 &1601967086
 Transform:
   m_ObjectHideFlags: 0

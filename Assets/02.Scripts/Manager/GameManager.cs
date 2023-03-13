@@ -29,8 +29,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void Respawn()
-    {
-        // GameObject.Find(MapManager.instance.GetCurrentMapName()).SetActive(false);
+    {   
+       
         GameObject.FindWithTag("Map").transform.Find(PlayerDataManager.instance.lastMapId).gameObject.SetActive(true);
         player.transform.position = PlayerDataManager.instance.lastPlayerPos;
         MapManager.instance.SetCurrentMapName(PlayerDataManager.instance.lastMapId);
