@@ -13,9 +13,7 @@ public class Checkpoint : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("leb");
-        
+    {        
         if (other.CompareTag("Player"))
         {
             PlayerDataManager.instance.SaveLastPos(MapManager.instance.GetCurrentMapName(), transform.position);
