@@ -139,28 +139,28 @@ public class Boss4Controller : Enemy
                 Spawn();
                 break;
             case EnemyState.Idle:
-                Idle();
+                IdleUpdate();
                 break;
             case EnemyState.Motion:
                 Motion();
                 break;
             case EnemyState.Patrol:
-                Patrol();
+                PatrolUpdate();
                 break;
             case EnemyState.Chase:
-                Chase();
+                ChaseUpdate();
                 break;
             case EnemyState.Attack:
-                Attack();
+                AttackUpdate();
                 break;
             case EnemyState.Skill:
                 Skill();
                 break;
             case EnemyState.TakeDamage:
-                TakeDamage();
+                TakeDamageUpdate();
                 break;
             case EnemyState.Die:
-                Die();
+                DieUpdate();
                 break;
         }
         animator.SetFloat("Move", agent.velocity.magnitude);
@@ -175,7 +175,7 @@ public class Boss4Controller : Enemy
         LookAtFront();
     }
     private float idleCool = 0f;
-    protected override void Idle()
+    protected override void IdleUpdate()
     {
         idleCool += Time.deltaTime;
 
@@ -189,7 +189,7 @@ public class Boss4Controller : Enemy
     }
 
     private bool isSkillType = false;
-    protected override void Chase()
+    protected override void ChaseUpdate()
     {
         if (LookAtTarget())
             agent.SetDestination(player.transform.position);
@@ -223,7 +223,7 @@ public class Boss4Controller : Enemy
         }
     }
 
-    protected override void Attack()
+    protected override void AttackUpdate()
     {
         LookAtTarget();
     }
@@ -238,11 +238,11 @@ public class Boss4Controller : Enemy
         }
     }
 
-    protected override void TakeDamage() { }
+    protected override void TakeDamageUpdate() { }
 
-    protected override void Die()
+    protected override void DieUpdate()
     {
-        base.Die();
+        base.DieUpdate();
     }
 
     private void SpawnDone()

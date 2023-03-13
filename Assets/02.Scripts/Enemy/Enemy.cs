@@ -66,15 +66,15 @@ public class Enemy : MonoBehaviour
         isLive = true;
     }
     protected virtual void Spawn() { }
-    protected virtual void Idle() { }
+    protected virtual void IdleUpdate() { }
     protected virtual void Motion() { }
-    protected virtual void Patrol() { }
-    protected virtual void Chase() { }
-    protected virtual void Attack() { }
+    protected virtual void PatrolUpdate() { }
+    protected virtual void ChaseUpdate() { }
+    protected virtual void AttackUpdate() { }
     protected virtual void Skill() { }
-    protected virtual void TakeDamage() { }
+    protected virtual void TakeDamageUpdate() { }
     protected virtual void Groggy() { }
-    protected virtual void Die() { }
+    protected virtual void DieUpdate() { }
 
     protected Vector3 GetSpawnPos() { return mySpawnPos; }
     protected bool LookAtTarget()

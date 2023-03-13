@@ -53,25 +53,25 @@ public class BossTemp : Enemy
                 Spawn();
                 break;
             case EnemyState.Idle:
-                Idle();
+                IdleUpdate();
                 break;
             case EnemyState.Patrol:
-                Patrol();
+                PatrolUpdate();
                 break;
             case EnemyState.Chase:
-                Chase();
+                ChaseUpdate();
                 break;
             case EnemyState.Attack:
-                Attack();
+                AttackUpdate();
                 break;
             case EnemyState.Skill:
                 Skill();
                 break;
             case EnemyState.TakeDamage:
-                TakeDamage();
+                TakeDamageUpdate();
                 break;
             case EnemyState.Die:
-                Die();
+                DieUpdate();
                 break;
         }
     }
@@ -80,16 +80,16 @@ public class BossTemp : Enemy
 
     }
 
-    protected override void Idle()
+    protected override void IdleUpdate()
     {
 
     }
 
-    protected override void Chase()
+    protected override void ChaseUpdate()
     {
     }
 
-    protected override void Attack()
+    protected override void AttackUpdate()
     {
     }
 
@@ -98,12 +98,12 @@ public class BossTemp : Enemy
 
     }
 
-    protected override void TakeDamage()
+    protected override void TakeDamageUpdate()
     {
 
     }
 
-    protected override void Die()
+    protected override void DieUpdate()
     {
 
     }

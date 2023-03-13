@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EnemyController : Enemy
 {
+    GameObject attackBox;
+
     [System.Serializable]
     public class EnemyStateData
     {
@@ -19,7 +22,14 @@ public class EnemyController : Enemy
     public List<EnemyStateData> EnemyStatePattern = new List<EnemyStateData>();
     private int curCountPattern;
     private float patternTime = 0f;
+    public bool isGoingRight;
 
+    public float patrolSpeed;
+    public float chaseSpeed;
+    public float searchRange;
+    public float attackRange;
+    public float attackCool;
+    private float attackTime;
     public override EnemyState State
     {
         get { return state; }
@@ -43,13 +53,24 @@ public class EnemyController : Enemy
                     break;
                 case EnemyState.Patrol:
                     agent.isStopped = false;
+                    agent.speed = patrolSpeed;
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Chase:
-                    break;
-                case EnemyState.TakeDamage:
+                    agent.isStopped = false;
+                    agent.speed = chaseSpeed;
+                    rb.isKinematic = true;
                     break;
                 case EnemyState.Attack:
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                    rb.isKinematic = true;
+                    break;
+                case EnemyState.TakeDamage:
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                    agent.enabled = false;
+                    rb.isKinematic = false;
                     break;
                 case EnemyState.Die:
                     break;
@@ -63,10 +84,12 @@ public class EnemyController : Enemy
     protected override void Awake()
     {
         base.Awake();
+        attackBox = GameObject.Find(gameObject.name + "/AttackBox");
+        attackBox.SetActive(false);
     }
     protected override void Start()
     {
-
+        base.Start();
     }
     protected override void OnEnable()
     {
@@ -76,7 +99,7 @@ public class EnemyController : Enemy
     }
     protected void Update()
     {
-
+        attackTime += Time.deltaTime;
 
         switch (State)
         {
@@ -85,22 +108,22 @@ public class EnemyController : Enemy
                 break;
 
             case EnemyState.Idle:
-                Idle();
+                IdleUpdate();
                 break;
             case EnemyState.Patrol:
-                Patrol();
+                PatrolUpdate();
                 break;
             case EnemyState.Chase:
-                Chase();
+                ChaseUpdate();
                 break;
             case EnemyState.Attack:
-                Attack();
+                AttackUpdate();
                 break;
             case EnemyState.TakeDamage:
-                TakeDamage();
+                TakeDamageUpdate();
                 break;
             case EnemyState.Die:
-                Die();
+                DieUpdate();
                 break;
         }
 
@@ -117,17 +140,17 @@ public class EnemyController : Enemy
         SaveFloorLength();
         State = EnemyStatePattern[0].state;
     }
-    protected override void Idle()
+    protected override void IdleUpdate()
     {
 
         ChangePattern();
-
+        RayShooter(searchRange);
 
     }
-    public bool isGoingRight;
-    protected override void Patrol()
+    protected override void PatrolUpdate()
     {
         ChangePattern();
+        RayShooter(searchRange);
 
         if (isGoingRight)
         {
@@ -135,10 +158,8 @@ public class EnemyController : Enemy
             {
                 agent.velocity = Vector3.zero;
 
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized, Time.deltaTime * 10f);
-                Vector3 right = new Vector3(1, 0, 0);
-                //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(right), Time.deltaTime * 10f);
-                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized) <= 1f)
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.left), Time.deltaTime * 10f);
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized) <= 5f)
                     isGoingRight = false;
 
                 return;
@@ -152,11 +173,10 @@ public class EnemyController : Enemy
             {
                 agent.velocity = Vector3.zero;
 
-
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized, Time.deltaTime * 10f);
-                Vector3 left = new Vector3(-1, 0, 0);
-                // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.left).normalized, Time.deltaTime * 10f);
-                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) <= 1f)
+                //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized, Time.deltaTime * 10f);
+                //Vector3 left = new Vector3(-1, 0, 0);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.right).normalized, Time.deltaTime * 10f);
+                if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) <= 5f)
                     isGoingRight = true;
 
                 return;
@@ -164,31 +184,45 @@ public class EnemyController : Enemy
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(startPos - transform.position).normalized, Time.deltaTime * 10f);
             agent.SetDestination(startPos);
         }
-        Debug.Log(isGoingRight);
     }
-    protected override void Chase()
+    protected override void ChaseUpdate()
     {
 
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized, Time.deltaTime * 10f);
+
+        if (player.transform.position.x - transform.position.x > 0)
+            isGoingRight = true;
+        else
+            isGoingRight = false;
+
+        if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized) <= 10f)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(player.transform.position);
+        }
+        else
+        {
+            agent.isStopped = true;
+        }
+
+        if (RayShooter(attackRange))
+        {
+            State = EnemyState.Attack;
+        }
     }
 
-    protected override void Attack()
+    protected override void AttackUpdate()
     {
-
+        if (attackTime >= attackCool)
+        {
+            animator.SetTrigger("Attack");
+            attackTime = 0f;
+        }
     }
 
-    protected override void Skill()
+    protected override void DieUpdate()
     {
-
-    }
-
-    protected override void TakeDamage()
-    {
-
-    }
-
-    protected override void Die()
-    {
-        base.Die();
+        //base.DieUpdate();
     }
 
     protected float floorLength;
@@ -201,13 +235,14 @@ public class EnemyController : Enemy
         {
             Collider collider = hit.collider;
             floorLength = collider.bounds.size.x;
-            startPos = collider.bounds.center - new Vector3((floorLength / 2), -0.5f, 0);
-            endPos = collider.bounds.center + new Vector3((floorLength / 2), 0.5f, 0);
+            startPos = collider.bounds.center - new Vector3((floorLength / 2) - 0.5f, -0.5f, 0);
+            endPos = collider.bounds.center + new Vector3((floorLength / 2) - 0.5f, 0.5f, 0);
         }
         else
         {
 #if UNITY_EDITOR
             Debug.Log("Arrangement Fail");
+            Debug.Log("배치 제대로 하라고");
 #endif
         }
     }
@@ -232,4 +267,63 @@ public class EnemyController : Enemy
         State = EnemyStatePattern[curCountPattern].state;
     }
 
+
+    private bool RayShooter(float range)
+    {
+        Vector3 rayOrigin;
+        Ray ray;
+        rayOrigin = transform.position + new Vector3(0, 0.5f, 0);
+
+        if (isGoingRight)
+        {
+            ray = new Ray(rayOrigin, Vector3.right);
+
+#if UNITY_EDITOR
+            Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
+#endif
+        }
+        else
+        {
+            ray = new Ray(rayOrigin, Vector3.left);
+#if UNITY_EDITOR
+            Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
+#endif
+        }
+
+        if (Physics.Raycast(ray, out RaycastHit hit, range))
+        {
+            if (hit.collider.tag == "Player")
+            {
+                if (State != EnemyState.Chase)
+                {
+                    State = EnemyState.Chase;
+                    return true;
+                }
+
+                if (State == EnemyState.Chase)
+                {
+                    State = EnemyState.Attack;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void Attack()
+    {
+
+
+    }
+    private void AttackDone()
+    {
+        State = EnemyState.Chase;
+        //attackBox.SetActive(false);
+    }
+
+    private void TakeDamegeDone()
+    {
+        agent.enabled = true;
+        State = EnemyState.Chase;
+    }
 }
