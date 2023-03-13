@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         input = GetComponent<PlayerInput>();
         playerRb = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();      
         path = new NavMeshPath();
     }
 
@@ -109,6 +109,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            enemies = stageController.GetStageEnemies();
             cor = StartCoroutine(SearchTarget());
             IsAuto = true;
             SetState<AutoMoveState>();
