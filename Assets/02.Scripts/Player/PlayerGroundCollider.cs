@@ -34,11 +34,11 @@ public class PlayerGroundCollider : MonoBehaviour
             if (playerBounds.min.y > otherBounds.center.y)
             {
                 
-                if (playerBounds.center.x <= otherBounds.center.x)
+                if (playerBounds.min.x <= otherBounds.center.x)
                 {
                     playerRb.velocity = new Vector3(-5f , playerRb.velocity.y, 0f);
                 }
-                if (playerBounds.center.x > otherBounds.center.x)
+                else if (playerBounds.min.x > otherBounds.center.x)
                 {
                     playerRb.velocity = new Vector3(5f , playerRb.velocity.y, 0f);
                 }

@@ -181,21 +181,28 @@ public class PlayerController : MonoBehaviour, IAttackable
             foreach (var hit in hits)
             {
 
-                if (hit.collider != null)
+                //if (hit.collider != null)
+                //{
+                //    if (!(hit.transform.CompareTag("CheckPoint") ||
+                //        hit.transform.CompareTag("Falling") ||
+                //        hit.transform.CompareTag("Portal") ||
+                //    hit.transform.CompareTag("Stage") ||
+                //        hit.transform.CompareTag("Player") ||
+                //        hit.collider.CompareTag("AttackBox") ||
+                //        (hit.transform.CompareTag("Pushable") && isGrounded) ||
+                //        hit.transform.CompareTag("Door")))
+                //    {
+                //        IsBlocked = true;
+                //        return;
+                //    }
+                //}
+                if ((hit.transform.CompareTag("Pushable") && !isGrounded)||
+                    hit.transform.CompareTag("Ground"))
                 {
-                    if (!(hit.transform.CompareTag("CheckPoint") ||
-                        hit.transform.CompareTag("Falling") ||
-                        hit.transform.CompareTag("Portal") ||
-                    hit.transform.CompareTag("Stage") ||
-                        hit.transform.CompareTag("Player") ||
-                        hit.collider.CompareTag("AttackBox") ||
-                        (hit.transform.CompareTag("Pushable") && isGrounded) ||
-                        hit.transform.CompareTag("Door")))
-                    {
-                        IsBlocked = true;
-                        return;
-                    }
+                    IsBlocked = true;
+                    return;
                 }
+
             }
             playerPosition.y += k;
         }
