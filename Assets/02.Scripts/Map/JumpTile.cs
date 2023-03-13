@@ -19,7 +19,7 @@ public class JumpTile : MonoBehaviour
             {
                 //Debug.Log("jump");
                 //Add player jump here//
-                collision.gameObject.GetComponent<PlayerController>().Jump(force);
+                collision.gameObject.GetComponent<PlayerController>().Jump(force, true);
                                                                      //.AddForce(Vector3.up * force, ForceMode.Impulse); // Replace this line
                 ///////////////////////
 

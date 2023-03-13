@@ -22,7 +22,7 @@ public class SavePlayerDataVer1 : SavePlayerData
     public int playerCurrHp;
     public string lastMapId;
     public Vector3 lastPlayerPos;
-
+    public string lastChapter;
     public override SaveData VersionUp()
     {
         return this;

@@ -26,6 +26,7 @@ public class PlayerDataManager : MonoBehaviour
     public int playerCurrHp;
     public int playerCurrMp;
     public string lastMapId;
+    public string lastChapter;
     public Vector3 lastPlayerPos;
 
     public void SaveFile()
@@ -34,6 +35,7 @@ public class PlayerDataManager : MonoBehaviour
         saveData.playerName = playerName;
         saveData.playerCurrHp = playerCurrHp;
         saveData.lastMapId = lastMapId;
+        saveData.lastChapter= lastChapter;
         //saveData.lastPlayerPos = player.transform.position;
         saveData.lastPlayerPos = lastPlayerPos;
 
@@ -46,11 +48,13 @@ public class PlayerDataManager : MonoBehaviour
         playerName = saveData.playerName;
         playerCurrHp = saveData.playerCurrHp;
         lastMapId = saveData.lastMapId;
+        lastChapter = saveData.lastChapter;
         lastPlayerPos = saveData.lastPlayerPos;
     }
 
     public void SaveLastPos(string mapId, Vector3 pos)
     {
+        //lastChapter = chapter;
         lastMapId = mapId;
         lastPlayerPos = pos;
     }

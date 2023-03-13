@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public UIButtonManager btManager;
     public UIPopupManager popupManager;
     public CharacterStatUI charStatUI;
+    public Status status;
 
     public Stack<GameObject> popupStack;
 
