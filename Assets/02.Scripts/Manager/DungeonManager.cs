@@ -112,7 +112,7 @@ public class DungeonManager : MonoBehaviour
     private void ExitedDungeon(Scene scene, LoadSceneMode mode)
     {
 
-        if (/*scene.name == "Scene02"*/scene.name == "Map1")
+        if (scene.name == "Scene02")
         {
             remaningtime.gameObject.SetActive(false);
             PlayerDataManager.instance.SetPlayerHpMp();
@@ -252,7 +252,7 @@ public class DungeonManager : MonoBehaviour
         dungeonDay.gameObject.SetActive(false);
         dungeonLevel.gameObject.SetActive(false);
         Time.timeScale = 1;
-        SceneManager.LoadScene("Map1");
+        SceneManager.LoadScene("Scene02");
 
     }
 
