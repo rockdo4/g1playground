@@ -18,7 +18,7 @@ public class Portal : MonoBehaviour
     {
         if (!init)
         {
-            init = true;
+            
             CanUse = true;
         }
        
@@ -31,6 +31,7 @@ public class Portal : MonoBehaviour
             return;
         if (other.CompareTag("Player"))
         {
+            init = true;
             nextStage.gameObject.SetActive(true);
             var nextstageportals = nextStage.GetComponentsInChildren<Portal>();
             foreach (var portal in nextstageportals)

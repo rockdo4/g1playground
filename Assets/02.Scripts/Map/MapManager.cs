@@ -9,6 +9,7 @@ public class MapManager : MonoBehaviour
 
     private List<GameObject> maps;
     private string currentMapName;
+    private string currentChapterName;
     private static MapManager m_instance;
     public static MapManager instance
     {
@@ -43,6 +44,7 @@ public class MapManager : MonoBehaviour
         currentMapName = name;
 
     }
+ 
 
     public void SetLastCheckpointMapTurnOn()
     {
