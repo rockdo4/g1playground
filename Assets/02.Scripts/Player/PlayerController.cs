@@ -85,7 +85,6 @@ public class PlayerController : MonoBehaviour, IAttackable
         states.Add(typeof(AutoMoveState), new AutoMoveState(this));
         SetState<IdleState>();
         GetComponent<DestructedEvent>().OnDestroyEvent = GameManager.instance.Respawn;
-        enemies = stageController.GetStageEnemies();
     }
 
     private void Update()
@@ -201,7 +200,6 @@ public class PlayerController : MonoBehaviour, IAttackable
             playerPosition.y += k;
         }
     }
-
     public void OnGround(bool isGrounded)
     {
         this.isGrounded = isGrounded;
