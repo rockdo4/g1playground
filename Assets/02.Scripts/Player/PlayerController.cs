@@ -165,7 +165,6 @@ public class PlayerController : MonoBehaviour, IAttackable
         if (!input.Dash || DashOnCool)
             return;
         SetState<DashState>();
-        dashDuration = 0.1f;
     }
 
     public void CheckFrontObject()
