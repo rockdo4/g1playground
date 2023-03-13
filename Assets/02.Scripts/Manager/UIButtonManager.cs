@@ -38,7 +38,6 @@ public class UIButtonManager : MonoBehaviour
         {
             exitMessage.SetActive(true);
         }
-        Debug.Log(Time.timeScale);
     }
 
     public void OnApplicationQuit()
