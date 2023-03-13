@@ -6,7 +6,7 @@ public class BoxTile : MonoBehaviour
 {
     private new Rigidbody rigidbody;
     private float originMass;
-
+    private Vector3 boxSize;
     [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
     
@@ -21,6 +21,7 @@ public class BoxTile : MonoBehaviour
         originMass = rigidbody.mass;
        
         IsPushing = false;
+        boxSize = gameObject.GetComponent<BoxCollider>().size;
     }
 
     public void AddMass(float mass)
@@ -55,7 +56,8 @@ public class BoxTile : MonoBehaviour
             if (timer >= pushTime)
             {
                 //Raycast to check if player is pushing the box on side
-                if (!Physics.Raycast(transform.position, Vector3.up, 1f, LayerMask.GetMask("Player")))
+                if (!Physics.BoxCast(transform.position, boxSize / 2, Vector3.up, Quaternion.identity, 1f, LayerMask.GetMask("Player"))
+                    && collision.gameObject.GetComponent<PlayerController>().moveX != 0f) 
                 {
                     
                     IsPushing = true;
