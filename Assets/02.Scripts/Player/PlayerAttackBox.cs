@@ -17,6 +17,7 @@ public class PlayerAttackBox : MonoBehaviour
         {
             if (attackedList.Contains(other.gameObject))
                 return;
+            playerAttack.StartSlowMode();
             Vector3 pos = other.ClosestPoint(transform.position);
             playerAttack.AttackTarget(other.gameObject, pos);
             attackedList.Add(other.gameObject);
