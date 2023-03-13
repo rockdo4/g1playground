@@ -61,7 +61,7 @@ public class StageController : MonoBehaviour
         foreach (var portal in portals)
         {
             portal.gameObject.SetActive(false);
-            portal.CanUse = true;
+            //portal.CanUse = true;
         }
     }
     public void PortalOpen()
@@ -69,7 +69,6 @@ public class StageController : MonoBehaviour
         foreach (var portal in portals)
         {
             portal.gameObject.SetActive(true);
-            portal.CanUse = false;
         }
     }
     IEnumerator DisablePortal()
@@ -78,7 +77,7 @@ public class StageController : MonoBehaviour
         foreach (var portal in portals)
         {
             portal.gameObject.SetActive(false);
-            portal.CanUse = true;
+            portal.CanUse = false;
         }
     }
 
@@ -134,7 +133,9 @@ public class StageController : MonoBehaviour
             {
                 foreach (var portal in portals)
                 {
+                    
                     portal.gameObject.SetActive(true);
+
                 }
             }
         }
