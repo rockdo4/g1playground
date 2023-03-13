@@ -29,11 +29,16 @@ public class GameManager : MonoBehaviour
     }
 
     public void Respawn()
-    {   
-       
+    {
+        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();   
+                       
+        
         GameObject.FindWithTag("Map").transform.Find(PlayerDataManager.instance.lastMapId).gameObject.SetActive(true);
         player.transform.position = PlayerDataManager.instance.lastPlayerPos;
+        Camera.main.transform.position = GameManager.instance.player.transform.position;
         MapManager.instance.SetCurrentMapName(PlayerDataManager.instance.lastMapId);
+        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalClose();
+
         PlayerDataManager.instance.FillPlayerHpMp();
         MapManager.instance.SetLastCheckpointMapTurnOn();
        

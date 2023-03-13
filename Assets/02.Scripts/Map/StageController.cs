@@ -16,6 +16,7 @@ public class StageController : MonoBehaviour
     private List<EnemyController> enemies;
     public UnLockRequirement lockRequirement;
     private List<Portal> portals;
+    public List<Portal> Portals { get; set; }
     [SerializeField] private List<GameObject> switches;
     private bool canOpen;
     [SerializeField]
@@ -37,7 +38,7 @@ public class StageController : MonoBehaviour
                 break;
             }
         }
-    //    TileColorManager.instance.ChangeTileMaterial(transform.name, false);
+        //    TileColorManager.instance.ChangeTileMaterial(transform.name, false);
 
         foreach (var green in greenWall)
         {
@@ -49,6 +50,22 @@ public class StageController : MonoBehaviour
 
     }
 
+    public void PortalClose()
+    {
+        foreach (var portal in portals)
+        {
+            portal.gameObject.SetActive(false);
+            portal.CanUse = true;
+        }
+    }
+    public void PortalOpen()
+    {
+        foreach (var portal in portals)
+        {
+            portal.gameObject.SetActive(true);
+            portal.CanUse = false;
+        }
+    }
     IEnumerator DisablePortal()
     {
         yield return null;
