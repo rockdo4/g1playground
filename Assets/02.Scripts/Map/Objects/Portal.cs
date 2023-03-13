@@ -29,7 +29,7 @@ public class Portal : MonoBehaviour
     {
         if (!CanUse)
             return;
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<ObjectMass>() != null)
         {
             init = true;
             nextStage.gameObject.SetActive(true);

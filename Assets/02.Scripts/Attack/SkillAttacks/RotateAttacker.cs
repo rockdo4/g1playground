@@ -14,12 +14,14 @@ public class RotateAttacker : SkillAttack
     private float timer = 0f;
     public float reqManaInterval = 1f;
     private float reqManaTimer = 0f;
+    private bool isAttacking = false;
     private List<RangeCollider> rangeColliders = new List<RangeCollider>();
     public bool isContinuousAttack = false;
     public float interval;
 
     public void Rotate(GameObject attacker, Transform attackPivot)
     {
+        isAttacking = true;
         this.attacker = attacker;
         this.attackPivot = attackPivot;
         timer = 0f;
@@ -31,30 +33,30 @@ public class RotateAttacker : SkillAttack
         if (attacker.CompareTag("Player"))
             aStat.SetMpUi();
         rangeColliders.Clear();
-        for (int i = 0; i < maxCount; ++i)
-        {
-            var rangeCollider = GameManager.instance.attackColliderManager.Get<RangeCollider>(rangeColliderId);
-            rangeCollider.OnCollided = ExecuteAttack;
-            rangeCollider.Fire(attacker, attackPivot.position, attackPivot.forward, false, lifeTime, isContinuousAttack, interval);
-            rangeColliders.Add(rangeCollider);
-        }
+        GetCollider();
     }
 
     public override void Update()
     {
+        if (!isAttacking)
+            return;
         reqManaTimer += Time.deltaTime;
         if (reqManaTimer > reqManaInterval)
         {
             reqManaTimer = 0f;
             if (aStat.currMp < reqMana)
             {
-                Stop();
+                ReleaseCollider();
                 return;
             }
+            if (rangeColliders.Count == 0)
+                GetCollider();
             aStat.currMp -= reqMana;
             if (attacker.CompareTag("Player"))
                 aStat.SetMpUi();
         }
+        else if (rangeColliders.Count == 0)
+            return;
 
         timer += Time.deltaTime;
         if (timer > cycle)
@@ -77,6 +79,23 @@ public class RotateAttacker : SkillAttack
     }
 
     public void Stop()
+    {
+        isAttacking = false;
+        ReleaseCollider();
+    }
+
+    private void GetCollider()
+    {
+        for (int i = 0; i < maxCount; ++i)
+        {
+            var rangeCollider = GameManager.instance.attackColliderManager.Get<RangeCollider>(rangeColliderId);
+            rangeCollider.OnCollided = ExecuteAttack;
+            rangeCollider.Fire(attacker, attackPivot.position, attackPivot.forward, false, lifeTime, isContinuousAttack, interval);
+            rangeColliders.Add(rangeCollider);
+        }
+    }
+
+    private void ReleaseCollider()
     {
         if (rangeColliders.Count > 0)
         {
