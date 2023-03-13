@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour, IAttackable
     public float hitDuration = 0.5f;
 
     public StageController stageController;
-    private List<EnemyController> enemies;
+    private List<GameObject> enemies;
     private Transform target;
     private float[] distance;
 

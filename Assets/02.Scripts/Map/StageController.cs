@@ -13,7 +13,7 @@ public class StageController : MonoBehaviour
         Heal,
     }
 
-    private List<EnemyController> enemies;
+    private List<GameObject> enemies;
     public UnLockRequirement lockRequirement;
     private List<Portal> portals;
     public List<Portal> Portals { get; set; }
@@ -26,8 +26,14 @@ public class StageController : MonoBehaviour
     private void OnEnable()
     {
         var switchcheck = false;
-        enemies = new List<EnemyController>();
-        enemies = gameObject.GetComponentsInChildren<EnemyController>().ToList();
+        enemies = new List<GameObject>();
+        var childCount = gameObject.transform.childCount;
+        for (int i = 0; i < childCount; ++i)
+        {
+            var child = gameObject.transform.GetChild(i);
+            if (child.CompareTag("Enemy"))
+                enemies.Add(child.gameObject);
+        }
         portals = gameObject.GetComponentsInChildren<Portal>().ToList();
 
         foreach (var swit in switches)
@@ -141,7 +147,7 @@ public class StageController : MonoBehaviour
 
     }
 
-    public List<EnemyController> GetStageEnemies()
+    public List<GameObject> GetStageEnemies()
     {
         return enemies;
     }
