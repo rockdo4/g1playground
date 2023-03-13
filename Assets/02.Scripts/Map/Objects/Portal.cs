@@ -29,7 +29,7 @@ public class Portal : MonoBehaviour
     {
         if (!CanUse)
             return;
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<ObjectMass>() != null)
         {
             init = true;
             nextStage.gameObject.SetActive(true);
@@ -43,7 +43,7 @@ public class Portal : MonoBehaviour
 
                     CanUse = false;
                     Camera.main.transform.position=portal.gameObject.transform.position;
-                    MapManager.instance.SetCurrentMapName(portal.name);
+                    MapManager.instance.SetCurrentMapName(portal.transform.parent.name);
                     transform.parent.gameObject.SetActive(false);
 
                 }

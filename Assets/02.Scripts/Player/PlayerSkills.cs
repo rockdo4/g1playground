@@ -77,10 +77,19 @@ public class PlayerSkills : MonoBehaviour
 
     public void SetSkill(int index, string id)
     {
+        foreach (var skillState in skillStates)
+        {
+            if (skillState.skill != null && string.Equals(skillState.skill.id, id))
+                return;
+        }
+
         foreach (var skill in allSkills)
         {
-            if (skill.id == id)
+            if (string.Equals(skill.id, id))
+            {
+                toggles[index].isOn = false;
                 skillStates[index].Set(skill);
+            }
         }
     }
 
