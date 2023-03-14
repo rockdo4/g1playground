@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1938999242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1938999243}
+  m_Layer: 0
+  m_Name: FirePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1938999243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938999242}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0.607}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7739254864968284372}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7739254864968049906
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +144,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0.7355958, z: -0.000029640896}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1938999243}
   m_Father: {fileID: 7739254864968284370}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -180,7 +212,7 @@ GameObject:
   - component: {fileID: 7176378740705207344}
   m_Layer: 0
   m_Name: cannon
-  m_TagString: Untagged
+  m_TagString: Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,9 +265,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f10ebebc4d2174cbcba29c93cde953bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firePosition: {fileID: 1938999242}
   cannon: {fileID: 7739254864968049908}
   rotationX: -30
-  force: 10
+  force: 20
+  delay: 3
+  isTriggered: 1
   cannonBall: {fileID: 787261575787202022, guid: ae7eec6fbe3de466db34029898b9aff3,
     type: 3}
   maxPoolSize: 50

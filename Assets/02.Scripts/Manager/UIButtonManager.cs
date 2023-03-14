@@ -51,6 +51,12 @@ public class UIButtonManager : MonoBehaviour
         {
             popup.gameObject.SetActive(true);
             GameManager.instance.uiManager.AddPopUp(popup);
+            if (popup.gameObject.name != "Option")
+            {
+                var option = GameObject.Find("Option");
+                option.SetActive(false);
+                Time.timeScale = 0f;
+            }
         }
         else
         {
@@ -83,14 +89,10 @@ public class UIButtonManager : MonoBehaviour
             {
                 if (popup.gameObject.activeSelf)
                 {
-                    Time.timeScale = 0f;
                     return;
                 }
-                else
-                    Time.timeScale = 1f;
             }
         }
-        Time.timeScale = 1f;
         AllClosePopUp();
     }
 }
