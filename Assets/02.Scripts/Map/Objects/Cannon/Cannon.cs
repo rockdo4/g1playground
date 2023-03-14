@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Cannon : MonoBehaviour
+public class Cannon : MonoBehaviour, ITriggerObject
 {
     [Header("Cannon")]
+    [SerializeField] private GameObject firePosition;
     [SerializeField] private GameObject cannon;
     [SerializeField] private float rotationX;
     [SerializeField] private float force = 10f;
     [SerializeField] private float delay = 3f;
+    [SerializeField] private bool isTriggered = false;
 
     private float timer = 0f;
-
+    
     [Header("CannonBall Pool")]
     [SerializeField] private CannonBall cannonBall;
     public int maxPoolSize = 50;
@@ -65,20 +67,33 @@ public class Cannon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        timer = delay;
         cannon.transform.Rotate(rotationX, 0f, 0f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= delay)
+        if (isTriggered)
         {
-            timer = 0f;
-            var arrow = CannonPool.Get();
-            arrow.transform.position = transform.position;
-            arrow.GetComponent<Rigidbody>().velocity = transform.up * force;
+            timer += Time.deltaTime;
+            if (timer >= delay)
+            {
+                timer = 0f;
+                var arrow = CannonPool.Get();
+                arrow.transform.position = firePosition.transform.position;
+
+                var dir = firePosition.transform.position - cannon.transform.position;
+                dir.z = 0;
+                dir.Normalize();
+
+                arrow.GetComponent<Rigidbody>().AddForce(dir * force, ForceMode.Impulse);
+            }
         }
-        
+    }
+
+    public void SetObjectTrigger(bool isTrigger)
+    {
+        isTriggered = isTrigger;
     }
 }

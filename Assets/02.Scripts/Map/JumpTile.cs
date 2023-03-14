@@ -8,21 +8,27 @@ public class JumpTile : MonoBehaviour
     [SerializeField] private float delay = 0.5f;
     private float timer = 0f;
 
+    private Vector3 boxSize;
+
+    private void Start()
+    {
+        boxSize = gameObject.GetComponent<BoxCollider>().size;
+    }
+
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<ObjectMass>() != null) 
+        if (Physics.BoxCast(transform.position, boxSize / 2, Vector3.up, Quaternion.identity, 1f, LayerMask.GetMask("Player")) &&
+            collision.gameObject.GetComponent<ObjectMass>() != null) 
         {
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
 
-            if (timer >= delay && Physics.Raycast(transform.position, Vector3.up, 1f, LayerMask.GetMask("Player"))) 
+            if (timer >= delay) 
             {
-                //Debug.Log("jump");
+                Debug.Log("Jump");
                 //Add player jump here//
-                collision.gameObject.GetComponent<PlayerController>().Jump(force, true);
-                                                                     //.AddForce(Vector3.up * force, ForceMode.Impulse); // Replace this line
-                ///////////////////////
-
+                collision.gameObject.GetComponent<PlayerController>().Jump(force);
+               
                 timer = 0f;
             }
         }
