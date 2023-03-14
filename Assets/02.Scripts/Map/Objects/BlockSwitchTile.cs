@@ -79,7 +79,7 @@ public class BlockSwitchTile : MonoBehaviour
 
             if (objects.Count <= 0)
             {
-                Debug.Log("exit");
+                //Debug.Log("exit");
                 //isState = true;
                 IsTriggered = false;
                 animator.SetBool("Trigger", false);
