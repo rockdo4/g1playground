@@ -9,8 +9,8 @@ public class Enemy : MonoBehaviour
     protected EnemyState state;
 
     protected GameObject player;
-    private Vector3 mySpawnPos;
-    private Quaternion mySpawnDir;
+    protected Vector3 mySpawnPos;
+    protected Quaternion mySpawnDir;
     protected bool isLive = true;
 
     public enum EnemyState
@@ -57,7 +57,6 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("Die");
             isLive = false;
         };
-
     }
     protected virtual void OnEnable()
     {

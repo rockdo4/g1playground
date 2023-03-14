@@ -474,6 +474,7 @@ public class EnemyControllerTemp : MonoBehaviour, IAttackable
             }
         }
     }
+
     //public void GetAttackBoxCollExit(Collider collider, Collider attackBoxColl)
     //{
     //    if (state == EnemyState.Chase)
@@ -488,5 +489,4 @@ public class EnemyControllerTemp : MonoBehaviour, IAttackable
     //        }
     //    }
     //}
-
 }

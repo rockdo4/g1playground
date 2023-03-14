@@ -6,9 +6,11 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class EnemyController : Enemy
+public class EnemyController : Enemy, IAttackable
 {
     GameObject attackBox;
+    private CapsuleCollider mainColl;
+    public BasicAttack meleeAttack;
 
     [System.Serializable]
     public class EnemyStateData
@@ -36,16 +38,21 @@ public class EnemyController : Enemy
         protected set
         {
             var prevState = state;
-            state = value;
+            if (EnemyState.Die == prevState)
+                return;
 
+            state = value;
             if (prevState == state)
                 return;
 
             switch (State)
             {
                 case EnemyState.None:
+                    agent.enabled = true;
                     agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
                     rb.isKinematic = true;
+                    mainColl.enabled = true;
                     break;
                 case EnemyState.Idle:
                     agent.isStopped = true;
@@ -73,6 +80,10 @@ public class EnemyController : Enemy
                     rb.isKinematic = false;
                     break;
                 case EnemyState.Die:
+                    agent.velocity = Vector3.zero;
+                    agent.enabled = false;
+                    rb.isKinematic = true;
+                    mainColl.enabled = false;
                     break;
             }
 
@@ -81,11 +92,21 @@ public class EnemyController : Enemy
     }
 
 
+    public bool preGoingRight;
+
     protected override void Awake()
     {
+        //StartCoroutine(RestorePosition());
         base.Awake();
+        mainColl = GetComponent<CapsuleCollider>();
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
         attackBox.SetActive(false);
+        preGoingRight = isGoingRight;
+    }
+    private IEnumerator RestorePosition()
+    {
+        yield return new WaitForEndOfFrame();
+
     }
     protected override void Start()
     {
@@ -96,6 +117,9 @@ public class EnemyController : Enemy
         base.OnEnable();
 
         State = EnemyState.None;
+        patternTime = 0f;
+        curCountPattern = 0;
+        isGoingRight = preGoingRight;
     }
     protected void Update()
     {
@@ -185,6 +209,8 @@ public class EnemyController : Enemy
             agent.SetDestination(startPos);
         }
     }
+
+    private bool currGoingRight;
     protected override void ChaseUpdate()
     {
 
@@ -194,6 +220,12 @@ public class EnemyController : Enemy
             isGoingRight = true;
         else
             isGoingRight = false;
+
+        if (currGoingRight != isGoingRight)
+        {
+            agent.velocity = Vector3.zero;
+            currGoingRight = isGoingRight;
+        }
 
         if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized) <= 10f)
         {
@@ -207,7 +239,21 @@ public class EnemyController : Enemy
 
         if (RayShooter(attackRange))
         {
-            State = EnemyState.Attack;
+            if (attackTime >= attackCool)
+                State = EnemyState.Attack;
+            else
+            {
+                agent.isStopped = true;
+                agent.velocity = Vector3.zero;
+            }
+        }
+        else
+            agent.isStopped = false;
+
+
+        if (Vector3.Distance(transform.position, player.transform.position) >= searchRange * 2f)
+        {
+            State = EnemyState.None;
         }
     }
 
@@ -217,9 +263,33 @@ public class EnemyController : Enemy
         {
             animator.SetTrigger("Attack");
             attackTime = 0f;
+            return;
         }
+        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized, Time.deltaTime * 10f);
     }
 
+    //private float takeDamageCool = 0.8f;
+    //private float takeDamageCoolTime = 0f;
+    public void TakeDamageUpdate()
+    {
+        //if (State == EnemyState.Die)
+        //    return;
+
+        //if (takeDamageCool <= takeDamageCoolTime)
+        //{
+        //    State = EnemyState.Chase;
+        //}
+    }
+
+    public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
+    {
+        if (State == EnemyState.Die)
+            return;
+
+        State = EnemyState.TakeDamage;
+        animator.SetTrigger("TakeDamage");
+        // takeDamageCoolTime = 0f;
+    }
     protected override void DieUpdate()
     {
         //base.DieUpdate();
@@ -242,7 +312,7 @@ public class EnemyController : Enemy
         {
 #if UNITY_EDITOR
             Debug.Log("Arrangement Fail");
-            Debug.Log("배치 제대로 하라고");
+            Debug.Log("배치 제대로 !!");
 #endif
         }
     }
@@ -277,18 +347,14 @@ public class EnemyController : Enemy
         if (isGoingRight)
         {
             ray = new Ray(rayOrigin, Vector3.right);
-
-#if UNITY_EDITOR
-            Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
-#endif
         }
         else
         {
             ray = new Ray(rayOrigin, Vector3.left);
-#if UNITY_EDITOR
-            Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
-#endif
         }
+#if UNITY_EDITOR
+        Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
+#endif
 
         if (Physics.Raycast(ray, out RaycastHit hit, range))
         {
@@ -302,7 +368,6 @@ public class EnemyController : Enemy
 
                 if (State == EnemyState.Chase)
                 {
-                    State = EnemyState.Attack;
                     return true;
                 }
             }
@@ -312,18 +377,58 @@ public class EnemyController : Enemy
 
     private void Attack()
     {
-
+        switch (meleeAttack)
+        {
+            case EnemyMeleeAttack:
+                {
+                    attackBox.SetActive(true);
+                    //if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
+                    //{
+                    //    meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+                    //    return;
+                    //}
+                }
+                break;
+        }
 
     }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (!attackBox.activeSelf)
+            return;
+
+        //if (this.gameObject.tag != "Enemy")
+        //return;
+
+        if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
+        {
+#if UNITY_EDITOR
+            Debug.Log(State);
+#endif
+            meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+            attackBox.SetActive(false);
+        }
+    }
+
     private void AttackDone()
     {
         State = EnemyState.Chase;
-        //attackBox.SetActive(false);
+        attackBox.SetActive(false);
     }
 
     private void TakeDamegeDone()
     {
+        if (State == EnemyState.Die)
+            return;
+
         agent.enabled = true;
         State = EnemyState.Chase;
+    }
+    private void DieDone()
+    {
+        gameObject.SetActive(false);
+        //transform.position = mySpawnPos;
+        //transform.rotation = mySpawnDir;
     }
 }
