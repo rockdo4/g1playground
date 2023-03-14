@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class EnemyController : Enemy, IAttackable
 {
@@ -64,8 +65,9 @@ public class EnemyController : Enemy, IAttackable
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Chase:
-                    agent.isStopped = false;
                     agent.speed = chaseSpeed;
+                    agent.enabled = true;
+                    agent.isStopped = false;
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Attack:
@@ -75,13 +77,13 @@ public class EnemyController : Enemy, IAttackable
                     break;
                 case EnemyState.TakeDamage:
                     agent.isStopped = true;
-                    agent.velocity = Vector3.zero;
+                    //agent.velocity = Vector3.zero;
                     agent.enabled = false;
                     rb.isKinematic = false;
                     break;
                 case EnemyState.Die:
                     agent.velocity = Vector3.zero;
-                    agent.enabled = false;
+                    agent.enabled = true;
                     rb.isKinematic = true;
                     mainColl.enabled = false;
                     break;
@@ -117,10 +119,11 @@ public class EnemyController : Enemy, IAttackable
         base.OnEnable();
 
         State = EnemyState.None;
-        patternTime = 0f;
-        curCountPattern = 0;
-        isGoingRight = preGoingRight;
+        ResetPattern();
     }
+
+    
+
     protected void Update()
     {
         attackTime += Time.deltaTime;
@@ -153,12 +156,6 @@ public class EnemyController : Enemy, IAttackable
 
         animator.SetFloat("Move", agent.velocity.magnitude);
     }
-    //protected override void Spawn()
-    //{
-    //}
-    //protected override void Motion()
-    //{
-    //}
     protected void None()
     {
         SaveFloorLength();
@@ -197,8 +194,6 @@ public class EnemyController : Enemy, IAttackable
             {
                 agent.velocity = Vector3.zero;
 
-                //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized, Time.deltaTime * 10f);
-                //Vector3 left = new Vector3(-1, 0, 0);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.right).normalized, Time.deltaTime * 10f);
                 if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(endPos - transform.position).normalized) <= 5f)
                     isGoingRight = true;
@@ -254,6 +249,7 @@ public class EnemyController : Enemy, IAttackable
         if (Vector3.Distance(transform.position, player.transform.position) >= searchRange * 2f)
         {
             State = EnemyState.None;
+            ResetPattern();
         }
     }
 
@@ -265,20 +261,11 @@ public class EnemyController : Enemy, IAttackable
             attackTime = 0f;
             return;
         }
-        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized, Time.deltaTime * 10f);
     }
 
-    //private float takeDamageCool = 0.8f;
-    //private float takeDamageCoolTime = 0f;
     public void TakeDamageUpdate()
     {
-        //if (State == EnemyState.Die)
-        //    return;
 
-        //if (takeDamageCool <= takeDamageCoolTime)
-        //{
-        //    State = EnemyState.Chase;
-        //}
     }
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
@@ -382,24 +369,23 @@ public class EnemyController : Enemy, IAttackable
             case EnemyMeleeAttack:
                 {
                     attackBox.SetActive(true);
-                    //if (Vector3.Distance(transform.position, player.transform.position) <= attackRange + 0.5f)
-                    //{
-                    //    meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
-                    //    return;
-                    //}
                 }
                 break;
         }
 
     }
 
+    protected void ResetPattern()
+    {
+        patternTime = 0f;
+        curCountPattern = 0;
+        isGoingRight = preGoingRight;
+    }
+
     private void OnTriggerEnter(Collider collider)
     {
         if (!attackBox.activeSelf)
             return;
-
-        //if (this.gameObject.tag != "Enemy")
-        //return;
 
         if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
         {
@@ -422,13 +408,10 @@ public class EnemyController : Enemy, IAttackable
         if (State == EnemyState.Die)
             return;
 
-        agent.enabled = true;
         State = EnemyState.Chase;
     }
     private void DieDone()
     {
         gameObject.SetActive(false);
-        //transform.position = mySpawnPos;
-        //transform.rotation = mySpawnDir;
     }
 }
