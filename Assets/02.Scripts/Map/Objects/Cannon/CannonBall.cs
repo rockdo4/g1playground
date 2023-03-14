@@ -16,6 +16,7 @@ public class CannonBall : MonoBehaviour
             collision.gameObject.CompareTag("Ground") ||
             collision.gameObject.CompareTag("Pushable"))
         {
+            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             cannonPool.Release(this);
 
             //set explosion effect
