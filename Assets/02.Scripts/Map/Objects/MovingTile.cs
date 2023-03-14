@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingTile : MonoBehaviour, ITriggerObject
+public class MovingTile : MonoBehaviour, ITriggerObject, IResetObject
 {
     private enum FirstMove
     {
@@ -12,21 +12,27 @@ public class MovingTile : MonoBehaviour, ITriggerObject
 
     [SerializeField] private GameObject movePointA;
     [SerializeField] private GameObject movePointB;
+
     [SerializeField] private float speed = 10f;
     [SerializeField] private bool isTriggered = true;
 
     [SerializeField] private FirstMove nextDir;
 
+    private bool originIsTrigger;
+    private Vector3 originPos;
+    private FirstMove originDir;
+
     public void SetObjectTrigger(bool isTrigger)
     {
-        isTriggered = isTrigger;
+        isTriggered = !isTriggered;
     }
 
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        originIsTrigger = isTriggered;
+        originPos = transform.position;
+        originDir = nextDir;
     }
 
     private void FixedUpdate()
@@ -35,6 +41,13 @@ public class MovingTile : MonoBehaviour, ITriggerObject
         {
             Move(nextDir);
         }
+    }
+
+    private void OnEnable()
+    {
+        isTriggered = originIsTrigger;
+        transform.position = originPos;
+        nextDir = originDir;
     }
 
     private void Move(FirstMove move)
@@ -81,5 +94,12 @@ public class MovingTile : MonoBehaviour, ITriggerObject
         {
             nextDir = FirstMove.A;
         }
+    }
+
+    public void ResetObject()
+    {
+        isTriggered = originIsTrigger;
+        transform.position = originPos;
+        nextDir = originDir;
     }
 }

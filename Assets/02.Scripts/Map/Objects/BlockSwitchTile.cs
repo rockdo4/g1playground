@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BlockSwitchTile : MonoBehaviour
+public class BlockSwitchTile : MonoBehaviour, IResetObject
 {
     private enum BSwitchType
     {
@@ -14,28 +14,34 @@ public class BlockSwitchTile : MonoBehaviour
     private Animator animator;
     [SerializeField] private GameObject[] blocks;
     [SerializeField] private BSwitchType type;
-    //[SerializeField] private float fadeTimer = 0.5f;
-
-    //bool isActive = false;
-
+    
     private bool isTriggered;
     public bool IsTriggered { get { return isTriggered; } set { isTriggered = this; } }
 
+    private bool originTrigger;
+
+    //objects that stepping on the switch
     private List<GameObject> objects = new List<GameObject>();
-  
-    void Start()
+
+    public void ResetObject()
     {
-        animator = GetComponent<Animator>();        
+        Debug.Log("switch");
     }
 
+    private void Awake()
+    {
+        originTrigger = false;
+        animator = GetComponent<Animator>();
+    }
 
+    
     private void OnEnable()
     {
-        if (isTriggered)
-        {
-            animator.SetBool("Trigger", true);
-        }
+        objects.Clear();
+        IsTriggered = false;
+        animator.SetBool("Trigger", false);
     }
+
     public void SetBlocks()
     {
         if (blocks != null)

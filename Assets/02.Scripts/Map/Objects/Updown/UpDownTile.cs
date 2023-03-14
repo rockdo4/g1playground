@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
-public class UpDownTile : MonoBehaviour
+public class UpDownTile : MonoBehaviour, IResetObject
 {
     public enum State
     {
@@ -22,6 +22,17 @@ public class UpDownTile : MonoBehaviour
     
     [SerializeField] private float stopTime = 0.5f;
     private float timer;
+
+    private Vector3 originPos;
+    private Vector3 blockAPos;
+    private Vector3 blockBPos;
+
+    private void Awake()
+    {
+        originPos = transform.position;
+        blockAPos = blockA.transform.position;
+        blockBPos = blockB.transform.position;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +67,13 @@ public class UpDownTile : MonoBehaviour
             }
   
         }
+    }
+
+    private void OnEnable()
+    {
+        transform.position = originPos;
+        blockA.transform.position = blockAPos;
+        blockB.transform.position = blockBPos;
     }
 
     private void SetState(State state)
@@ -135,5 +153,14 @@ public class UpDownTile : MonoBehaviour
                 BlockAUp();
             }
         }
+    }
+
+    public void ResetObject()
+    {
+        transform.position = originPos;
+        blockA.transform.position = blockAPos;
+        blockB.transform.position = blockBPos;
+        blockA.GetComponent<WeightScaler>().ResetWeight();
+        blockB.GetComponent<WeightScaler>().ResetWeight();
     }
 }

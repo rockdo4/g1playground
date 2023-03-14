@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class FallingTile : MonoBehaviour
+public class FallingTile : MonoBehaviour, IResetObject
 {
     [SerializeField] private new Collider collider;
     private Animator animator;
     private Rigidbody rb;
-    //private new BoxCollider collider;
+    
 
     [SerializeField] private float delay = 1f;
     [SerializeField] private float destroyDelay = 3f;
@@ -16,6 +17,11 @@ public class FallingTile : MonoBehaviour
 
     private Vector3 originPos;
     private Vector3 boxScale;
+
+    private void Awake()
+    {
+        originPos = transform.position;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -38,26 +44,30 @@ public class FallingTile : MonoBehaviour
                 collider.isTrigger = trigger;
                 rb.isKinematic = false;
                 trigger = false;
-                Destroy(gameObject, destroyDelay);
+                StartCoroutine(CoActiveFalse());
+                //Destroy(gameObject, destroyDelay);
             }
         }        
+    }
+
+    private IEnumerator CoActiveFalse()
+    {
+        yield return new WaitForSeconds(destroyDelay);
+        rb.isKinematic = true;
+        gameObject.SetActive(false);
+        StopAllCoroutines();
+    }
+
+    private void OnEnable()
+    {
+        transform.position = originPos; 
+        collider.isTrigger = trigger;
     }
 
     public void SetTrigger(bool isTrigger)
     {
         trigger = isTrigger;
     }    
-
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawWireCube(originPos, boxScale);
-    //}
-
-    //private void OnBecameInvisible()
-    //{
-    //    Debug.Log("destroy");
-    //    Destroy(gameObject);
-    //}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -70,5 +80,11 @@ public class FallingTile : MonoBehaviour
             }
            
         }
+    }
+
+    public void ResetObject()
+    {
+        transform.position = originPos;
+        collider.isTrigger = trigger;
     }
 }

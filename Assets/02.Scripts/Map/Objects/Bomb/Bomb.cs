@@ -35,6 +35,7 @@ public class Bomb : MonoBehaviour
             //explode in delay
             if (timer >= delay)
             {
+                timer = 0f;
                 isTriggered = false;
 
                 //set explosion effect
@@ -43,7 +44,7 @@ public class Bomb : MonoBehaviour
                 float destroyTime = effect2.GetComponent<ParticleSystem>().main.duration;
                 GameManager.instance.effectManager.ReturnEffectOnTime(effect2Name, effect2, destroyTime);
 
-                Destroy(bomb);
+                bomb.SetActive(false);
             }
         }
 
