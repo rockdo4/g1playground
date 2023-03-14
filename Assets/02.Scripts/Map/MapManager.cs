@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+    public Cinemachine.CinemachineVirtualCamera cinemachine;
 
     private List<GameObject> maps;
     private string currentMapName;
@@ -42,6 +43,12 @@ public class MapManager : MonoBehaviour
     {
         maps = GameObject.FindGameObjectsWithTag("Stage").ToList();
         currentMapName = name;
+
+        var collider = GameObject.Find(currentMapName).GetComponentInChildren<PolygonCollider2D>();
+        if (collider != null)
+        {
+            cinemachine.GetComponent<FollowCamera>().SetCollider(collider);
+        }
 
     }
  
