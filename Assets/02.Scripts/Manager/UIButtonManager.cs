@@ -54,8 +54,11 @@ public class UIButtonManager : MonoBehaviour
             if (popup.gameObject.name != "Option")
             {
                 var option = GameObject.Find("Option");
-                option.SetActive(false);
-                Time.timeScale = 0f;
+                if (option.activeSelf)
+                {
+                    option.SetActive(false);
+                    Time.timeScale = 0f;
+                }
             }
         }
         else
