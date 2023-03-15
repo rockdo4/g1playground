@@ -31,7 +31,8 @@ public class MapManager : MonoBehaviour
             if (map.activeSelf)
             {
                 SetCurrentMapName(map.name);
-                PlayerDataManager.instance.lastMapId = map.name;
+                SetcurrentChapterName(map.transform.parent.name);
+                PlayerDataManager.instance.lastSaveMapId = map.name;
             }
         }
         if (instance != this)
@@ -51,13 +52,18 @@ public class MapManager : MonoBehaviour
         }
 
     }
- 
+
+    public void SetcurrentChapterName(string name)
+    {
+        currentChapterName = name;
+
+    }
 
     public void SetLastCheckpointMapTurnOn()
     {
         foreach (var map in maps)
         {
-            if (map.name != PlayerDataManager.instance.lastMapId)
+            if (map.name != PlayerDataManager.instance.lastSaveMapId)
             {
                 if (map.activeSelf)
                     map.SetActive(false);
@@ -69,6 +75,11 @@ public class MapManager : MonoBehaviour
     public string GetCurrentMapName()
     {
         return currentMapName;
+    }
+
+    public string GetCurrentChapterName()
+    {
+        return currentChapterName;
     }
 
 }

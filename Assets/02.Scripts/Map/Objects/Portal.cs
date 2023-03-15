@@ -59,6 +59,8 @@ public class Portal : MonoBehaviour
                     CanUse = true;
                     Camera.main.transform.position = portal.gameObject.transform.position;
                     MapManager.instance.SetCurrentMapName(portal.transform.parent.name);
+                    MapManager.instance.SetcurrentChapterName(portal.transform.parent.parent.name);
+
                     transform.parent.gameObject.SetActive(false);
 
                     break;

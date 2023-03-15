@@ -25,8 +25,8 @@ public class PlayerDataManager : MonoBehaviour
     public string playerName;
     public int playerCurrHp;
     public int playerCurrMp;
-    public string lastMapId;
-    public string lastChapter;
+    public string lastSaveMapId;
+    public string lastSaveChapterName;
     public Vector3 lastPlayerPos;
 
     public void SaveFile()
@@ -34,8 +34,8 @@ public class PlayerDataManager : MonoBehaviour
         var saveData = new SavePlayerDataVer1();
         saveData.playerName = playerName;
         saveData.playerCurrHp = playerCurrHp;
-        saveData.lastMapId = lastMapId;
-        saveData.lastChapter= lastChapter;
+        saveData.lastMapId = lastSaveMapId;
+        saveData.lastChapter= lastSaveChapterName;
         //saveData.lastPlayerPos = player.transform.position;
         saveData.lastPlayerPos = lastPlayerPos;
 
@@ -47,16 +47,17 @@ public class PlayerDataManager : MonoBehaviour
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
         playerName = saveData.playerName;
         playerCurrHp = saveData.playerCurrHp;
-        lastMapId = saveData.lastMapId;
-        lastChapter = saveData.lastChapter;
+        lastSaveMapId = saveData.lastMapId;
+        lastSaveChapterName = saveData.lastChapter;
         lastPlayerPos = saveData.lastPlayerPos;
     }
 
-    public void SaveLastPos(string mapId, Vector3 pos)
+    public void SaveLastPos(string mapId,string chapter, Vector3 pos)
     {
         //lastChapter = chapter;
-        lastMapId = mapId;
+        lastSaveMapId = mapId;
         lastPlayerPos = pos;
+        lastSaveChapterName = chapter;
     }
 
     public void MoveToLastPos(GameObject go)
