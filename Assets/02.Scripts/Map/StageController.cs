@@ -23,6 +23,26 @@ public class StageController : MonoBehaviour
     private List<GameObject> greenWall;
     private bool greenwallopen = false;
 
+    private List<GameObject> fallingtill=new List<GameObject>();
+    private List<GameObject> bombs = new List<GameObject>();
+    private List<GameObject> walls = new List<GameObject>();
+
+
+    private void Awake()
+    {
+        //foreach (Transform child in transform)
+        //{
+
+        //    //if (child.CompareTag("Falling"))
+        //    //    fallingtill.Add(child.gameObject);
+        //    //else if(child.CompareTag("Ground"))
+        //    //    walls.Add(child.gameObject);
+        //    //else if (child.GetComponent<PushBomb>() != null) {                
+        //    //    bombs.Add(child.gameObject);
+        //    //}
+        //}
+       
+    }
     private void OnEnable()
     {
         var switchcheck = false;
