@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3901429456405869662}
   - component: {fileID: 3901429456405869663}
   - component: {fileID: 3901429456405869660}
-  - component: {fileID: 7161742428369488254}
   - component: {fileID: 2063034320}
+  - component: {fileID: 6982227260695723419}
   m_Layer: 5
   m_Name: CharacterImage
   m_TagString: Untagged
@@ -136,41 +136,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7161742428369488254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3901429456405869634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f70f9cf9eea9ae4380d3f7ffdfe0bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  popUps:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &2063034320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,9 +148,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4633de3830684f429cc38256251cfab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpPotion: {fileID: 0}
+  mpPotion: {fileID: 0}
   hpBar: {fileID: 0}
   mpBar: {fileID: 0}
   expBar: {fileID: 0}
+  hpPotionCount: {fileID: 0}
+  mpPotionCount: {fileID: 0}
   hp: {fileID: 0}
   mp: {fileID: 0}
   mHp: {fileID: 0}
@@ -194,9 +163,28 @@ MonoBehaviour:
   currHp: 0
   maxMp: 300
   currMp: 0
-  currExp: 0
-  maxExp: 0
-  playerLv: 0
+  currHpPotion: 99
+  currMpPotion: 99
+--- !u!114 &6982227260695723419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3901429456405869634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 300
+  m_PreferredHeight: 300
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &3901429457779503468
 GameObject:
   m_ObjectHideFlags: 0
