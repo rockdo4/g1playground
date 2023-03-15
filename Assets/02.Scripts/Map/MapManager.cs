@@ -33,6 +33,7 @@ public class MapManager : MonoBehaviour
                 SetCurrentMapName(map.name);
                 SetcurrentChapterName(map.transform.parent.name);
                 PlayerDataManager.instance.lastSaveMapId = map.name;
+                PlayerDataManager.instance.lastSaveChapterName = map.transform.parent.name;
             }
         }
         if (instance != this)
