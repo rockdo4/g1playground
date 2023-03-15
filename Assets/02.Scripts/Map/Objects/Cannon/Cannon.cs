@@ -112,4 +112,9 @@ public class Cannon : MonoBehaviour, ITriggerObject, IResetObject
     {
         isTriggered = originIsTrigger;
     }
+
+    public void ActiveSelfCheck()
+    {
+        
+    }
 }

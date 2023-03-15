@@ -102,4 +102,9 @@ public class MovingTile : MonoBehaviour, ITriggerObject, IResetObject
         transform.position = originPos;
         nextDir = originDir;
     }
+
+    public void ActiveSelfCheck()
+    {
+        
+    }
 }

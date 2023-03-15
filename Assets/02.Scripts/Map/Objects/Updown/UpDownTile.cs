@@ -71,9 +71,13 @@ public class UpDownTile : MonoBehaviour, IResetObject
 
     private void OnEnable()
     {
+        massA = 0f;
+        massB = 0f;
         transform.position = originPos;
         blockA.transform.position = blockAPos;
         blockB.transform.position = blockBPos;
+        blockA.GetComponent<WeightScaler>().ResetWeight();
+        blockB.GetComponent<WeightScaler>().ResetWeight();
     }
 
     private void SetState(State state)
@@ -157,10 +161,17 @@ public class UpDownTile : MonoBehaviour, IResetObject
 
     public void ResetObject()
     {
+        massA = 0f;
+        massB = 0f;
         transform.position = originPos;
         blockA.transform.position = blockAPos;
         blockB.transform.position = blockBPos;
         blockA.GetComponent<WeightScaler>().ResetWeight();
         blockB.GetComponent<WeightScaler>().ResetWeight();
+    }
+
+    public void ActiveSelfCheck()
+    {
+        
     }
 }

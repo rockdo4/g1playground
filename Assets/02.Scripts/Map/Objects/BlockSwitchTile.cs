@@ -13,6 +13,7 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
 
     private Animator animator;
     [SerializeField] private GameObject[] blocks;
+
     [SerializeField] private BSwitchType type;
     
     private bool isTriggered;
@@ -37,6 +38,7 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
     
     private void OnEnable()
     {
+        
         objects.Clear();
         IsTriggered = false;
         animator.SetBool("Trigger", false);
@@ -94,5 +96,10 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
             
         }
 
+    }
+
+    public void ActiveSelfCheck()
+    {
+        
     }
 }

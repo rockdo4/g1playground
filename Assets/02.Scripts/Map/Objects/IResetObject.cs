@@ -5,6 +5,6 @@ using UnityEngine;
 public interface IResetObject 
 {
     public void ResetObject();
-
+    public void ActiveSelfCheck();
 
 }

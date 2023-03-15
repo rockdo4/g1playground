@@ -14,6 +14,10 @@ public class Bomb : MonoBehaviour
     private GameObject effect1;
     private GameObject effect2;
 
+    private void OnEnable()
+    {
+        isTriggered = false;
+    }
 
     // Start is called before the first frame update
     void Start()

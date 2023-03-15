@@ -56,5 +56,8 @@ public class LeverTile : MonoBehaviour, IResetObject
         
     }
 
-    
+    public void ActiveSelfCheck()
+    {
+        
+    }
 }

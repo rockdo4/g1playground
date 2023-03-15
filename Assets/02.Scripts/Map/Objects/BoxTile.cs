@@ -7,7 +7,7 @@ public class BoxTile : MonoBehaviour, IResetObject
     private Vector3 originPos;
     
     private new Rigidbody rigidbody;
-    private float originMass;
+    //private float originMass;
     private Vector3 boxSize;
     [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
@@ -25,8 +25,8 @@ public class BoxTile : MonoBehaviour, IResetObject
 
     private void Start()
     {       
-        originMass = rigidbody.mass;
-       
+        //originMass = rigidbody.mass;
+        rigidbody = GetComponent<Rigidbody>();
         IsPushing = false;
         boxSize = gameObject.GetComponent<BoxCollider>().size;
     }
@@ -35,17 +35,18 @@ public class BoxTile : MonoBehaviour, IResetObject
     {
         transform.position = originPos;
         rigidbody.isKinematic = false;
+        IsPushing = false;
     }
 
-    public void AddMass(float mass)
-    {
-        rigidbody.mass += mass;
-    }
+    //public void AddMass(float mass)
+    //{
+    //    rigidbody.mass += mass;
+    //}
 
-    public void RemoveMass()
-    {
-        rigidbody.mass = originMass;
-    }
+    //public void RemoveMass()
+    //{
+    //    rigidbody.mass = originMass;
+    //}
 
     public void MoveBlock(Vector3 dir, float speed)
     {
@@ -60,30 +61,29 @@ public class BoxTile : MonoBehaviour, IResetObject
 
 
     private void OnCollisionStay(Collision collision)
-    {
-        if (!Physics.BoxCast(transform.position, boxSize / 2, Vector3.up, Quaternion.identity, 1f, LayerMask.GetMask("Player")) &&
-            collision.gameObject.GetComponent<ObjectMass>() != null)
+    {        
+        if (collision.gameObject.CompareTag("Player")) 
         {
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
-            
+
             if (timer >= pushTime)
             {
                 //Raycast to check if player is pushing the box on side
-                IsPushing = true;
-                rigidbody.isKinematic = false;
+                if (!Physics.BoxCast(transform.position, boxSize / 2, Vector3.up, Quaternion.identity, 1f, LayerMask.GetMask("Player"))
+                    && collision.gameObject.GetComponent<PlayerController>().moveX != 0f)
+                {
 
-                //find direction and push
-                Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
-                pushDirection.y = 0;
-                pushDirection.z = 0;
-                pushDirection.Normalize();
-                gameObject.GetComponent<Collider>().attachedRigidbody.velocity = pushDirection * pushForce;
-                //if (collision.gameObject.GetComponent<PlayerController>().moveX != 0f) 
-                //{
-                    
-                   
-                //}               
+                    IsPushing = true;
+                    rigidbody.isKinematic = false;
+
+                    //find direction and push
+                    Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
+                    pushDirection.y = 0;
+                    pushDirection.z = 0;
+                    pushDirection.Normalize();
+                    gameObject.GetComponent<Collider>().attachedRigidbody.velocity = pushDirection * pushForce;
+                }
             }
         }
     }
@@ -102,5 +102,11 @@ public class BoxTile : MonoBehaviour, IResetObject
     {
         transform.position = originPos;
         rigidbody.isKinematic = false;
+        IsPushing = false;
+    }
+
+    public void ActiveSelfCheck()
+    {
+        
     }
 }

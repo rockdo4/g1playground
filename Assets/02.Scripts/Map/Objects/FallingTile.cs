@@ -6,7 +6,6 @@ using System;
 public class FallingTile : MonoBehaviour, IResetObject
 {
     [SerializeField] private new Collider collider;
-    private Animator animator;
     private Rigidbody rb;
     
 
@@ -21,14 +20,7 @@ public class FallingTile : MonoBehaviour, IResetObject
     private void Awake()
     {
         originPos = transform.position;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();        
-       
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -60,8 +52,11 @@ public class FallingTile : MonoBehaviour, IResetObject
 
     private void OnEnable()
     {
-        transform.position = originPos; 
+        StopAllCoroutines();
+        transform.position = originPos;
+        trigger = false;
         collider.isTrigger = trigger;
+        rb.isKinematic = true;
     }
 
     public void SetTrigger(bool isTrigger)
@@ -84,7 +79,15 @@ public class FallingTile : MonoBehaviour, IResetObject
 
     public void ResetObject()
     {
+        StopAllCoroutines();
         transform.position = originPos;
+        trigger = false;
         collider.isTrigger = trigger;
+        rb.isKinematic = true;
+    }
+
+    public void ActiveSelfCheck()
+    {
+        
     }
 }

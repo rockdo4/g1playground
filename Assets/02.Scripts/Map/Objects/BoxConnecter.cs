@@ -7,6 +7,12 @@ public class BoxConnecter : MonoBehaviour
     [SerializeField] private BoxTile boxTile;
     private GameObject connectedObject;
 
+    private void OnEnable()
+    {
+        boxTile.transform.SetParent(null);
+        connectedObject = null;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (connectedObject != null)

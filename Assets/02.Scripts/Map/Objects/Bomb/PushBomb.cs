@@ -63,5 +63,8 @@ public class PushBomb : MonoBehaviour, IResetObject
         }
     }
 
-   
+    public void ActiveSelfCheck()
+    {
+        
+    }
 }
