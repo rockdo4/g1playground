@@ -403,7 +403,7 @@ public class EnemyController : Enemy, IAttackable
         attackBox.SetActive(false);
     }
 
-    private void TakeDamegeDone()
+    private void TakeDamageDone()
     {
         if (State == EnemyState.Die)
             return;
