@@ -39,6 +39,11 @@ public class ConveyorTile : MonoBehaviour
         
     }
 
+    private void OnDisable()
+    {
+        movingObjects.Clear();
+    }
+
     private void SetDirection()
     {
         switch (direction)

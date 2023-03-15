@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4681995970108438660}
-  - component: {fileID: 4681995970108438663}
   - component: {fileID: 4681995970108438658}
   - component: {fileID: 4681995970108438661}
   - component: {fileID: 4681995970108438659}
@@ -37,26 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4681995970108438663
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4681995970108438662}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eb0e85d6d9f3147639c21218f912de84, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
 --- !u!65 &4681995970108438658
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -84,6 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 8143563013592983039}
   delay: 1
+  destroyDelay: 3
 --- !u!54 &4681995970108438659
 Rigidbody:
   m_ObjectHideFlags: 0
