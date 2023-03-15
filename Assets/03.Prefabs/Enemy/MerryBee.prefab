@@ -548,9 +548,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1.4204565
+  m_Height: 1.415282
   m_Direction: 1
-  m_Center: {x: -0, y: 0.71118635, z: 0}
+  m_Center: {x: 0, y: 0.7137736, z: 0}
 --- !u!195 &3353389598866874476
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -588,6 +588,8 @@ MonoBehaviour:
   meleeAttack: {fileID: 11400000, guid: 9b934b5d7c7731041a6691c30fdb5634, type: 2}
   EnemyStatePattern:
   - state: 4
+    second: 0.5
+  - state: 4
     second: 3
   isGoingRight: 0
   patrolSpeed: 5
@@ -595,6 +597,7 @@ MonoBehaviour:
   searchRange: 7
   attackRange: 1
   attackCool: 3
+  preGoingRight: 0
 --- !u!114 &3198499351488000126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1094,7 +1097,7 @@ GameObject:
   - component: {fileID: 3353389599672122406}
   m_Layer: 0
   m_Name: AttackBox
-  m_TagString: Untagged
+  m_TagString: AttackBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
