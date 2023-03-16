@@ -9,8 +9,6 @@ public class PlayerAutoMove : MonoBehaviour
     private List<GameObject> enemies;
     private Rigidbody rb;
     private Transform target;
-    private int targetIndex;
-    private float[] distance;
 
     public bool IsAuto { get; set; }
 
@@ -24,7 +22,6 @@ public class PlayerAutoMove : MonoBehaviour
         agent.stoppingDistance = 2f;
         rb = GetComponent<Rigidbody>();
         path = new NavMeshPath();
-        targetIndex = 0;
         
         enemies = stageController.GetStageEnemies();
     }

@@ -116,17 +116,15 @@ public class PlayerController : MonoBehaviour, IAttackable
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             enemies = stageController.GetStageEnemies();
-            AgentOnOff();
             cor = StartCoroutine(SearchTarget());
             SetState<AutoMoveState>();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            agent.enabled = false;
             StopCoroutine(cor);
+            AgentOff();
             cor = null;
-            IsAuto = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -141,9 +139,17 @@ public class PlayerController : MonoBehaviour, IAttackable
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
     }
-    public void AgentOnOff()
+    public void AgentOn()
     {
-        IsAuto = !IsAuto;
+        IsAuto = true;
+        playerRb.isKinematic = true;
+        agent.enabled = true;
+    }
+    public void AgentOff()
+    {
+        IsAuto = false;
+        playerRb.isKinematic = false;
+        agent.enabled = false;
     }
 
     private void SetMoveX(float moveX)
@@ -283,7 +289,10 @@ public class PlayerController : MonoBehaviour, IAttackable
             agent.SetDestination(target.transform.position);
             //Debug.Log("!");
             if (count == 0)
+            {
+                //문 따라가게
                 yield break;
+            }
         }
     }
 
@@ -407,7 +416,10 @@ public class PlayerController : MonoBehaviour, IAttackable
             hitTimer += Time.deltaTime;
             if (hitTimer > playerController.hitDuration)
             {
-                playerController.SetState<IdleState>();
+                if (playerController.IsAuto)
+                    playerController.SetState<AutoMoveState>();
+                else
+                    playerController.SetState<IdleState>();
                 return;
             }
         }
@@ -420,29 +432,33 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Enter() 
         {
-            playerController.playerRb.isKinematic = true;
-            playerController.agent.enabled = true;
+            playerController.AgentOn();
         }
 
         public override void Update()
         {
             playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
-            //Debug.Log( playerController.playerAnimator.GetFloat("MoveX"));
-            if(Vector3.Distance(playerController.transform.position , playerController.jumpPoints[0].position)<0.1f)
-            { 
-                playerController.playerRb.isKinematic = false;
-                playerController.agent.enabled = false;
-                var vec = playerController.jumpPoints[1].position - playerController.transform.position;
-                playerController.SetMoveX(vec.x = vec.x >0 ? 1f: -1f);
-                playerController.input.Jump = true;
-                playerController.Jump();
-            }
+            if (playerController.agent.velocity.x > 0)
+                playerController.SetMoveX(1f);
+            else if (playerController.agent.velocity.x < 0)
+                playerController.SetMoveX(-1f);
+            else 
+                playerController.SetMoveX(0f);
+            //if(Vector3.Distance(playerController.transform.position , playerController.jumpPoints[0].position)<0.1f&&
+            //    playerController.target.position.x == playerController.jumpPoints[0].position.x)
+            //{ 
+            //    playerController.playerRb.isKinematic = false;
+            //    playerController.agent.enabled = false;
+            //    var vec = playerController.jumpPoints[1].position - playerController.transform.position;
+            //    playerController.SetMoveX(vec.x = vec.x >0 ? 1f: -1f);
+            //    playerController.input.Jump = true;
+            //    playerController.Jump();
+            //}
         }
 
         public override void Exit() 
         {
-            playerController.playerRb.isKinematic = false;
-            playerController.agent.enabled = false;
+            playerController.AgentOff();
         }
     }
 }
