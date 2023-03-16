@@ -58,17 +58,18 @@ public class PlayerInventory : MonoBehaviour
             add.str += weaponData.addStr;
             add.dex += weaponData.addDex;
             add.intel += weaponData.addInt;
-            add.atkPower += weaponData.addMeleePower;
+            add.meleePower += weaponData.addMeleePower;
             add.skillPower += weaponData.addSkillPower;
-            add.criticalChance += weaponData.addMeleeCriChance;
-            add.criticalDamage += weaponData.addMeleeCriDamage;
+            add.meleeCriChance += weaponData.addMeleeCriChance;
+            add.meleeCriDamage += weaponData.addMeleeCriDamage;
         }
         if (armorData != null)
         {
             add.str += armorData.addStr;
             add.dex += armorData.addDex;
             add.intel += armorData.addInt;
-            add.defense += armorData.addDef;
+            add.meleeDef += armorData.addMeleeDef;
+            add.skillDef += armorData.addSkillDef;
         }
         status.AddValue(add);
     }

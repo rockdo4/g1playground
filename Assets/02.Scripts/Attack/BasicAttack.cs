@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class BasicAttack : AttackDefinition
 {
-    public override Attack CreateAttack(Status attacker, Status defenser)
+    public override Attack CreateAttack(Status attacker, Status defenser)    // temporary formula
     {
-        var isCritical = Random.value < attacker.FinalValue.criticalChance;
-        float damage = attacker.FinalValue.atkPower;
+        var isCritical = Random.value < attacker.FinalValue.meleeCriChance;
+        float damage = attacker.FinalValue.meleePower;
         if (isCritical)
-            damage *= attacker.FinalValue.criticalDamage;
+            damage *= attacker.FinalValue.meleeCriDamage;
+        damage -= defenser.FinalValue.meleeDef;
         return new Attack((int)damage);
     }
 

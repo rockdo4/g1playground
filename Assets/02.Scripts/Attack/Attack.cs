@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 public class Attack
 {
     public int Damage { get; private set; }

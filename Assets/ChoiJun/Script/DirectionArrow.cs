@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class DirectionArrow : MonoBehaviour, IPointerDownHandler
+public class DirectionArrow : MonoBehaviour
 {
     public enum Direction
     {
@@ -15,8 +15,6 @@ public class DirectionArrow : MonoBehaviour, IPointerDownHandler
     private PlayerInput playerInput;
     private EventTrigger eventTrigger;
     public Direction direction;
-    float interval = 0.3f;
-    float doubleClickedTime = -1.0f;
 
     private void Start()
     {
@@ -39,18 +37,5 @@ public class DirectionArrow : MonoBehaviour, IPointerDownHandler
         }
         eventTrigger.triggers.Add(enterEntry);
         eventTrigger.triggers.Add(exitEntry);
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if ((Time.time - doubleClickedTime) < interval)
-        {
-            doubleClickedTime = -1.0f;
-            playerInput.ExeDash();
-        }
-        else
-        {
-            doubleClickedTime = Time.time;
-        }
     }
 }

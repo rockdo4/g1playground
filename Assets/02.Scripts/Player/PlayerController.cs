@@ -1,13 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices.ComTypes;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.EventSystems;
-using UnityEngine.Experimental.GlobalIllumination;
 
 public class PlayerController : MonoBehaviour, IAttackable
 {
@@ -27,16 +22,10 @@ public class PlayerController : MonoBehaviour, IAttackable
     public State currState;
     private Rigidbody playerRb;
     private Animator playerAnimator;
-    public float moveX;
+    [NonSerialized] public float moveX;
     public float LastMoveX { get; private set; } = 1f;
     public float moveSpeed = 10f;
-    public float dashSpeed;
 
-    public bool DashOnCool { get; private set; }
-    public float dashCoolDown;
-    private float dashCoolTimer;
-    public float dashDuration = 0.25f;
-    private float dashTimer;
     public bool IsBlocked { get; private set; }
 
     public float jumpForce;
@@ -79,7 +68,6 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         states.Add(typeof(IdleState), new IdleState(this));
         states.Add(typeof(MoveState), new MoveState(this));
-        states.Add(typeof(DashState), new DashState(this));
         states.Add(typeof(JumpState), new JumpState(this));
         states.Add(typeof(HitState), new HitState(this));
         states.Add(typeof(AutoMoveState), new AutoMoveState(this));
@@ -90,15 +78,6 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     private void Update()
     {
-        if (DashOnCool)
-        {
-            dashCoolTimer += Time.deltaTime;
-            if (dashCoolTimer > dashCoolDown)
-            {
-                dashCoolTimer = 0f;
-                DashOnCool = false;
-            }
-        }
         currState.Update();
 
         if (input.LeftMove)
@@ -150,21 +129,9 @@ public class PlayerController : MonoBehaviour, IAttackable
     public void Move(float speed)
     {
         if (!IsBlocked)
-        {
-            if (currState.GetType() == typeof(DashState))
-                playerRb.velocity = new Vector3(LastMoveX * speed, playerRb.velocity.y, 0);
-            else
-                playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
-        }
+            playerRb.velocity = new Vector3(moveX * speed, playerRb.velocity.y, 0);
         else
             playerRb.velocity = new Vector3(0f, playerRb.velocity.y, 0f);
-    }
-
-    public void Dash()
-    {
-        if (!input.Dash || DashOnCool)
-            return;
-        SetState<DashState>();
     }
 
     public void CheckFrontObject()
@@ -285,7 +252,6 @@ public class PlayerController : MonoBehaviour, IAttackable
                 return;
             }
             playerController.playerAnimator.SetFloat("MoveX", playerController.moveX);
-            playerController.Dash();
             playerController.Jump();
         }
 
@@ -309,43 +275,11 @@ public class PlayerController : MonoBehaviour, IAttackable
             }
             playerController.playerAnimator.SetFloat("MoveX", playerController.moveX);
             playerController.Move(playerController.moveSpeed);
-            playerController.Dash();
             playerController.Jump();
         }
 
         public override void Exit() 
         {
-        }
-    }
-
-    public class DashState : State
-    {
-        public DashState(PlayerController controller) : base(controller) { }
-
-        public override void Enter()
-        {
-            playerController.playerAnimator.SetBool("IsDashing", true);
-            playerController.dashTimer = 0f;
-            playerController.playerRb.constraints = ~RigidbodyConstraints.FreezePositionX;
-        }
-
-        public override void Update()
-        {
-            playerController.dashTimer += Time.deltaTime;
-            if (playerController.dashTimer > playerController.dashDuration)
-            {
-                playerController.SetState<IdleState>();
-                return;
-            }
-            playerController.Move(playerController.dashSpeed);
-            playerController.Jump();
-        }
-
-        public override void Exit()
-        {
-            playerController.playerAnimator.SetBool("IsDashing", false);
-            playerController.playerRb.constraints = ~RigidbodyConstraints.FreezePositionX & ~RigidbodyConstraints.FreezePositionY;
-            playerController.playerRb.velocity = Vector3.zero;
         }
     }
 
@@ -363,7 +297,6 @@ public class PlayerController : MonoBehaviour, IAttackable
                 return;
             }
             playerController.Move(playerController.moveSpeed);
-            playerController.Dash();
             playerController.Jump();
         }
 
