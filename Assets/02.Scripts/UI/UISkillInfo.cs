@@ -8,6 +8,8 @@ public class UISkillInfo : MonoBehaviour
 {
     public Image equipImage;
     public Image useImage;
+    public Image firstEquipIcon;
+    public Image secondEquipIcon;
     public TextMeshProUGUI skillName;
     public TextMeshProUGUI skillDesc;
     private SkillData currSkillData;
@@ -17,6 +19,8 @@ public class UISkillInfo : MonoBehaviour
         currSkillData = null;
         equipImage.sprite = null;
         useImage.sprite = null;
+        firstEquipIcon.sprite = null;
+        secondEquipIcon.sprite = null;
         skillName.text = string.Empty;
         skillDesc.text = string.Empty;
     }
@@ -32,6 +36,17 @@ public class UISkillInfo : MonoBehaviour
         equipImage.sprite = data.iconSprite;
         skillName.text = data.name;
         skillDesc.text = data.desc;
+    }
+
+    public void SetCurrSkill(SkillData data)
+    {
+        if (data == null)
+        {
+            SetEmpty();
+            return;
+        }
+        firstEquipIcon.sprite = data.iconSprite;
+        secondEquipIcon.sprite = data.iconSprite;
     }
 
     public void SetPlayerSkill(int index)

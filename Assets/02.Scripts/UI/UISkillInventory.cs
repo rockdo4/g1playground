@@ -61,5 +61,6 @@ public class UISkillInventory : MonoBehaviour
         {
             slotList[i].Set(i, table.Get(ids[i]));
         }
+        skillInfo.Set(table.Get(ids[0]));
     }
 }
