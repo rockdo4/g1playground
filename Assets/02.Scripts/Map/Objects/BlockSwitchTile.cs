@@ -11,11 +11,18 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
         Temporary
     }
 
+    private struct BlocksOriginStatus
+    {
+        public GameObject blockObject;
+        public bool isOn;
+    }
+
     private Animator animator;
     [SerializeField] private GameObject[] blocks;
+    private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     [SerializeField] private BSwitchType type;
-    
+
     private bool isTriggered;
     public bool IsTriggered { get { return isTriggered; } set { isTriggered = this; } }
 
@@ -33,15 +40,45 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
     {
         originTrigger = false;
         animator = GetComponent<Animator>();
+        SaveStatus();
     }
 
+    private void SaveStatus()
+    {      
+       foreach (var block in blocks)
+        {
+            BlocksOriginStatus temp = new BlocksOriginStatus();
+            temp.blockObject = block;
+
+            if (block.activeSelf)
+            {
+                temp.isOn = true;
+
+            }
+            else
+            {
+                temp.isOn = false;
+            }
+            originBlockStatus.Add(temp);
+        }              
+    }
     
+    private void Resetblock()  
+    { 
+        foreach(var block in originBlockStatus)
+        {
+            block.blockObject.SetActive(block.isOn);
+        }
+    }
+
+
     private void OnEnable()
     {
         
         objects.Clear();
         IsTriggered = false;
         animator.SetBool("Trigger", false);
+        Resetblock();
     }
 
     public void SetBlocks()
@@ -52,11 +89,11 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
             {
                 if (block.activeSelf)
                 {
-                    block.SetActive(false); 
+                    block.SetActive(false);
                 }
                 else
                 {
-                    block.SetActive(true); 
+                    block.SetActive(true);
                 }
             }
 
@@ -66,7 +103,7 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
     private void OnTriggerEnter(Collider other)
     {
         //Triggers Switch when pushed by ObjectMass objects
-        if (!animator.GetBool("Trigger") && (other.GetComponent<ObjectMass>() != null)) 
+        if (!animator.GetBool("Trigger") && (other.GetComponent<ObjectMass>() != null))
         {
             objects.Add(other.gameObject);
             IsTriggered = true;
@@ -93,13 +130,13 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
                 animator.SetBool("Trigger", false);
                 SetBlocks();
             }
-            
+
         }
 
     }
 
     public void ActiveSelfCheck()
     {
-        
+
     }
 }

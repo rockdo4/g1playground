@@ -210,7 +210,6 @@ public class DungeonManager : MonoBehaviour
                 if (enemy.Equals(enemies.Last()))
                 {
                     //  Time.timeScale = 0;
-
                     Result.gameObject.SetActive(true);
                     Result.transform.Find("Win").gameObject.SetActive(true);
                     Result.transform.Find("Win").transform.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - time))).ToString();
@@ -269,9 +268,12 @@ public class DungeonManager : MonoBehaviour
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
         scenename.Append("_");
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
-        PlayerDataManager.instance.SavePlayerHpMp();
+        PlayerDataManager.instance.SavePlayer();
 
         SceneManager.LoadScene(scenename.ToString());
+
+
+        
 
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
@@ -284,9 +286,12 @@ public class DungeonManager : MonoBehaviour
         yield return null;
         enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
         isDungeon = true;
-        playerStatus= GameManager.instance.player.GetComponent<Status>(); 
+        playerStatus= GameManager.instance.player.GetComponent<Status>();
+        var player = GameObject.FindWithTag("CHA").GetComponent<PlayerSkills>();
 
-        yield break;
+        player.SetEmpty();
+        player.SetSkill(0, PlayerDataManager.instance.currskill1);
+        player.SetSkill(1, PlayerDataManager.instance.currskill2);
     }
 
     public void Restart()

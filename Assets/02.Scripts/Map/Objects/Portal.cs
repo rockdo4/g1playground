@@ -83,6 +83,5 @@ public class Portal : MonoBehaviour
     private void OnDisable()
     {
         CanUse = true;
-        Debug.Log("leb");
     }
 }

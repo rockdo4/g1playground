@@ -24,6 +24,12 @@ public class WeightScaler : MonoBehaviour
         CalculatedMass = 0f;
     }
 
+    private void OnDisable()
+    {
+        //SetParent the Entered object
+        GameManager.instance.player.transform.SetParent(null);
+    }
+
     private void FixedUpdate()
     {
         //Find objects with Mass in Children
