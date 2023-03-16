@@ -9,12 +9,10 @@ public class PlayerInput : MonoBehaviour
     public bool LeftMove { get; private set; }
     public bool RightMove { get; private set; }
     public bool Jump { get; private set; }
-    public bool Dash { get; private set; }
 
     private void Update()
     {
         Jump = false;
-        Dash = false;
 
         foreach (var t in Input.touches)
         {
@@ -38,9 +36,6 @@ public class PlayerInput : MonoBehaviour
         else
             RightMove = false;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            Dash = true;
-
         if (Input.GetKeyDown(KeyCode.Space))
             Jump = true;
 #endif
@@ -48,5 +43,4 @@ public class PlayerInput : MonoBehaviour
 
     public void MoveLeft(bool move) => LeftMove = move;
     public void MoveRight(bool move) => RightMove = move;
-    public void ExeDash() => Dash = true;
 }
