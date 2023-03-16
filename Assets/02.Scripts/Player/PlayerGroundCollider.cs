@@ -11,10 +11,10 @@ public class PlayerGroundCollider : MonoBehaviour
         playerController = GetComponentInParent<PlayerController>();
         playerRb = GetComponentInParent<Rigidbody>();
     }
-
     private void OnTriggerStay(Collider other)
     {
-        PushPlayerDown(other);
+        if (other.CompareTag("Enemy"))
+            PushPlayerSide(other);
         if (other.CompareTag("Ground") || other.CompareTag("Pushable") || other.CompareTag("Falling")) 
             playerController.OnGround(true);
     }
@@ -25,25 +25,25 @@ public class PlayerGroundCollider : MonoBehaviour
             playerController.OnGround(false);
         }
     }
-    public void PushPlayerDown(Collider other)
+    public void PushPlayerSide(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        Bounds otherBounds = other.bounds;
+        Bounds playerBounds = GetComponent<Collider>().bounds;
+        if (playerBounds.min.y > otherBounds.center.y)
         {
-            Bounds otherBounds = other.bounds;
-            Bounds playerBounds = GetComponent<Collider>().bounds;
-            if (playerBounds.min.y > otherBounds.center.y)
+
+            if (playerBounds.min.x <= otherBounds.center.x)
             {
-                
-                if (playerBounds.min.x <= otherBounds.center.x)
-                {
-                    playerRb.velocity = new Vector3(-5f , playerRb.velocity.y, 0f);
-                }
-                else if (playerBounds.min.x > otherBounds.center.x)
-                {
-                    playerRb.velocity = new Vector3(5f , playerRb.velocity.y, 0f);
-                }
+                //playerRb.velocity = new Vector3(-5f ,5f, 0f);
+                playerRb.AddForce(new Vector3(-5f, 2f, 0f), ForceMode.Impulse);
+            }
+            else if (playerBounds.min.x > otherBounds.center.x)
+            {
+                //playerRb.velocity = new Vector3(5f , 5f, 0f);
+                playerRb.AddForce(new Vector3(5f, 2f, 0f), ForceMode.Impulse);
             }
         }
     }
+
 
 }

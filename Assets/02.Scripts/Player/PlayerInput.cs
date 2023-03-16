@@ -8,7 +8,7 @@ public class PlayerInput : MonoBehaviour
 {
     public bool LeftMove { get; private set; }
     public bool RightMove { get; private set; }
-    public bool Jump { get; private set; }
+    public bool Jump { get;  set; }
     public bool Dash { get; private set; }
 
     private void Update()

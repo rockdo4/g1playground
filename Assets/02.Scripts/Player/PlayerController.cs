@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
@@ -55,8 +56,11 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     private NavMeshAgent agent;
     private NavMeshPath path;
+    public Transform[] jumpPoints;
 
     private Coroutine cor;
+    private float enemyPathLength;
+    private float pointPathLength;
 
     private void SetState<T>() where T : State
     {
@@ -73,6 +77,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         playerAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.enabled = false;
+        transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
     }
 
@@ -111,9 +116,8 @@ public class PlayerController : MonoBehaviour, IAttackable
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             enemies = stageController.GetStageEnemies();
-            agent.enabled = true;
+            AgentOnOff();
             cor = StartCoroutine(SearchTarget());
-            IsAuto = true;
             SetState<AutoMoveState>();
         }
 
@@ -136,6 +140,10 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
+    }
+    public void AgentOnOff()
+    {
+        IsAuto = !IsAuto;
     }
 
     private void SetMoveX(float moveX)
@@ -180,7 +188,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         {
             int layerMask = ~LayerMask.GetMask("Projectile");
             var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f, layerMask);
-            Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
+            //Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
             foreach (var hit in hits)
             {
 
@@ -199,7 +207,8 @@ public class PlayerController : MonoBehaviour, IAttackable
                 //        return;
                 //    }
                 //}
-                if ((hit.transform.CompareTag("Pushable") && !isGrounded)||
+                if (((hit.transform.CompareTag("Pushable") && !isGrounded))||
+                    ((hit.transform.CompareTag("Enemy") && !isGrounded)) ||
                     hit.transform.CompareTag("Ground"))
                 {
                     IsBlocked = true;
@@ -263,10 +272,10 @@ public class PlayerController : MonoBehaviour, IAttackable
                 if (enemy.gameObject.activeSelf && agent.CalculatePath(enemy.transform.position, path))
                 {
                     count++;
-                    var len = GetLength(path);
-                    if (temp >= len)
+                    enemyPathLength = GetLength(path);
+                    if (temp >= enemyPathLength)
                     {
-                        temp = len;
+                        temp = enemyPathLength;
                         target = enemy.transform;
                     }
                 }
@@ -366,6 +375,8 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Update()
         {
+            if(playerController.IsAuto)
+                playerController.SetState<AutoMoveState>();
             if (playerController.isGrounded)
             {
                 playerController.SetState<IdleState>();
@@ -410,17 +421,28 @@ public class PlayerController : MonoBehaviour, IAttackable
         public override void Enter() 
         {
             playerController.playerRb.isKinematic = true;
+            playerController.agent.enabled = true;
         }
 
         public override void Update()
         {
             playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
             //Debug.Log( playerController.playerAnimator.GetFloat("MoveX"));
+            if(Vector3.Distance(playerController.transform.position , playerController.jumpPoints[0].position)<0.1f)
+            { 
+                playerController.playerRb.isKinematic = false;
+                playerController.agent.enabled = false;
+                var vec = playerController.jumpPoints[1].position - playerController.transform.position;
+                playerController.SetMoveX(vec.x = vec.x >0 ? 1f: -1f);
+                playerController.input.Jump = true;
+                playerController.Jump();
+            }
         }
 
         public override void Exit() 
         {
             playerController.playerRb.isKinematic = false;
+            playerController.agent.enabled = false;
         }
     }
 }
