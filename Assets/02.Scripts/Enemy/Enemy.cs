@@ -55,6 +55,7 @@ public class Enemy : MonoBehaviour
         GetComponent<DestructedEvent>().OnDestroyEvent = () =>
         {
             State = EnemyState.Die;
+            animator.ResetTrigger("TakeDamage");
             animator.SetTrigger("Die");
             isLive = false;
         };

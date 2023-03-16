@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class EnemyMeleeFixed : Enemy
+public class EnemyMeleeFixed : Enemy, IAttackable
 {
     GameObject attackBox;
+    public GameObject mask;
     private CapsuleCollider mainColl;
     public BasicAttack meleeAttack;
 
@@ -53,6 +55,11 @@ public class EnemyMeleeFixed : Enemy
         mainColl = GetComponent<CapsuleCollider>();
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
         attackBox.SetActive(false);
+        mask = GameObject.Find(gameObject.name + "/Mask");
+        mask.SetActive(false);
+        agent = GetComponent<NavMeshAgent>();
+        agent.isStopped = true;
+
     }
     protected override void Start()
     {
@@ -60,6 +67,14 @@ public class EnemyMeleeFixed : Enemy
         base.Start();
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        //mask.SetActive(true);
+        attackBox.SetActive(false);
+        State = EnemyState.None;
+    }
     void Update()
     {
         attackTime += Time.deltaTime;
@@ -103,6 +118,7 @@ public class EnemyMeleeFixed : Enemy
         {
             if (RayShooter(searchRange))
             {
+                mask.SetActive(false);
                 State = EnemyState.Idle;
                 animator.SetTrigger("Idle");
             }
@@ -147,9 +163,22 @@ public class EnemyMeleeFixed : Enemy
 
     }
 
+    void Attack()
+    {
+        switch (meleeAttack)
+        {
+            case EnemyMeleeAttack:
+                {
+                    attackBox.SetActive(true);
+                }
+                break;
+        }
+    }
     void AttackDone()
     {
+        attackBox.SetActive(false);
         State = EnemyState.Idle;
+
     }
     private void TakeDamageDone()
     {
@@ -160,9 +189,24 @@ public class EnemyMeleeFixed : Enemy
     }
     private void DieDone()
     {
+
         gameObject.SetActive(false);
     }
 
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (!attackBox.activeSelf)
+            return;
+
+        if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
+        {
+#if UNITY_EDITOR
+            Debug.Log(State);
+#endif
+            meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+            attackBox.SetActive(false);
+        }
+    }
     private bool RayShooter(float range)
     {
         Vector3 rayOrigin;
@@ -198,5 +242,14 @@ public class EnemyMeleeFixed : Enemy
             }
         }
         return false;
+    }
+
+    public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
+    {
+        if (State == EnemyState.Die)
+            return;
+
+        State = EnemyState.TakeDamage;
+        animator.SetTrigger("TakeDamage");
     }
 }
