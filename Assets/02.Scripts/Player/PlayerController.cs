@@ -395,7 +395,6 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Exit() 
         {
-            playerController.AgentOff();
         }
     }
 }
