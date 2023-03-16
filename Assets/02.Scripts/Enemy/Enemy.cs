@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     public enum EnemyState
     {
         None,
+        Hide,
         Spawn,
         Motion,
         Idle,
@@ -31,7 +32,7 @@ public class Enemy : MonoBehaviour
     protected Animator animator;
     protected Rigidbody rb;
     protected NavMeshAgent agent;
-    protected CapsuleCollider collider;
+    //protected CapsuleCollider collider;
 
     public virtual EnemyState State
     {
@@ -44,7 +45,7 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
-        collider = GetComponent<CapsuleCollider>();
+        //collider = GetComponent<CapsuleCollider>();
         mySpawnPos = transform.position;
         mySpawnDir = transform.rotation;
     }
@@ -54,7 +55,6 @@ public class Enemy : MonoBehaviour
         GetComponent<DestructedEvent>().OnDestroyEvent = () =>
         {
             State = EnemyState.Die;
-            animator.ResetTrigger("TakeDamage");
             animator.SetTrigger("Die");
             isLive = false;
         };

@@ -99,6 +99,7 @@ public class EnemyController : Enemy, IAttackable
     protected override void Awake()
     {
         //StartCoroutine(RestorePosition());
+
         base.Awake();
         mainColl = GetComponent<CapsuleCollider>();
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
@@ -112,6 +113,7 @@ public class EnemyController : Enemy, IAttackable
     }
     protected override void Start()
     {
+        animator.ResetTrigger("TakeDamage");
         base.Start();
     }
     protected override void OnEnable()

@@ -14,6 +14,8 @@ public class Boss4Controller : Enemy
     public GameObject dashBox;
     public GameObject skillPivot;
     public GameObject indicatorBox;
+    
+    private CapsuleCollider mainColl;
 
     public BasicAttack meleeAttack;
     public BasicAttack meleeSkill;
@@ -34,6 +36,8 @@ public class Boss4Controller : Enemy
         {
             var prevState = state;
             state = value;
+            if (EnemyState.Die == prevState)
+                return;
 
             if (prevState == state)
                 return;
@@ -81,7 +85,10 @@ public class Boss4Controller : Enemy
                     agent.enabled = false;
                     break;
                 case EnemyState.Die:
-                    animator.SetTrigger("Die");
+                    agent.velocity = Vector3.zero;
+                    agent.enabled = true;
+                    rb.isKinematic = true;
+                    mainColl.enabled = false;
                     break;
             }
         }
@@ -100,6 +107,7 @@ public class Boss4Controller : Enemy
         indicatorBox = GameObject.Find(gameObject.name + "/IndicatorBoxPivot");
         indicatorBox.SetActive(false);
         State = EnemyState.None;
+        mainColl = GetComponent<CapsuleCollider>();
     }
 
     protected override void Start()
@@ -165,7 +173,7 @@ public class Boss4Controller : Enemy
                 break;
         }
         animator.SetFloat("Move", agent.velocity.magnitude);
-        //Debug.Log(State);
+        Debug.Log(State);
     }
     protected override void Spawn()
     {
@@ -239,7 +247,10 @@ public class Boss4Controller : Enemy
         }
     }
 
-    protected override void TakeDamageUpdate() { }
+    protected override void TakeDamageUpdate()
+    { 
+
+    }
 
     protected override void DieUpdate()
     {
@@ -384,14 +395,17 @@ public class Boss4Controller : Enemy
         if (indicatorBox.activeSelf)
             return;
 
-        if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
-        {
-            Debug.Log(State);
+        if (State == EnemyState.None && State == EnemyState.Spawn)
+            return;
 
-            if (State == EnemyState.Attack)
-                meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
-            else if (State == EnemyState.Skill)
-                meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
-        }
+            if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
+            {
+                //Debug.Log(State);
+
+                if (State == EnemyState.Attack)
+                    meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+                else if (State == EnemyState.Skill)
+                    meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+            }
     }
 }
