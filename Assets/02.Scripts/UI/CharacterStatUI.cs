@@ -7,16 +7,16 @@ public class CharacterStatUI : MonoBehaviour
     public Button hpPotion;
     public Button mpPotion;
 
-    public Image hpBar;
-    public Image mpBar;
-    public Image expBar;
+    public Slider hpSlider;
+    public Slider mpSlider;
+    public Slider expSlider;
 
     public TextMeshProUGUI hpPotionCount;
     public TextMeshProUGUI mpPotionCount;
-    public Text hp;
-    public Text mp;
-    public Text mHp;
-    public Text mMp;
+    public TextMeshProUGUI hp;
+    public TextMeshProUGUI mp;
+    public TextMeshProUGUI mHp;
+    public TextMeshProUGUI mMp;
     //public Text level;
 
     public int maxHp;
@@ -56,14 +56,15 @@ public class CharacterStatUI : MonoBehaviour
     {
         hp.text = status.currHp.ToString() + " ";
         mHp.text = "/ " + status.FinalValue.maxHp.ToString();
-        hpBar.fillAmount = (float)status.currHp / (float)status.FinalValue.maxHp;
+        //hpBar.fillAmount = (float)status.currHp / (float)status.FinalValue.maxHp;
+        hpSlider.value = (float)status.currHp / (float)status.FinalValue.maxHp;
 
         mp.text = status.currMp.ToString() + " ";
         mMp.text = "/ " + status.FinalValue.maxMp.ToString();
-        mpBar.fillAmount = (float)status.currMp / (float)status.FinalValue.maxMp;
+        mpSlider.value = (float)status.currMp / (float)status.FinalValue.maxMp;
 
         //level.text = playerLv.ToString();
-        //expBar.fillAmount = (float)currExp / (float)maxExp;
+        //expSlider.value = (float)currExp / (float)maxExp;
 
         hpPotionCount.text = currHpPotion.ToString();
         mpPotionCount.text = currMpPotion.ToString();

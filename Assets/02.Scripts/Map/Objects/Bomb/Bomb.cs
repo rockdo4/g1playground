@@ -14,6 +14,10 @@ public class Bomb : MonoBehaviour
     private GameObject effect1;
     private GameObject effect2;
 
+    private void OnEnable()
+    {
+        isTriggered = false;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +39,7 @@ public class Bomb : MonoBehaviour
             //explode in delay
             if (timer >= delay)
             {
+                timer = 0f;
                 isTriggered = false;
 
                 //set explosion effect
@@ -43,7 +48,7 @@ public class Bomb : MonoBehaviour
                 float destroyTime = effect2.GetComponent<ParticleSystem>().main.duration;
                 GameManager.instance.effectManager.ReturnEffectOnTime(effect2Name, effect2, destroyTime);
 
-                Destroy(bomb);
+                bomb.SetActive(false);
             }
         }
 

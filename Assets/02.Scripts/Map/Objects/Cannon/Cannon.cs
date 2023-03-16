@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Cannon : MonoBehaviour, ITriggerObject
+public class Cannon : MonoBehaviour, ITriggerObject, IResetObject
 {
     [Header("Cannon")]
     [SerializeField] private GameObject firePosition;
@@ -12,6 +12,7 @@ public class Cannon : MonoBehaviour, ITriggerObject
     [SerializeField] private float force = 10f;
     [SerializeField] private float delay = 3f;
     [SerializeField] private bool isTriggered = false;
+    private bool originIsTrigger;
 
     private float timer = 0f;
     
@@ -61,12 +62,17 @@ public class Cannon : MonoBehaviour, ITriggerObject
     private void OnDestroyPoolObject(CannonBall ball)
     {
         Destroy(ball.gameObject);
+    }
 
+    private void Awake()
+    {
+        originIsTrigger = isTriggered;
+        
     }
 
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         timer = delay;
         cannon.transform.Rotate(rotationX, 0f, 0f);
     }
@@ -92,8 +98,23 @@ public class Cannon : MonoBehaviour, ITriggerObject
         }
     }
 
+    private void OnEnable()
+    {
+        isTriggered = originIsTrigger;
+    }
+
     public void SetObjectTrigger(bool isTrigger)
     {
-        isTriggered = isTrigger;
+        isTriggered = !isTriggered;
+    }
+
+    public void ResetObject()
+    {
+        isTriggered = originIsTrigger;
+    }
+
+    public void ActiveSelfCheck()
+    {
+        
     }
 }

@@ -18,6 +18,12 @@ public class WeightScaler : MonoBehaviour
         CalculatedMass = 0f;
     }
 
+    private void OnEnable()
+    {
+        IsMovAble = true;
+        CalculatedMass = 0f;
+    }
+
     private void FixedUpdate()
     {
         //Find objects with Mass in Children
@@ -67,5 +73,11 @@ public class WeightScaler : MonoBehaviour
                 collision.transform.SetParent(null);
             }
         }
+    }
+
+    public void ResetWeight()
+    {
+        IsMovAble = true;
+        CalculatedMass = 0f;
     }
 }
