@@ -54,6 +54,7 @@ public class StageController : MonoBehaviour
             if (child.CompareTag("Enemy"))
                 enemies.Add(child.gameObject);
         }
+
         portals = gameObject.GetComponentsInChildren<Portal>().ToList();
 
         foreach (var swit in switches)
@@ -164,8 +165,6 @@ public class StageController : MonoBehaviour
         {
             //
         }
-
-
     }
 
     public List<GameObject> GetStageEnemies()

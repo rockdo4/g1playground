@@ -7,6 +7,7 @@ public class PlayerAutoMove : MonoBehaviour
 {
     public StageController stageController;
     private List<GameObject> enemies;
+
     private Rigidbody rb;
     private Transform target;
     private int targetIndex;
