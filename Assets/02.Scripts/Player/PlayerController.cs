@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -45,8 +49,11 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     private NavMeshAgent agent;
     private NavMeshPath path;
+    public Transform[] jumpPoints;
 
     private Coroutine cor;
+    private float enemyPathLength;
+    private float pointPathLength;
 
     private void SetState<T>() where T : State
     {
@@ -62,6 +69,8 @@ public class PlayerController : MonoBehaviour, IAttackable
         playerRb = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        agent.enabled = false;
+        transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
     }
 
@@ -74,7 +83,6 @@ public class PlayerController : MonoBehaviour, IAttackable
         states.Add(typeof(AutoMoveState), new AutoMoveState(this));
         SetState<IdleState>();
         GetComponent<DestructedEvent>().OnDestroyEvent = GameManager.instance.Respawn;
-        enemies = stageController.GetStageEnemies();
     }
 
     private void Update()
@@ -90,16 +98,16 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            enemies = stageController.GetStageEnemies();
             cor = StartCoroutine(SearchTarget());
-            IsAuto = true;
             SetState<AutoMoveState>();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             StopCoroutine(cor);
+            AgentOff();
             cor = null;
-            IsAuto = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -113,6 +121,18 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
+    }
+    public void AgentOn()
+    {
+        IsAuto = true;
+        playerRb.isKinematic = true;
+        agent.enabled = true;
+    }
+    public void AgentOff()
+    {
+        IsAuto = false;
+        playerRb.isKinematic = false;
+        agent.enabled = false;
     }
 
     private void SetMoveX(float moveX)
@@ -145,30 +165,37 @@ public class PlayerController : MonoBehaviour, IAttackable
         {
             int layerMask = ~LayerMask.GetMask("Projectile");
             var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f, layerMask);
-            Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
+            //Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
             foreach (var hit in hits)
             {
 
-                if (hit.collider != null)
+                //if (hit.collider != null)
+                //{
+                //    if (!(hit.transform.CompareTag("CheckPoint") ||
+                //        hit.transform.CompareTag("Falling") ||
+                //        hit.transform.CompareTag("Portal") ||
+                //    hit.transform.CompareTag("Stage") ||
+                //        hit.transform.CompareTag("Player") ||
+                //        hit.collider.CompareTag("AttackBox") ||
+                //        (hit.transform.CompareTag("Pushable") && isGrounded) ||
+                //        hit.transform.CompareTag("Door")))
+                //    {
+                //        IsBlocked = true;
+                //        return;
+                //    }
+                //}
+                if (((hit.transform.CompareTag("Pushable") && !isGrounded))||
+                    ((hit.transform.CompareTag("Enemy") && !isGrounded)) ||
+                    hit.transform.CompareTag("Ground"))
                 {
-                    if (!(hit.transform.CompareTag("CheckPoint") ||
-                        hit.transform.CompareTag("Falling") ||
-                        hit.transform.CompareTag("Portal") ||
-                    hit.transform.CompareTag("Stage") ||
-                        hit.transform.CompareTag("Player") ||
-                        hit.collider.CompareTag("AttackBox") ||
-                        (hit.transform.CompareTag("Pushable") && isGrounded) ||
-                        hit.transform.CompareTag("Door")))
-                    {
-                        IsBlocked = true;
-                        return;
-                    }
+                    IsBlocked = true;
+                    return;
                 }
+
             }
             playerPosition.y += k;
         }
     }
-
     public void OnGround(bool isGrounded)
     {
         this.isGrounded = isGrounded;
@@ -222,10 +249,10 @@ public class PlayerController : MonoBehaviour, IAttackable
                 if (enemy.gameObject.activeSelf && agent.CalculatePath(enemy.transform.position, path))
                 {
                     count++;
-                    var len = GetLength(path);
-                    if (temp >= len)
+                    enemyPathLength = GetLength(path);
+                    if (temp >= enemyPathLength)
                     {
-                        temp = len;
+                        temp = enemyPathLength;
                         target = enemy.transform;
                     }
                 }
@@ -233,7 +260,10 @@ public class PlayerController : MonoBehaviour, IAttackable
             agent.SetDestination(target.transform.position);
             //Debug.Log("!");
             if (count == 0)
+            {
+                //문 따라가게
                 yield break;
+            }
         }
     }
 
@@ -292,6 +322,8 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Update()
         {
+            if(playerController.IsAuto)
+                playerController.SetState<AutoMoveState>();
             if (playerController.isGrounded)
             {
                 playerController.SetState<IdleState>();
@@ -321,7 +353,10 @@ public class PlayerController : MonoBehaviour, IAttackable
             hitTimer += Time.deltaTime;
             if (hitTimer > playerController.hitDuration)
             {
-                playerController.SetState<IdleState>();
+                if (playerController.IsAuto)
+                    playerController.SetState<AutoMoveState>();
+                else
+                    playerController.SetState<IdleState>();
                 return;
             }
         }
@@ -334,18 +369,33 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Enter() 
         {
-            playerController.playerRb.isKinematic = true;
+            playerController.AgentOn();
         }
 
         public override void Update()
         {
             playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
-            //Debug.Log( playerController.playerAnimator.GetFloat("MoveX"));
+            if (playerController.agent.velocity.x > 0)
+                playerController.SetMoveX(1f);
+            else if (playerController.agent.velocity.x < 0)
+                playerController.SetMoveX(-1f);
+            else 
+                playerController.SetMoveX(0f);
+            //if(Vector3.Distance(playerController.transform.position , playerController.jumpPoints[0].position)<0.1f&&
+            //    playerController.target.position.x == playerController.jumpPoints[0].position.x)
+            //{ 
+            //    playerController.playerRb.isKinematic = false;
+            //    playerController.agent.enabled = false;
+            //    var vec = playerController.jumpPoints[1].position - playerController.transform.position;
+            //    playerController.SetMoveX(vec.x = vec.x >0 ? 1f: -1f);
+            //    playerController.input.Jump = true;
+            //    playerController.Jump();
+            //}
         }
 
         public override void Exit() 
         {
-            playerController.playerRb.isKinematic = false;
+            playerController.AgentOff();
         }
     }
 }
