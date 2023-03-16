@@ -7,4 +7,6 @@ public interface IResetObject
     public void ResetObject();
     public void ActiveSelfCheck();
 
+    
+
 }

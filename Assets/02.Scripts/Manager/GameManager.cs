@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
             if (m_instance == null)
                 m_instance = FindObjectOfType<GameManager>();
             return m_instance;
+
         }
     }
 
@@ -30,16 +31,21 @@ public class GameManager : MonoBehaviour
 
     public void Respawn()
     {
-        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();   
-                       
-        
+        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();                          
+                  
+        //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().ResetObject();
+        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.SetActive(false);
+
         GameObject.FindWithTag("Map").transform.Find(PlayerDataManager.instance.lastSaveChapterName).Find(PlayerDataManager.instance.lastSaveMapId).gameObject.SetActive(true);
+
+        //change current state
         player.transform.position = PlayerDataManager.instance.lastPlayerPos;
         Camera.main.transform.position = player.transform.position;
         MapManager.instance.SetCurrentMapName(PlayerDataManager.instance.lastSaveMapId);
         MapManager.instance.SetcurrentChapterName(PlayerDataManager.instance.lastSaveChapterName);
-        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalClose();
 
+        //respawn state
+        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalClose();
         PlayerDataManager.instance.FillPlayerHpMp();
         MapManager.instance.SetLastCheckpointMapTurnOn();
        

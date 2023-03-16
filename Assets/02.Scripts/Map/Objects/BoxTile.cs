@@ -5,16 +5,16 @@ using UnityEngine;
 public class BoxTile : MonoBehaviour, IResetObject
 {
     private Vector3 originPos;
-    
+
     private new Rigidbody rigidbody;
     //private float originMass;
     private Vector3 boxSize;
     [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
-    
+
     [SerializeField] private float pushForce = 1f;
 
-   
+
     public bool IsPushing { get; set; }
 
     private void Awake()
@@ -24,7 +24,7 @@ public class BoxTile : MonoBehaviour, IResetObject
     }
 
     private void Start()
-    {       
+    {
         //originMass = rigidbody.mass;
         rigidbody = GetComponent<Rigidbody>();
         IsPushing = false;
@@ -36,6 +36,7 @@ public class BoxTile : MonoBehaviour, IResetObject
         transform.position = originPos;
         rigidbody.isKinematic = false;
         IsPushing = false;
+
     }
 
     //public void AddMass(float mass)
@@ -61,8 +62,8 @@ public class BoxTile : MonoBehaviour, IResetObject
 
 
     private void OnCollisionStay(Collision collision)
-    {        
-        if (collision.gameObject.CompareTag("Player")) 
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
@@ -101,12 +102,13 @@ public class BoxTile : MonoBehaviour, IResetObject
     public void ResetObject()
     {
         transform.position = originPos;
-        rigidbody.isKinematic = false;
+        if (gameObject.activeSelf)
+            rigidbody.isKinematic = false;
         IsPushing = false;
     }
 
     public void ActiveSelfCheck()
     {
-        
+
     }
 }

@@ -75,6 +75,14 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
+    public void SetEmpty()
+    {
+        for (int i = 0; i < skillStates.Length; ++i)
+        {
+            skillStates[i].skill = null;
+        }
+    }
+
     public void SetSkill(int index, string id)
     {
         foreach (var skillState in skillStates)
@@ -136,5 +144,22 @@ public class PlayerSkills : MonoBehaviour
             UseSkill(index);
         else
             EndSkill(index);
+    }
+
+    public string GetCurrSkillID(int index)
+    {
+        var skill = skillStates[index].skill;
+        if (skill != null)
+            return skill.id;
+        return null;
+    }
+    public List<string> GetAllSkillIds()
+    {
+        var list = new List<string>();
+        for (int i = 0; i < skillStates.Length; ++i)
+        {
+            list.Add(GetCurrSkillID(i));
+        }
+        return list;
     }
 }

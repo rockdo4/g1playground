@@ -12,7 +12,15 @@ public class StageController : MonoBehaviour
         Puzzle,
         Heal,
     }
+    private struct BlocksOriginStatus
+    {
+        public GameObject blockObject;
+        public bool isOn;
+    }
 
+    private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
+
+    private bool isClear = false;
     private List<GameObject> enemies;
     public UnLockRequirement lockRequirement;
     private List<Portal> portals;
@@ -23,26 +31,89 @@ public class StageController : MonoBehaviour
     private List<GameObject> greenWall;
     private bool greenwallopen = false;
 
-    private List<GameObject> fallingtill=new List<GameObject>();
+    private List<FallingTile> fallingtile = new List<FallingTile>();
     private List<GameObject> bombs = new List<GameObject>();
     private List<GameObject> walls = new List<GameObject>();
 
 
     private void Awake()
     {
-        //foreach (Transform child in transform)
-        //{
 
-        //    //if (child.CompareTag("Falling"))
-        //    //    fallingtill.Add(child.gameObject);
-        //    //else if(child.CompareTag("Ground"))
-        //    //    walls.Add(child.gameObject);
-        //    //else if (child.GetComponent<PushBomb>() != null) {                
-        //    //    bombs.Add(child.gameObject);
-        //    //}
-        //}
-       
+        StartCoroutine(AttachObject());
+        //SaveStatus();
     }
+    private void GetChildren()
+    {
+        List<Transform> child = new List<Transform>();
+        var childCount = gameObject.transform.childCount;
+        for (int i = 0; i < childCount; ++i)
+        {
+            child.Add(gameObject.transform.GetChild(i));
+
+        }
+        //Debug.Log("child "+child.Count);
+
+        foreach (var ob in child)
+        {
+            if (ob.GetComponentsInChildren<FallingTile>() != null)
+            {
+                var fallingTiles = ob.GetComponentsInChildren<FallingTile>().ToList();
+                foreach (var falling in fallingTiles)
+                {
+                    fallingtile.Add(falling);
+                }
+            }
+        }
+        //Debug.Log(fallingtile.Count);
+    }
+
+    private void SaveStatus()
+    {
+        List<Transform> child = new List<Transform>();
+        var childCount = gameObject.transform.childCount;
+        for (int i = 0; i < childCount; ++i)
+        {
+            child.Add(gameObject.transform.GetChild(i));
+
+        }
+
+        foreach (var ob in child)
+        {
+            var grandChildrenCount = ob.childCount;
+            for (int i = 0; i < grandChildrenCount; ++i)
+            {
+                var block = ob.GetChild(i).gameObject;
+                if (block.GetComponent<IResetObject>() != null)
+                {
+                    BlocksOriginStatus temp = new BlocksOriginStatus();
+                    temp.blockObject = block;
+
+                    if (block.activeSelf)
+                    {
+                        temp.isOn = true;
+
+                    }
+                    else
+                    {
+                        temp.isOn = false;
+                    }
+                    originBlockStatus.Add(temp);
+                }
+            }
+            Debug.Log(originBlockStatus.Count);
+        }
+
+    }
+    IEnumerator AttachObject()
+    {
+        yield return null;
+
+        GetChildren();
+
+    }
+
+
+
     private void OnEnable()
     {
         var switchcheck = false;
@@ -75,6 +146,32 @@ public class StageController : MonoBehaviour
         if (enemies.Count > 0 || switchcheck)
             StartCoroutine(DisablePortal());
 
+        ResetObject();
+
+        if (!isClear)
+        {
+            TileColorManager.instance.ChangeTileMaterial(transform.name, false);
+        }
+    }
+
+    public void ResetObject()
+    {
+        //foreach (var block in originBlockStatus)
+        //{
+        //    if (block.blockObject.GetComponent<BoxTile>() != null)
+        //    {
+        //        block.blockObject.GetComponent<BoxTile>().ResetObject();
+        //        Debug.Log("block");
+        //    }
+
+        //    //block.blockObject.SetActive(block.isOn);
+        //}
+
+        foreach (var fall in fallingtile)
+        {
+            fall.gameObject.SetActive(true);
+            fall.ResetObject();
+        }
     }
 
     public void PortalClose()
@@ -147,6 +244,14 @@ public class StageController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            foreach (var kill in enemies)
+            {
+                kill.SetActive(false);
+            }
+        }
+
         if (canOpen)
         {
 
@@ -154,9 +259,9 @@ public class StageController : MonoBehaviour
             {
                 foreach (var portal in portals)
                 {
-                    
+                    isClear = true;
                     portal.gameObject.SetActive(true);
-
+                    TileColorManager.instance.ChangeTileMaterial(transform.name, true);
                 }
             }
         }
