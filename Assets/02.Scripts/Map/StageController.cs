@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -101,7 +102,6 @@ public class StageController : MonoBehaviour
                     originBlockStatus.Add(temp);
                 }
             }
-            Debug.Log(originBlockStatus.Count);
         }
 
     }
@@ -153,6 +153,9 @@ public class StageController : MonoBehaviour
         {
             TileColorManager.instance.ChangeTileMaterial(transform.name, false);
         }
+
+        EnemyRevive();
+
     }
 
     public void ResetObject()
@@ -175,6 +178,13 @@ public class StageController : MonoBehaviour
         }
     }
 
+    public void EnemyRevive()
+    {
+        foreach(var enmi in enemies)
+        {
+            enmi.SetActive(true);
+        }
+    }
     public void PortalClose()
     {
         foreach (var portal in portals)
@@ -215,7 +225,7 @@ public class StageController : MonoBehaviour
         }
         foreach (var enemy in enemies)
         {
-            if (enemy.gameObject.activeSelf)
+            if (enemy.GetComponent<Enemy>().GetIsLive())
             {
                 canOpen = false;
                 greenwallopen = false;

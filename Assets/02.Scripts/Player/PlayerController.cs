@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         agent.enabled = false;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
-        autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
+       // autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
     }
 
     private void Start()

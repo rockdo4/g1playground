@@ -28,10 +28,10 @@ public class DungeonManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI text;
 
-
     private DataTable<DungeonTable> dungeonTable;
 
     private string today;
+    private string attempt;
     private int lv;
     public StringBuilder SelectedLevel { get; set; }
     public DataTable<DungeonTable> DungeonTable { get { return dungeonTable; } }
@@ -46,8 +46,19 @@ public class DungeonManager : MonoBehaviour
     private Canvas result;
     public Canvas Result { get { return result; } set { result = value; } }
 
+
+
     [SerializeField]
     private Canvas exitButton;
+
+    [SerializeField]
+    private Canvas pannel;
+
+    [SerializeField]
+    private Canvas homeButton;
+
+    [SerializeField]
+    private Canvas popUp;
 
     [SerializeField]
     private Canvas remaningtime;
@@ -86,6 +97,8 @@ public class DungeonManager : MonoBehaviour
         saveData.wednesdaylv = origindata.wednesdaylv;
         saveData.thursdaylv = origindata.thursdaylv;
         saveData.fridaylv = origindata.fridaylv;
+        saveData.playedtime = attempt;
+        saveData.playedday=origindata.playedday;
 
         switch (today)
         {
@@ -131,6 +144,8 @@ public class DungeonManager : MonoBehaviour
             newsaveData.wednesdaylv = "1";
             newsaveData.thursdaylv = "1";
             newsaveData.fridaylv = "1";
+            newsaveData.playedday = DateTime.Now.ToString();
+            newsaveData.playedtime = "0";
             SaveLoadSystem.Save(newsaveData);
             saveData = SaveLoadSystem.Load(SaveData.Types.Dungeon) as SaveDugeonDataVer1;
         }
@@ -153,7 +168,20 @@ public class DungeonManager : MonoBehaviour
                 break;
         }
 
+
+        if ((DateTime.Now - DateTime.Parse(saveData.playedday)).Milliseconds > 0&&DateTime.Now.DayOfWeek!= DateTime.Parse(saveData.playedday).DayOfWeek)
+        {
+            saveData.playedtime = "0";
+        }
+        attempt = saveData.playedtime;
+       
     }
+
+    public void PlayedTimeResetCheck()
+    {
+
+    }
+
     public void SelectDungeonDay(string path)
     {
 
@@ -182,7 +210,7 @@ public class DungeonManager : MonoBehaviour
 
         if (isDungeon && enemies != null)
         {
-            Time.timeScale = 1;
+           // Time.timeScale = 1;
             Result.gameObject.SetActive(false);
             Result.transform.Find("Win").gameObject.SetActive(false);
             Result.transform.Find("Lose").gameObject.SetActive(false);
@@ -193,6 +221,7 @@ public class DungeonManager : MonoBehaviour
             if (time <= 0|| playerStatus.currHp<=0)
             {
                 // Time.timeScale = 0;
+                Result.transform.Find("Lose").transform.Find("Retry").gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"({attempt}/3 retry)";
                 GameManager.instance.player.gameObject.SetActive(false);
                 Result.gameObject.SetActive(true);
                 Result.transform.Find("Lose").gameObject.SetActive(true);
@@ -204,12 +233,14 @@ public class DungeonManager : MonoBehaviour
 
             foreach (var enemy in enemies)
             {
-                if (enemy.gameObject.activeSelf)
+                if (enemy.GetComponent<Enemy>().GetIsLive())
                 {
                     break;
                 }
                 if (enemy.Equals(enemies.Last()))
                 {
+                    Result.transform.Find("Win").transform.Find("Retry").gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"({attempt}/3 retry)";
+
                     //  Time.timeScale = 0;
                     Result.gameObject.SetActive(true);
                     Result.transform.Find("Win").gameObject.SetActive(true);
@@ -225,6 +256,15 @@ public class DungeonManager : MonoBehaviour
             }
         }
 
+
+    }
+
+    public void HomeOpen()
+    {
+        pannel.gameObject.SetActive(true);
+        pannel.transform.Find("Retry").gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"({attempt}/3 retry)";
+
+        Time.timeScale = 0;
 
     }
 
@@ -245,6 +285,17 @@ public class DungeonManager : MonoBehaviour
 
     }
 
+    public void Popup()
+    {
+        popUp.gameObject.SetActive(true);
+    }
+
+    public void Countinue()
+    {
+        pannel.gameObject.SetActive(false);
+        popUp.gameObject.SetActive(false);
+        Time.timeScale = 1;
+    }
     public void ExitDungeon()
     {
 
@@ -253,12 +304,25 @@ public class DungeonManager : MonoBehaviour
         dungeonDay.gameObject.SetActive(false);
         dungeonLevel.gameObject.SetActive(false);
         Time.timeScale = 1;
+        pannel.gameObject.SetActive(false);
+        popUp.gameObject.SetActive(false);
+        homeButton.gameObject.SetActive(false);
         SceneManager.LoadScene("Scene02");
 
     }
 
     public void JoinDungeon()
     {
+        int temp=Int32.Parse(attempt);
+        Debug.Log(temp);
+        if (temp >= 3)
+        {
+            //garu popup
+            
+            return;
+        }
+        attempt=(++temp).ToString();
+        SaveFile();
         isDungeon = true;
         exitButton.gameObject.SetActive(false);
         Result.gameObject.SetActive(false);
@@ -274,7 +338,7 @@ public class DungeonManager : MonoBehaviour
         SceneManager.LoadScene(scenename.ToString());
 
 
-        
+        homeButton.gameObject.SetActive(true);
 
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
@@ -297,6 +361,11 @@ public class DungeonManager : MonoBehaviour
 
     public void Restart()
     {
+        if (Int32.Parse(attempt) >= 3)
+        {
+            //garu popup
+            return;
+        }
 
         Time.timeScale = 1;
         Result.transform.Find("Win").gameObject.SetActive(false);
