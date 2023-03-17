@@ -38,20 +38,20 @@ public class UISkillInfo : MonoBehaviour
         skillDesc.text = data.desc;
     }
 
-    public void SetCurrSkill(SkillData data)
-    {
-        if (data == null)
-        {
-            SetEmpty();
-            return;
-        }
-        firstEquipIcon.sprite = data.iconSprite;
-        secondEquipIcon.sprite = data.iconSprite;
-    }
-
     public void SetPlayerSkill(int index)
     {
         if (currSkillData != null)
+        {
             GameManager.instance.player.GetComponent<PlayerSkills>().SetSkill(index, currSkillData.id);
+            ShowCurrPlayerSkills();
+        }
+    }
+
+    public void ShowCurrPlayerSkills()
+    {
+        var playerSkills = GameManager.instance.player.GetComponent<PlayerSkills>();
+        var skillTable = DataTableMgr.GetTable<SkillData>();
+        firstEquipIcon.sprite = skillTable.Get(playerSkills.GetCurrSkillID(0)).iconSprite;
+        secondEquipIcon.sprite = skillTable.Get(playerSkills.GetCurrSkillID(1)).iconSprite;
     }
 }

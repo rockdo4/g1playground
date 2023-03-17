@@ -80,6 +80,7 @@ public class PlayerSkills : MonoBehaviour
         for (int i = 0; i < skillStates.Length; ++i)
         {
             skillStates[i].skill = null;
+            toggles[i].image.sprite = null;
         }
     }
 
@@ -97,6 +98,7 @@ public class PlayerSkills : MonoBehaviour
             {
                 toggles[index].isOn = false;
                 skillStates[index].Set(skill);
+                toggles[index].image.sprite = DataTableMgr.GetTable<SkillData>().Get(id).iconSprite;
             }
         }
     }
