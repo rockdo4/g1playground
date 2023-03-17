@@ -8,7 +8,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PlayerController : MonoBehaviour, IAttackable
+public class PlayerController : MonoBehaviour
 {
     public abstract class State
     {
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour, IAttackable
     private float enemyPathLength;
     private float pointPathLength;
 
-    private void SetState<T>() where T : State
+    public void SetState<T>() where T : State
     {
         if (currState != null)
             currState.Exit();
@@ -220,8 +220,6 @@ public class PlayerController : MonoBehaviour, IAttackable
         if (jumpCount == 1 || forbidJumping)
             jumpCount = 2;
     }
-
-    public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos) => SetState<HitState>();
 
     public float GetLength(NavMeshPath path)
     {
