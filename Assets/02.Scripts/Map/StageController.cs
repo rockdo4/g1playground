@@ -16,7 +16,7 @@ public class StageController : MonoBehaviour
     private List<GameObject> enemies;
     public UnLockRequirement lockRequirement;
     private List<Portal> portals;
-    public List<Portal> Portals { get; set; }
+    public List<Portal> Portals { get { return portals; } set { portals = value; } }
     [SerializeField] private List<GameObject> switches;
     private bool canOpen;
     [SerializeField]

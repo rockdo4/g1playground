@@ -284,14 +284,20 @@ public class PlayerController : MonoBehaviour, IAttackable
                     }
                 }
             }
+            if(target != null)
+                agent.SetDestination(target.transform.position);
 
-            agent.SetDestination(target.transform.position);
             //Debug.Log("!");
             if (count == 0)
             {
+                var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
+                target.position = portals[1].GetPos();
+                agent.SetDestination(target.position);
+
                 //문 따라가게
                 yield break;
             }
+               
         }
     }
 
