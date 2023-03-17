@@ -56,7 +56,6 @@ public class RangeCollider : AttackCollider
     public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction, bool useLifeTime, float lifeTime, bool isContinuousAttack, float interval)
     {
         this.attacker = attacker;
-        this.onlyCollideLivings = onlyCollideLivings;
         this.useLifetime = useLifeTime;
         this.lifeTime = lifeTime;
         this.isContinuousAttack = isContinuousAttack;
