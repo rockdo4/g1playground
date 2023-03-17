@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour, IAttackable
 {
@@ -39,12 +40,9 @@ public class PlayerController : MonoBehaviour, IAttackable
 
     public float hitDuration = 0.5f;
 
-    public StageController stageController;
     private List<GameObject> enemies;
 
     private Transform target;
-    private float[] distance;
-
     public bool IsAuto { get; set; }
 
     private NavMeshAgent agent;
@@ -54,6 +52,8 @@ public class PlayerController : MonoBehaviour, IAttackable
     private Coroutine cor;
     private float enemyPathLength;
     private float pointPathLength;
+
+    public Toggle autoToggle;
 
     private void SetState<T>() where T : State
     {
@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour, IAttackable
         agent.enabled = false;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
+        autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
     }
 
     private void Start()
@@ -98,15 +99,15 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            enemies = stageController.GetStageEnemies();
+            enemies = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().GetStageEnemies();
             cor = StartCoroutine(SearchTarget());
             SetState<AutoMoveState>();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            StopCoroutine(cor);
             AgentOff();
+            StopCoroutine(cor);
             cor = null;
         }
 
@@ -115,8 +116,8 @@ public class PlayerController : MonoBehaviour, IAttackable
             agent.CalculatePath(transform.position + Vector3.right * 3f, path);
             agent.SetDestination(transform.position + Vector3.right * 3f);
         }
-    }
 
+    }
     private void FixedUpdate()
     {
         CheckFrontObject();
@@ -133,6 +134,24 @@ public class PlayerController : MonoBehaviour, IAttackable
         IsAuto = false;
         playerRb.isKinematic = false;
         agent.enabled = false;
+        SetState<IdleState>();
+    }
+    public void AgentOnOff()
+    {
+        IsAuto = !IsAuto;
+        playerRb.isKinematic = !playerRb.isKinematic;
+        agent.enabled = !agent.enabled;
+        if (IsAuto)
+        {
+            enemies = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().GetStageEnemies();
+            cor = StartCoroutine(SearchTarget());
+            SetState<AutoMoveState>();
+        }
+        else
+        {
+            StopCoroutine(cor);
+            SetState<IdleState>();
+        }
     }
 
     private void SetMoveX(float moveX)
@@ -184,7 +203,7 @@ public class PlayerController : MonoBehaviour, IAttackable
                 //        return;
                 //    }
                 //}
-                if (((hit.transform.CompareTag("Pushable") && !isGrounded))||
+                if (((hit.transform.CompareTag("Pushable") && !isGrounded)) ||
                     ((hit.transform.CompareTag("Enemy") && !isGrounded)) ||
                     hit.transform.CompareTag("Ground"))
                 {
@@ -242,6 +261,12 @@ public class PlayerController : MonoBehaviour, IAttackable
         {
             yield return new WaitForSeconds(0.2f);
 
+            if (enemies == null)
+            {
+                Debug.Log("Failed");
+                AgentOnOff();
+                yield break;
+            }
             float temp = 999999f;
             var count = 0;
             foreach (var enemy in enemies)
@@ -254,9 +279,12 @@ public class PlayerController : MonoBehaviour, IAttackable
                     {
                         temp = enemyPathLength;
                         target = enemy.transform;
+                        if (agent.transform.position.x == target.transform.position.x)
+                            SetMoveX(target.transform.position.x - agent.transform.position.x > 0 ? 1f : -1f);
                     }
                 }
             }
+
             agent.SetDestination(target.transform.position);
             //Debug.Log("!");
             if (count == 0)
@@ -309,7 +337,7 @@ public class PlayerController : MonoBehaviour, IAttackable
             playerController.Jump();
         }
 
-        public override void Exit() 
+        public override void Exit()
         {
         }
     }
@@ -322,7 +350,7 @@ public class PlayerController : MonoBehaviour, IAttackable
 
         public override void Update()
         {
-            if(playerController.IsAuto)
+            if (playerController.IsAuto)
                 playerController.SetState<AutoMoveState>();
             if (playerController.isGrounded)
             {
@@ -367,7 +395,7 @@ public class PlayerController : MonoBehaviour, IAttackable
     {
         public AutoMoveState(PlayerController controller) : base(controller) { }
 
-        public override void Enter() 
+        public override void Enter()
         {
             playerController.AgentOn();
         }
@@ -379,21 +407,11 @@ public class PlayerController : MonoBehaviour, IAttackable
                 playerController.SetMoveX(1f);
             else if (playerController.agent.velocity.x < 0)
                 playerController.SetMoveX(-1f);
-            else 
+            else
                 playerController.SetMoveX(0f);
-            //if(Vector3.Distance(playerController.transform.position , playerController.jumpPoints[0].position)<0.1f&&
-            //    playerController.target.position.x == playerController.jumpPoints[0].position.x)
-            //{ 
-            //    playerController.playerRb.isKinematic = false;
-            //    playerController.agent.enabled = false;
-            //    var vec = playerController.jumpPoints[1].position - playerController.transform.position;
-            //    playerController.SetMoveX(vec.x = vec.x >0 ? 1f: -1f);
-            //    playerController.input.Jump = true;
-            //    playerController.Jump();
-            //}
         }
 
-        public override void Exit() 
+        public override void Exit()
         {
         }
     }
