@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         agent.enabled = false;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
-        autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
+        //autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
     }
 
     private void Start()
@@ -204,7 +204,6 @@ public class PlayerController : MonoBehaviour
                 //    }
                 //}
                 if (((hit.transform.CompareTag("Pushable") && !isGrounded)) ||
-                    ((hit.transform.CompareTag("Enemy") && !isGrounded)) ||
                     hit.transform.CompareTag("Ground"))
                 {
                     IsBlocked = true;
@@ -226,11 +225,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Jump() => Jump(jumpForce);
+    private void Jump()
+    {
+        if (!input.Jump)
+            return;
+        Jump(jumpForce);
+    }
 
     public void Jump(float force, bool forbidJumping = false)
     {
-        if (!input.Jump || jumpCount >= maxJumpCount)
+        if (jumpCount >= maxJumpCount)
             return;
         playerRb.velocity = new Vector3(moveX, 0, 0);
         playerRb.AddForce(Vector3.up * force, ForceMode.Impulse);
