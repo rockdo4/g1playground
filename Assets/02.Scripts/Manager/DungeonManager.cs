@@ -288,7 +288,7 @@ public class DungeonManager : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
         isDungeon = true;
         playerStatus= GameManager.instance.player.GetComponent<Status>();
-        var player = GameObject.FindWithTag("CHA").GetComponent<PlayerSkills>();
+        var player = GameObject.FindWithTag("Player").GetComponent<PlayerSkills>();
 
         player.SetEmpty();
         player.SetSkill(0, PlayerDataManager.instance.currskill1);
