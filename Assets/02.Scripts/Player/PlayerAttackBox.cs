@@ -10,7 +10,7 @@ public class PlayerAttackBox : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (!other.CompareTag("Enemy"))
+        if (!other.CompareTag("Enemy") || !other.GetComponent<EnemyController>().GetIsLive())
             return;
         playerAttack.StartAttack();
         if (isAttacking)
