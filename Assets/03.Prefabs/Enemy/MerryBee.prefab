@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 210253167059485957}
   - component: {fileID: 210253167059485954}
   - component: {fileID: 3198499351488000125}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MerryBee
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -498,6 +498,7 @@ Transform:
   - {fileID: 210253167066983115}
   - {fileID: 210253167066983127}
   - {fileID: 3353389599672122409}
+  - {fileID: 1535554623289125327}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -586,11 +587,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeAttack: {fileID: 11400000, guid: 9b934b5d7c7731041a6691c30fdb5634, type: 2}
-  EnemyStatePattern:
-  - state: 4
-    second: 0.5
-  - state: 4
-    second: 3
+  EnemyStatePattern: []
   isGoingRight: 0
   patrolSpeed: 5
   chaseSpeed: 10
@@ -1085,6 +1082,52 @@ Transform:
   m_Father: {fileID: 210253167066983137}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 74.009415, y: 19.195076, z: 109.896416}
+--- !u!1 &1081641679626507100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1535554623289125327}
+  - component: {fileID: 6330858929894239475}
+  m_Layer: 9
+  m_Name: EnemyBody
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1535554623289125327
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081641679626507100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 210253167066983143}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &6330858929894239475
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081641679626507100}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3353389599672122408
 GameObject:
   m_ObjectHideFlags: 0
@@ -1095,7 +1138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3353389599672122409}
   - component: {fileID: 3353389599672122406}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AttackBox
   m_TagString: AttackBox
   m_Icon: {fileID: 0}
