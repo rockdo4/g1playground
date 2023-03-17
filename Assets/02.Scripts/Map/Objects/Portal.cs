@@ -34,7 +34,7 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!CanUse&& other.GetComponent<ObjectMass>() != null)
+        if (!CanUse && other.GetComponent<ObjectMass>() != null)
         {
             CanUse = false;
             return;
@@ -45,8 +45,11 @@ public class Portal : MonoBehaviour
 
         if (other.CompareTag("Player") && other.GetComponent<ObjectMass>() != null)
         {
+            //other.GetComponent<PlayerController>().AgentOnOff();
             init = true;
             nextStage.gameObject.SetActive(true);
+            nextStage.GetComponent<StageController>().PrevStageName = MapManager.instance.GetCurrentMapName();
+            Debug.Log(nextStage.GetComponent<StageController>().PrevStageName);
             var nextstageportals = nextStage.GetComponentsInChildren<Portal>();
             foreach (var portal in nextstageportals)
             {
@@ -55,6 +58,7 @@ public class Portal : MonoBehaviour
                     other.gameObject.transform.position = portal.GetPos();
                     other.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     portal.CanUse = true;
+                    //other.GetComponent<PlayerController>().AgentOnOff();
 
                     CanUse = true;
                     Camera.main.transform.position = portal.gameObject.transform.position;

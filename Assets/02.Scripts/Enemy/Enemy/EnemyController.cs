@@ -301,7 +301,7 @@ public class EnemyController : Enemy, IAttackable
         {
 #if UNITY_EDITOR
             Debug.Log("Arrangement Fail");
-            Debug.Log("¹èÄ¡ Á¦´ë·Î !!");
+            Debug.Log("ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ !!");
 #endif
         }
     }

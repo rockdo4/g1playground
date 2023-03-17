@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         agent.enabled = false;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
-        //autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
+        autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
     }
 
     private void Start()
@@ -288,11 +288,17 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("!");
             if (count == 0)
             {
-                var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
-                target.position = portals[1].GetPos();
-                agent.SetDestination(target.position);
-
                 //문 따라가게
+                //var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
+                
+                //foreach (var portal in portals)
+                //{
+                //    if (portal.GetNextStageName().CompareTo(GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().PrevStageName) != 0)
+                //    {
+                //        target = portal.transform;
+                //        agent.SetDestination(target.position);
+                //    }
+                //}
                 yield break;
             }
                

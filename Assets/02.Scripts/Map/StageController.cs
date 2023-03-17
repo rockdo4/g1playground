@@ -35,6 +35,7 @@ public class StageController : MonoBehaviour
     private List<GameObject> bombs = new List<GameObject>();
     private List<GameObject> walls = new List<GameObject>();
 
+    public string PrevStageName { get; set; }
 
     private void Awake()
     {
