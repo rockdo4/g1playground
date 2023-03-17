@@ -345,7 +345,7 @@ public class EnemyController : Enemy, IAttackable
         Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
 #endif
 
-        if (Physics.Raycast(ray, out RaycastHit hit, range))
+        if (Physics.Raycast(ray, out RaycastHit hit, range, LayerMask.GetMask("Player")))
         {
             if (hit.collider.tag == "Player")
             {
