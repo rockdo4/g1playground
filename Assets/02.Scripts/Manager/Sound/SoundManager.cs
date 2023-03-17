@@ -20,6 +20,9 @@ public class SoundManager : MonoBehaviour
     //sound effects
     [SerializeField] public List<AudioClip> seClips = new List<AudioClip>();
 
+    [Header("Start BGM")]
+    [SerializeField] private string bgmName = "Playing";
+
     public const string Master_KEY = "MasterKey";
     public const string BGM_KEY = "BGMKey";
     public const string SE_KEY = "SEKey";    
@@ -49,7 +52,7 @@ public class SoundManager : MonoBehaviour
 
         //load volumes on load
         LoadVolume();
-
+        PlayBGM(bgmName);
     }
 
     //load volume set on sliders
@@ -86,7 +89,7 @@ public class SoundManager : MonoBehaviour
         {
             if (se.name.Equals(name))
             {
-                seSource.Stop();
+                //seSource.Stop();
                 seSource.PlayOneShot(se);
             }
         }
