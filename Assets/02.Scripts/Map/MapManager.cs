@@ -62,6 +62,11 @@ public class MapManager : MonoBehaviour
 
     public void SetLastCheckpointMapTurnOn()
     {
+        if (maps == null)
+        {
+            maps = GameObject.FindGameObjectsWithTag("Stage").ToList();
+        }
+
         foreach (var map in maps)
         {
             if (map.name != PlayerDataManager.instance.lastSaveMapId)
