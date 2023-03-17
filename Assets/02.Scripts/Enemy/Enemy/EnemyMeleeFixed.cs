@@ -31,17 +31,39 @@ public class EnemyMeleeFixed : Enemy, IAttackable
             switch (State)
             {
                 case EnemyState.None:
+                    agent.enabled = true;
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                    mainColl.enabled = true;
                     break;
                 case EnemyState.Hide:
+                    agent.enabled = true;
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                    mainColl.enabled = true;
                     break;
                 case EnemyState.Idle:
+                    agent.enabled = true;
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                    mainColl.enabled = true;
                     break;
                 case EnemyState.Attack:
+                    agent.enabled = true;
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                    mainColl.enabled = true;
                     break;
                 case EnemyState.TakeDamage:
+                    agent.enabled = true;
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                    mainColl.enabled = true;
                     break;
                 case EnemyState.Die:
                     mainColl.enabled = false;
+                    mask.SetActive(false);
+
                     break;
             }
 
@@ -51,19 +73,15 @@ public class EnemyMeleeFixed : Enemy, IAttackable
 
     protected override void Awake()
     {
-        animator = GetComponent<Animator>();
+        base.Awake();
         mainColl = GetComponent<CapsuleCollider>();
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
         attackBox.SetActive(false);
         mask = GameObject.Find(gameObject.name + "/Mask");
-        mask.SetActive(false);
-        agent = GetComponent<NavMeshAgent>();
-        agent.isStopped = true;
-
+        mask.SetActive(true);
     }
     protected override void Start()
     {
-        animator.ResetTrigger("TakeDamage");
         base.Start();
     }
 
@@ -74,6 +92,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
         //mask.SetActive(true);
         attackBox.SetActive(false);
         State = EnemyState.None;
+        mask.SetActive(true);
     }
     void Update()
     {
