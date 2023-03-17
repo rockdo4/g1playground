@@ -144,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &482306625505332797
 Transform:
   m_ObjectHideFlags: 0
@@ -188,7 +188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &482306625725316409
 Transform:
   m_ObjectHideFlags: 0
@@ -252,7 +252,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &482306626546756120
 Transform:
   m_ObjectHideFlags: 0
@@ -542,6 +542,52 @@ Transform:
   m_Father: {fileID: 5489744103997761287}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -11.773523, y: 49.861168, z: 1.2110238}
+--- !u!1 &1395035947480969513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9187051691599726880}
+  - component: {fileID: 5770323827171587168}
+  m_Layer: 0
+  m_Name: EnemyBody
+  m_TagString: EnemyBody
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9187051691599726880
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395035947480969513}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3226007060608060221}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5770323827171587168
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395035947480969513}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.61609346
+  m_Height: 1.9491303
+  m_Direction: 1
+  m_Center: {x: -0, y: 0.94356084, z: -0.11609346}
 --- !u!1 &1616168517778162537
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,7 +731,7 @@ GameObject:
   - component: {fileID: 8801503172914827586}
   - component: {fileID: 3945073568511289019}
   - component: {fileID: -8382943383401418987}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GreenFruit
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -714,6 +760,7 @@ Transform:
   - {fileID: 482306625505332797}
   - {fileID: 482306625851970593}
   - {fileID: 482306625725316409}
+  - {fileID: 9187051691599726880}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
