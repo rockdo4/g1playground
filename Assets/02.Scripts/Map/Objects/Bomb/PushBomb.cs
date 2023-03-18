@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PushBomb : MonoBehaviour, IResetObject
+public class PushBomb : ObjectTile
 {
-    private Vector3 originPos;
-
     [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
 
@@ -16,17 +14,24 @@ public class PushBomb : MonoBehaviour, IResetObject
         originPos = transform.position;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         //reset position and material when Reset the stage
+        timer = 0f;
         transform.position = originPos;
         TileColorManager.instance.ToInvisibleMaterial(gameObject);
     }
 
-    public void ResetObject()
+    public override void ResetObject()
     {
+        timer = 0f;
         transform.position = originPos;
         TileColorManager.instance.ToInvisibleMaterial(gameObject);
+    }
+
+    public override void SetOriginPos()
+    {
+        base.SetOriginPos();
     }
 
     private void OnCollisionStay(Collision collision)
@@ -61,10 +66,5 @@ public class PushBomb : MonoBehaviour, IResetObject
             //Reset timer to make player has to push again to move the block
             timer = 0f;
         }
-    }
-
-    public void ActiveSelfCheck()
-    {
-        
     }
 }

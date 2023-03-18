@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxTile : MonoBehaviour, IResetObject
+public class BoxTile : ObjectTile
 {
-    private Vector3 originPos;
-
     private new Rigidbody rigidbody;
-    //private float originMass;
     private Vector3 boxSize;
+
     [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
 
@@ -25,34 +23,31 @@ public class BoxTile : MonoBehaviour, IResetObject
 
     private void Start()
     {
-        //originMass = rigidbody.mass;
-        rigidbody = GetComponent<Rigidbody>();
+        //rigidbody = GetComponent<Rigidbody>();
         IsPushing = false;
         boxSize = gameObject.GetComponent<BoxCollider>().size;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         transform.position = originPos;
         rigidbody.isKinematic = false;
         IsPushing = false;
-
+        timer = 0f;
     }
 
-    //public void AddMass(float mass)
-    //{
-    //    rigidbody.mass += mass;
-    //}
-
-    //public void RemoveMass()
-    //{
-    //    rigidbody.mass = originMass;
-    //}
-
-    public void MoveBlock(Vector3 dir, float speed)
+    public override void ResetObject()
     {
+        transform.position = originPos;
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = false;
+        IsPushing = false;
+        timer = 0f;
+    }
 
-        gameObject.GetComponent<Rigidbody>().MovePosition(gameObject.GetComponent<Rigidbody>().position + dir * speed * Time.fixedDeltaTime);
+    public override void SetOriginPos()
+    {
+        base.SetOriginPos();
     }
 
     public void SetKinematic(bool isKinematic)
@@ -93,22 +88,8 @@ public class BoxTile : MonoBehaviour, IResetObject
     {
         if (collision.gameObject.tag == "Player")
         {
-
             //Reset timer to make player has to push again to move the block
             timer = 0f;
         }
-    }
-
-    public void ResetObject()
-    {
-        transform.position = originPos;
-        if (gameObject.activeSelf)
-            rigidbody.isKinematic = false;
-        IsPushing = false;
-    }
-
-    public void ActiveSelfCheck()
-    {
-
     }
 }

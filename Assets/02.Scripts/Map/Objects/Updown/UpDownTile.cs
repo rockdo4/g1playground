@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
-public class UpDownTile : MonoBehaviour, IResetObject
+public class UpDownTile : ObjectTile
 {
     public enum State
     {
@@ -23,7 +23,6 @@ public class UpDownTile : MonoBehaviour, IResetObject
     [SerializeField] private float stopTime = 0.5f;
     private float timer;
 
-    private Vector3 originPos;
     private Vector3 blockAPos;
     private Vector3 blockBPos;
 
@@ -69,8 +68,9 @@ public class UpDownTile : MonoBehaviour, IResetObject
         }
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        timer = 0f;
         massA = 0f;
         massB = 0f;
         transform.position = originPos;
@@ -78,6 +78,25 @@ public class UpDownTile : MonoBehaviour, IResetObject
         blockB.transform.position = blockBPos;
         blockA.GetComponent<WeightScaler>().ResetWeight();
         blockB.GetComponent<WeightScaler>().ResetWeight();
+    }
+
+    public override void ResetObject()
+    {
+        timer = 0f;
+        massA = 0f;
+        massB = 0f;
+        transform.position = originPos;
+        blockA.transform.position = blockAPos;
+        blockB.transform.position = blockBPos;
+        blockA.GetComponent<WeightScaler>().ResetWeight();
+        blockB.GetComponent<WeightScaler>().ResetWeight();
+    }
+
+    public override void SetOriginPos()
+    {
+        base.SetOriginPos();
+        blockAPos = blockA.transform.position;
+        blockBPos = blockB.transform.position;
     }
 
     private void SetState(State state)
@@ -159,19 +178,6 @@ public class UpDownTile : MonoBehaviour, IResetObject
         }
     }
 
-    public void ResetObject()
-    {
-        massA = 0f;
-        massB = 0f;
-        transform.position = originPos;
-        blockA.transform.position = blockAPos;
-        blockB.transform.position = blockBPos;
-        blockA.GetComponent<WeightScaler>().ResetWeight();
-        blockB.GetComponent<WeightScaler>().ResetWeight();
-    }
+    
 
-    public void ActiveSelfCheck()
-    {
-        
-    }
 }

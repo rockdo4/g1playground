@@ -21,10 +21,14 @@ public class StageController : MonoBehaviour
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
+
     private List<GameObject> enemies;
+    private List<GameObject> objectTiles = new List<GameObject>();
+
     public UnLockRequirement lockRequirement;
     private List<Portal> portals;
     public List<Portal> Portals { get { return portals; } set { portals = value; } }
+
     [SerializeField] private List<GameObject> switches;
     private bool canOpen;
     [SerializeField]
@@ -39,84 +43,74 @@ public class StageController : MonoBehaviour
 
     private void Awake()
     {
-
-        StartCoroutine(AttachObject());
-        //SaveStatus();
-    }
-    private void GetChildren()
-    {
-        List<Transform> child = new List<Transform>();
-        var childCount = gameObject.transform.childCount;
-        for (int i = 0; i < childCount; ++i)
-        {
-            child.Add(gameObject.transform.GetChild(i));
-
-        }
-        //Debug.Log("child "+child.Count);
-
-        foreach (var ob in child)
-        {
-            if (ob.GetComponentsInChildren<FallingTile>() != null)
-            {
-                var fallingTiles = ob.GetComponentsInChildren<FallingTile>().ToList();
-                foreach (var falling in fallingTiles)
-                {
-                    fallingtile.Add(falling);
-                }
-            }
-        }
-        //Debug.Log(fallingtile.Count);
+        GetObjectTiles();
+        SetObjectTileOriginPos();
     }
 
-    private void SaveStatus()
-    {
-        List<Transform> child = new List<Transform>();
-        var childCount = gameObject.transform.childCount;
-        for (int i = 0; i < childCount; ++i)
-        {
-            child.Add(gameObject.transform.GetChild(i));
-
-        }
-
-        foreach (var ob in child)
-        {
-            var grandChildrenCount = ob.childCount;
-            for (int i = 0; i < grandChildrenCount; ++i)
-            {
-                var block = ob.GetChild(i).gameObject;
-                if (block.GetComponent<IResetObject>() != null)
-                {
-                    BlocksOriginStatus temp = new BlocksOriginStatus();
-                    temp.blockObject = block;
-
-                    if (block.activeSelf)
-                    {
-                        temp.isOn = true;
-
-                    }
-                    else
-                    {
-                        temp.isOn = false;
-                    }
-                    originBlockStatus.Add(temp);
-                }
-            }
-            Debug.Log(originBlockStatus.Count);
-        }
-
-    }
     IEnumerator AttachObject()
     {
         yield return null;
 
-        GetChildren();
+        GetObjectTiles();
+        
+    }
 
+    private void GetObjectTiles()
+    {
+        var childCount = gameObject.transform.childCount;
+        for (int i = 0; i < childCount; ++i)
+        {
+            var child = gameObject.transform.GetChild(i);
+            
+            if (child.gameObject.layer == LayerMask.NameToLayer("ObjectTile"))
+            {
+                objectTiles.Add(child.gameObject);
+            }
+                
+        }
+        //save the objects status
+        SaveStatus();
+    }
+
+    private void SaveStatus()
+    {
+
+        foreach (var block in objectTiles)
+        {
+            BlocksOriginStatus temp = new BlocksOriginStatus();
+            temp.blockObject = block;
+            Debug.Log(block.activeSelf);
+            if (block.activeSelf)
+            {
+                
+                temp.isOn = true;
+
+            }
+            else
+            {
+                temp.isOn = false;
+            }
+            originBlockStatus.Add(temp);
+            
+        }
+        Debug.Log("block save count: " + originBlockStatus.Count);
+    }
+
+    private void SetObjectTileActive()
+    {
+        foreach (var block in originBlockStatus)
+        {
+            block.blockObject.SetActive(block.isOn);
+        }
     }
 
 
 
     private void OnEnable()
     {
+        //GetChildren();
+        Debug.Log("Set");
+       
         var switchcheck = false;
         enemies = new List<GameObject>();
         var childCount = gameObject.transform.childCount;
@@ -137,8 +131,7 @@ public class StageController : MonoBehaviour
                 break;
             }
         }
-        //    TileColorManager.instance.ChangeTileMaterial(transform.name, false);
-
+        
         foreach (var green in greenWall)
         {
             green.SetActive(true);
@@ -148,7 +141,7 @@ public class StageController : MonoBehaviour
             StartCoroutine(DisablePortal());
 
         ResetObject();
-
+        SetObjectTileActive();
         if (!isClear)
         {
             TileColorManager.instance.ChangeTileMaterial(transform.name, false);
@@ -157,21 +150,27 @@ public class StageController : MonoBehaviour
 
     public void ResetObject()
     {
-        //foreach (var block in originBlockStatus)
-        //{
-        //    if (block.blockObject.GetComponent<BoxTile>() != null)
-        //    {
-        //        block.blockObject.GetComponent<BoxTile>().ResetObject();
-        //        Debug.Log("block");
-        //    }
-
-        //    //block.blockObject.SetActive(block.isOn);
-        //}
-
-        foreach (var fall in fallingtile)
+        foreach (var obj in objectTiles)
         {
-            fall.gameObject.SetActive(true);
-            fall.ResetObject();
+            //if (obj.GetComponent<FallingTile>() != null || obj.GetComponent<PushBomb>() != null)
+            //{
+            //    //Debug.Log("enable");
+            //    obj.gameObject.SetActive(true);
+            //}
+            obj.GetComponent<ObjectTile>().ResetObject();
+        }
+        //foreach (var fall in fallingtile)
+        //{
+        //    fall.gameObject.SetActive(true);
+        //    fall.ResetObject();
+        //}
+    }
+
+    private void SetObjectTileOriginPos()
+    {
+        foreach (var obj in objectTiles)
+        {
+            obj.GetComponent<ObjectTile>().SetOriginPos();
         }
     }
 

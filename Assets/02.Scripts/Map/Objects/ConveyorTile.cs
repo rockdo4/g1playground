@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConveyorTile : MonoBehaviour
+public class ConveyorTile : ObjectTile
 {
     public enum Direction
     {
@@ -39,7 +39,17 @@ public class ConveyorTile : MonoBehaviour
         
     }
 
+    protected override void OnEnable()
+    {
+        //
+    }
+
     private void OnDisable()
+    {
+        movingObjects.Clear();
+    }
+
+    public override void ResetObject()
     {
         movingObjects.Clear();
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Cannon : MonoBehaviour, ITriggerObject, IResetObject
+public class Cannon : ObjectTile, ITriggerObject
 {
     [Header("Cannon")]
     [SerializeField] private GameObject firePosition;
@@ -98,23 +98,21 @@ public class Cannon : MonoBehaviour, ITriggerObject, IResetObject
         }
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         isTriggered = originIsTrigger;
+        timer = 0f;
+    }
+
+    public override void ResetObject()
+    {
+        isTriggered = originIsTrigger;
+        isTriggered = originIsTrigger;
+        timer = 0f;
     }
 
     public void SetObjectTrigger(bool isTrigger)
     {
         isTriggered = !isTriggered;
-    }
-
-    public void ResetObject()
-    {
-        isTriggered = originIsTrigger;
-    }
-
-    public void ActiveSelfCheck()
-    {
-        
-    }
+    }   
 }

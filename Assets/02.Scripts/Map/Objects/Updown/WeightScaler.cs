@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using System.Linq;
 
 public class WeightScaler : MonoBehaviour
 {
@@ -22,12 +23,12 @@ public class WeightScaler : MonoBehaviour
     {
         IsMovAble = true;
         CalculatedMass = 0f;
-    }
+        var objs = gameObject.GetComponentsInChildren<ObjectMass>().ToList();
 
-    private void OnDisable()
-    {
-        //SetParent the Entered object
-        GameManager.instance.player.transform.SetParent(null);
+        foreach (var obj in objs)
+        {
+            obj.transform.SetParent(null);
+        }
     }
 
     private void FixedUpdate()

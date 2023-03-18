@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BlockSwitchTile : MonoBehaviour, IResetObject
+public class BlockSwitchTile : ObjectTile
 {
     private enum BSwitchType
     {
@@ -30,11 +30,6 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
 
     //objects that stepping on the switch
     private List<GameObject> objects = new List<GameObject>();
-
-    public void ResetObject()
-    {
-        Debug.Log("switch");
-    }
 
     private void Awake()
     {
@@ -72,11 +67,19 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
     }
 
 
-    private void OnEnable()
-    {
-        
+    protected override void OnEnable()
+    {    
         objects.Clear();
         IsTriggered = false;
+        animator.SetBool("Trigger", false);
+        Resetblock();
+    }
+
+    public override void ResetObject()
+    {
+        objects.Clear();
+        IsTriggered = false;
+        animator = GetComponent<Animator>();
         animator.SetBool("Trigger", false);
         Resetblock();
     }
@@ -132,11 +135,6 @@ public class BlockSwitchTile : MonoBehaviour, IResetObject
             }
 
         }
-
-    }
-
-    public void ActiveSelfCheck()
-    {
 
     }
 }

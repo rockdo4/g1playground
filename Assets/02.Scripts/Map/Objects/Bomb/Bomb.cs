@@ -16,6 +16,7 @@ public class Bomb : MonoBehaviour
 
     private void OnEnable()
     {
+        timer = 0f;
         isTriggered = false;
     }
 
