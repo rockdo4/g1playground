@@ -13,9 +13,9 @@ public class CloseRange : SkillAttack
     public void Fire(GameObject attacker, Transform attackPivot)
     {
         var aStat = attacker.GetComponent<Status>();
-        if (aStat == null || aStat.currMp < reqMana)
+        if (aStat == null || aStat.CurrMp < reqMana)
             return;
-        aStat.currMp -= reqMana;
+        aStat.CurrMp -= reqMana;
         if (attacker.CompareTag("Player"))
             aStat.SetMpUi();
         var rangeCollider = GameManager.instance.attackColliderManager.Get<RangeCollider>(rangeColliderId);

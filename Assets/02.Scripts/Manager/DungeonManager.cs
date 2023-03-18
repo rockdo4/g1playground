@@ -190,7 +190,7 @@ public class DungeonManager : MonoBehaviour
             {
                 text.text = ((int)(time -= Time.deltaTime)).ToString();
             }
-            if (time <= 0|| playerStatus.currHp<=0)
+            if (time <= 0|| playerStatus.CurrHp<=0)
             {
                 // Time.timeScale = 0;
                 GameManager.instance.player.gameObject.SetActive(false);

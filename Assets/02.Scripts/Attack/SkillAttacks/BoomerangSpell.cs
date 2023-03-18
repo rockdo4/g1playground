@@ -10,9 +10,9 @@ public class BoomerangSpell : SkillAttack
     public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction)
     {
         var aStat = attacker.GetComponent<Status>();
-        if (aStat == null || aStat.currMp < reqMana)
+        if (aStat == null || aStat.CurrMp < reqMana)
             return;
-        aStat.currMp -= reqMana;
+        aStat.CurrMp -= reqMana;
         if (attacker.CompareTag("Player"))
             aStat.SetMpUi();
         var projectile = GameManager.instance.attackColliderManager.Get<Projectile>(projectileId);

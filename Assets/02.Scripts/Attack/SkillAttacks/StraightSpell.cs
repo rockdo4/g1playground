@@ -14,9 +14,9 @@ public class StraightSpell : SkillAttack
     {
         var aStat = attacker.GetComponent<Status>();
         MonoBehaviour monoBehaviour = attacker.GetComponent<MonoBehaviour>();
-        if (aStat == null || aStat.currMp < reqMana)
+        if (aStat == null || aStat.CurrMp < reqMana)
             return; 
-        aStat.currMp -= reqMana;
+        aStat.CurrMp -= reqMana;
         if (attacker.CompareTag("Player"))
             aStat.SetMpUi();
         monoBehaviour.StartCoroutine(CoFire(attacker, startPos, direction));

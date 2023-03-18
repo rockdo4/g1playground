@@ -48,20 +48,20 @@ public class CharacterStatUI : MonoBehaviour
     private void OnEnable()
     {
         status = GameManager.instance.player.GetComponent<Status>();
-        status.currHp = status.FinalValue.maxHp;
-        status.currMp = status.FinalValue.maxMp;
+        status.CurrHp = status.FinalValue.maxHp;
+        status.CurrMp = status.FinalValue.maxMp;
     }
 
     private void Update()
     {
-        hp.text = status.currHp.ToString() + " ";
+        hp.text = status.CurrHp.ToString() + " ";
         mHp.text = "/ " + status.FinalValue.maxHp.ToString();
         //hpBar.fillAmount = (float)status.currHp / (float)status.FinalValue.maxHp;
-        hpSlider.value = (float)status.currHp / (float)status.FinalValue.maxHp;
+        hpSlider.value = (float)status.CurrHp / (float)status.FinalValue.maxHp;
 
-        mp.text = status.currMp.ToString() + " ";
+        mp.text = status.CurrMp.ToString() + " ";
         mMp.text = "/ " + status.FinalValue.maxMp.ToString();
-        mpSlider.value = (float)status.currMp / (float)status.FinalValue.maxMp;
+        mpSlider.value = (float)status.CurrMp / (float)status.FinalValue.maxMp;
 
         //level.text = playerLv.ToString();
         //expSlider.value = (float)currExp / (float)maxExp;
@@ -85,13 +85,13 @@ public class CharacterStatUI : MonoBehaviour
     {
         if(currHpPotion > 0)
         {
-            if (status.FinalValue.maxHp >= status.currHp + 200)
+            if (status.FinalValue.maxHp >= status.CurrHp + 200)
             {
-                status.currHp += 200;
+                status.CurrHp += 200;
             }
             else
             {
-                status.currHp = status.FinalValue.maxHp;
+                status.CurrHp = status.FinalValue.maxHp;
             }
             currHpPotion--;
         }        
@@ -101,13 +101,13 @@ public class CharacterStatUI : MonoBehaviour
     {
         if(currMpPotion > 0)
         {
-            if (status.FinalValue.maxMp >= status.currMp + 100)
+            if (status.FinalValue.maxMp >= status.CurrMp + 100)
             {
-                status.currMp += 100;
+                status.CurrMp += 100;
             }
             else
             {
-                status.currMp = status.FinalValue.maxMp;
+                status.CurrMp = status.FinalValue.maxMp;
             }
             currMpPotion--;
         }        
