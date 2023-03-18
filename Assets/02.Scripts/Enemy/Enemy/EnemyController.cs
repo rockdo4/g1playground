@@ -163,10 +163,8 @@ public class EnemyController : Enemy, IAttackable
     }
     protected override void IdleUpdate()
     {
-
         ChangePattern();
         RayShooter(searchRange);
-
     }
     protected override void PatrolUpdate()
     {
@@ -412,18 +410,5 @@ public class EnemyController : Enemy, IAttackable
     private void DieDone()
     {
         gameObject.SetActive(false);
-    }
-
-    public void EAttack()
-    {
-        switch (meleeAttack)
-        {
-            case EnemyMeleeAttack:
-                {
-                    attackBox.SetActive(true);
-                }
-                break;
-        }
-
     }
 }
