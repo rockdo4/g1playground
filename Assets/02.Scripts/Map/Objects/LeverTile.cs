@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeverTile : MonoBehaviour, IResetObject
+public class LeverTile : ObjectTile
 {
     private Animator animator;
 
@@ -10,12 +10,6 @@ public class LeverTile : MonoBehaviour, IResetObject
     [SerializeField] private bool isTrigger = false;
 
     private bool originTrigger;
-
-    public void ResetObject()
-    {
-        isTrigger = originTrigger;
-        animator.SetBool("IsTrigger", isTrigger);
-    }
 
     private void Awake()
     {
@@ -28,18 +22,19 @@ public class LeverTile : MonoBehaviour, IResetObject
     {
         
         animator.SetBool("IsTrigger", isTrigger);
-        //if (triggerObject.GetComponent<ITriggerObject>() != null)
-        //{
-        //    triggerObject.GetComponent<ITriggerObject>().SetObjectTrigger(isTrigger);
-        //}
-        
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         isTrigger = originTrigger;
         animator.SetBool("IsTrigger", isTrigger);
         
+    }
+
+    public override void ResetObject()
+    {
+        isTrigger = originTrigger;
+        animator.SetBool("IsTrigger", isTrigger);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -53,11 +48,6 @@ public class LeverTile : MonoBehaviour, IResetObject
                 triggerObject.GetComponent<ITriggerObject>().SetObjectTrigger(isTrigger);
             }
         }
-        
-    }
-
-    public void ActiveSelfCheck()
-    {
         
     }
 }

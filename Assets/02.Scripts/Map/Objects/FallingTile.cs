@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class FallingTile : MonoBehaviour, IResetObject
+public class FallingTile : ObjectTile
 {
     [SerializeField] private new Collider collider;
     private Rigidbody rb;
@@ -14,7 +14,6 @@ public class FallingTile : MonoBehaviour, IResetObject
     private float timer = 0f;
     private bool trigger = false;
 
-    private Vector3 originPos;
     private Vector3 boxScale;
 
     private void Awake()
@@ -32,26 +31,37 @@ public class FallingTile : MonoBehaviour, IResetObject
             if (timer >= delay) 
             {
                 timer = 0f;
-                //gameObject.SetActive(false);
                 collider.isTrigger = trigger;
                 rb.isKinematic = false;
                 trigger = false;
+
                 StartCoroutine(CoActiveFalse());
-                //Destroy(gameObject, destroyDelay);
             }
         }        
     }
 
     private IEnumerator CoActiveFalse()
     {
+        //wait for delay after falling then set active to false
         yield return new WaitForSeconds(destroyDelay);
         rb.isKinematic = true;
         gameObject.SetActive(false);
         StopAllCoroutines();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        timer = 0f;
+        StopAllCoroutines();
+        transform.position = originPos;
+        trigger = false;
+        collider.isTrigger = trigger;
+        rb.isKinematic = true;
+    }
+
+    public override void ResetObject()
+    {
+        timer = 0f;
         StopAllCoroutines();
         transform.position = originPos;
         trigger = false;
@@ -75,19 +85,5 @@ public class FallingTile : MonoBehaviour, IResetObject
             }
            
         }
-    }
-
-    public void ResetObject()
-    {
-        StopAllCoroutines();
-        transform.position = originPos;
-        trigger = false;
-        collider.isTrigger = trigger;
-        rb.isKinematic = true;
-    }
-
-    public void ActiveSelfCheck()
-    {
-        
-    }
+    } 
 }

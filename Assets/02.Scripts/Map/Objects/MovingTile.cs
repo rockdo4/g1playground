@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingTile : MonoBehaviour, ITriggerObject, IResetObject
+public class MovingTile : ObjectTile, ITriggerObject
 {
     private enum FirstMove
     {
@@ -19,13 +19,9 @@ public class MovingTile : MonoBehaviour, ITriggerObject, IResetObject
     [SerializeField] private FirstMove nextDir;
 
     private bool originIsTrigger;
-    private Vector3 originPos;
     private FirstMove originDir;
 
-    public void SetObjectTrigger(bool isTrigger)
-    {
-        isTriggered = !isTriggered;
-    }
+    
 
 
     private void Awake()
@@ -43,11 +39,23 @@ public class MovingTile : MonoBehaviour, ITriggerObject, IResetObject
         }
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         isTriggered = originIsTrigger;
         transform.position = originPos;
         nextDir = originDir;
+    }
+
+    public override void ResetObject()
+    {
+        isTriggered = originIsTrigger;
+        transform.position = originPos;
+        nextDir = originDir;
+    }
+
+    public void SetObjectTrigger(bool isTrigger)
+    {
+        isTriggered = !isTriggered;
     }
 
     private void Move(FirstMove move)
@@ -94,17 +102,5 @@ public class MovingTile : MonoBehaviour, ITriggerObject, IResetObject
         {
             nextDir = FirstMove.A;
         }
-    }
-
-    public void ResetObject()
-    {
-        isTriggered = originIsTrigger;
-        transform.position = originPos;
-        nextDir = originDir;
-    }
-
-    public void ActiveSelfCheck()
-    {
-        
     }
 }
