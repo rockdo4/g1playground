@@ -262,7 +262,6 @@ public class PlayerController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.2f);
-
             if (enemies == null)
             {
                 Debug.Log("Failed");
@@ -273,7 +272,8 @@ public class PlayerController : MonoBehaviour
             var count = 0;
             foreach (var enemy in enemies)
             {
-                if (enemy.gameObject.activeSelf && agent.CalculatePath(enemy.transform.position, path))
+                if (enemy.GetComponent<Enemy>().GetIsLive() && 
+                    agent.CalculatePath(enemy.transform.position, path))
                 {
                     count++;
                     enemyPathLength = GetLength(path);
@@ -281,13 +281,25 @@ public class PlayerController : MonoBehaviour
                     {
                         temp = enemyPathLength;
                         target = enemy.transform;
-                        if (agent.transform.position.x == target.transform.position.x)
-                            SetMoveX(target.transform.position.x - agent.transform.position.x > 0 ? 1f : -1f);
+                        agent.isStopped = false;
                     }
                 }
             }
-            if(target != null)
+
+            if (Vector3.Distance(agent.transform.position, target.position) < 2f)
+            {
+                agent.isStopped = true;
+                SetMoveX(target.position.x - agent.transform.position.x);
+            }
+            else
+                SetMoveX(agent.velocity.x);
+
+            if (!agent.isStopped)
+            {
+                Debug.Log(target.name);
                 agent.SetDestination(target.transform.position);
+            }
+
 
             //Debug.Log("!");
             if (count == 0)
@@ -417,12 +429,6 @@ public class PlayerController : MonoBehaviour
         public override void Update()
         {
             playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
-            if (playerController.agent.velocity.x > 0)
-                playerController.SetMoveX(1f);
-            else if (playerController.agent.velocity.x < 0)
-                playerController.SetMoveX(-1f);
-            else
-                playerController.SetMoveX(0f);
         }
 
         public override void Exit()
