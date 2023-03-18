@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "StraightSpell", menuName = "SkillAttack/EnemyStraightSpell")]
+[CreateAssetMenu(fileName = "EnemyStraightSpell", menuName = "SkillAttack/EnemyStraightSpell")]
 public class EnemyStraightSpell : SkillAttack
 {
     public string projectileId;

@@ -402,7 +402,6 @@ public class EnemyController : Enemy, IAttackable
         State = EnemyState.Chase;
         attackBox.SetActive(false);
     }
-
     private void TakeDamageDone()
     {
         if (State == EnemyState.Die)
@@ -413,5 +412,18 @@ public class EnemyController : Enemy, IAttackable
     private void DieDone()
     {
         gameObject.SetActive(false);
+    }
+
+    public void EAttack()
+    {
+        switch (meleeAttack)
+        {
+            case EnemyMeleeAttack:
+                {
+                    attackBox.SetActive(true);
+                }
+                break;
+        }
+
     }
 }
