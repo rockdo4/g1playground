@@ -79,7 +79,7 @@ public class StageController : MonoBehaviour
         {
             BlocksOriginStatus temp = new BlocksOriginStatus();
             temp.blockObject = block;
-            Debug.Log(block.activeSelf);
+
             if (block.activeSelf)
             {
                 
@@ -93,7 +93,6 @@ public class StageController : MonoBehaviour
             originBlockStatus.Add(temp);
             
         }
-        Debug.Log("block save count: " + originBlockStatus.Count);
     }
 
     private void SetObjectTileActive()
@@ -108,9 +107,6 @@ public class StageController : MonoBehaviour
 
     private void OnEnable()
     {
-        //GetChildren();
-        Debug.Log("Set");
-       
         var switchcheck = false;
         enemies = new List<GameObject>();
         var childCount = gameObject.transform.childCount;
@@ -151,19 +147,10 @@ public class StageController : MonoBehaviour
     public void ResetObject()
     {
         foreach (var obj in objectTiles)
-        {
-            //if (obj.GetComponent<FallingTile>() != null || obj.GetComponent<PushBomb>() != null)
-            //{
-            //    //Debug.Log("enable");
-            //    obj.gameObject.SetActive(true);
-            //}
+        {       
             obj.GetComponent<ObjectTile>().ResetObject();
         }
-        //foreach (var fall in fallingtile)
-        //{
-        //    fall.gameObject.SetActive(true);
-        //    fall.ResetObject();
-        //}
+        
     }
 
     private void SetObjectTileOriginPos()
