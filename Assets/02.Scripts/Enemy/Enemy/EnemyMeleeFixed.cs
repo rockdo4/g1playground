@@ -37,6 +37,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
                     mainColl.enabled = true;
                     break;
                 case EnemyState.Hide:
+                    mask.SetActive(true);
                     agent.enabled = true;
                     agent.isStopped = true;
                     agent.velocity = Vector3.zero;
@@ -89,7 +90,6 @@ public class EnemyMeleeFixed : Enemy, IAttackable
     {
         base.OnEnable();
 
-        //mask.SetActive(true);
         attackBox.SetActive(false);
         State = EnemyState.None;
         mask.SetActive(true);
@@ -149,7 +149,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
     }
     protected override void IdleUpdate()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) >= searchRange * 2f)
+        if (Vector3.Distance(transform.position, player.transform.position) >= searchRange * 5f)
         {
             State = EnemyState.None;
             animator.SetTrigger("Hide");
