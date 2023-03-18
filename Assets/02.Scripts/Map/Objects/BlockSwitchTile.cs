@@ -79,6 +79,7 @@ public class BlockSwitchTile : ObjectTile
     {
         objects.Clear();
         IsTriggered = false;
+        animator = GetComponent<Animator>();
         animator.SetBool("Trigger", false);
         Resetblock();
     }

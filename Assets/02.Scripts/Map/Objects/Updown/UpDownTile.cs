@@ -92,6 +92,13 @@ public class UpDownTile : ObjectTile
         blockB.GetComponent<WeightScaler>().ResetWeight();
     }
 
+    public override void SetOriginPos()
+    {
+        base.SetOriginPos();
+        blockAPos = blockA.transform.position;
+        blockBPos = blockB.transform.position;
+    }
+
     private void SetState(State state)
     {
         //currState = state;

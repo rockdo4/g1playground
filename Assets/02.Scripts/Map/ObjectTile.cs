@@ -16,4 +16,9 @@ public class ObjectTile : MonoBehaviour
         transform.position = originPos;
     }
 
+    public virtual void SetOriginPos()
+    {
+        originPos = transform.position;
+    }
+
 }

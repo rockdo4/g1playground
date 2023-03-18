@@ -39,10 +39,15 @@ public class BoxTile : ObjectTile
     public override void ResetObject()
     {
         transform.position = originPos;
-        if (gameObject.activeSelf)
-            rigidbody.isKinematic = false;
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = false;
         IsPushing = false;
         timer = 0f;
+    }
+
+    public override void SetOriginPos()
+    {
+        base.SetOriginPos();
     }
 
     public void SetKinematic(bool isKinematic)

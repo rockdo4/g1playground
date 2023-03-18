@@ -53,6 +53,11 @@ public class MovingTile : ObjectTile, ITriggerObject
         nextDir = originDir;
     }
 
+    public override void SetOriginPos()
+    {
+        base.SetOriginPos();
+    }
+
     public void SetObjectTrigger(bool isTrigger)
     {
         isTriggered = !isTriggered;

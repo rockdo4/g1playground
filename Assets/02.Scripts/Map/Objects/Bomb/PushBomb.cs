@@ -29,6 +29,11 @@ public class PushBomb : ObjectTile
         TileColorManager.instance.ToInvisibleMaterial(gameObject);
     }
 
+    public override void SetOriginPos()
+    {
+        base.SetOriginPos();
+    }
+
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Player")

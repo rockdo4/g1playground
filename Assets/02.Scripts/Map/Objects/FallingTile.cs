@@ -66,7 +66,13 @@ public class FallingTile : ObjectTile
         transform.position = originPos;
         trigger = false;
         collider.isTrigger = trigger;
+        rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
+    }
+
+    public override void SetOriginPos()
+    {
+        base.SetOriginPos();
     }
 
     public void SetTrigger(bool isTrigger)

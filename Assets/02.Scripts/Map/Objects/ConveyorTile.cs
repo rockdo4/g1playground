@@ -39,6 +39,11 @@ public class ConveyorTile : ObjectTile
         
     }
 
+    protected override void OnEnable()
+    {
+        //
+    }
+
     private void OnDisable()
     {
         movingObjects.Clear();
