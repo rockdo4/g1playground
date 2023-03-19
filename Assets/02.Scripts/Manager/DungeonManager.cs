@@ -72,6 +72,7 @@ public class DungeonManager : MonoBehaviour
     private Canvas remaningtime;
 
     private List<GameObject> enemies;
+    public List<GameObject> Enemies { get { return enemies; } set { enemies = value; } }
     private int todayPlayCount;
     private bool isDungeon = false;
 

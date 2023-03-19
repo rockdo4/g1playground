@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -147,7 +148,10 @@ public class PlayerController : MonoBehaviour
         agent.enabled = !agent.enabled;
         if (IsAuto)
         {
-            enemies = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().GetStageEnemies();
+            if (SceneManager.GetActiveScene().name == "Scene02")
+                enemies = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().GetStageEnemies();
+            else if (SceneManager.GetActiveScene().name != "Scene02")
+                enemies = DungeonManager.instance.Enemies;
             cor = StartCoroutine(SearchTarget());
             SetState<AutoMoveState>();
         }
@@ -308,6 +312,8 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("!");
             if (count == 0)
             {
+                AgentOnOff();
+                autoToggle.isOn = false;
                 //문 따라가게
                 //var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
                 
