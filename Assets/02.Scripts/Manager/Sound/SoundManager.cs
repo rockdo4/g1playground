@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -25,7 +28,10 @@ public class SoundManager : MonoBehaviour
 
     public const string Master_KEY = "MasterKey";
     public const string BGM_KEY = "BGMKey";
-    public const string SE_KEY = "SEKey";    
+    public const string SE_KEY = "SEKey";
+
+    public string BgmFolderPath = "Sounds/BGM";
+    public string EffectFolderPath = "Sounds/Effect";
 
     private static SoundManager m_instance;
     public static SoundManager instance
@@ -49,6 +55,9 @@ public class SoundManager : MonoBehaviour
             
             Destroy(gameObject);
         }
+
+        bgmClips = Resources.LoadAll<AudioClip>(BgmFolderPath).ToList();
+        seClips = Resources.LoadAll<AudioClip>(EffectFolderPath).ToList();
 
         //load volumes on load
         LoadVolume();
@@ -99,8 +108,7 @@ public class SoundManager : MonoBehaviour
     public void PlaySoundEffect(AudioClip clip)
     {
         //seSource.Stop();
-        seSource.PlayOneShot(clip);
-        
+        seSource.PlayOneShot(clip);   
     }
 
     //Pause playing SoundEffect

@@ -13,6 +13,8 @@ public class PlayerAttack : MonoBehaviour
     {
         public WeaponTypes weaponType;
         public AnimationClip clip;
+        public string attackSound;
+        public string hitSound;
         public float attackSpeed;
         public float damageTime;
         public float slowModeDuration;
@@ -56,10 +58,12 @@ public class PlayerAttack : MonoBehaviour
     private void Update()
     {
         playerAnimator.SetFloat("AttackSpeed", weaponAnimDict[currWeaponType].attackSpeed); // set weapon temporarily, need to set current weapon's attackSpeed
+#if UNITY_EDITOR
         foreach (var key in weaponAnimDictKeys)
         {
             SetDamageTime(key);
         }
+#endif
     }
 
     public void SetDamageTime(WeaponTypes type)
@@ -68,6 +72,11 @@ public class PlayerAttack : MonoBehaviour
         if (!(Mathf.Approximately(temp.lastDamageTime, temp.damageTime) &&
             Mathf.Approximately(temp.lastSlowModeDuration, temp.slowModeDuration)))
         {
+            AnimationEvent attackSound = new AnimationEvent();
+            attackSound.time = temp.clip.length * 0.05f;
+            attackSound.functionName = "AttackSound";
+            attackSound.objectReferenceParameter = this;
+
             AnimationEvent executeAttack = new AnimationEvent();
             executeAttack.time = temp.clip.length * temp.damageTime;
             executeAttack.functionName = "ExecuteAttack";
@@ -79,6 +88,7 @@ public class PlayerAttack : MonoBehaviour
             endAttack.objectReferenceParameter = this;
 
             temp.clip.events = null;
+            temp.clip.AddEvent(attackSound);
             temp.clip.AddEvent(executeAttack);
             temp.clip.AddEvent(endAttack);
 
@@ -90,6 +100,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void StartAttack() => playerAnimator.SetBool("IsAttacking", true);
     public void EndAttack() => playerAnimator.SetBool("IsAttacking", false);
+
     public void ExecuteAttack()
     {
         var effect = GameManager.instance.effectManager.GetEffect("Sword Slash 1");
@@ -98,15 +109,21 @@ public class PlayerAttack : MonoBehaviour
         effect.transform.forward = transform.forward;
         attackBox.ExecuteAttack();
     }
+
     public void StartSlowMode()
     {
         Time.timeScale = slowModeSpeed;
         StartCoroutine(CoEndSlowMode());
     }
+
     private IEnumerator CoEndSlowMode()
     {
         yield return new WaitForSeconds(weaponAnimDict[currWeaponType].slowModeDuration * slowModeSpeed);
         Time.timeScale = 1f;
     }
+
     public void AttackTarget(GameObject target, Vector3 attackPos) => basicAttack.ExecuteAttack(gameObject, target, attackPos);
+
+    public void AttackSound() => SoundManager.instance.PlaySoundEffect(weaponAnimDict[currWeaponType].attackSound);
+    public void HitSound() => SoundManager.instance.PlaySoundEffect(weaponAnimDict[currWeaponType].hitSound);
 }

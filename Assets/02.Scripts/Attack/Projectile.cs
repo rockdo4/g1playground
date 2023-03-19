@@ -36,7 +36,7 @@ public class Projectile : AttackCollider
         }
     }
 
-    public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction, float distance, float lifeTime, bool isPenetrable, bool isReturnable)
+    public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction, float distance, float lifeTime, bool isPenetrable, bool isReturnable, string fireSoundEffect, string inUseSoundEffect,  string hitSoundEffect)
     {
         isReturning = false;
         this.attacker = attacker;
@@ -45,6 +45,9 @@ public class Projectile : AttackCollider
         this.isReturnable = isReturnable;
         transform.position = startPos;
         transform.forward = direction;
+        this.fireSoundEffect = fireSoundEffect;
+        this.inUseSoundEffect = inUseSoundEffect;
+        this.hitSoundEffect = hitSoundEffect;
         rb.velocity = distance / lifeTime * transform.forward;
         if (isReturnable)
             rb.velocity *= 2f;
@@ -70,6 +73,10 @@ public class Projectile : AttackCollider
                 GameManager.instance.effectManager.ReturnEffectOnTime(flashEffect, flash, flashPsParts.main.duration);
             }
         }
+        if (!string.IsNullOrEmpty(fireSoundEffect))
+            SoundManager.instance.PlaySoundEffect(fireSoundEffect);
+        if (!string.IsNullOrEmpty(inUseSoundEffect))
+            SoundManager.instance.PlaySoundEffect(inUseSoundEffect);
     }
 
     protected override bool OnTriggerStay(Collider other)

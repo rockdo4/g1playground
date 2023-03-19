@@ -29,7 +29,7 @@ public class StraightSpell : SkillAttack
         {
             var projectile = GameManager.instance.attackColliderManager.Get<Projectile>(projectileId);
             projectile.OnCollided = ExecuteAttack;
-            projectile.Fire(attacker, startPos, direction, range, lifeTime, false, false);
+            projectile.Fire(attacker, startPos, direction, range, lifeTime, false, false, fireSoundEffect, inUseSoundEffect, hitSoundEffect);
             if (++count >= maxCount)
                 break;
             yield return new WaitForSeconds(interval);

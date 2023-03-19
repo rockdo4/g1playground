@@ -17,6 +17,6 @@ public class BoomerangSpell : SkillAttack
             aStat.SetMpUi();
         var projectile = GameManager.instance.attackColliderManager.Get<Projectile>(projectileId);
         projectile.OnCollided = ExecuteAttack;
-        projectile.Fire(attacker, startPos, direction, range, lifeTime, true, true);
+        projectile.Fire(attacker, startPos, direction, range, lifeTime, true, true, fireSoundEffect, inUseSoundEffect, hitSoundEffect);
     }
 }
