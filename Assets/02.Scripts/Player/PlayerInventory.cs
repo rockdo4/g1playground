@@ -121,7 +121,7 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void UseConsumable(string id)
+    public void UseConsumable(string id, int need = 1)
     {
         int len = consumables.Count;
         for (int i = len - 1; i >= 0; --i)
@@ -129,13 +129,22 @@ public class PlayerInventory : MonoBehaviour
             if (consumables[i].id == id)
             {
                 var newConsumable = consumables[i];
-                if (--newConsumable.count < 1)
-                    consumables.Remove(consumables[i]);
-                else
+                if (need < newConsumable.count)
+                {
+                    newConsumable.count -= need;
                     consumables[i] = newConsumable;
+                    return;
+                }
+                else
+                {
+                    need -= newConsumable.count;
+                    consumables.Remove(consumables[i]);
+                }
             }
         }
     }
+
+
 
     public void UsePotion(Potions potion)
     {
