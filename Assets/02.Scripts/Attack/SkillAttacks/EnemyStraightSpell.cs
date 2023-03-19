@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyStraightSpell : SkillAttack
 {
     public string projectileId;
+
     public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction)
     {
         var aStat = attacker.GetComponent<Status>();
@@ -15,7 +16,7 @@ public class EnemyStraightSpell : SkillAttack
 
         var projectile = GameManager.instance.attackColliderManager.Get<Projectile>(projectileId);
         projectile.OnCollided = ExecuteAttack;
-        projectile.Fire(attacker, startPos, direction, range, lifeTime, false, false);
+        projectile.Fire(attacker, startPos, direction, range, lifeTime, false, false, fireSoundEffect, inUseSoundEffect, hitSoundEffect);
     }
 
 

@@ -21,8 +21,8 @@ public class CloseRange : SkillAttack
         var rangeCollider = GameManager.instance.attackColliderManager.Get<RangeCollider>(rangeColliderId);
         rangeCollider.OnCollided = ExecuteAttack;
         if (isAttachedToAttacker)
-            rangeCollider.Fire(attacker, attackPivot, true, lifeTime, isContinuousAttack, interval);
+            rangeCollider.Fire(attacker, attackPivot, true, lifeTime, isContinuousAttack, interval, fireSoundEffect, inUseSoundEffect, hitSoundEffect);
         else
-            rangeCollider.Fire(attacker, attackPivot.position, attackPivot.forward, true, lifeTime, isContinuousAttack, interval);
+            rangeCollider.Fire(attacker, attackPivot.position, attackPivot.forward, true, lifeTime, isContinuousAttack, interval, fireSoundEffect, inUseSoundEffect, hitSoundEffect);
     }
 }

@@ -29,7 +29,7 @@ public class RangeCollider : AttackCollider
             base.Update();
         if (isContinuousAttack)
         {
-            attackTimer += Time.time;
+            attackTimer += Time.deltaTime;
             if (attackTimer > attackInterval)
             {
                 attackTimer = 0f;
@@ -47,19 +47,22 @@ public class RangeCollider : AttackCollider
         }
     }
 
-    public void Fire(GameObject attacker, Transform attackPivot, bool useLifeTime, float lifeTime, bool isContinuousAttack, float interval)
+    public void Fire(GameObject attacker, Transform attackPivot, bool useLifeTime, float lifeTime, bool isContinuousAttack, float interval, string fireSoundEffect, string inUseSoundEffect, string hitSoundEffect)
     {
         this.attackPivot = attackPivot;
-        Fire(attacker, attackPivot.position, attackPivot.forward, useLifeTime, lifeTime, isContinuousAttack, interval);
+        Fire(attacker, attackPivot.position, attackPivot.forward, useLifeTime, lifeTime, isContinuousAttack, interval, fireSoundEffect, inUseSoundEffect, hitSoundEffect);
     }
 
-    public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction, bool useLifeTime, float lifeTime, bool isContinuousAttack, float interval)
+    public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction, bool useLifeTime, float lifeTime, bool isContinuousAttack, float interval, string fireSoundEffect, string inUseSoundEffect, string hitSoundEffect)
     {
         this.attacker = attacker;
         this.useLifetime = useLifeTime;
         this.lifeTime = lifeTime;
         this.isContinuousAttack = isContinuousAttack;
         this.attackInterval = interval;
+        this.fireSoundEffect = fireSoundEffect;
+        this.inUseSoundEffect = inUseSoundEffect;
+        this.hitSoundEffect = hitSoundEffect;
         transform.position = startPos;
         transform.forward = direction;
 
@@ -84,5 +87,9 @@ public class RangeCollider : AttackCollider
                 GameManager.instance.effectManager.ReturnEffectOnTime(flashEffect, flash, flashPsParts.main.duration);
             }
         }
+        if (!string.IsNullOrEmpty(fireSoundEffect))
+            SoundManager.instance.PlaySoundEffect(fireSoundEffect);
+        if (!string.IsNullOrEmpty(inUseSoundEffect))
+            SoundManager.instance.PlaySoundEffect(inUseSoundEffect);
     }
 }

@@ -16,6 +16,9 @@ public class SkillAttack : AttackDefinition
     public float stunTime;
     public float CoolDown;
     public bool isOnOffSkill = false;
+    public string fireSoundEffect;
+    public string inUseSoundEffect;
+    public string hitSoundEffect;
 
     public void SetSkill(string id)
     {

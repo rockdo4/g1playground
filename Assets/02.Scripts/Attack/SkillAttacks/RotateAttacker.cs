@@ -90,7 +90,7 @@ public class RotateAttacker : SkillAttack
         {
             var rangeCollider = GameManager.instance.attackColliderManager.Get<RangeCollider>(rangeColliderId);
             rangeCollider.OnCollided = ExecuteAttack;
-            rangeCollider.Fire(attacker, attackPivot.position, attackPivot.forward, false, lifeTime, isContinuousAttack, interval);
+            rangeCollider.Fire(attacker, attackPivot.position, attackPivot.forward, false, lifeTime, isContinuousAttack, interval, fireSoundEffect, inUseSoundEffect, hitSoundEffect);
             rangeColliders.Add(rangeCollider);
         }
     }

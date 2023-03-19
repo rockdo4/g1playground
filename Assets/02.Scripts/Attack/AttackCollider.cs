@@ -13,6 +13,9 @@ public abstract class AttackCollider : MonoBehaviour
     [NonSerialized] public List<GameObject> effects = new List<GameObject>();
     public string hitEffect;
     public string flashEffect;
+    protected string fireSoundEffect;
+    protected string inUseSoundEffect;
+    protected string hitSoundEffect;
     protected List<GameObject> attackedList = new List<GameObject>();
     protected bool onlyCollideLivings = false;
 
@@ -36,6 +39,7 @@ public abstract class AttackCollider : MonoBehaviour
     {
         if (!other.gameObject.activeSelf ||
             other.CompareTag("AttackBox") ||
+            other.CompareTag("Portal") ||
             (other.attachedRigidbody != null && other.attachedRigidbody.CompareTag(attacker.tag)) ||
             attackedList.Contains(other.gameObject))
             return false;
@@ -79,6 +83,8 @@ public abstract class AttackCollider : MonoBehaviour
                 }
             }
         }
+        if (!string.IsNullOrEmpty(hitSoundEffect))
+            SoundManager.instance.PlaySoundEffect(hitSoundEffect);
         return true;
     }
 }
