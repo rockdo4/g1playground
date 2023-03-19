@@ -5,8 +5,8 @@ using static PlayerController;
 
 public class AttackedKnockBack : MonoBehaviour, IAttackable
 {
-    public float up;
-    public float force;
+    private float up = 1f;
+    private float force = 7f;
     private Rigidbody rb;
 
     private void Awake()
