@@ -16,7 +16,6 @@ public class PlayerBodyTrigger : MonoBehaviour
         public void Transparent() => renderer.material = invisibleRendering;
     }
 
-    private int mode;
     public float damagedDelay;
     private float timer;
     private float switchTimer;
@@ -49,15 +48,10 @@ public class PlayerBodyTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (mode < 1)
-            return;
         if (isOnDelay || !other.CompareTag("EnemyBody"))
             return;
         Attack attack;
-        if (mode > 1)
-            attack = new Attack(damage);
-        else
-            attack = new Attack(damage, false);
+        attack = new Attack(damage);
         var attackables = transform.parent.GetComponents<IAttackable>();
         var attacker = other.transform.parent.gameObject;
         var attackPos = other.transform.position;
@@ -84,12 +78,6 @@ public class PlayerBodyTrigger : MonoBehaviour
             player.Opaque();
             weapon.Opaque();
         }
-    }
-
-    public void SetMode(int mode)
-    {
-        this.mode = mode;
-        End();
     }
 
     private void End()
