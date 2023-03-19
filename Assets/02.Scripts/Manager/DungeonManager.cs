@@ -200,6 +200,8 @@ public class DungeonManager : MonoBehaviour
             levs.Append("Level");
             levs.Append((i + 1).ToString());
             dungeonLevel.transform.Find("Level").transform.Find(levs.ToString()).GetComponent<Button>().interactable = true;
+            dungeonLevel.transform.Find("Level").transform.Find(levs.ToString()).transform.Find("Image").gameObject.SetActive(false);
+
         }
 
     }
