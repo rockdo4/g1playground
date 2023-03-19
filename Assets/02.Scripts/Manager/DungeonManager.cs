@@ -136,7 +136,7 @@ public class DungeonManager : MonoBehaviour
     private void LoadFile()
     {
         var saveData = SaveLoadSystem.Load(SaveData.Types.Dungeon) as SaveDugeonDataVer1;
-        if (saveData == null)
+        if (saveData == null || saveData.playedday == null)
         {
             var newsaveData = new SaveDugeonDataVer1();
             newsaveData.mondaylv = "1";
@@ -353,7 +353,7 @@ public class DungeonManager : MonoBehaviour
         isDungeon = true;
         playerStatus= GameManager.instance.player.GetComponent<Status>();
         var player = GameObject.FindWithTag("Player").GetComponent<PlayerSkills>();
-
+        player.GetComponent<PlayerInventory>().RefillPotions();
         player.SetEmpty();
         player.SetSkill(0, PlayerDataManager.instance.currskill1);
         player.SetSkill(1, PlayerDataManager.instance.currskill2);
