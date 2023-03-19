@@ -49,7 +49,7 @@ public class Portal : MonoBehaviour
             init = true;
             nextStage.gameObject.SetActive(true);
             nextStage.GetComponent<StageController>().PrevStageName = MapManager.instance.GetCurrentMapName();
-            Debug.Log(nextStage.GetComponent<StageController>().PrevStageName);
+            Debug.Log(MapManager.instance.GetCurrentMapName());
             var nextstageportals = nextStage.GetComponentsInChildren<Portal>();
             foreach (var portal in nextstageportals)
             {
@@ -57,6 +57,10 @@ public class Portal : MonoBehaviour
                 {
                     other.gameObject.transform.position = portal.GetPos();
                     other.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    var playerStat = other.GetComponent<Status>();
+                    playerStat.currHp = playerStat.FinalValue.maxHp;
+                    playerStat.currMp = playerStat.FinalValue.maxMp;
+                    other.GetComponent<PlayerInventory>()?.RefillPotions();
                     portal.CanUse = true;
                     //other.GetComponent<PlayerController>().AgentOnOff();
 

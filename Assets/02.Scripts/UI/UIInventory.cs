@@ -56,7 +56,7 @@ public class UIInventory : MonoBehaviour
     {
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
-        string[] ids = null;
+        List<string> ids = null;
         int len = 0;
         switch ((ItemTypes)itemType)
         {
@@ -64,7 +64,7 @@ public class UIInventory : MonoBehaviour
                 {
                     var table = DataTableMgr.GetTable<WeaponData>();
                     ids = playerInventory.weapons;
-                    len = playerInventory.weapons.Length;
+                    len = playerInventory.weapons.Count;
                     for (int i = 0; i < len; ++i)
                     {
                         slotList[i].Set(i, table.Get(ids[i]));
@@ -75,7 +75,7 @@ public class UIInventory : MonoBehaviour
                 {
                     var table = DataTableMgr.GetTable<ArmorData>();
                     ids = playerInventory.armors;
-                    len = playerInventory.armors.Length;
+                    len = playerInventory.armors.Count;
                     for (int i = 0; i < len; ++i)
                     {
                         slotList[i].Set(i, table.Get(ids[i]));
@@ -85,8 +85,13 @@ public class UIInventory : MonoBehaviour
             case ItemTypes.Consumable:
                 {
                     var table = DataTableMgr.GetTable<ConsumeData>();
-                    ids = playerInventory.consumes;
-                    len = playerInventory.consumes.Length;
+                    var consumables = playerInventory.consumables;
+                    ids = new List<string>();
+                    foreach (var consumable in consumables)
+                    {
+                        ids.Add(consumable.id);
+                    }
+                    len = playerInventory.consumables.Count;
                     for (int i = 0; i < len; ++i)
                     {
                         slotList[i].Set(i, table.Get(ids[i]));

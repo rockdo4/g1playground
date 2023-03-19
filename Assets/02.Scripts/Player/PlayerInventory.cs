@@ -1,20 +1,45 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static PlayerInventory;
 
 public class PlayerInventory : MonoBehaviour
 {
+    [Serializable]
+    public struct Consumable
+    {
+        public string id;
+        public int count;
+    }
+
     private Status status;
-    public string[] weapons;    // for test
-    public string[] armors;     // for test
-    public string[] consumes;   // for test
-    //private List<string> weapons = new LinkedList<string>();
-    //private List<string> slots = new LinkedList<string>();
+    public string[] weaponsTemp;    // for test
+    public string[] armorsTemp;     // for test
+    [SerializeField] public Consumable[] consumablesTemp;   // for test
+
+    public List<string> weapons { get; private set; } = new List<string>();
+    public List<string> armors { get; private set; } = new List<string>();
+    public List<Consumable> consumables { get; private set; } = new List<Consumable>();
     public string CurrWeapon { get; private set; }
     public string CurrArmor { get; private set; }
+
+    // if in-game consumable item except potion exists, need to change code
+    public enum Potions
+    {
+        Hp,
+        Mp,
+    }
+    public string[] potionIds;
+    public int[] PotionCount { get; private set; } = new int[2];
+
     private void Awake()
     {
         status = GetComponent<Status>();
+        weapons = weaponsTemp.ToList();
+        armors = armorsTemp.ToList();
+        consumables = consumablesTemp.ToList();
     }
 
     public void SetWeapon(int index)
@@ -37,11 +62,10 @@ public class PlayerInventory : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-            SetWeapon(0);
-        if (Input.GetKeyDown(KeyCode.R))
-            SetArmor(0);
-
+        if (status.CurrHp < status.FinalValue.maxHp / 2)
+            UsePotion(Potions.Hp);
+        if (status.CurrMp < status.FinalValue.maxMp / 2)
+            UsePotion(Potions.Mp);
     }
 
     public void ApplyStatus()
@@ -73,4 +97,68 @@ public class PlayerInventory : MonoBehaviour
         }
         status.AddValue(add);
     }
+
+    public int GetCount(string itemId)
+    {
+        int count = 0;
+        foreach (var consumable in consumables)
+        {
+            if (consumable.id == itemId)
+                count += consumable.count;
+        }
+        return count;
+    }
+
+    public void RefillPotions()
+    {
+        for (int i = 0; i < PotionCount.Length; ++i)
+        {
+            var count = GetCount(potionIds[i]);
+            if (count < 3)
+                PotionCount[i] = count;
+            else
+                PotionCount[i] = 3;
+        }
+    }
+
+    public void UseConsumable(string id)
+    {
+        int len = consumables.Count;
+        for (int i = len - 1; i >= 0; --i)
+        {
+            if (consumables[i].id == id)
+            {
+                var newConsumable = consumables[i];
+                if (--newConsumable.count < 1)
+                    consumables.Remove(consumables[i]);
+                else
+                    consumables[i] = newConsumable;
+            }
+        }
+    }
+
+    public void UsePotion(Potions potion)
+    {
+        if (PotionCount[(int)potion] < 1)
+            return;
+        switch (potion)
+        {
+            case Potions.Hp:
+                if (status.CurrHp == status.FinalValue.maxHp)
+                    return;
+                status.CurrHp = status.FinalValue.maxHp;
+                break;
+            case Potions.Mp:
+                if (status.CurrMp == status.FinalValue.maxMp)
+                    return;
+                status.CurrMp = status.FinalValue.maxMp;
+                break;
+        }
+        PotionCount[(int)potion] -= 1;
+        var potionId = potionIds[(int)potion];
+        UseConsumable(potionId);
+    }
+
+    public void UseHpPotion() => UsePotion(Potions.Hp);
+    public void UseMpPotion() => UsePotion(Potions.Mp);
 }

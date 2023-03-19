@@ -40,7 +40,7 @@ public abstract class AttackCollider : MonoBehaviour
             attackedList.Contains(other.gameObject))
             return false;
 
-        if (other.CompareTag("Enemy") && !other.GetComponent<EnemyController>().GetIsLive())
+        if (other.CompareTag("Enemy") && !other.GetComponent<Enemy>().GetIsLive())
             return false;
 
         var isAttackable = other.CompareTag("Player") || other.CompareTag("Enemy");

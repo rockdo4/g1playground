@@ -27,7 +27,7 @@ public class Status : MonoBehaviour
         public int maxHp;
         public int maxMp;
 
-        public static Value operator+(Value lhs, Value rhs)
+        public static Value operator +(Value lhs, Value rhs)
         {
             Value newValue;
             newValue.str = lhs.str + rhs.str;
@@ -52,13 +52,33 @@ public class Status : MonoBehaviour
     private Value defaultValue;
     public Value FinalValue { get; private set; }
     public int currHp;
+    public int CurrHp
+    {
+        get => currHp;
+        set
+        {
+            currHp = value;
+            if (type == Types.Player)
+                SetHpUi();
+        }
+    }
     public int currMp;
+    public int CurrMp
+    {
+        get => currMp;
+        set
+        {
+            currMp = value;
+            if (type == Types.Player)
+                SetMpUi();
+        }
+    }
 
     private void Start()
     {
         LoadFromTable();
-        currHp = FinalValue.maxHp;
-        currMp = FinalValue.maxMp;
+        CurrHp = FinalValue.maxHp;
+        CurrMp = FinalValue.maxMp;
         if (CompareTag("Player"))
         {
             SetHpUi();
@@ -96,6 +116,6 @@ public class Status : MonoBehaviour
 
     public void AddValue(Value addValue) => FinalValue = defaultValue + addValue;
 
-    public void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, currHp);
-    public void SetMpUi() => GameManager.instance.uiManager.PlayerMpBar(FinalValue.maxMp, currMp);
+    public void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, CurrHp);
+    public void SetMpUi() => GameManager.instance.uiManager.PlayerMpBar(FinalValue.maxMp, CurrMp);
 }

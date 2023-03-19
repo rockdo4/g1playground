@@ -27,9 +27,9 @@ public class RotateAttacker : SkillAttack
         timer = 0f;
         reqManaTimer = 0f;
         aStat = attacker.GetComponent<Status>();
-        if (aStat == null || aStat.currMp < reqMana)
+        if (aStat == null || aStat.CurrMp < reqMana)
             return;
-        aStat.currMp -= reqMana;
+        aStat.CurrMp -= reqMana;
         if (attacker.CompareTag("Player"))
             aStat.SetMpUi();
         rangeColliders.Clear();
@@ -44,14 +44,14 @@ public class RotateAttacker : SkillAttack
         if (reqManaTimer > reqManaInterval)
         {
             reqManaTimer = 0f;
-            if (aStat.currMp < reqMana)
+            if (aStat.CurrMp < reqMana)
             {
                 ReleaseCollider();
                 return;
             }
             if (rangeColliders.Count == 0)
                 GetCollider();
-            aStat.currMp -= reqMana;
+            aStat.CurrMp -= reqMana;
             if (attacker.CompareTag("Player"))
                 aStat.SetMpUi();
         }

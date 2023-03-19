@@ -82,8 +82,8 @@ public class PlayerDataManager : MonoBehaviour
     public void SavePlayer()
     {
         var playerStatus = GameManager.instance.player.GetComponent<Status>();
-        playerCurrHp = playerStatus.currHp;
-        playerCurrMp = playerStatus.currMp;
+        playerCurrHp = playerStatus.CurrHp;
+        playerCurrMp = playerStatus.CurrMp;
         var playerSkills = GameManager.instance.player.GetComponent<PlayerSkills>();
         currskill1 = playerSkills.GetCurrSkillID(0);
         currskill2 = playerSkills.GetCurrSkillID(1);
@@ -97,16 +97,16 @@ public class PlayerDataManager : MonoBehaviour
     public void SetPlayerHpMp(int hp, int mp)
     {
         var playerStatus = GameManager.instance.player.GetComponent<Status>();
-        playerStatus.currHp = hp;
-        playerStatus.currMp = mp;
+        playerStatus.CurrHp = hp;
+        playerStatus.CurrMp = mp;
 
     }
 
     public void FillPlayerHpMp()
     {
         var playerStatus = GameManager.instance.player.GetComponent<Status>();
-        playerStatus.currHp = playerStatus.FinalValue.maxHp;
-        playerStatus.currMp = playerStatus.FinalValue.maxMp;
+        playerStatus.CurrHp = playerStatus.FinalValue.maxHp;
+        playerStatus.CurrMp = playerStatus.FinalValue.maxMp;
 
     }
 }

@@ -27,7 +27,7 @@ public class FireTile : MonoBehaviour
             var stat = other.GetComponent<Status>();
             if (stat != null)
             {
-                stat.currHp -= damage;
+                stat.CurrHp -= damage;
             }
             //use player onHit here
 
