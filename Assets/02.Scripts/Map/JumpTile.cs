@@ -27,7 +27,7 @@ public class JumpTile : MonoBehaviour
             {
                 Debug.Log("Jump");
                 //Add player jump here//
-                collision.gameObject.GetComponent<PlayerController>().Jump(force);
+                collision.gameObject.GetComponent<PlayerController>().Jump(force, true);
                
                 timer = 0f;
             }

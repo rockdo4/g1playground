@@ -240,7 +240,7 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpCount >= maxJumpCount)
             return;
-        playerRb.velocity = new Vector3(moveX, 0, 0);
+        playerRb.velocity = Vector3.zero;
         playerRb.AddForce(Vector3.up * force, ForceMode.Impulse);
         playerAnimator.SetTrigger("Jump");
         SetState<JumpState>();

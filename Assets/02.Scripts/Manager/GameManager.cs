@@ -31,7 +31,11 @@ public class GameManager : MonoBehaviour
 
     public void Respawn()
     {
+        if (SceneManager.GetActiveScene().name != "Scene02")
+            return;
+
         player.transform.SetParent(null);
+
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();                          
                   
         //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().ResetObject();
