@@ -32,7 +32,7 @@ public class PlayerInventory : MonoBehaviour
         Mp,
     }
     public string[] potionIds;
-    public int[] PotionCount { get; private set; }
+    public int[] PotionCount { get; private set; } = new int[2];
 
     private void Awake()
     {
@@ -158,4 +158,7 @@ public class PlayerInventory : MonoBehaviour
         var potionId = potionIds[(int)potion];
         UseConsumable(potionId);
     }
+
+    public void UseHpPotion() => UsePotion(Potions.Hp);
+    public void UseMpPotion() => UsePotion(Potions.Mp);
 }

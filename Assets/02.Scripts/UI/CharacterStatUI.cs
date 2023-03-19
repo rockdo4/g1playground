@@ -28,6 +28,7 @@ public class CharacterStatUI : MonoBehaviour
     public int currMpPotion;
 
     private Status status;
+    private PlayerInventory inventory;
 
     //public int currExp;
     //public int maxExp;
@@ -48,8 +49,7 @@ public class CharacterStatUI : MonoBehaviour
     private void OnEnable()
     {
         status = GameManager.instance.player.GetComponent<Status>();
-        status.CurrHp = status.FinalValue.maxHp;
-        status.CurrMp = status.FinalValue.maxMp;
+        inventory = GameManager.instance.player.GetComponent<PlayerInventory>();
     }
 
     private void Update()
@@ -66,8 +66,8 @@ public class CharacterStatUI : MonoBehaviour
         //level.text = playerLv.ToString();
         //expSlider.value = (float)currExp / (float)maxExp;
 
-        hpPotionCount.text = currHpPotion.ToString();
-        mpPotionCount.text = currMpPotion.ToString();
+        hpPotionCount.text = inventory.PotionCount[0].ToString();
+        mpPotionCount.text = inventory.PotionCount[1].ToString();
     }
 
     //private void ExpIncrease()
@@ -80,36 +80,4 @@ public class CharacterStatUI : MonoBehaviour
     //    else
     //        currExp += increaseExp;
     //}
-
-    public void HpPotionUse()
-    {
-        if(currHpPotion > 0)
-        {
-            if (status.FinalValue.maxHp >= status.CurrHp + 200)
-            {
-                status.CurrHp += 200;
-            }
-            else
-            {
-                status.CurrHp = status.FinalValue.maxHp;
-            }
-            currHpPotion--;
-        }        
-    }
-
-    public void MpPotionUse()
-    {
-        if(currMpPotion > 0)
-        {
-            if (status.FinalValue.maxMp >= status.CurrMp + 100)
-            {
-                status.CurrMp += 100;
-            }
-            else
-            {
-                status.CurrMp = status.FinalValue.maxMp;
-            }
-            currMpPotion--;
-        }        
-    }
 }
