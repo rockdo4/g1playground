@@ -34,6 +34,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
                     agent.enabled = true;
                     agent.isStopped = true;
                     agent.velocity = Vector3.zero;
+                    mask.SetActive(true);
                     mainColl.enabled = true;
                     break;
                 case EnemyState.Hide:
@@ -64,10 +65,8 @@ public class EnemyMeleeFixed : Enemy, IAttackable
                 case EnemyState.Die:
                     mainColl.enabled = false;
                     mask.SetActive(false);
-
                     break;
             }
-
             Debug.Log(State);
         }
     }

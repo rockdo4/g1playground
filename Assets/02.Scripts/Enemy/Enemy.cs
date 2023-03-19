@@ -106,4 +106,57 @@ public class Enemy : MonoBehaviour
         var front = Quaternion.Euler(0, 180, 0);
         transform.rotation = Quaternion.Slerp(transform.rotation, front, Time.deltaTime * 10f);
     }
+    protected bool RayShooter(float range, bool isGoingRight)
+    {
+        Vector3 rayOrigin;
+        Ray ray;
+        rayOrigin = transform.position + new Vector3(0, 0.5f, 0);
+
+        if (isGoingRight)
+        {
+            ray = new Ray(rayOrigin, Vector3.right);
+        }
+        else
+        {
+            ray = new Ray(rayOrigin, Vector3.left);
+        }
+#if UNITY_EDITOR
+        Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
+#endif
+
+        if (Physics.Raycast(ray, out RaycastHit hit, range, LayerMask.GetMask("Player")))
+        {
+            //if (hit.collider.tag == "Player")
+            {
+                if (State != EnemyState.Chase)
+                {
+                    State = EnemyState.Chase;
+                    return true;
+                }
+
+                if (State == EnemyState.Chase)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    protected void SaveFloorLength(ref Vector3 startPos, ref Vector3 endPos)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        {
+            Collider collider = hit.collider;
+            //floorLength = collider.bounds.size.x;
+            startPos = collider.bounds.center + new Vector3(0.5f - collider.bounds.extents.x, collider.bounds.extents.y, 0);
+            endPos = collider.bounds.center + new Vector3(-0.5f + collider.bounds.extents.x, collider.bounds.extents.y, 0);
+        }
+        else
+        {
+#if UNITY_EDITOR
+            Debug.Log("Arrangement Fail");
+#endif
+        }
+    }
 }

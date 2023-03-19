@@ -96,8 +96,6 @@ public class EnemyController : Enemy, IAttackable
 
     protected override void Awake()
     {
-        //StartCoroutine(RestorePosition());
-
         base.Awake();
         mainColl = GetComponent<CapsuleCollider>();
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
@@ -122,7 +120,7 @@ public class EnemyController : Enemy, IAttackable
         ResetPattern();
     }
 
-    
+
 
     protected void Update()
     {
@@ -158,18 +156,18 @@ public class EnemyController : Enemy, IAttackable
     }
     protected void None()
     {
-        SaveFloorLength();
+        SaveFloorLength(ref startPos, ref endPos);
         State = EnemyStatePattern[0].state;
     }
     protected override void IdleUpdate()
     {
         ChangePattern();
-        RayShooter(searchRange);
+        RayShooter(searchRange, isGoingRight);
     }
     protected override void PatrolUpdate()
     {
         ChangePattern();
-        RayShooter(searchRange);
+        RayShooter(searchRange, isGoingRight);
 
         if (isGoingRight)
         {
@@ -230,7 +228,7 @@ public class EnemyController : Enemy, IAttackable
             agent.isStopped = true;
         }
 
-        if (RayShooter(attackRange))
+        if (RayShooter(attackRange, isGoingRight))
         {
             if (attackTime >= attackCool)
                 State = EnemyState.Attack;
@@ -277,30 +275,12 @@ public class EnemyController : Enemy, IAttackable
     }
     protected override void DieUpdate()
     {
-        //base.DieUpdate();
     }
 
-    protected float floorLength;
+    //protected float floorLength;
     protected Vector3 startPos;
     protected Vector3 endPos;
-    private void SaveFloorLength()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
-        {
-            Collider collider = hit.collider;
-            floorLength = collider.bounds.size.x;
-            startPos = collider.bounds.center - new Vector3((floorLength / 2) - 0.5f, -0.5f, 0);
-            endPos = collider.bounds.center + new Vector3((floorLength / 2) - 0.5f, 0.5f, 0);
-        }
-        else
-        {
-#if UNITY_EDITOR
-            Debug.Log("Arrangement Fail");
-            Debug.Log("��ġ ����� !!");
-#endif
-        }
-    }
+
     private void ChangePattern()
     {
         patternTime += Time.deltaTime;
@@ -322,44 +302,6 @@ public class EnemyController : Enemy, IAttackable
         State = EnemyStatePattern[curCountPattern].state;
     }
 
-
-    private bool RayShooter(float range)
-    {
-        Vector3 rayOrigin;
-        Ray ray;
-        rayOrigin = transform.position + new Vector3(0, 0.5f, 0);
-
-        if (isGoingRight)
-        {
-            ray = new Ray(rayOrigin, Vector3.right);
-        }
-        else
-        {
-            ray = new Ray(rayOrigin, Vector3.left);
-        }
-#if UNITY_EDITOR
-        Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
-#endif
-
-        if (Physics.Raycast(ray, out RaycastHit hit, range, LayerMask.GetMask("Player")))
-        {
-            if (hit.collider.tag == "Player")
-            {
-                if (State != EnemyState.Chase)
-                {
-                    State = EnemyState.Chase;
-                    return true;
-                }
-
-                if (State == EnemyState.Chase)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private void Attack()
     {
         switch (meleeAttack)
@@ -370,7 +312,6 @@ public class EnemyController : Enemy, IAttackable
                 }
                 break;
         }
-
     }
 
     protected void ResetPattern()
