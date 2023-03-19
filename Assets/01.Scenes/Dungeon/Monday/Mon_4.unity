@@ -6716,6 +6716,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5236865518514278542, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1876200564}
+    - target: {fileID: 5236865518514278542, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UseHpPotion
+      objectReference: {fileID: 0}
     - target: {fileID: 5236865518836146690, guid: 00f43e2ece1935d41991954295923c74,
         type: 3}
       propertyPath: m_Pivot.x
@@ -6826,11 +6836,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: InGame UI
       objectReference: {fileID: 0}
+    - target: {fileID: 8170121255967542107, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1876200564}
+    - target: {fileID: 8170121255967542107, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UseMpPotion
+      objectReference: {fileID: 0}
     - target: {fileID: 9118025743255644050, guid: 00f43e2ece1935d41991954295923c74,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2086771425}
     - target: {fileID: 9118025743255644051, guid: 00f43e2ece1935d41991954295923c74,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -26288,7 +26308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819790063}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.167185, y: 5.1952286, z: -10}
+  m_LocalPosition: {x: 11.188201, y: 5.2299066, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27967,6 +27987,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1876200562}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1876200564 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1674795210733244911, guid: 2c320c87910c1b04ab608f3f25d6620b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1876200562}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba27b3d651054ff448491bd377d542c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1876408932
 PrefabInstance:
   m_ObjectHideFlags: 0
