@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
     protected Animator animator;
     protected Rigidbody rb;
     protected NavMeshAgent agent;
+    protected GameObject enemyBody;
     //protected CapsuleCollider collider;
 
     public virtual EnemyState State
@@ -45,6 +46,7 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+        enemyBody = GameObject.Find(gameObject.name + "/EnemyBody");
         //collider = GetComponent<CapsuleCollider>();
         mySpawnPos = transform.position;
         mySpawnDir = transform.rotation;
@@ -58,12 +60,16 @@ public class Enemy : MonoBehaviour
             animator.ResetTrigger("TakeDamage");
             animator.SetTrigger("Die");
             isLive = false;
+
+            enemyBody.SetActive(false);
+
         };
     }
     protected virtual void OnEnable()
     {
         transform.position = mySpawnPos;
         transform.rotation = mySpawnDir;
+        enemyBody.SetActive(true);
         isLive = true;
     }
     protected virtual void Spawn() { }

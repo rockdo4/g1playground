@@ -87,7 +87,7 @@ public class EnemyController : Enemy, IAttackable
                     break;
             }
 
-            Debug.Log(State);
+            //Debug.Log(State);
         }
     }
 

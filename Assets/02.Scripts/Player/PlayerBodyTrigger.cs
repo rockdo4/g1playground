@@ -48,7 +48,7 @@ public class PlayerBodyTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (isOnDelay || !other.CompareTag("EnemyBody"))
+        if (isOnDelay)
             return;
         Attack attack;
         attack = new Attack(damage);

@@ -272,7 +272,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             if (enemies == null)
             {
-                Debug.Log("Failed");
+                //Debug.Log("Failed");
                 AgentOnOff();
                 yield break;
             }
@@ -304,7 +304,7 @@ public class PlayerController : MonoBehaviour
 
             if (!agent.isStopped)
             {
-                Debug.Log(target.name);
+                //Debug.Log(target.name);
                 agent.SetDestination(target.transform.position);
             }
 

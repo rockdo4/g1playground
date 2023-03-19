@@ -173,7 +173,7 @@ public class Boss4Controller : Enemy
                 break;
         }
         animator.SetFloat("Move", agent.velocity.magnitude);
-        Debug.Log(State);
+        //Debug.Log(State);
     }
     protected override void Spawn()
     {
