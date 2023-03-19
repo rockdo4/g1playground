@@ -7,9 +7,9 @@ public class CharacterStatUI : MonoBehaviour
     public Button hpPotion;
     public Button mpPotion;
 
-    public Slider hpSlider;
-    public Slider mpSlider;
-    public Slider expSlider;
+    public Image hpSlider;
+    public Image mpSlider;
+    public Image expSlider;
 
     public TextMeshProUGUI hpPotionCount;
     public TextMeshProUGUI mpPotionCount;
@@ -57,14 +57,14 @@ public class CharacterStatUI : MonoBehaviour
         hp.text = status.currHp.ToString() + " ";
         mHp.text = "/ " + status.FinalValue.maxHp.ToString();
         //hpBar.fillAmount = (float)status.currHp / (float)status.FinalValue.maxHp;
-        hpSlider.value = (float)status.currHp / (float)status.FinalValue.maxHp;
+        hpSlider.fillAmount = (float)status.currHp / (float)status.FinalValue.maxHp;
 
         mp.text = status.currMp.ToString() + " ";
         mMp.text = "/ " + status.FinalValue.maxMp.ToString();
-        mpSlider.value = (float)status.currMp / (float)status.FinalValue.maxMp;
+        mpSlider.fillAmount = (float)status.currMp / (float)status.FinalValue.maxMp;
 
         //level.text = playerLv.ToString();
-        //expSlider.value = (float)currExp / (float)maxExp;
+        //expSlider.fillAmount = (float)currExp / (float)maxExp;
 
         hpPotionCount.text = currHpPotion.ToString();
         mpPotionCount.text = currMpPotion.ToString();
