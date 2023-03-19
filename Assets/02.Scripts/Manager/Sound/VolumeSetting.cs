@@ -8,12 +8,17 @@ public class VolumeSetting : MonoBehaviour
 {
     [Header("Audio Mixer")]
     [SerializeField] private AudioMixer audioMixer;
+
     [Header("Audio Mixer sliders")]
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
-    [Header("Audio Mixer sliders")]
+
+    [Header("Audio Mute Toggles")]
     [SerializeField] private Toggle muteToggle;
+    [SerializeField] private Toggle bgmMuteToggle;
+    [SerializeField] private Toggle seMuteToggle;
+
     //Mixer volume keys
     public const string MIXER_Master = "MasterVolume";
     public const string MIXER_BGM = "BGMVolume";
@@ -134,17 +139,62 @@ public class VolumeSetting : MonoBehaviour
 
         if (!muteToggle.isOn)
         {
-            Debug.Log("sound on");
+            //Debug.Log("sound on");
             SetMasterVolume(PlayerPrefs.GetFloat(SoundManager.Master_KEY, 1f));
             masterSlider.value = PlayerPrefs.GetFloat(SoundManager.Master_KEY, 1f);
         }
         else
         {
-            Debug.Log("mute");
+            //Debug.Log("mute");
             PlayerPrefs.SetFloat(SoundManager.Master_KEY, masterSlider.value);
             SetMasterVolume(masterSlider.minValue);
             masterSlider.value = masterSlider.minValue;
+        } 
+    }
+
+    //mute bgm volume by toggle isOn
+    public void MuteBGM()
+    {
+        if (bgmMuteToggle == null)
+        {
+            return;
         }
-       
+
+        if (!bgmMuteToggle.isOn)
+        {
+            //Debug.Log("sound on");
+            SetBgmVolume(PlayerPrefs.GetFloat(SoundManager.BGM_KEY, 1f));
+            bgmSlider.value = PlayerPrefs.GetFloat(SoundManager.BGM_KEY, 1f);
+        }
+        else
+        {
+            //Debug.Log("mute");
+            PlayerPrefs.SetFloat(SoundManager.BGM_KEY, bgmSlider.value);
+            SetBgmVolume(bgmSlider.minValue);
+            bgmSlider.value = bgmSlider.minValue;
+        }
+    }
+
+    //mute se volume by toggle isOn
+    public void MuteSE()
+    {
+        if (seMuteToggle == null)
+        {
+            return;
+        }
+
+        if (!seMuteToggle.isOn)
+        {
+            //Debug.Log("sound on");
+            SetSEVolume(PlayerPrefs.GetFloat(SoundManager.SE_KEY, 1f));
+            seSlider.value = PlayerPrefs.GetFloat(SoundManager.SE_KEY, 1f);
+        }
+        else
+        {
+            //Debug.Log("mute");
+            PlayerPrefs.SetFloat(SoundManager.SE_KEY, seSlider.value);
+            SetSEVolume(seSlider.minValue);
+            seSlider.value = seSlider.minValue;
+        }
     }
 }
