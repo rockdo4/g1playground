@@ -49,7 +49,6 @@ public class Portal : MonoBehaviour
             init = true;
             nextStage.gameObject.SetActive(true);
             nextStage.GetComponent<StageController>().PrevStageName = MapManager.instance.GetCurrentMapName();
-            Debug.Log(MapManager.instance.GetCurrentMapName());
             var nextstageportals = nextStage.GetComponentsInChildren<Portal>();
             foreach (var portal in nextstageportals)
             {

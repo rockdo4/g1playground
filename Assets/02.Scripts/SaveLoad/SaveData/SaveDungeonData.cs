@@ -20,7 +20,8 @@ public class SaveDugeonDataVer1 : SaveDungeonData
     public string wednesdaylv;
     public string thursdaylv;
     public string fridaylv;
-
+    public string playedtime;
+    public string playedday;
     public SaveDugeonDataVer1()
     {
         version = 1;

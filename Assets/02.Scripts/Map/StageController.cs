@@ -52,7 +52,7 @@ public class StageController : MonoBehaviour
         yield return null;
 
         GetObjectTiles();
-        
+
     }
 
     private void GetObjectTiles()
@@ -61,12 +61,12 @@ public class StageController : MonoBehaviour
         for (int i = 0; i < childCount; ++i)
         {
             var child = gameObject.transform.GetChild(i);
-            
+
             if (child.gameObject.layer == LayerMask.NameToLayer("ObjectTile"))
             {
                 objectTiles.Add(child.gameObject);
             }
-                
+
         }
         //save the objects status
         SaveStatus();
@@ -82,7 +82,7 @@ public class StageController : MonoBehaviour
 
             if (block.activeSelf)
             {
-                
+
                 temp.isOn = true;
 
             }
@@ -91,7 +91,7 @@ public class StageController : MonoBehaviour
                 temp.isOn = false;
             }
             originBlockStatus.Add(temp);
-            
+
         }
     }
 
@@ -127,7 +127,7 @@ public class StageController : MonoBehaviour
                 break;
             }
         }
-        
+
         foreach (var green in greenWall)
         {
             green.SetActive(true);
@@ -147,10 +147,10 @@ public class StageController : MonoBehaviour
     public void ResetObject()
     {
         foreach (var obj in objectTiles)
-        {       
+        {
             obj.GetComponent<ObjectTile>().ResetObject();
         }
-        
+
     }
 
     private void SetObjectTileOriginPos()
