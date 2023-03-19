@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name != "Scene02")
             return;
+
+        player.GetComponent<PlayerInventory>().RefillPotions();
         player.transform.SetParent(null);
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();                          
                   
