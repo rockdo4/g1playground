@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         popupStack = new Stack<GameObject>();
-        potion = GameObject.Find("Potion");
+        //potion = GameObject.Find("Potion");
     }
 
     public void PlayerHpBar(int maxhp, int currhp)

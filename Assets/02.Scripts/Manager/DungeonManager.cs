@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -47,14 +46,7 @@ public class DungeonManager : MonoBehaviour
     private Canvas result;
     public Canvas Result { get { return result; } set { result = value; } }
 
-    [SerializeField]
-    private Canvas limitwarning;
 
-    [SerializeField]
-    private Canvas refillsus;
-
-    [SerializeField]
-    private Canvas refillfail;
 
     [SerializeField]
     private Canvas exitButton;
@@ -78,8 +70,6 @@ public class DungeonManager : MonoBehaviour
     public Dictionary<string, int> unlock;
     private Status playerStatus;
 
-    private PlayerInventory inven;
-
     void OnEnable()
     {
         if (m_instance == null)
@@ -88,11 +78,6 @@ public class DungeonManager : MonoBehaviour
 
             DontDestroyOnLoad(gameObject);
             text = transform.Find("RemainingTime").transform.GetComponentInChildren<TextMeshProUGUI>();
-            if (inven == null)
-            {
-                inven = GameManager.instance.player.GetComponent<PlayerInventory>();
-            }
-
             SceneManager.sceneLoaded += ExitedDungeon;
         }
         else
@@ -151,7 +136,7 @@ public class DungeonManager : MonoBehaviour
     private void LoadFile()
     {
         var saveData = SaveLoadSystem.Load(SaveData.Types.Dungeon) as SaveDugeonDataVer1;
-        if (saveData == null|| saveData.playedday==null)
+        if (saveData == null || saveData.playedday == null)
         {
             var newsaveData = new SaveDugeonDataVer1();
             newsaveData.mondaylv = "1";
@@ -329,12 +314,11 @@ public class DungeonManager : MonoBehaviour
     public void JoinDungeon()
     {
         int temp=Int32.Parse(attempt);
-
+        Debug.Log(temp);
         if (temp >= 3)
         {
             //garu popup
-            limitwarning.gameObject.SetActive(true);
-
+            
             return;
         }
         attempt=(++temp).ToString();
@@ -375,50 +359,13 @@ public class DungeonManager : MonoBehaviour
         player.SetSkill(1, PlayerDataManager.instance.currskill2);
     }
 
-    public void RefillAttempt()
-    {
-        limitwarning.gameObject.SetActive(false);
-
-        if (inven.GetCount("1")<3000)
-        {
-            refillfail.gameObject.SetActive(true);
-            StopCoroutine(GaruRefillResultturnoff());
-            StartCoroutine(GaruRefillResultturnoff());
-            return;
-        }
-        inven.UseConsumable("1", 3000);
-        refillsus.gameObject.SetActive(true);
-        attempt = "0";
-        SaveFile();
-        StopCoroutine(GaruRefillResultturnoff());
-        StartCoroutine(GaruRefillResultturnoff());
-
-    }
-
-    IEnumerator GaruRefillResultturnoff()
-    {
-        yield return new WaitForSeconds(2.0f);
-        refillfail.gameObject.SetActive(false);
-        refillsus.gameObject.SetActive(false);
-
-    }
-
-
     public void Restart()
     {
-        int temp = Int32.Parse(attempt);
-
-        if (temp >= 3)
+        if (Int32.Parse(attempt) >= 3)
         {
             //garu popup
-            limitwarning.gameObject.SetActive(true);
             return;
         }
-
-        attempt = (++temp).ToString();
-        SaveFile();
-
-
 
         Time.timeScale = 1;
         Result.transform.Find("Win").gameObject.SetActive(false);
@@ -434,9 +381,7 @@ public class DungeonManager : MonoBehaviour
         SceneManager.LoadScene(scenename.ToString());
 
         remaningtime.gameObject.SetActive(true);
-        pannel.gameObject.SetActive(false);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
-
         StartCoroutine(SetEnemy());
         //foreach (var enemy in enemies)
         //{
