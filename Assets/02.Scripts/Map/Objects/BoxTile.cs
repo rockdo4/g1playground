@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.Video;
 
 public class BoxTile : ObjectTile
 {
@@ -42,6 +44,8 @@ public class BoxTile : ObjectTile
 
     private void FixedUpdate()
     {
+        if (GameManager.instance.player.GetComponent<PlayerController>().moveX == 0)
+            timer = 0;
         if (detachStarted)
         {
             detachtimer+= Time.deltaTime;
