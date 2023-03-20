@@ -16,6 +16,7 @@ public class DataTableMgr
         tables.Add(typeof(EnemyData), new DataTable<EnemyData>("DataTables/EnemyTable"));
         tables.Add(typeof(ConsumeData), new DataTable<ConsumeData>("DataTables/Consume_Table"));
         tables.Add(typeof(SkillData), new DataTable<SkillData>("DataTables/Skill_Table"));
+        tables.Add(typeof(StoryData), new DataTable<StoryData>("DataTables/Story_Table"));
 
         //tables.Add(typeof(SkillData), new DataTable<SkillData>("DataTables/Skill_Table"));
 

@@ -111,6 +111,7 @@ public class StageController : MonoBehaviour
     private void OnEnable()
     {
         SkyboxManager.instance.SetSkybox(skyboxIndex);
+        EventManager.instance.ShowStageTitile(gameObject.name);
         var switchcheck = false;
         enemies = new List<GameObject>();
         var childCount = gameObject.transform.childCount;
@@ -219,6 +220,7 @@ public class StageController : MonoBehaviour
 
         if (enemies.Count == 0 || greenwallopen)
         {
+            TileColorManager.instance.ChangeTileMaterial(transform.name, true);
             foreach (var green in greenWall)
             {
                 green.SetActive(false);
