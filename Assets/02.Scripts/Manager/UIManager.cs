@@ -9,13 +9,19 @@ public class UIManager : MonoBehaviour
     public CharacterStatUI charStatUI;
     [SerializeField]
     private GameObject potion;
+    private GameObject skillToggle;
 
     public Stack<GameObject> popupStack;
+
+    private void Awake()
+    {
+        //potion = GameObject.Find("Potion");
+        //potion.SetActive(false);
+    }
 
     private void Start()
     {
         popupStack = new Stack<GameObject>();
-        //potion = GameObject.Find("Potion");
     }
 
     public void PlayerHpBar(int maxhp, int currhp)
