@@ -15,20 +15,20 @@ public class JumpTile : MonoBehaviour
         boxSize = gameObject.GetComponent<BoxCollider>().size;
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider other)
     {
         if (Physics.BoxCast(transform.position, boxSize / 2, Vector3.up, Quaternion.identity, 1f, LayerMask.GetMask("Player")) &&
-            collision.gameObject.GetComponent<ObjectMass>() != null) 
+            other.GetComponent<ObjectMass>() != null)
         {
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
 
-            if (timer >= delay) 
+            if (timer >= delay)
             {
                 Debug.Log("Jump");
                 //Add player jump here//
-                collision.gameObject.GetComponent<PlayerController>().Jump(force, true);
-               
+                other.GetComponent<PlayerController>().Jump(force, true);
+
                 timer = 0f;
             }
         }

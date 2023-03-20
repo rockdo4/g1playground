@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4787927474646002044}
   - component: {fileID: 4787927474646002045}
   - component: {fileID: 4787927474646002042}
+  - component: {fileID: 1452552473}
   m_Layer: 0
   m_Name: JumpTile
   m_TagString: Ground
@@ -93,11 +94,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4787927474646002043}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.1207914, z: 1}
-  m_Center: {x: 0, y: 0.060395777, z: 0}
+  m_Size: {x: 0.90906906, y: 0.13440561, z: 1}
+  m_Center: {x: -0.003961563, y: 0.5535886, z: 0}
 --- !u!114 &4787927474646002042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,3 +113,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 20
   delay: 0.1
+--- !u!65 &1452552473
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4787927474646002043}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

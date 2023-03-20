@@ -18,6 +18,9 @@ public class StageController : MonoBehaviour
         public bool isOn;
     }
 
+    [Range(0,4)]
+    [SerializeField] private int skyboxIndex;
+
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
@@ -107,6 +110,7 @@ public class StageController : MonoBehaviour
 
     private void OnEnable()
     {
+        SkyboxManager.instance.SetSkybox(skyboxIndex);
         var switchcheck = false;
         enemies = new List<GameObject>();
         var childCount = gameObject.transform.childCount;
