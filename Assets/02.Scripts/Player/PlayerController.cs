@@ -296,8 +296,8 @@ public class PlayerController : MonoBehaviour
 
             if (Vector3.Distance(agent.transform.position, target.position) < 2f)
             {
-                agent.isStopped = true;
                 SetMoveX(target.position.x - agent.transform.position.x);
+                agent.isStopped = true;
             }
             else
                 SetMoveX(agent.velocity.x);
@@ -306,7 +306,9 @@ public class PlayerController : MonoBehaviour
             {
                 //Debug.Log(target.name);
                 agent.SetDestination(target.transform.position);
+                SetMoveX(agent.velocity.x);
             }
+
 
 
             //Debug.Log("!");
