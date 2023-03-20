@@ -56,11 +56,11 @@ public class CharacterStatUI : MonoBehaviour
     {
         hp.text = status.CurrHp.ToString() + " ";
         mHp.text = "/ " + status.FinalValue.maxHp.ToString();
-        hpSlider.fillAmount = (float)status.currHp / (float)status.FinalValue.maxHp;
+        hpSlider.fillAmount = (float)status.CurrHp / (float)status.FinalValue.maxHp;
 
         mp.text = status.CurrMp.ToString() + " ";
         mMp.text = "/ " + status.FinalValue.maxMp.ToString();
-        mpSlider.fillAmount = (float)status.currMp / (float)status.FinalValue.maxMp;
+        mpSlider.fillAmount = (float)status.CurrMp / (float)status.FinalValue.maxMp;
 
         //level.text = playerLv.ToString();
         //expSlider.fillAmount = (float)currExp / (float)maxExp;

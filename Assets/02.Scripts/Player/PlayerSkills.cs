@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +27,12 @@ public class PlayerSkills : MonoBehaviour
     private PlayerController playerController;
     public Transform skillPivot;
     public Transform playerCenter;
-    public SkillAttack[] allSkills;
+
+    public SkillAttack[] allSkillsInInspector;
+    private Dictionary<string, SkillAttack> allSkillGroups = new Dictionary<string, SkillAttack>();
+    public string[] PossessedSkills;
+    //public List<string> PossessedSkills { get; private set; } = new List<string>();
+
     public Toggle[] toggles;
     public string[] defaultSkills;
     private SkillState[] skillStates;
@@ -33,6 +41,10 @@ public class PlayerSkills : MonoBehaviour
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
+        foreach (var skill in allSkillsInInspector)
+        {
+            allSkillGroups.Add(skill.Group, skill);
+        }
         skillCount = toggles.Length;
         skillStates = new SkillState[skillCount];
         for (int i = 0; i < skillCount; ++i)
@@ -62,7 +74,7 @@ public class PlayerSkills : MonoBehaviour
                     skillStates[i].skill.Update();
                 else
                 {
-                    if (skillStates[i].skillTimer < skillStates[i].skill.CoolDown)
+                    if (skillStates[i].skillTimer < skillStates[i].skill.coolDown)
                         skillStates[i].skillTimer += Time.deltaTime;
                     else
                     {
@@ -92,13 +104,16 @@ public class PlayerSkills : MonoBehaviour
                 return;
         }
 
-        foreach (var skill in allSkills)
+        foreach (var possessedSkill in PossessedSkills)
         {
-            if (string.Equals(skill.id, id))
+            if (string.Equals(possessedSkill, id))
             {
                 toggles[index].isOn = false;
+                var skillData = DataTableMgr.GetTable<SkillData>().Get(id);
+                var skill = allSkillGroups[skillData.group];
+                skill.SetData(id);
                 skillStates[index].Set(skill);
-                toggles[index].image.sprite = DataTableMgr.GetTable<SkillData>().Get(id).iconSprite;
+                toggles[index].image.sprite = skillData.iconSprite;
             }
         }
     }

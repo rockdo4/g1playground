@@ -7,7 +7,18 @@ public class SkillData : ICSVParsing
     public string name; //  ID
     public string desc; //  ID
     public string iconSpriteId; //  Resources ���
-
+    public string group;
+    public int reinforce;
+    public int maxReinfore;
+    public int reqMana;
+    public float damageFigure;
+    public float criticalChance;
+    public float criticalDamage;
+    public float lifeTime;
+    public bool isKnockbackable;
+    public bool isStunnable;
+    public float stunTime;
+    public float CoolDown;
     public Sprite iconSprite;
 
     public virtual void Parse(Dictionary<string, string> line)

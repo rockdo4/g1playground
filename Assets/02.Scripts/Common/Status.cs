@@ -51,7 +51,7 @@ public class Status : MonoBehaviour
     public string id;
     private Value defaultValue;
     public Value FinalValue { get; private set; }
-    public int currHp;
+    private int currHp;
     public int CurrHp
     {
         get => currHp;
@@ -62,7 +62,7 @@ public class Status : MonoBehaviour
                 SetHpUi();
         }
     }
-    public int currMp;
+    private int currMp;
     public int CurrMp
     {
         get => currMp;
