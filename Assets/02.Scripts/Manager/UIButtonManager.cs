@@ -28,10 +28,7 @@ public class UIButtonManager : MonoBehaviour
         if (GameManager.instance.uiManager.popupStack.Count > 0 && Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.instance.uiManager.popupStack.Clear();
-            foreach (var popup in popUps)
-            {
-                popup.gameObject.SetActive(false);
-            }            
+            AllClosePopUp();
         }
 
         else if (GameManager.instance.uiManager.popupStack.Count == 0 && Input.GetKeyDown(KeyCode.Escape))
@@ -75,6 +72,7 @@ public class UIButtonManager : MonoBehaviour
         {
             popup.gameObject.SetActive(false);
         }
+        DungeonManager.instance.uiDungeonSelect.SetActive(false);
     }
 
     public void CheckArea()
@@ -95,6 +93,10 @@ public class UIButtonManager : MonoBehaviour
                     return;
                 }
             }
+        }
+        if (DungeonManager.instance.uiDungeonSelect.activeSelf)
+        {
+            return;
         }
         AllClosePopUp();
     }
