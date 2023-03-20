@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 721170287}
   - component: {fileID: 721170289}
   - component: {fileID: 721170288}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: BodyTrigger
   m_TagString: PlayerBody
   m_Icon: {fileID: 0}
@@ -2445,7 +2445,7 @@ MonoBehaviour:
   - 5
   consumablesTemp:
   - id: 1
-    count: 100
+    count: 30000
   - id: 2
     count: 200
   - id: 3
@@ -2481,8 +2481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a45da68ca56f0b44cac1acb8750c7131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  up: 1
-  force: 7
 --- !u!114 &1740352562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2596,7 +2594,7 @@ NavMeshAgent:
   m_Height: 1.9
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!1 &6047748371506495711
 GameObject:
   m_ObjectHideFlags: 0
