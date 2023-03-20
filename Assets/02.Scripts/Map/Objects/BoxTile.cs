@@ -54,6 +54,8 @@ public class BoxTile : ObjectTile
                 timer = 0;
             }
         }
+
+    
     }
 
     public override void ResetObject()
@@ -80,6 +82,8 @@ public class BoxTile : ObjectTile
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (collision.transform.position.y >transform.position.y)
+                return;
             detachStarted = false;
             detachtimer = 0f;
             //timer to check player is pushing mover than pushTime
@@ -87,13 +91,14 @@ public class BoxTile : ObjectTile
 
             if (timer >= pushTime)
             {
+
                 //Raycast to check if player is pushing the box on side
-                if (!Physics.BoxCast(transform.position, boxSize / 2, Vector3.up, Quaternion.identity, 1f, LayerMask.GetMask("Player"))
-                    && collision.gameObject.GetComponent<PlayerController>().moveX != 0f)
+                if (collision.gameObject.GetComponent<PlayerController>().moveX != 0f)
                 {
+
                     IsPushing = true;
                     rigidbody.isKinematic = false;
-
+                    ChangeParent();
                     //find direction and push
                     Vector3 pushDirection = transform.position - collision.gameObject.transform.position;
                     pushDirection.y = 0;
@@ -104,6 +109,18 @@ public class BoxTile : ObjectTile
                 }
             }
         }
+    }
+
+    void ChangeParent()
+    {
+        if (transform.parent.GetComponent<BoxTile>() != null)
+        {
+            transform.parent = transform.parent.parent;
+            if(transform.parent.GetComponent<BoxTile>() != null){
+                ChangeParent();
+            }
+        }
+        
     }
 
     private void OnCollisionExit(Collision collision)
