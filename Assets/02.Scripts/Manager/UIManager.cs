@@ -5,7 +5,6 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public UIButtonManager btManager;
-    public UIPopupManager popupManager;
     public CharacterStatUI charStatUI;
     [SerializeField]
     private GameObject potion;
