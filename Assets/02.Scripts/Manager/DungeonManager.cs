@@ -324,7 +324,9 @@ public class DungeonManager : MonoBehaviour
         pannel.gameObject.SetActive(false);
         popUp.gameObject.SetActive(false);
         homeButton.gameObject.SetActive(false);
+       // SceneManager.LoadScene("Game", LoadSceneMode.Single);
         SceneManager.LoadScene("Scene02");
+
 
     }
 
@@ -353,11 +355,10 @@ public class DungeonManager : MonoBehaviour
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
         PlayerDataManager.instance.SavePlayer();
 
-        SceneManager.LoadScene(scenename.ToString());
+        SceneManager.LoadScene("Game",LoadSceneMode.Single);
+        SceneManager.LoadScene(scenename.ToString(), LoadSceneMode.Additive);
 
-
-        homeButton.gameObject.SetActive(true);
-
+   
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
         StartCoroutine(SetEnemy());
@@ -367,14 +368,32 @@ public class DungeonManager : MonoBehaviour
     IEnumerator SetEnemy()
     {
         yield return null;
+        yield return null;
+
         enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
+        Debug.Log("enemy");
         isDungeon = true;
         playerStatus = GameManager.instance.player.GetComponent<Status>();
-        var player = GameObject.FindWithTag("Player").GetComponent<PlayerSkills>();
+        var player = GameManager.instance.player;
         player.GetComponent<PlayerInventory>().RefillPotions();
-        player.SetEmpty();
-        player.SetSkill(0, PlayerDataManager.instance.currskill1);
-        player.SetSkill(1, PlayerDataManager.instance.currskill2);
+        //Debug.Log("PlayerInventory");
+
+        //player.GetComponent<PlayerSkills>().SetEmpty();
+        //Debug.Log("empty");
+
+        player.GetComponent<PlayerSkills>().SetSkill(0, PlayerDataManager.instance.currskill1);
+        Debug.Log("SetSkill0");
+
+        player.GetComponent<PlayerSkills>().SetSkill(1, PlayerDataManager.instance.currskill2);
+        Debug.Log("SetSkill1");
+
+        GameManager.instance.uiManager.PotionOn();
+        homeButton.gameObject.SetActive(true);
+
+        GameManager.instance.player.transform.position = GameObject.FindGameObjectWithTag("StartPoint").transform.position;
+        Debug.Log("startpoint");
+
+
     }
 
     public void RefillAttempt()
