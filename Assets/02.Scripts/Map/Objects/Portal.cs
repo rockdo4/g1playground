@@ -68,7 +68,7 @@ public class Portal : MonoBehaviour
                     MapManager.instance.SetCurrentMapName(portal.transform.parent.name);
                     MapManager.instance.SetcurrentChapterName(portal.transform.parent.parent.name);
 
-                    if (portal.transform.parent.name == "village")
+                    if (portal.transform.parent.name == "Village")
                     {
                         GameManager.instance.uiManager.PotionOff();
                     }
