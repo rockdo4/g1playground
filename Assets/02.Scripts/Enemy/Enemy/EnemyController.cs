@@ -152,7 +152,7 @@ public class EnemyController : Enemy, IAttackable
                 break;
         }
 
-        animator.SetFloat("Move", agent.velocity.magnitude);
+        animator.SetFloat("Move", agent.velocity.magnitude/ chaseSpeed);
     }
     protected void None()
     {

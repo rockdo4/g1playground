@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
         Motion,
         Idle,
         Patrol,
+        Return,
         Chase,
         Attack,
         Skill,
