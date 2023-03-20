@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class BoxTile : ObjectTile
 {
@@ -9,8 +11,10 @@ public class BoxTile : ObjectTile
 
     [SerializeField] private float pushTime = 1f;
     private float timer = 0f;
-
+    private float detachtimer = 0f;
     [SerializeField] private float pushForce = 1f;
+
+    private bool detachStarted;
 
 
     public bool IsPushing { get; set; }
@@ -34,6 +38,18 @@ public class BoxTile : ObjectTile
         rigidbody.isKinematic = false;
         IsPushing = false;
         timer = 0f;
+    }
+
+    private void FixedUpdate()
+    {
+        if (detachStarted)
+        {
+            detachtimer+= Time.deltaTime;
+            if (detachtimer > 0.4f)
+            {
+                timer = 0;
+            }
+        }
     }
 
     public override void ResetObject()
@@ -60,6 +76,8 @@ public class BoxTile : ObjectTile
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            detachStarted = false;
+            detachtimer = 0f;
             //timer to check player is pushing mover than pushTime
             timer += Time.deltaTime;
 
@@ -69,7 +87,6 @@ public class BoxTile : ObjectTile
                 if (!Physics.BoxCast(transform.position, boxSize / 2, Vector3.up, Quaternion.identity, 1f, LayerMask.GetMask("Player"))
                     && collision.gameObject.GetComponent<PlayerController>().moveX != 0f)
                 {
-
                     IsPushing = true;
                     rigidbody.isKinematic = false;
 
@@ -78,6 +95,7 @@ public class BoxTile : ObjectTile
                     pushDirection.y = 0;
                     pushDirection.z = 0;
                     pushDirection.Normalize();
+
                     gameObject.GetComponent<Collider>().attachedRigidbody.velocity = pushDirection * pushForce;
                 }
             }
@@ -89,7 +107,7 @@ public class BoxTile : ObjectTile
         if (collision.gameObject.tag == "Player")
         {
             //Reset timer to make player has to push again to move the block
-            timer = 0f;
+            detachStarted = true;
         }
     }
 }
