@@ -12,7 +12,8 @@ public class StoryPopEvent : MonoBehaviour
         {
             EventManager.instance.SetStoryList(storyIdList);
             EventManager.instance.PlayStory();
-            gameObject.SetActive(false);
+            EventManager.instance.Pause();
+            Destroy(gameObject);
         }
     }
 }
