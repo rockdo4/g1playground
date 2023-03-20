@@ -205,7 +205,7 @@ public class EnemyController : Enemy, IAttackable
     protected override void ChaseUpdate()
     {
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized, Time.deltaTime * 10f);
+         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized, Time.deltaTime * 10f);
 
         if (player.transform.position.x - transform.position.x > 0)
             isGoingRight = true;
