@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gambling
+public class Gambling : MonoBehaviour
 {
-    public string itemImage;
-
-    public Gambling(Gambling gambling)
+    public List<GameObject> GetEquipments(int count)
     {
-        this.itemImage = gambling.itemImage;
+        return null;
     }
+
+    public List<GameObject> GetSkills(int count)
+    {
+        return null;
+    }
+
 }
