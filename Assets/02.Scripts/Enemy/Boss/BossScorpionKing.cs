@@ -45,12 +45,6 @@ public class BossScorpionKing : Enemy
                     rb.isKinematic = true;
                     agent.enabled = true;
                     break;
-                case EnemyState.Idle:
-                    rb.isKinematic = true;
-                    agent.velocity = Vector3.zero;
-                    agent.enabled = true;
-                    agent.isStopped = true;
-                    break;
                 case EnemyState.Patrol:
                     agent.enabled = true;
                     agent.isStopped = false;
@@ -58,8 +52,7 @@ public class BossScorpionKing : Enemy
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Return:
-                    agent.enabled = true;
-                    agent.isStopped = false;
+                    agent.velocity = Vector3.zero;
                     agent.speed = chaseSpeed;
                     rb.isKinematic = true;
                     break;
@@ -71,13 +64,15 @@ public class BossScorpionKing : Enemy
                     break;
                 case EnemyState.Groggy:
                     agent.enabled = true;
-                    agent.isStopped = false;
+                    agent.velocity = Vector3.zero;
+                    agent.isStopped = true;
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Attack:
+                    agent.enabled = true;
+                    agent.velocity = Vector3.zero;
                     agent.isStopped = true;
                     rb.isKinematic = false;
-                    agent.enabled = false;
                     break;
                 case EnemyState.Skill:
                     agent.isStopped = true;
@@ -106,15 +101,59 @@ public class BossScorpionKing : Enemy
     }
     protected override void Start()
     {
-        base.Start();
+        player = GameManager.instance.player;
+        GetComponent<DestructedEvent>().OnDestroyEvent = () =>
+        {
+            State = EnemyState.Die;
+            animator.SetTrigger("Die");
+            isLive = false;
+
+            enemyBody.SetActive(false);
+
+        };
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         State = EnemyState.None;
+        projectileCoolTime = 0f;
+        areaCoolTime = 0f;
     }
 
+    public float groggy1;
+    public float groggy2;
+    public float groggy3;
+    private bool isGroggy1;
+    private bool isGroggy2;
+    private bool isGroggy3;
+    private void CheackGroggy()
+    {
+        if (isGroggy1 && isGroggy2 && isGroggy3)
+            return;
+
+        if (!isGroggy1 && status.currHp <= status.FinalValue.maxHp * groggy1)
+        {
+            isGroggy1 = true;
+            animator.SetTrigger("Groggy");
+            State = EnemyState.Groggy;
+            return;
+        }
+        else if (!isGroggy2 && status.currHp <= status.FinalValue.maxHp * groggy2)
+        {
+            isGroggy2 = true;
+            animator.SetTrigger("Groggy");
+            State = EnemyState.Groggy;
+            return;
+        }
+        else if (!isGroggy3 && status.currHp <= status.FinalValue.maxHp * groggy3)
+        {
+            isGroggy3 = true;
+            animator.SetTrigger("Groggy");
+            State = EnemyState.Groggy;
+            return;
+        }
+    }
     protected void Update()
     {
         //attackTime += Time.deltaTime;
@@ -124,14 +163,12 @@ public class BossScorpionKing : Enemy
             projectileCoolTime += Time.deltaTime;
             areaCoolTime += Time.deltaTime;
         }
+        CheackGroggy();
 
         switch (State)
         {
             case EnemyState.None:
                 None();
-                break;
-            case EnemyState.Idle:
-                IdleUpdate();
                 break;
             case EnemyState.Patrol:
                 PatrolUpdate();
@@ -159,10 +196,6 @@ public class BossScorpionKing : Enemy
         SaveFloorLength(ref startPos, ref endPos);
     }
 
-    protected override void IdleUpdate()
-    {
-
-    }
     protected override void PatrolUpdate()
     {
         returnCoolTime += Time.deltaTime;
@@ -248,11 +281,11 @@ public class BossScorpionKing : Enemy
         }
 
 
-        if (projectileCoolTime >= projectileTime)
+        if (projectileCoolTime >= projectileTime && Vector3.Distance(transform.position, player.transform.position) >= attackRange)
         {
             projectileCoolTime = 0f;
-
-            animator.SetTrigger("Area");
+            State = EnemyState.Attack;
+            animator.SetTrigger("Projectile");
             return;
         }
 
@@ -268,7 +301,8 @@ public class BossScorpionKing : Enemy
 
     private void Attack()
     {
-            attackBox.SetActive(true);
+        attackBox.SetActive(true);
+        isHit = false;
     }
 
     private void AttackDone()
@@ -276,19 +310,20 @@ public class BossScorpionKing : Enemy
         if (!isHit)
         {
             State = EnemyState.Chase;
+            attackBox.SetActive(false);
+            animator.SetTrigger("AttackEnd");
         }
 
     }
 
     private void LastAttackDone()
     {
-        animator.SetBool("isAttack", false);
-
         State = EnemyState.Chase;
+        attackBox.SetActive(false);
         isHit = true;
     }
 
-    private bool isHit = true;
+    private bool isHit = false;
     private void OnTriggerEnter(Collider collider)
     {
         if (!attackBox.activeSelf)
@@ -302,13 +337,34 @@ public class BossScorpionKing : Enemy
             isHit = true;
             meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
             attackBox.SetActive(false);
-            animator.SetBool("isAttack", isHit);
-        }
-        else
-        {
-            isHit = false;
-            animator.SetBool("isAttack", isHit);
         }
     }
 
+    private void Projectile()
+    {
+        var playerDir = (player.transform.position - skillPivot.transform.position).normalized;
+
+        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, playerDir);
+    }
+    private void ProjectileDone()
+    {
+        State = EnemyState.Chase;
+    }
+
+    private void Area()
+    {
+        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, Vector3.down);
+    }
+    private void AreaDone()
+    {
+        State = EnemyState.Chase;
+    }
+    private void GroggyDone()
+    {
+        State = EnemyState.Chase;
+    }
+    private void DieDone()
+    {
+        gameObject.SetActive(false);
+    }
 }

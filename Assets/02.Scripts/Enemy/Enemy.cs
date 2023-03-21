@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class Enemy : MonoBehaviour
 {
     protected EnemyState state;
+    protected Status status;
 
     protected GameObject player;
     protected Vector3 mySpawnPos;
@@ -44,6 +45,7 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Awake()
     {
+        status = GetComponent<Status>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
@@ -135,21 +137,18 @@ public class Enemy : MonoBehaviour
 #if UNITY_EDITOR
         Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
 #endif
-
         if (Physics.Raycast(ray, out RaycastHit hit, range, LayerMask.GetMask("Player")))
         {
             //if (hit.collider.tag == "Player")
+            if (State != EnemyState.Chase)
             {
-                if (State != EnemyState.Chase)
-                {
-                    State = EnemyState.Chase;
-                    return true;
-                }
+                State = EnemyState.Chase;
+                return true;
+            }
 
-                if (State == EnemyState.Chase)
-                {
-                    return true;
-                }
+            if (State == EnemyState.Chase)
+            {
+                return true;
             }
         }
         return false;
