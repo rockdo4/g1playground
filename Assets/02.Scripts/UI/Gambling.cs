@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gambling : MonoBehaviour
+public class Gambling
 {
-    void Start()
-    {
-        
-    }
+    public string itemImage;
 
-    void Update()
+    public Gambling(Gambling gambling)
     {
-        
+        this.itemImage = gambling.itemImage;
     }
 }
