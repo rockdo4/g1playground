@@ -18,6 +18,10 @@ public class StageController : MonoBehaviour
         public bool isOn;
     }
 
+    [Header("Skybox")]
+    [Range(0,4)]
+    [SerializeField] private int skyboxIndex;
+
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
@@ -107,6 +111,12 @@ public class StageController : MonoBehaviour
 
     private void OnEnable()
     {
+        //Set Skybox
+        SkyboxManager.instance.SetSkybox(skyboxIndex);
+
+        //Show StageName
+        EventManager.instance.ShowStageTitile(gameObject.name);
+
         var switchcheck = false;
         enemies = new List<GameObject>();
         var childCount = gameObject.transform.childCount;
@@ -215,6 +225,7 @@ public class StageController : MonoBehaviour
 
         if (enemies.Count == 0 || greenwallopen)
         {
+            TileColorManager.instance.ChangeTileMaterial(transform.name, true);
             foreach (var green in greenWall)
             {
                 green.SetActive(false);

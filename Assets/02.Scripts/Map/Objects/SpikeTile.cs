@@ -25,11 +25,15 @@ public class SpikeTile : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && timer >= delay)
+        if (!other.CompareTag("Player"))
+            return;
+        var status = other.GetComponent<Status>();
+        if (status != null && timer >= delay) 
         {
             timer = 0f;
 
             //add player damage here//
+            status.CurrHp -= (int)damagePercentage;
         }
     }
 }
