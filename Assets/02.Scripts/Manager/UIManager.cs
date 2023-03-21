@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.Burst.Intrinsics.X86.Avx;
-using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour
 {
