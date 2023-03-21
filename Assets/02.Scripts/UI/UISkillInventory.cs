@@ -51,9 +51,9 @@ public class UISkillInventory : MonoBehaviour
         ClearInventory();
         List<string> ids = new List<string>();
         int len = 0;
-        foreach (var skill in playerSkills.allSkills)
+        foreach (var skill in playerSkills.PossessedSkills)
         {
-            ids.Add(skill.id);
+            ids.Add(skill);
         }
         len = ids.Count;
         var table = DataTableMgr.GetTable<SkillData>();

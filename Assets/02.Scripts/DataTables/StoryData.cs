@@ -5,16 +5,13 @@ using UnityEngine;
 public class StoryData : ICSVParsing
 {
     public string id { get; set; }
-    public string storyScript;
-    public string iconSpriteId;
-    public Sprite iconSprite;
+    public string storyLine;
+    public string iconId;
 
-    public virtual void Parse(Dictionary<string, string> line)
+    public void Parse(Dictionary<string, string> line)
     {
         id = line["ID"];
-        storyScript = line["Story_Line"];
-        iconSpriteId = line["Icon_ID"];
-
-        iconSprite = Resources.Load<Sprite>(iconSpriteId);
+        storyLine = line["Story_Line"];
+        iconId = line["Icon_ID"];
     }
 }

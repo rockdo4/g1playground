@@ -57,8 +57,8 @@ public class Portal : MonoBehaviour
                     other.gameObject.transform.position = portal.GetPos();
                     other.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     var playerStat = other.GetComponent<Status>();
-                    playerStat.currHp = playerStat.FinalValue.maxHp;
-                    playerStat.currMp = playerStat.FinalValue.maxMp;
+                    playerStat.CurrHp = playerStat.FinalValue.maxHp;
+                    playerStat.CurrMp = playerStat.FinalValue.maxMp;
                     other.GetComponent<PlayerInventory>()?.RefillPotions();
                     portal.CanUse = true;
                     //other.GetComponent<PlayerController>().AgentOnOff();

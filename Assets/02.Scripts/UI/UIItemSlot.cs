@@ -25,6 +25,6 @@ public class UIItemSlot : MonoBehaviour
         this.index = index;
         this.data = data;
         button.interactable = true;
-        icon.sprite = data.iconSprite;
+        icon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
     }
 }

@@ -14,8 +14,6 @@ public class WeaponData : ItemData
 {
     public WeaponTypes weaponType;
     public ItemClass weaponClass;
-    public float attackSpeed;
-    public float attackDistance;
     public int reinforce;
     public int maxReinforce;
     public string iconId;
@@ -36,10 +34,9 @@ public class WeaponData : ItemData
     public override void Parse(Dictionary<string, string> line)
     {
         base.Parse(line);
+        id = line["Weapon_ID"];
         weaponType = (WeaponTypes)System.Enum.Parse(typeof(WeaponTypes), line["Type"]);
         weaponClass = (ItemClass)System.Enum.Parse(typeof(ItemClass), line["Class"]);
-        attackSpeed = float.Parse(line["Atk_speed"]);
-        attackDistance = float.Parse(line["Atk_Distance"]);
         reinforce = int.Parse(line["Wea_Reinforce"]);
         maxReinforce = int.Parse(line["max_Wea_Reinforce"]);
         maximumAttack = int.Parse(line["Maximum_atk"]);
@@ -51,9 +48,5 @@ public class WeaponData : ItemData
         addInt = int.Parse(line["addInt"]);
         addMeleePower = int.Parse(line["addMeleepow"]);
         addSkillPower = int.Parse(line["addSkillpow"]);
-        addMeleeCriChance = float.Parse(line["addMeleeCriChance"]);
-        addMeleeCriDamage = float.Parse(line["addMeleeCriDamage"]);
-        addSkillCriChance = float.Parse(line["addSkillCriChance"]);
-        addSkillCriDamage = float.Parse(line["addSkillCriDamage"]);
     }
 }

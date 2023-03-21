@@ -37,45 +37,45 @@ public class MiniMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MiniMapData data = null;
-        data = DataTableMgr.GetTable<MiniMapData>().Get(0.ToString());
+        MiniMapData data = DataTableMgr.GetTable<MiniMapData>().Get(0.ToString());
 
-        var image = data.miniMapSprite.bounds.size;
+        var sprite = Resources.Load<Sprite>(data.miniMapId);
+        var image = sprite.bounds.size;
 
         if (image.x >= image.y)
         {
             miniMapVertical.gameObject.SetActive(true);
             miniMapHorizontal.gameObject.SetActive(false);
-            miniMapVertical.sprite = data.miniMapSprite;
+            miniMapVertical.sprite = sprite;
             
         }
         else
         {
             miniMapHorizontal.gameObject.SetActive(true);
             miniMapVertical.gameObject.SetActive(false);
-            miniMapHorizontal.sprite = data.miniMapSprite;            
+            miniMapHorizontal.sprite = sprite;            
         }
         
     }
 
     public void SetMiniMap(int id)
     {
-        MiniMapData data = null;
-        data = DataTableMgr.GetTable<MiniMapData>().Get(id.ToString());
+        MiniMapData data = DataTableMgr.GetTable<MiniMapData>().Get(id.ToString());
 
-        var image = data.miniMapSprite.bounds.size;
+        var sprite = Resources.Load<Sprite>(data.miniMapId);
+        var image = sprite.bounds.size;
 
         if (image.x >= image.y)
         {
             miniMapVertical.gameObject.SetActive(true);
             miniMapHorizontal.gameObject.SetActive(false);
-            miniMapVertical.sprite = data.miniMapSprite;            
+            miniMapVertical.sprite = sprite;            
         }
         else
         {
             miniMapHorizontal.gameObject.SetActive(true);
             miniMapVertical.gameObject.SetActive(false);
-            miniMapHorizontal.sprite = data.miniMapSprite;
+            miniMapHorizontal.sprite = sprite;
             
         }
     }

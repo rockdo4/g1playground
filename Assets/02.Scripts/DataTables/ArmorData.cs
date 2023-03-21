@@ -21,12 +21,12 @@ public class ArmorData : ItemData
 
     public override void Parse(Dictionary<string, string> line)
     {
-        
         base.Parse(line);
+        id = line["Armor_ID"];
         armorClass = (ItemClass)System.Enum.Parse(typeof(ItemClass), line["Class"]);
         reinforce = int.Parse(line["arm_reinforce"]);
         maxReinforce = int.Parse(line["max_arm_reinforce"]);
-        sellable = int.Parse(line["Sellable"]);
+        sellable = int.Parse(line["sellable"]);
         sellPowder = int.Parse(line["sellPowder"]);
         addStr = int.Parse(line["addStr"]);
         addDex = int.Parse(line["addDex"]);

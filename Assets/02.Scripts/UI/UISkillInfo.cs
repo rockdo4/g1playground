@@ -33,7 +33,7 @@ public class UISkillInfo : MonoBehaviour
             return;
         }
         currSkillData = data;
-        equipImage.sprite = data.iconSprite;
+        equipImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
         skillName.text = data.name;
         skillDesc.text = data.desc;
     }
@@ -51,7 +51,7 @@ public class UISkillInfo : MonoBehaviour
     {
         var playerSkills = GameManager.instance.player.GetComponent<PlayerSkills>();
         var skillTable = DataTableMgr.GetTable<SkillData>();
-        firstEquipIcon.sprite = skillTable.Get(playerSkills.GetCurrSkillID(0)).iconSprite;
-        secondEquipIcon.sprite = skillTable.Get(playerSkills.GetCurrSkillID(1)).iconSprite;
+        firstEquipIcon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillTable.Get(playerSkills.GetCurrSkillID(0)).iconSpriteId).iconName);
+        secondEquipIcon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillTable.Get(playerSkills.GetCurrSkillID(1)).iconSpriteId).iconName);
     }
 }

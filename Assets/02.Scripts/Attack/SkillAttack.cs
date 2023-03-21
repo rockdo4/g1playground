@@ -1,28 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Text;
 using UnityEngine;
 
 public class SkillAttack : AttackDefinition
 {
+    public string Group;// { get; private set; }
+
+    [Header("Values from DataTable")]
     public string id;
+    public int Reinforce;// { get; private set; }
+    public int MaxReinfore;//{ get; private set; }
     public int reqMana;
     public float damageFigure;
     public float criticalChance;
     public float criticalDamage;
-    public float range;
-    public float lifeTime;
-    public bool isKnockbackable;
-    public bool isStunnable;
+    public float knockBackForce;
     public float stunTime;
-    public float CoolDown;
+    public float slowDown;
+    public float slowTime;
+    public float reduceDef;
+    public float reduceDefTime;
+    public float coolDown;
+
+    [Header("Values only fix on Inspector")]
     public bool isOnOffSkill = false;
+    public float lifeTime;
+    public float range;
     public string fireSoundEffect;
     public string inUseSoundEffect;
     public string hitSoundEffect;
 
-    public void SetSkill(string id)
+    public void SetData(string id)
     {
-        // loadFromSkillTable
+        var data = DataTableMgr.GetTable<SkillData>().Get(id);
+        this.id = data.id;
+        Reinforce = data.reinforce;
+        MaxReinfore= data.maxReinfore;
+        reqMana = data.reqMana;
+        damageFigure = data.damageFigure;
+        criticalChance= data.criticalChance;
+        criticalDamage = data.criticalDamage;
+        knockBackForce = data.knockBackForce;
+        stunTime= data.stunTime;
+        coolDown = data.CoolDown;
+        slowDown = data.slowDown;
+        slowTime = data.slowTime;
+        reduceDef = data.reduceDef;
+        reduceDefTime = data.reduceDefTime;
     }
 
     public virtual void Update() { }
@@ -30,7 +55,7 @@ public class SkillAttack : AttackDefinition
     public override Attack CreateAttack(Status attacker, Status defenser)   // temporary formula
     {
         var criticalChance = attacker.FinalValue.skillCriChance + this.criticalChance;
-        var isCritical = Random.value < criticalChance;
+        var isCritical = UnityEngine.Random.value < criticalChance;
         float damage = attacker.FinalValue.skillPower * damageFigure;
         if (isCritical)
             damage *= (attacker.FinalValue.skillCriDamage + this.criticalDamage);
@@ -55,13 +80,52 @@ public class SkillAttack : AttackDefinition
         {
             attackable.OnAttack(attacker, attack, attackPos);
         }
-        if (isStunnable)
+    }
+
+    public void SaveSkillData() // if skillData or SkillAttack changes, must fix this code
+    {
+        var path = "Assets\\Resources\\DataTables\\Skill_Table.csv";
+        if (!File.Exists(path))
+            Debug.Log("File not exists");
+        string[] strs = File.ReadAllLines(path);
+        int len = strs.Length;
+        for (int i = 0; i < len; ++i)
         {
-            var stunnables = defender.GetComponents<IStunnable>();
-            foreach (var stunnable in stunnables)
+            var split = strs[i].Split(',');
+            if (string.Equals(split[0], id))
             {
-                stunnable.OnStunned(stunTime);
+                var temp = split;
+                strs[i] = string.Concat(
+                    id, ',',
+                    temp[1], ',',
+                    temp[2], ',',
+                    temp[3], ',',
+                    temp[4], ',',
+                    temp[5], ',',
+                    temp[6], ',',
+                    Reinforce, ',',
+                    MaxReinfore, ',',
+                    coolDown, ',',
+                    reqMana, ',',
+                    damageFigure, ',',
+                    criticalChance, ',',
+                    criticalDamage, ',',
+                    stunTime, ',',
+                    knockBackForce, ',',
+                    slowDown, ',',
+                    slowTime, ',',
+                    reduceDef, ',',
+                    reduceDefTime, ','
+                    );
+                break;
             }
         }
+
+        var newStrs = string.Empty;
+        for (int i = 0; i < len; ++i)
+        {
+            newStrs = string.Concat(newStrs, strs[i], "\n");
+        }
+        File.WriteAllText(path, newStrs, Encoding.Default);
     }
 }
