@@ -95,7 +95,7 @@ public class Status : MonoBehaviour
                 data = DataTableMgr.GetTable<PlayerData>().Get(id);
                 break;
             case Types.Monster:
-                data = DataTableMgr.GetTable<EnemyData>().Get(id);
+                data = DataTableMgr.GetTable<MonsterData>().Get(id);
                 break;
         }
         defaultValue.str = data.str;
@@ -110,6 +110,13 @@ public class Status : MonoBehaviour
         defaultValue.meleeDef = data.meleeDef;
         defaultValue.skillDef = data.skillDef;
         defaultValue.maxHp = data.maxHp;
+        if (type == Types.Monster)
+        {
+            var monsterData = (MonsterData)data;
+            defaultValue.meleePower = (int)(defaultValue.meleePower * monsterData.damageFigure);
+            defaultValue.skillPower *= (int)(defaultValue.skillPower * monsterData.damageFigure);
+            defaultValue.maxHp *= (int)(defaultValue.maxHp * monsterData.healthFigure);
+        }
         defaultValue.maxMp = data.maxMp;
         FinalValue = defaultValue;
     }

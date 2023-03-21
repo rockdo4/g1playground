@@ -15,11 +15,13 @@ public class SkillData : ICSVParsing
     public float criticalChance;
     public float criticalDamage;
     public float lifeTime;
-    public bool isKnockbackable;
-    public bool isStunnable;
+    public float knockBackForce;
     public float stunTime;
+    public float slowDown;
+    public float slowTime;
+    public float reduceDef;
+    public float reduceDefTime;
     public float CoolDown;
-    public Sprite iconSprite;
 
     public virtual void Parse(Dictionary<string, string> line)
     {
@@ -27,7 +29,21 @@ public class SkillData : ICSVParsing
         name = line["Name_ID"];
         desc = line["Desc_ID"];
         iconSpriteId = line["Icon_ID"];
+        reinforce = int.Parse(line["skillreinforce"]);
+        maxReinfore = int.Parse(line["maxskillreinforce"]);
+        CoolDown = float.Parse(line["coolTime"]);
+        reqMana = int.Parse(line["reqMana"]);
+        damageFigure = float.Parse(line["damageFigure"]);
+        criticalChance = float.Parse(line["criticalPercent"]);
+        criticalDamage = float.Parse(line["criticalDamage"]);
+        stunTime = float.Parse(line["stunTime"]);
+        knockBackForce = float.Parse(line["kBForce"]);
+        slowDown = float.Parse(line["slowDown"]);
+        slowTime = float.Parse(line["slowTime"]);
+        reduceDef = float.Parse(line["reduceDef"]);
+        reduceDefTime = float.Parse(line["reduceDefTime"]);
+        group = line["SkillGroup"];
 
-        iconSprite = Resources.Load<Sprite>(iconSpriteId);
+        lifeTime = 0f;
     }
 }

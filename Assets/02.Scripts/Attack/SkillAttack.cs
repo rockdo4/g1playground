@@ -15,14 +15,17 @@ public class SkillAttack : AttackDefinition
     public float damageFigure;
     public float criticalChance;
     public float criticalDamage;
-    public float lifeTime;
-    public bool isKnockbackable;
-    public bool isStunnable;
+    public float knockBackForce;
     public float stunTime;
+    public float slowDown;
+    public float slowTime;
+    public float reduceDef;
+    public float reduceDefTime;
     public float coolDown;
 
     [Header("Values only fix on Inspector")]
     public bool isOnOffSkill = false;
+    public float lifeTime;
     public float range;
     public string fireSoundEffect;
     public string inUseSoundEffect;
@@ -38,11 +41,13 @@ public class SkillAttack : AttackDefinition
         damageFigure = data.damageFigure;
         criticalChance= data.criticalChance;
         criticalDamage = data.criticalDamage;
-        lifeTime= data.lifeTime;
-        isKnockbackable= data.isKnockbackable;
-        isStunnable= data.isStunnable;
+        knockBackForce = data.knockBackForce;
         stunTime= data.stunTime;
         coolDown = data.CoolDown;
+        slowDown = data.slowDown;
+        slowTime = data.slowTime;
+        reduceDef = data.reduceDef;
+        reduceDefTime = data.reduceDefTime;
     }
 
     public virtual void Update() { }
@@ -75,14 +80,6 @@ public class SkillAttack : AttackDefinition
         {
             attackable.OnAttack(attacker, attack, attackPos);
         }
-        if (isStunnable)
-        {
-            var stunnables = defender.GetComponents<IStunnable>();
-            foreach (var stunnable in stunnables)
-            {
-                stunnable.OnStunned(stunTime);
-            }
-        }
     }
 
     public void SaveSkillData() // if skillData or SkillAttack changes, must fix this code
@@ -103,17 +100,22 @@ public class SkillAttack : AttackDefinition
                     temp[1], ',',
                     temp[2], ',',
                     temp[3], ',',
-                    Group,
+                    temp[4], ',',
+                    temp[5], ',',
+                    temp[6], ',',
                     Reinforce, ',',
                     MaxReinfore, ',',
+                    coolDown, ',',
                     reqMana, ',',
                     damageFigure, ',',
                     criticalChance, ',',
-                    lifeTime, ',',
-                    Convert.ToInt32(isKnockbackable), ',',
-                    Convert.ToInt32(isStunnable), ',',
+                    criticalDamage, ',',
                     stunTime, ',',
-                    coolDown
+                    knockBackForce, ',',
+                    slowDown, ',',
+                    slowTime, ',',
+                    reduceDef, ',',
+                    reduceDefTime, ','
                     );
                 break;
             }

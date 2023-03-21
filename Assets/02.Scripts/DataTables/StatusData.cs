@@ -19,5 +19,16 @@ public class StatusData : ICSVParsing
     public int dex;
     public int intel;
 
-    public virtual void Parse(Dictionary<string, string> line) { }
+    public virtual void Parse(Dictionary<string, string> line)
+    {
+        meleePower = 0;
+        skillPower = 0;
+        meleeCriChance = 0f;
+        skillCriChance = 0f;
+        meleeDef = 0;
+        skillDef = 0;
+        maxMp = 0;
+        meleeCriDamage = 2f;
+        skillCriDamage = 1.5f;
+    }
 }

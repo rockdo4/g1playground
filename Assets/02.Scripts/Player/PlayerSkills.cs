@@ -98,9 +98,13 @@ public class PlayerSkills : MonoBehaviour
 
     public void SetSkill(int index, string id)
     {
-        foreach (var skillState in skillStates)
+        var len = skillStates.Length;
+        var skillData = DataTableMgr.GetTable<SkillData>().Get(id);
+        for (int i = 0; i < len; ++i)
         {
-            if (skillState.skill != null && string.Equals(skillState.skill.id, id))
+            if (i == index)
+                continue;
+            if (skillStates[i].skill != null && string.Equals(skillStates[i].skill.Group, skillData.group))
                 return;
         }
 
@@ -109,11 +113,10 @@ public class PlayerSkills : MonoBehaviour
             if (string.Equals(possessedSkill, id))
             {
                 toggles[index].isOn = false;
-                var skillData = DataTableMgr.GetTable<SkillData>().Get(id);
                 var skill = allSkillGroups[skillData.group];
                 skill.SetData(id);
                 skillStates[index].Set(skill);
-                toggles[index].image.sprite = skillData.iconSprite;
+                toggles[index].image.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillData.iconSpriteId).iconName);
             }
         }
     }
