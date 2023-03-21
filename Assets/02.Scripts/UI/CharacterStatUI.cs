@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,9 @@ public class CharacterStatUI : MonoBehaviour
     public Image hpSlider;
     public Image mpSlider;
     public Image expSlider;
+
+    private GameObject charProfile;
+    private Image characterImage;
 
     public TextMeshProUGUI hpPotionCount;
     public TextMeshProUGUI mpPotionCount;
@@ -46,6 +50,12 @@ public class CharacterStatUI : MonoBehaviour
     //    //playerLv = 1;
     //}
 
+    private void Awake()
+    {
+        charProfile = GameObject.Find("Character");
+        characterImage = charProfile.GetComponent<Image>();
+    }
+
     private void OnEnable()
     {
         status = GameManager.instance.player.GetComponent<Status>();
@@ -54,19 +64,34 @@ public class CharacterStatUI : MonoBehaviour
 
     private void Update()
     {
-        hp.text = status.CurrHp.ToString() + " ";
-        mHp.text = "/ " + status.FinalValue.maxHp.ToString();
-        hpSlider.fillAmount = (float)status.currHp / (float)status.FinalValue.maxHp;
-
-        mp.text = status.CurrMp.ToString() + " ";
-        mMp.text = "/ " + status.FinalValue.maxMp.ToString();
-        mpSlider.fillAmount = (float)status.currMp / (float)status.FinalValue.maxMp;
-
         //level.text = playerLv.ToString();
         //expSlider.fillAmount = (float)currExp / (float)maxExp;
 
         hpPotionCount.text = inventory.PotionCount[0].ToString();
         mpPotionCount.text = inventory.PotionCount[1].ToString();
+    }
+
+    public void SetHPBarValue()
+    {
+        hp.text = status.CurrHp.ToString() + " ";
+        mHp.text = "/ " + status.FinalValue.maxHp.ToString();
+        hpSlider.fillAmount = (float)status.currHp / (float)status.FinalValue.maxHp;
+    }
+
+    public void SetMPBarValue()
+    {
+        mp.text = status.CurrMp.ToString() + " ";
+        mMp.text = "/ " + status.FinalValue.maxMp.ToString();
+        mpSlider.fillAmount = (float)status.currMp / (float)status.FinalValue.maxMp;
+    }
+
+    public void SetExpBarValue()
+    {
+
+    }
+
+    public void CharImageSwap(string id)
+    {
     }
 
     //private void ExpIncrease()

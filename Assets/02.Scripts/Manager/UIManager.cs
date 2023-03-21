@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86.Avx;
+using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour
 {
     public UIButtonManager btManager;
     public CharacterStatUI charStatUI;
-    [SerializeField]
+    
     private GameObject potion;
     private GameObject skillToggle;
 
@@ -23,16 +26,23 @@ public class UIManager : MonoBehaviour
         popupStack = new Stack<GameObject>();
     }
 
+    public  void CharacterImageSwap()
+    {
+        
+    }
+
     public void PlayerHpBar(int maxhp, int currhp)
     {
         charStatUI.maxHp = maxhp;
         charStatUI.currHp = currhp;
+        charStatUI.SetHPBarValue();
     }
 
     public void PlayerMpBar(int maxMp, int currMp)
     {
         charStatUI.maxMp = maxMp;
         charStatUI.currMp = currMp;
+        charStatUI.SetMPBarValue();
     }
 
     public void AddPopUp(GameObject popup)
@@ -53,5 +63,15 @@ public class UIManager : MonoBehaviour
     public void PotionOff()
     {
         potion.SetActive(false);
+    }
+
+    public  void SkillToggleOn()
+    {
+        skillToggle.SetActive(true);
+    }
+
+    public void SkillToggleOff()
+    {
+        skillToggle.SetActive(false);
     }
 }
