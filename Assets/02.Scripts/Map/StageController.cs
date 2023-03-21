@@ -22,6 +22,9 @@ public class StageController : MonoBehaviour
     [Range(0,4)]
     [SerializeField] private int skyboxIndex;
 
+    [Header("StageID")]
+    [SerializeField] private int stageId = 0;
+
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
@@ -116,6 +119,9 @@ public class StageController : MonoBehaviour
 
         //Show StageName
         EventManager.instance.ShowStageTitile(gameObject.name);
+
+        //Change MiniMap
+        MiniMap.instance.SetMiniMap(stageId);
 
         var switchcheck = false;
         enemies = new List<GameObject>();
@@ -225,6 +231,7 @@ public class StageController : MonoBehaviour
 
         if (enemies.Count == 0 || greenwallopen)
         {
+            //TileColorManager.instance.PlayEffect();
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
             foreach (var green in greenWall)
             {

@@ -12,6 +12,11 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
+        if (Mathf.Approximately(Time.timeScale, 0f))
+        {
+
+            return;
+        }
         Jump = false;
 
         foreach (var t in Input.touches)
