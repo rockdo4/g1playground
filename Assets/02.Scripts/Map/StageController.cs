@@ -18,6 +18,7 @@ public class StageController : MonoBehaviour
         public bool isOn;
     }
 
+    [Header("Skybox")]
     [Range(0,4)]
     [SerializeField] private int skyboxIndex;
 
@@ -110,8 +111,12 @@ public class StageController : MonoBehaviour
 
     private void OnEnable()
     {
+        //Set Skybox
         SkyboxManager.instance.SetSkybox(skyboxIndex);
+
+        //Show StageName
         EventManager.instance.ShowStageTitile(gameObject.name);
+
         var switchcheck = false;
         enemies = new List<GameObject>();
         var childCount = gameObject.transform.childCount;

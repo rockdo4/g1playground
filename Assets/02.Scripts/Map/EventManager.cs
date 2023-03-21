@@ -6,10 +6,12 @@ using TMPro;
 
 public class EventManager : MonoBehaviour
 {
+    [Header("StageTitle")]
     [SerializeField] private GameObject stageTitlePanel;
     [SerializeField] private TextMeshProUGUI textMesh;
     [SerializeField] private float titlePanelDelay = 3f;
 
+    [Header("Story")]
     [SerializeField] private GameObject storyBoard;
     [SerializeField] private TextMeshProUGUI storyText;
     [SerializeField] private Image storyIcon;
@@ -57,6 +59,7 @@ public class EventManager : MonoBehaviour
         StopAllCoroutines();
     }
 
+    /////////////////////////Story//////////////////////////////////
     public void SetStoryList(List<int> stories)
     {
         storyList = stories;
@@ -75,6 +78,7 @@ public class EventManager : MonoBehaviour
         }
         else
         {
+            currStoryIndex = 0;
             Resume();
             storyBoard.SetActive(false);
         }
@@ -86,6 +90,17 @@ public class EventManager : MonoBehaviour
         storyIcon.sprite = icon;
         storyText.text = text;
     }
+
+    public void SkipStory()
+    {
+        if (storyBoard.activeSelf)
+        {
+            currStoryIndex = 0;
+            Resume();
+            storyBoard.SetActive(false);
+        }
+    }
+    ///////////////////////////////////////////////////////
 
     public void Pause()
     {
