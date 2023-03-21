@@ -20,6 +20,8 @@ public class EventManager : MonoBehaviour
     private int storyCount = 0;
     private int currStoryIndex = 0;
 
+    private int effectCount = 0;
+
     private static EventManager m_instance;
     public static EventManager instance
     {
@@ -101,6 +103,25 @@ public class EventManager : MonoBehaviour
         }
     }
     ///////////////////////////////////////////////////////
+
+    //Test Effect
+    public void PlayEffect()
+    {
+        if (effectCount > 0)
+        {
+            return;
+        }
+        effectCount++;
+        var effect = GameManager.instance.effectManager.GetEffect("Poof_electric");
+        effect.transform.position = GameManager.instance.player.transform.position;
+        float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
+        GameManager.instance.effectManager.ReturnEffectOnTime("Poof_electric", effect, destroyTime);
+    }
+
+    public void ResetCount()
+    {
+        effectCount = 0;
+    }
 
     public void Pause()
     {
