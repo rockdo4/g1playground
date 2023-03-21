@@ -76,7 +76,7 @@ public class EventManager : MonoBehaviour
             data = DataTableMgr.GetTable<StoryData>().Get(storyList[currStoryIndex].ToString());
             currStoryIndex++;
 
-            var icon = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconId).iconName);
+            var icon = Resources.Load<Sprite>(data.iconId);
             ShowStoryBoard(icon, data.storyLine);
         }
         else
