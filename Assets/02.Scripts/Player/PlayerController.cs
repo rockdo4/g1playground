@@ -48,11 +48,10 @@ public class PlayerController : MonoBehaviour
 
     private NavMeshAgent agent;
     private NavMeshPath path;
-    public Transform[] jumpPoints;
+    private Vector3 prevPosition;
 
     private Coroutine cor;
     private float enemyPathLength;
-    private float pointPathLength;
 
     public Toggle autoToggle;
 
@@ -71,13 +70,12 @@ public class PlayerController : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.enabled = false;
+        agent.updateRotation = false;
+        prevPosition = agent.transform.position;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
 
         autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
-
-      
-
     }
 
     private void Start()
@@ -94,34 +92,24 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         currState.Update();
-
-        if (input.LeftMove)
-            SetMoveX(-1f);
-        else if (input.RightMove)
-            SetMoveX(1f);
+        if(!IsAuto)
+        {
+            if (input.LeftMove)
+                SetMoveX(-1f);
+            else if (input.RightMove)
+                SetMoveX(1f);
+            else
+                SetMoveX(0f);
+        }
         else
-            SetMoveX(0f);
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            enemies = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().GetStageEnemies();
-            cor = StartCoroutine(SearchTarget());
-            SetState<AutoMoveState>();
+            var agentVec = (agent.transform.position - prevPosition).normalized;
+            if (!Mathf.Approximately(agentVec.x, 0f))
+            {
+                SetMoveX(agentVec.x);
+            }
+            prevPosition = agent.transform.position;
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            AgentOff();
-            StopCoroutine(cor);
-            cor = null;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            agent.CalculatePath(transform.position + Vector3.right * 3f, path);
-            agent.SetDestination(transform.position + Vector3.right * 3f);
-        }
-
     }
     private void FixedUpdate()
     {
@@ -192,25 +180,8 @@ public class PlayerController : MonoBehaviour
         {
             int layerMask = ~LayerMask.GetMask("Projectile");
             var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f, layerMask);
-            //Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
             foreach (var hit in hits)
             {
-
-                //if (hit.collider != null)
-                //{
-                //    if (!(hit.transform.CompareTag("CheckPoint") ||
-                //        hit.transform.CompareTag("Falling") ||
-                //        hit.transform.CompareTag("Portal") ||
-                //    hit.transform.CompareTag("Stage") ||
-                //        hit.transform.CompareTag("Player") ||
-                //        hit.collider.CompareTag("AttackBox") ||
-                //        (hit.transform.CompareTag("Pushable") && isGrounded) ||
-                //        hit.transform.CompareTag("Door")))
-                //    {
-                //        IsBlocked = true;
-                //        return;
-                //    }
-                //}
                 if (((hit.transform.CompareTag("Pushable") && !isGrounded)) ||
                     hit.transform.CompareTag("Ground"))
                 {
@@ -266,6 +237,8 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator SearchTarget()
     {
+        SetMoveX(LastMoveX);
+        yield return new WaitForSeconds(1f);
         //Debug.Log("1");
         while (true)
         {
@@ -293,43 +266,23 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
+            agent.SetDestination(target.transform.position);
 
-            if (Vector3.Distance(agent.transform.position, target.position) < 2f)
-            {
-                SetMoveX(target.position.x - agent.transform.position.x);
-                agent.isStopped = true;
-            }
-            else
-                SetMoveX(agent.velocity.x);
-
-            if (!agent.isStopped)
-            {
-                //Debug.Log(target.name);
-                agent.SetDestination(target.transform.position);
-                SetMoveX(agent.velocity.x);
-            }
-
-
-
-            //Debug.Log("!");
             if (count == 0)
             {
-                AgentOnOff();
-                autoToggle.isOn = false;
                 //문 따라가게
-                //var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
-                
-                //foreach (var portal in portals)
-                //{
-                //    if (portal.GetNextStageName().CompareTo(GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().PrevStageName) != 0)
-                //    {
-                //        target = portal.transform;
-                //        agent.SetDestination(target.position);
-                //    }
-                //}
+                var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
+                foreach (var portal in portals)
+                {
+                    if (portal.GetNextStageName().CompareTo(GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().PrevStageName) != 0)
+                    {
+                        agent.isStopped = false;
+                        target = portal.transform;
+                        agent.SetDestination(target.position);
+                    }
+                }
                 yield break;
             }
-               
         }
     }
 
@@ -392,7 +345,10 @@ public class PlayerController : MonoBehaviour
                 playerController.SetState<AutoMoveState>();
             if (playerController.isGrounded)
             {
-                playerController.SetState<IdleState>();
+                if (!Mathf.Approximately(playerController.playerRb.velocity.x, 0f))
+                    playerController.SetState<MoveState>();
+                else
+                    playerController.SetState<IdleState>();
                 return;
             }
             playerController.Move(playerController.moveSpeed);
@@ -435,7 +391,6 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter()
         {
-            playerController.AgentOn();
         }
 
         public override void Update()

@@ -45,7 +45,8 @@ public class Portal : MonoBehaviour
 
         if (other.CompareTag("Player") && other.GetComponent<ObjectMass>() != null)
         {
-            //other.GetComponent<PlayerController>().AgentOnOff();
+            var player = other.GetComponent<PlayerController>();
+            player.AgentOnOff();
             init = true;
             nextStage.gameObject.SetActive(true);
             nextStage.GetComponent<StageController>().PrevStageName = MapManager.instance.GetCurrentMapName();
@@ -67,7 +68,7 @@ public class Portal : MonoBehaviour
                     Camera.main.transform.position = portal.gameObject.transform.position;
                     MapManager.instance.SetCurrentMapName(portal.transform.parent.name);
                     MapManager.instance.SetcurrentChapterName(portal.transform.parent.parent.name);
-
+                    player.AgentOnOff();
                     if (portal.transform.parent.name == "Village")
                     {
                         GameManager.instance.uiManager.PotionOff();
