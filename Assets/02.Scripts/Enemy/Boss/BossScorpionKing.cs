@@ -45,34 +45,33 @@ public class BossScorpionKing : Enemy
                     rb.isKinematic = true;
                     agent.enabled = true;
                     break;
-                case EnemyState.Spawn:
-                    rb.isKinematic = true;
-                    agent.enabled = true;
-                    break;
-                case EnemyState.Motion:
-                    agent.enabled = true;
-                    agent.velocity = Vector3.zero;
-                    agent.isStopped = true;
-                    rb.isKinematic = true;
-                    break;
                 case EnemyState.Idle:
                     rb.isKinematic = true;
                     agent.velocity = Vector3.zero;
                     agent.enabled = true;
                     agent.isStopped = true;
                     break;
+                case EnemyState.Patrol:
+                    agent.enabled = true;
+                    agent.isStopped = false;
+                    agent.speed = patrolSpeed;
+                    rb.isKinematic = true;
+                    break;
                 case EnemyState.Return:
                     agent.enabled = true;
                     agent.isStopped = false;
+                    agent.speed = chaseSpeed;
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Chase:
                     agent.enabled = true;
                     agent.isStopped = false;
+                    agent.speed = chaseSpeed;
                     rb.isKinematic = true;
                     break;
-                case EnemyState.TakeDamage:
+                case EnemyState.Groggy:
                     agent.enabled = true;
+                    agent.isStopped = false;
                     rb.isKinematic = true;
                     break;
                 case EnemyState.Attack:
@@ -119,6 +118,12 @@ public class BossScorpionKing : Enemy
     protected void Update()
     {
         //attackTime += Time.deltaTime;
+
+        if (state != EnemyState.None)
+        {
+            projectileCoolTime += Time.deltaTime;
+            areaCoolTime += Time.deltaTime;
+        }
 
         switch (State)
         {
@@ -202,8 +207,10 @@ public class BossScorpionKing : Enemy
     }
     private void ReturnUpdate()
     {
-        agent.SetDestination(mySpawnPos);
-        if (Vector3.Distance(transform.position, mySpawnPos) <= 0.1)
+        if (LookAtPos(mySpawnPos))
+            agent.SetDestination(mySpawnPos);
+
+        if (Vector3.Distance(transform.position, mySpawnPos) <= 0.5)
         {
             State = EnemyState.None;
             returnCoolTime = 0f;
@@ -215,10 +222,7 @@ public class BossScorpionKing : Enemy
         if (LookAtTarget())
             agent.SetDestination(player.transform.position);
 
-        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
-        {
-
-        }
+        BattleProcess();
     }
 
     protected override void AttackUpdate()
@@ -234,5 +238,77 @@ public class BossScorpionKing : Enemy
     protected Vector3 startPos;
     protected Vector3 endPos;
 
+    void BattleProcess()
+    {
+        if (areaCoolTime >= areaTime)
+        {
+            areaCoolTime = 0f;
+            animator.SetTrigger("Area");
+            return;
+        }
+
+
+        if (projectileCoolTime >= projectileTime)
+        {
+            projectileCoolTime = 0f;
+
+            animator.SetTrigger("Area");
+            return;
+        }
+
+        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+        {
+            animator.SetTrigger("Attack");
+            State = EnemyState.Attack;
+            isHit = true;
+            return;
+        }
+    }
+
+
+    private void Attack()
+    {
+            attackBox.SetActive(true);
+    }
+
+    private void AttackDone()
+    {
+        if (!isHit)
+        {
+            State = EnemyState.Chase;
+        }
+
+    }
+
+    private void LastAttackDone()
+    {
+        animator.SetBool("isAttack", false);
+
+        State = EnemyState.Chase;
+        isHit = true;
+    }
+
+    private bool isHit = true;
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (!attackBox.activeSelf)
+            return;
+
+        if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
+        {
+#if UNITY_EDITOR
+            Debug.Log(State);
+#endif
+            isHit = true;
+            meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+            attackBox.SetActive(false);
+            animator.SetBool("isAttack", isHit);
+        }
+        else
+        {
+            isHit = false;
+            animator.SetBool("isAttack", isHit);
+        }
+    }
 
 }

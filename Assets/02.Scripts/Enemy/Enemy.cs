@@ -96,6 +96,17 @@ public class Enemy : MonoBehaviour
 
         return false;
     }
+    protected bool LookAtPos(Vector3 targetPos)
+    {
+        Vector3 dir = targetPos - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+
+        if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
+            return true;
+
+        return false;
+    }
 
     public bool GetIsLive()
     {
