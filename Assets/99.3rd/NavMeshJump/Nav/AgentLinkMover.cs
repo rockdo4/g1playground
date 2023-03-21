@@ -7,7 +7,8 @@ public enum OffMeshLinkMoveMethod
     Teleport,
     NormalSpeed,
     Parabola,
-    Curve
+    Curve,
+    Player,
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -30,6 +31,8 @@ public class AgentLinkMover : MonoBehaviour
                     yield return StartCoroutine(Parabola(agent, 2.0f, 0.5f));
                 else if (m_Method == OffMeshLinkMoveMethod.Curve)
                     yield return StartCoroutine(Curve(agent, 0.5f));
+                else if (m_Method == OffMeshLinkMoveMethod.Player)
+                    yield return StartCoroutine(Player(agent, 0.5f));
                 agent.CompleteOffMeshLink();
             }
             yield return null;
@@ -63,6 +66,21 @@ public class AgentLinkMover : MonoBehaviour
     }
 
     IEnumerator Curve(NavMeshAgent agent, float duration)
+    {
+        OffMeshLinkData data = agent.currentOffMeshLinkData;
+        Vector3 startPos = agent.transform.position;
+        Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
+        float normalizedTime = 0.0f;
+        while (normalizedTime < 1.0f)
+        {
+            float yOffset = m_Curve.Evaluate(normalizedTime);
+            agent.transform.position = Vector3.Lerp(startPos, endPos, normalizedTime) + yOffset * Vector3.up;
+            normalizedTime += Time.deltaTime / duration;
+            yield return null;
+        }
+    }
+
+    IEnumerator Player(NavMeshAgent agent, float duration)
     {
         OffMeshLinkData data = agent.currentOffMeshLinkData;
         Vector3 startPos = agent.transform.position;
