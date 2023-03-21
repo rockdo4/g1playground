@@ -519,8 +519,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.46499634, y: 4.244999}
-  m_SizeDelta: {x: 215.39, y: 193.39}
+  m_AnchoredPosition: {x: 0.46499634, y: 4.244995}
+  m_SizeDelta: {x: 237.39, y: 237.39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1039854551
 CanvasRenderer:
@@ -861,7 +861,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
@@ -883,7 +883,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 900
-  m_PreferredHeight: 300
+  m_PreferredHeight: 245.25
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1385,7 +1385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1225253328991319437}
   - component: {fileID: 2976367770304015523}
-  - component: {fileID: 4683458551420042555}
+  - component: {fileID: 407297975559195415}
   m_Layer: 5
   m_Name: Skill1Toggle
   m_TagString: Untagged
@@ -1462,7 +1462,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
---- !u!114 &4683458551420042555
+--- !u!114 &407297975559195415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1510,8 +1510,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 676.5, y: -228.5}
-  m_SizeDelta: {x: 1200, y: 255}
+  m_AnchoredPosition: {x: 762.5, y: -250}
+  m_SizeDelta: {x: 1325, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6427782590902070012
 MonoBehaviour:
@@ -1530,9 +1530,9 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
@@ -1819,6 +1819,7 @@ GameObject:
   - component: {fileID: 5236865516976057167}
   - component: {fileID: 5236865516976057161}
   - component: {fileID: 5236865516976057160}
+  - component: {fileID: 4683458551420042556}
   m_Layer: 5
   m_Name: HpBarFrame
   m_TagString: Untagged
@@ -1887,6 +1888,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4683458551420042556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5236865516976057166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 900
+  m_PreferredHeight: 81.75
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &5236865517014280560
 GameObject:
   m_ObjectHideFlags: 0
@@ -2455,6 +2476,7 @@ GameObject:
   - component: {fileID: 5236865517964582674}
   - component: {fileID: 5236865517964582684}
   - component: {fileID: 5236865517964582675}
+  - component: {fileID: 4683458551420042557}
   m_Layer: 5
   m_Name: MpBarFrame
   m_TagString: Untagged
@@ -2523,6 +2545,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4683458551420042557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5236865517964582673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 900
+  m_PreferredHeight: 81.75
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &5236865517982668579
 GameObject:
   m_ObjectHideFlags: 0
@@ -2759,6 +2801,7 @@ GameObject:
   - component: {fileID: 5236865518011054001}
   - component: {fileID: 5236865518011054003}
   - component: {fileID: 5236865518011054002}
+  - component: {fileID: 4683458551420042555}
   m_Layer: 5
   m_Name: ExpBarFrame
   m_TagString: Untagged
@@ -2827,6 +2870,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4683458551420042555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5236865518011054000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 900
+  m_PreferredHeight: 81.75
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &5236865518187419797
 GameObject:
   m_ObjectHideFlags: 0
@@ -3368,7 +3431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3520128072972976590}
   - component: {fileID: 5582451736187957016}
-  - component: {fileID: 4683458551420042556}
+  - component: {fileID: 2451781694899624536}
   m_Layer: 5
   m_Name: Skill2Toggle
   m_TagString: Untagged
@@ -3445,7 +3508,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
---- !u!114 &4683458551420042556
+--- !u!114 &2451781694899624536
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4395,13 +4458,13 @@ PrefabInstance:
     - target: {fileID: 3901429456405869663, guid: 155c7b5c1ecc7a54f907bb9d9a8552b4,
         type: 3}
       propertyPath: m_Type
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3901429456405869663, guid: 155c7b5c1ecc7a54f907bb9d9a8552b4,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 74b7016680e9182488ebf64ca9cb3233,
+      objectReference: {fileID: 1589270183, guid: 74b7016680e9182488ebf64ca9cb3233,
         type: 3}
     - target: {fileID: 3901429457779503470, guid: 155c7b5c1ecc7a54f907bb9d9a8552b4,
         type: 3}
@@ -4412,12 +4475,12 @@ PrefabInstance:
     - target: {fileID: 6982227260695723419, guid: 155c7b5c1ecc7a54f907bb9d9a8552b4,
         type: 3}
       propertyPath: m_PreferredWidth
-      value: 255
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6982227260695723419, guid: 155c7b5c1ecc7a54f907bb9d9a8552b4,
         type: 3}
       propertyPath: m_PreferredHeight
-      value: 255
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 155c7b5c1ecc7a54f907bb9d9a8552b4, type: 3}
