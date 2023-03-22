@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileColorManager : MonoBehaviour
 {
@@ -8,7 +9,23 @@ public class TileColorManager : MonoBehaviour
     [SerializeField] private Material customMaterial;
     [SerializeField] private Material originMaterial;
     [SerializeField] private Material invisibleMaterial;
-    //public new string name;
+
+    [Header("Image")]
+    [SerializeField] private Sprite worldMapImageRed;
+    [SerializeField] private Sprite worldMapImageGreen;
+    [SerializeField] private Sprite worldMapImageOrange;
+    [SerializeField] private Sprite worldMapImagePurple;
+    [SerializeField] private Sprite worldMapImageBrown;
+
+    public enum ImageColor
+    {
+        Red,
+        Green,
+        Orange,
+        Purple,
+        Brown,
+    }
+
 
     private static TileColorManager m_instance;
     public static TileColorManager instance
@@ -114,5 +131,34 @@ public class TileColorManager : MonoBehaviour
                 mesh.material = invisibleMaterial;
             }
         }
+    }
+
+    public Material GetOriginMaterial()
+    {
+        return originMaterial;
+    }
+
+    public Material GetCustomMaterial()
+    {
+        return customMaterial;
+    }
+
+    public Sprite GetImageSprite(ImageColor color)
+    {
+        switch (color)
+        {
+            case ImageColor.Red:
+                return worldMapImageRed;
+            case ImageColor.Green:
+                return worldMapImageGreen;
+            case ImageColor.Orange:
+                return worldMapImageOrange;
+            case ImageColor.Purple:
+                return worldMapImagePurple;
+            case ImageColor.Brown:
+                return worldMapImageBrown;
+        }
+
+        return null;
     }
 }
