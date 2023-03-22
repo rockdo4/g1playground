@@ -5,6 +5,9 @@ using UnityEngine.UIElements;
 
 public class Gambling : MonoBehaviour
 {
+    private List<PlayerInventory> inventory = new List<PlayerInventory>();
+    private ArmorData armor;
+
     public GameObject oneReward;
     public GameObject tenReward;
 
