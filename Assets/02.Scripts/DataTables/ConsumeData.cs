@@ -6,7 +6,7 @@ using UnityEngine;
 public enum ConsumeTypes
 {
     HpPotion,
-    MpPowder,
+    MpPotion,
     Powder,
     Essence,
 }

@@ -400,7 +400,7 @@ public class DungeonManager : MonoBehaviour
     {
         limitwarning.gameObject.SetActive(false);
 
-        if (inven.GetCount("1") < 3000)
+        if (inven.GetConsumableCount("1") < 3000)
         {
             refillfail.gameObject.SetActive(true);
             StopCoroutine(GaruRefillResultturnoff());

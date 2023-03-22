@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static PlayerInventory;
 
@@ -31,7 +32,7 @@ public class PlayerInventory : MonoBehaviour
         Hp,
         Mp,
     }
-    public string[] potionIds;
+    private string[] potionIds = new string[2];
     public int[] PotionCount { get; private set; } = new int[2];
 
     private void Awake()
@@ -40,6 +41,19 @@ public class PlayerInventory : MonoBehaviour
         weapons = weaponsTemp.ToList();
         armors = armorsTemp.ToList();
         consumables = consumablesTemp.ToList();
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        foreach (var data in consumeTable)
+        {
+            switch (data.Value.consumeType)
+            {
+                case ConsumeTypes.HpPotion:
+                    potionIds[0] = data.Value.id;
+                    break;
+                case ConsumeTypes.MpPotion:
+                    potionIds[1] = data.Value.id;
+                    break;
+            }
+        }
     }
 
     public void SetWeapon(int index)
@@ -65,9 +79,9 @@ public class PlayerInventory : MonoBehaviour
     private void Update()
     {
         if (status.CurrHp < status.FinalValue.maxHp / 2)
-            UsePotion(Potions.Hp);
+            UseHpPotion();
         if (status.CurrMp < status.FinalValue.maxMp / 2)
-            UsePotion(Potions.Mp);
+            UseMpPotion();
     }
 
     public void ApplyStatus()
@@ -100,7 +114,28 @@ public class PlayerInventory : MonoBehaviour
         status.AddValue(add);
     }
 
-    public int GetCount(string itemId)
+    public void Reinforce(ItemTypes type, int index, string newId)
+    {
+        switch (type)
+        {
+            case ItemTypes.Weapon:
+                if (index < 0)
+                    CurrWeapon = newId;
+                else
+                    weapons[index] = newId;
+                break;
+            case ItemTypes.Armor:
+                if (index < 0)
+                    CurrArmor = newId;
+                else
+                    armors[index] = newId;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public int GetConsumableCount(string itemId)
     {
         int count = 0;
         foreach (var consumable in consumables)
@@ -115,7 +150,7 @@ public class PlayerInventory : MonoBehaviour
     {
         for (int i = 0; i < PotionCount.Length; ++i)
         {
-            var count = GetCount(potionIds[i]);
+            var count = GetConsumableCount(potionIds[i]);
             if (count < 3)
                 PotionCount[i] = count;
             else
@@ -145,8 +180,6 @@ public class PlayerInventory : MonoBehaviour
             }
         }
     }
-
-
 
     public void UsePotion(Potions potion)
     {
