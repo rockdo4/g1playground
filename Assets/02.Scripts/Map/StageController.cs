@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageController : MonoBehaviour
 {
@@ -24,10 +25,21 @@ public class StageController : MonoBehaviour
 
     [Header("StageID")]
     [SerializeField] private int stageId = 0;
+    public int StageId { get { return StageId; } }
+
+    [Header("World Map Button")]
+    [SerializeField] private Button wMapButton;
+    [SerializeField] private TileColorManager.ImageColor imageColor;
+    private bool isChanged = true;
+
+    [Header("Stage Story Event")]
+    [SerializeField] private bool isStoryStage = false;
+    [SerializeField] List<int> storyIdList = new List<int>();
 
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
+    public bool IsClear { get { return isClear; } }
 
     private List<GameObject> enemies;
     private List<GameObject> objectTiles = new List<GameObject>();
@@ -41,10 +53,6 @@ public class StageController : MonoBehaviour
     [SerializeField]
     private List<GameObject> greenWall;
     private bool greenwallopen = false;
-
-    private List<FallingTile> fallingtile = new List<FallingTile>();
-    private List<GameObject> bombs = new List<GameObject>();
-    private List<GameObject> walls = new List<GameObject>();
 
     public string PrevStageName { get; set; }
 
@@ -231,6 +239,13 @@ public class StageController : MonoBehaviour
 
         if (enemies.Count == 0 || greenwallopen)
         {
+            if (isStoryStage)
+            {
+                isStoryStage = false;
+                EventManager.instance.SetStoryList(storyIdList);
+                EventManager.instance.PlayStory();
+                EventManager.instance.Pause();
+            }
             //TileColorManager.instance.PlayEffect();
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
             foreach (var green in greenWall)
@@ -264,6 +279,12 @@ public class StageController : MonoBehaviour
             {
                 foreach (var portal in portals)
                 {
+                    //Set worldmap stage button on
+                    if (wMapButton != null && isChanged)
+                    {
+                        isChanged = false;
+                        SetWorldMapButton();
+                    }
                     isClear = true;
                     portal.gameObject.SetActive(true);
                     TileColorManager.instance.ChangeTileMaterial(transform.name, true);
@@ -282,4 +303,9 @@ public class StageController : MonoBehaviour
         return enemies;
     }
 
+    private void SetWorldMapButton()
+    {
+        wMapButton.interactable = true;
+        wMapButton.GetComponent<Image>().sprite = TileColorManager.instance.GetImageSprite(imageColor);
+    }
 }
