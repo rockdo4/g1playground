@@ -126,6 +126,8 @@ public class EnemyController : Enemy, IAttackable
     {
         attackTime += Time.deltaTime;
 
+      
+
         switch (State)
         {
             case EnemyState.None:
@@ -218,7 +220,8 @@ public class EnemyController : Enemy, IAttackable
             currGoingRight = isGoingRight;
         }
 
-        if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized) <= 10f)
+        if(AngleIgnoringHeight(5f))
+        //if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized) <= 10f)
         {
             agent.isStopped = false;
             agent.SetDestination(player.transform.position);

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossScorpionKing : Enemy
+public class BossPupleRich : Enemy
 {
     private CapsuleCollider mainColl;
     public GameObject attackBox;
@@ -12,7 +12,6 @@ public class BossScorpionKing : Enemy
 
     public BasicAttack meleeAttack;
     public SkillAttack projectileSkill;
-    public SkillAttack FallingAreaSkill;
 
     public bool isGoingRight;
 
