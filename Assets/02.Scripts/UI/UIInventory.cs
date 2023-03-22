@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIInventory : MonoBehaviour
 {
     public int slotCount = 102;
+    private int currSlot;
     public UIItemSlot uiSlotPrefab;
     public RectTransform content;
 
@@ -15,6 +16,7 @@ public class UIInventory : MonoBehaviour
     public ItemTypes itemType;
 
     public UIItemInfo itemInfo;
+    public Button equipButton;
 
     private void Awake()
     {
@@ -40,7 +42,10 @@ public class UIInventory : MonoBehaviour
 
             var button = slot.GetComponent<Button>();
             button.onClick.AddListener(() => itemInfo.Set(slot.Data));
+            int slotIndex = i;
+            button.onClick.AddListener(() => currSlot = slotIndex);
         }
+        equipButton.onClick.AddListener(() => Equip());
         SetInventory((int)itemType);
     }
 
@@ -56,6 +61,7 @@ public class UIInventory : MonoBehaviour
     {
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
+        this.itemType = (ItemTypes)itemType;
         List<string> ids = null;
         int len = 0;
         switch ((ItemTypes)itemType)
@@ -67,7 +73,8 @@ public class UIInventory : MonoBehaviour
                     len = playerInventory.weapons.Count;
                     for (int i = 0; i < len; ++i)
                     {
-                        slotList[i].Set(i, table.Get(ids[i]));
+                        if (!string.IsNullOrEmpty(ids[i]))
+                            slotList[i].Set(i, table.Get(ids[i]));
                     }
                 }
                 break;
@@ -78,7 +85,8 @@ public class UIInventory : MonoBehaviour
                     len = playerInventory.armors.Count;
                     for (int i = 0; i < len; ++i)
                     {
-                        slotList[i].Set(i, table.Get(ids[i]));
+                        if (!string.IsNullOrEmpty(ids[i]))
+                            slotList[i].Set(i, table.Get(ids[i]));
                     }
                 }
                 break;
@@ -94,10 +102,45 @@ public class UIInventory : MonoBehaviour
                     len = playerInventory.consumables.Count;
                     for (int i = 0; i < len; ++i)
                     {
-                        slotList[i].Set(i, table.Get(ids[i]));
+                        if (!string.IsNullOrEmpty(ids[i]))
+                            slotList[i].Set(i, table.Get(ids[i]));
                     }
                 }
                 break;
+        }
+    }
+
+    public void Equip()
+    {
+        string id = null;
+        switch (itemType)
+        {
+            case ItemTypes.Weapon:
+                if (slotList[currSlot] != null && slotList[currSlot].Data != null)
+                {
+                    playerInventory.SetWeapon(currSlot);
+                    id = playerInventory.weapons[currSlot];
+                    var table = DataTableMgr.GetTable<WeaponData>();
+                    if (string.IsNullOrEmpty(id))
+                        slotList[currSlot].SetEmpty();
+                    else
+                        slotList[currSlot].Set(currSlot, table.Get(id));
+                }
+                break;
+            case ItemTypes.Armor:
+                if (slotList[currSlot] != null && slotList[currSlot].Data != null)
+                {
+                    playerInventory.SetArmor(currSlot);
+                    id = playerInventory.armors[currSlot];
+                    var table = DataTableMgr.GetTable<ArmorData>();
+                    if (string.IsNullOrEmpty(id))
+                        slotList[currSlot].SetEmpty();
+                    else
+                        slotList[currSlot].Set(currSlot, table.Get(id));
+                }
+                break;
+            default:
+                return;
         }
     }
 }

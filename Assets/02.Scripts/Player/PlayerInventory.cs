@@ -46,8 +46,9 @@ public class PlayerInventory : MonoBehaviour
     {
         if (weapons[index] == null)
             return;
+        var temp = CurrWeapon;
         CurrWeapon = weapons[index];
-        weapons[index] = null;
+        weapons[index] = temp;
         ApplyStatus();
     }
 
@@ -55,8 +56,9 @@ public class PlayerInventory : MonoBehaviour
     {
         if (armors[index] == null)
             return;
+        var temp = CurrArmor;
         CurrArmor = armors[index];
-        armors[index] = null;
+        armors[index] = temp;
         ApplyStatus();
     }
 
