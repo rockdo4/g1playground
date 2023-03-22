@@ -76,7 +76,7 @@ public class EventManager : MonoBehaviour
             data = DataTableMgr.GetTable<StoryData>().Get(storyList[currStoryIndex].ToString());
             currStoryIndex++;
 
-            var icon = Resources.Load<Sprite>(data.iconId);
+           var icon = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconId).iconName);
             ShowStoryBoard(icon, data.storyLine);
         }
         else
@@ -91,7 +91,7 @@ public class EventManager : MonoBehaviour
     {
         storyBoard.SetActive(true);
         storyIcon.sprite = icon;
-        storyText.text = text;
+        storyText.text = text.Replace("n","\n");
     }
 
     public void SkipStory()
