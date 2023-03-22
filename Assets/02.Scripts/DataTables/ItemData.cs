@@ -12,8 +12,8 @@ public enum ItemClass
 {
     Normal,
     Rare,
-    Unique,
-    Legendary,
+    //Unique,
+    //Legendary,
 }
 
 public class ItemData : ICSVParsing
