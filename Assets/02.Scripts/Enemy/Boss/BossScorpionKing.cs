@@ -132,21 +132,21 @@ public class BossScorpionKing : Enemy
         if (isGroggy1 && isGroggy2 && isGroggy3)
             return;
 
-        if (!isGroggy1 && status.currHp <= status.FinalValue.maxHp * groggy1)
+        if (!isGroggy1 && status.CurrHp <= status.FinalValue.maxHp * groggy1)
         {
             isGroggy1 = true;
             animator.SetTrigger("Groggy");
             State = EnemyState.Groggy;
             return;
         }
-        else if (!isGroggy2 && status.currHp <= status.FinalValue.maxHp * groggy2)
+        else if (!isGroggy2 && status.CurrHp <= status.FinalValue.maxHp * groggy2)
         {
             isGroggy2 = true;
             animator.SetTrigger("Groggy");
             State = EnemyState.Groggy;
             return;
         }
-        else if (!isGroggy3 && status.currHp <= status.FinalValue.maxHp * groggy3)
+        else if (!isGroggy3 && status.CurrHp <= status.FinalValue.maxHp * groggy3)
         {
             isGroggy3 = true;
             animator.SetTrigger("Groggy");
