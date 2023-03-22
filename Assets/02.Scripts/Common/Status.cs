@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ public class Status : MonoBehaviour
         Player,
         Monster,
     }
+    [Serializable]
     public struct Value
     {
         public int str;
@@ -50,7 +52,7 @@ public class Status : MonoBehaviour
     public Types type;
     public string id;
     private Value defaultValue;
-    public Value FinalValue { get; private set; }
+    [SerializeField] public Value FinalValue;//{ get; private set; }
     private int currHp;
     public int CurrHp
     {
@@ -101,27 +103,57 @@ public class Status : MonoBehaviour
         defaultValue.str = data.str;
         defaultValue.dex = data.dex;
         defaultValue.intel = data.intel;
-        defaultValue.meleePower = data.meleePower;
-        defaultValue.skillPower = data.skillPower;
-        defaultValue.meleeCriChance = data.meleeCriChance;
         defaultValue.meleeCriDamage = data.meleeCriDamage;
-        defaultValue.skillCriChance = data.skillCriChance;
         defaultValue.skillCriDamage = data.skillCriDamage;
-        defaultValue.meleeDef = data.meleeDef;
-        defaultValue.skillDef = data.skillDef;
+        //defaultValue.meleePower = data.meleePower;
+        //defaultValue.skillPower = data.skillPower;
+        //defaultValue.meleeCriChance = data.meleeCriChance;
+        //defaultValue.skillCriChance = data.skillCriChance;
+        //defaultValue.meleeDef = data.meleeDef;
+        //defaultValue.skillDef = data.skillDef;
         defaultValue.maxHp = data.maxHp;
-        if (type == Types.Monster)
-        {
-            var monsterData = (MonsterData)data;
-            defaultValue.meleePower = (int)(defaultValue.meleePower * monsterData.damageFigure);
-            defaultValue.skillPower *= (int)(defaultValue.skillPower * monsterData.damageFigure);
-            defaultValue.maxHp *= (int)(defaultValue.maxHp * monsterData.healthFigure);
-        }
         defaultValue.maxMp = data.maxMp;
         FinalValue = defaultValue;
+        Calculate();
     }
 
-    public void AddValue(Value addValue) => FinalValue = defaultValue + addValue;
+    private void Calculate()
+    {
+        var value = FinalValue;
+        switch (type)
+        {
+            case Types.Player:
+                value.meleePower = (int)(value.str / 70f) + (int)(value.dex / 30f);
+                value.meleeCriChance = (int)(value.dex / 75f);
+                value.meleeDef = (int)(value.str / 10f);
+                value.skillPower = (int)(value.intel / 15f);
+                value.skillCriChance = (int)(value.intel / 75f);
+                value.skillDef = (int)(value.intel / 10f);
+                break;
+            case Types.Monster:
+                var damageFigure = DataTableMgr.GetTable<MonsterData>().Get(id).damageFigure;
+                value.meleePower = (int)(value.str * 1.7f * damageFigure);
+                value.meleeCriChance = (int)(value.dex / 200f);
+                value.meleeDef = (int)(value.str / 10f);
+                value.skillPower = (int)(value.intel / 5f * damageFigure);
+                value.skillCriChance = (int)(value.intel / 75f);
+                value.skillDef = (int)(value.intel / 10f);
+                break;
+        }
+        FinalValue = value;
+    }
+
+    public void AddValue(Value addValue)
+    {
+        FinalValue = defaultValue + addValue;
+        Calculate();
+        var value = FinalValue;
+        value.meleePower += addValue.meleePower;
+        value.skillPower += addValue.skillPower;
+        value.meleeDef += addValue.meleeDef;
+        value.skillDef += addValue.skillDef;
+        FinalValue = value;
+    }
 
     public void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, CurrHp);
     public void SetMpUi() => GameManager.instance.uiManager.PlayerMpBar(FinalValue.maxMp, CurrMp);

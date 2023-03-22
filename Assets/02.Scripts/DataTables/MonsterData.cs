@@ -15,7 +15,6 @@ public class MonsterData : StatusData
     public float chaseTime;
     public int exp;
     public float damageFigure;
-    public float healthFigure;
 
     public override void Parse(Dictionary<string, string> line)
     {
@@ -36,6 +35,5 @@ public class MonsterData : StatusData
         chaseTime = int.Parse(line["chaseTime"]);
         exp = int.Parse(line["exp"]);
         damageFigure = float.Parse(line["damageFigure"]);
-        healthFigure = float.Parse(line["healthFigure"]);
     }
 }
