@@ -152,7 +152,7 @@ public class EnemyController : Enemy, IAttackable
                 break;
         }
 
-        animator.SetFloat("Move", agent.velocity.magnitude);
+        animator.SetFloat("Move", agent.velocity.magnitude/ chaseSpeed);
     }
     protected void None()
     {
@@ -341,6 +341,7 @@ public class EnemyController : Enemy, IAttackable
         State = EnemyState.Chase;
         attackBox.SetActive(false);
     }
+
     private void TakeDamageDone()
     {
         if (State == EnemyState.Die)
@@ -348,6 +349,7 @@ public class EnemyController : Enemy, IAttackable
 
         State = EnemyState.Chase;
     }
+
     private void DieDone()
     {
         gameObject.SetActive(false);
