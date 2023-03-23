@@ -22,7 +22,9 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager;
     public GamblingManager gambling;
     public AttackColliderManager attackColliderManager;
-   
+    public EnemyManager enemyManager;
+
+
     private void Awake()
     {
         if (instance != this)

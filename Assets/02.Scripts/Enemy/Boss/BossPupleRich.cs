@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BossPupleRich : Enemy
 {
     private CapsuleCollider mainColl;
     public GameObject attackBox;
     public GameObject skillPivot;
-
+    public GameObject indicatorBox;
 
     public BasicAttack meleeAttack;
     public SkillAttack projectileSkill;
@@ -22,8 +23,6 @@ public class BossPupleRich : Enemy
     public float attackRange;
     public float projectileTime;
     private float projectileCoolTime;
-    public float areaTime;
-    private float areaCoolTime;
     public float spawnTime;
     private float spawnCoolTime;
     public float returnTime;
@@ -76,6 +75,7 @@ public class BossPupleRich : Enemy
                     agent.velocity = Vector3.zero;
                     agent.isStopped = true;
                     rb.isKinematic = false;
+                    indicatorBox.SetActive(false);
                     break;
                 case EnemyState.Skill:
                     agent.isStopped = true;
@@ -88,6 +88,7 @@ public class BossPupleRich : Enemy
                     agent.enabled = true;
                     rb.isKinematic = true;
                     mainColl.enabled = false;
+                    indicatorBox.SetActive(false);
                     break;
             }
         }
@@ -101,6 +102,8 @@ public class BossPupleRich : Enemy
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
         attackBox.SetActive(false);
         skillPivot = GameObject.Find(gameObject.name + "/AttackPivot");
+        indicatorBox = GameObject.Find(gameObject.name + "/IndicatorBox");
+        indicatorBox.SetActive(false);
         State = EnemyState.None;
     }
     protected override void Start()
@@ -122,7 +125,6 @@ public class BossPupleRich : Enemy
         base.OnEnable();
         State = EnemyState.None;
         projectileCoolTime = 0f;
-        areaCoolTime = 0f;
     }
 
     public float groggy1;
@@ -165,7 +167,7 @@ public class BossPupleRich : Enemy
         if (state != EnemyState.None)
         {
             projectileCoolTime += Time.deltaTime;
-            areaCoolTime += Time.deltaTime;
+            spawnCoolTime += Time.deltaTime;
         }
         CheackGroggy();
 
@@ -194,7 +196,7 @@ public class BossPupleRich : Enemy
         }
 
         animator.SetFloat("Move", agent.velocity.magnitude / chaseSpeed);
-        Debug.Log(State);
+        //Debug.Log(State);
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -274,7 +276,7 @@ public class BossPupleRich : Enemy
     {
         LookAtTarget();
     }
-    protected  void SkillUpdate()
+    protected void SkillUpdate()
     {
         LookAtTarget();
     }
@@ -285,29 +287,38 @@ public class BossPupleRich : Enemy
     private int attackCount;
     void BattleProcess()
     {
-        if (areaCoolTime >= areaTime)
+        if (spawnCoolTime >= spawnTime)
         {
-            areaCoolTime = 0f;
-            animator.SetTrigger("Area");
-            return;
-        }
-
-
-        if (projectileCoolTime >= projectileTime && Vector3.Distance(transform.position, player.transform.position) >= attackRange)
-        {
-            projectileCoolTime = 0f;
+            spawnCoolTime = 0;
             State = EnemyState.Skill;
-            animator.SetTrigger("Projectile");
-            return;
+            animator.SetTrigger("Spawn");
         }
 
-        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
-        {
-            animator.SetTrigger("Attack");
-            State = EnemyState.Attack;
-            isHit = true;
-            return;
-        }
+        //if (projectileCount == 2)
+        //{
+        //    projectileCount = 0;
+        //    State = EnemyState.Skill;
+        //    animator.SetTrigger("Area");
+        //    indicatorBox.SetActive(true);
+        //    indicatorBox.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z);
+        //    return;
+        //}
+
+
+        //if (projectileCoolTime >= projectileTime && Vector3.Distance(transform.position, player.transform.position) >= attackRange)
+        //{
+        //    projectileCoolTime = 0f;
+        //    State = EnemyState.Skill;
+        //    animator.SetTrigger("Projectile");
+        //    return;
+        //}
+
+        //if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+        //{
+        //    animator.SetTrigger("Attack");
+        //    State = EnemyState.Attack;
+        //    return;
+        //}
     }
 
     private void Attack()
@@ -324,7 +335,6 @@ public class BossPupleRich : Enemy
             State = EnemyState.Chase;
     }
 
-    private bool isHit = false;
     private void OnTriggerEnter(Collider collider)
     {
         if (!attackBox.activeSelf)
@@ -340,23 +350,104 @@ public class BossPupleRich : Enemy
         }
     }
 
+    public float summonDistance = 2f;
+    private void SpawnEnemy()
+    {
+        Vector3 leftSummonPosition = new Vector3(transform.position.x - summonDistance, transform.position.y, transform.position.z);
+        Vector3 rightSummonPosition = new Vector3(transform.position.x + summonDistance, transform.position.y, transform.position.z);
+        NavMeshHit leftNavMeshHit, rightNavMeshHit;
+
+        //bool leftNavMeshAvailable = NavMesh.SamplePosition(leftSummonPosition, out leftNavMeshHit, summonDistance, NavMesh.AllAreas);
+        //bool rightNavMeshAvailable = NavMesh.SamplePosition(rightSummonPosition, out rightNavMeshHit, summonDistance, NavMesh.AllAreas);
+
+
+
+        //if (!leftNavMeshAvailable)
+        //{
+        //    leftSummonPosition = transform.position;
+        //    Debug.Log("lf");
+        //}
+        //else
+        //{
+        //    leftSummonPosition = leftNavMeshHit.position;
+        //    Debug.Log("lt");
+
+        //}
+
+        //if (!rightNavMeshAvailable)
+        //{
+        //    rightSummonPosition = transform.position;
+        //    Debug.Log("rf");
+
+        //}
+        //else
+        //{
+        //    rightSummonPosition = rightNavMeshHit.position;
+        //    Debug.Log("rt");
+        //}
+
+        NavMeshHit hit;
+        //if (!NavMesh.SamplePosition(leftSummonPosition, out hit, 0.1f, NavMesh.AllAreas))
+        //{
+        //    leftSummonPosition = transform.position;
+        //}
+        //if (!NavMesh.SamplePosition(rightSummonPosition, out hit, 0.1f, NavMesh.AllAreas))
+        //{
+        //    rightSummonPosition = transform.position;
+        //}
+
+        StartCoroutine(CoSpawnDelay(leftSummonPosition, rightSummonPosition));
+
+    }
+
+    IEnumerator CoSpawnDelay(Vector3 leftPos, Vector3 rightPos)
+    {
+        GameObject leftEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
+        if (leftEnemy != null)
+        {
+            leftEnemy.transform.position = leftPos;
+            leftEnemy.transform.rotation = Quaternion.identity;
+        }
+
+        GameObject rightEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
+        if (rightEnemy != null)
+        {
+            rightEnemy.transform.position = rightPos;
+            rightEnemy.transform.rotation = Quaternion.identity;
+        }
+
+        yield return null;
+
+        leftEnemy.SetActive(true);
+        rightEnemy.SetActive(true);
+    }
     private void Projectile()
     {
         ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);
-        //var playerDir = (player.transform.position - skillPivot.transform.position).normalized;
-        Debug.Log("shot");
-        //((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, playerDir);
     }
+    private int projectileCount = 0;
+
+
     private void ProjectileDone()
     {
         State = EnemyState.Chase;
+        ++projectileCount;
     }
 
     private void Area()
     {
-        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, Vector3.down);
+        indicatorBox.SetActive(false);
+        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, indicatorBox.transform.position, Vector3.down);
     }
     private void AreaDone()
+    {
+        State = EnemyState.Chase;
+    }
+    private void Spawn()
+    {
+        SpawnEnemy();
+    }
+    private void SpawnDone()
     {
         State = EnemyState.Chase;
     }

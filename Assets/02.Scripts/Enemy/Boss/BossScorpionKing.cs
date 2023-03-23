@@ -97,6 +97,7 @@ public class BossScorpionKing : Enemy
         mainColl = GetComponent<CapsuleCollider>();
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
         attackBox.SetActive(false);
+        skillPivot = GameObject.Find(gameObject.name + "/SkillPivot");
         State = EnemyState.None;
     }
     protected override void Start()
@@ -347,7 +348,7 @@ public class BossScorpionKing : Enemy
 
     private void Projectile()
     {
-        var playerDir = (player.transform.position - skillPivot.transform.position).normalized;
+        var playerDir = (new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z) - skillPivot.transform.position).normalized;
 
         ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, playerDir);
     }
@@ -358,7 +359,7 @@ public class BossScorpionKing : Enemy
 
     private void Area()
     {
-        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, Vector3.down);
+        ((EnemyStraightSpell)FallingAreaSkill).Fire(gameObject, new Vector3(player.transform.position.x, player.transform.position.y + 8f, player.transform.position.z), Vector3.down);
     }
     private void AreaDone()
     {
