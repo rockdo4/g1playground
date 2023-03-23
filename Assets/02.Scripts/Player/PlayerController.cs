@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -127,7 +128,6 @@ public class PlayerController : MonoBehaviour
         IsAuto = false;
         playerRb.isKinematic = false;
         agent.enabled = false;
-        SetState<IdleState>();
     }
     public void AgentOnOff()
     {
@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
             foreach (var hit in hits)
             {
                 if (((hit.transform.CompareTag("Pushable") && !isGrounded)) ||
-                    hit.transform.CompareTag("Ground"))
+                    hit.transform.CompareTag("Ground") || hit.transform.CompareTag("Falling"))
                 {
                     IsBlocked = true;
                     return;
@@ -215,7 +215,7 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpCount >= maxJumpCount)
             return;
-        playerRb.velocity = Vector3.zero;
+        playerRb.velocity = new Vector3(moveX, 0f, 0f);
         playerRb.AddForce(Vector3.up * force, ForceMode.Impulse);
         playerAnimator.SetTrigger("Jump");
         SetState<JumpState>();
@@ -391,11 +391,25 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter()
         {
+
         }
 
         public override void Update()
         {
             playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
+
+            if(playerController.input.LeftMove || playerController.input.RightMove)
+            {
+                playerController.autoToggle.isOn = false;
+                playerController.AgentOnOff();
+                return;
+            }
+            else if(playerController.input.Jump)
+            {
+                playerController.autoToggle.isOn = false;
+                playerController.AgentOff();
+                playerController.Jump();
+            }
         }
 
         public override void Exit()
