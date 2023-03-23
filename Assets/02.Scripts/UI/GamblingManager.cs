@@ -58,12 +58,12 @@ public class GamblingManager : MonoBehaviour
             var tempId = list[0];
             if (int.Parse(tempId[0].ToString()) == 2)
             {
-                inventory.weapons.Add(tempId);
+                inventory.Weapons.Add(tempId);
                 reward.GetComponent<RewardPanel>().OpenRewardPopUp(tempId);
             }
             else
             {
-                inventory.armors.Add(tempId);
+                inventory.Armors.Add(tempId);
                 reward.GetComponent<RewardPanel>().OpenRewardPopUp(tempId);
             }
         }
@@ -74,11 +74,11 @@ public class GamblingManager : MonoBehaviour
                 var tempId = list[i];
                 if (int.Parse(tempId[0].ToString()) == 2)
                 {
-                    inventory.weapons.Add(tempId);
+                    inventory.Weapons.Add(tempId);
                 }
                 else
                 {
-                    inventory.armors.Add(tempId);
+                    inventory.Armors.Add(tempId);
                 }
             }
             rewardTen.GetComponent<RewardPanel>().OpenTenRewardPopUp(list.ToArray());

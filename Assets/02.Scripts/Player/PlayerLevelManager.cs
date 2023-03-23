@@ -15,6 +15,10 @@ public class PlayerLevelManager : MonoBehaviour
     {
         status = GetComponent<Status>();
         inventory = GetComponent<PlayerInventory>();
+    }
+
+    private void Start()
+    {
         SetLevel(1);
     }
 

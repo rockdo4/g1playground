@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
 
     public void RemovePopUp()
     {
-        if (popupStack == null)
+        if (popupStack.Count <= 0)
             return;
         popupStack.Pop();
     }
