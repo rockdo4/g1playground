@@ -88,7 +88,7 @@ public class Status : MonoBehaviour
         }
     }
 
-    private void LoadFromTable()
+    public void LoadFromTable()
     {
         StatusData data = null;
         switch (type)

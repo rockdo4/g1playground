@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using static PlayerInventory;
@@ -112,6 +113,62 @@ public class PlayerInventory : MonoBehaviour
             add.skillDef += armorData.addSkillDef;
         }
         status.AddValue(add);
+    }
+
+    public void AddWeapon(string id)
+    {
+        var len = Weapons.Count;
+        for (int i = 0; i < len; ++i)
+        {
+            if (string.IsNullOrEmpty(Weapons[i]))
+            {
+                Weapons[i] = id;
+                return;
+            }
+        }
+        Weapons.Add(id);
+    }
+
+    public void AddArmor(string id)
+    {
+        var len = Armors.Count;
+        for (int i = 0; i < len; ++i)
+        {
+            if (string.IsNullOrEmpty(Armors[i]))
+            {
+                Armors[i] = id;
+                return;
+            }
+        }
+        Armors.Add(id);
+    }
+
+    public void AddConsumable(string id, int count)
+    {
+        var len = Consumables.Count;
+        var maxCount = DataTableMgr.GetTable<ConsumeData>().Get(id).carryoverlap;
+        for (int i = 0; i < len; ++i)
+        {
+            if (!string.Equals(Consumables[i].id, id))
+                continue;
+
+            if (Consumables[i].count < maxCount)
+            {
+                var newConsumable = Consumables[i];
+                var addMax = maxCount - Consumables[i].count;
+                if (count > addMax)
+                {
+                    newConsumable.count = maxCount;
+                    count -= addMax;
+                }
+                else
+                {
+                    newConsumable.count += count;
+                    Consumables[i] = newConsumable;
+                    return;
+                }
+            }
+        }
     }
 
     public void Reinforce(ItemTypes type, int index, string newId)

@@ -1,23 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
-
 public class ReinforceSystem
 {
     public enum Types
     {
-        Skill,
         Weapon,
         Armor,
+        Skill,
     }
+    private static bool isInitialized = false;
     private static PlayerInventory inventory;
     private static PlayerSkills skills;
     private static string powder;
     private static string essence;
-    
-    public static bool Reinforce(Types type, int indexOfInventory)
+
+    private static void Initialize()
     {
         if (inventory == null)
             inventory = GameManager.instance.player.GetComponent<PlayerInventory>();
@@ -40,7 +35,12 @@ public class ReinforceSystem
                 }
             }
         }
-        
+    }
+    
+    public static bool Reinforce(Types type, int indexOfInventory)
+    {
+        if (!isInitialized)
+            Initialize();
         var table = DataTableMgr.GetTable<ReinforceData>().GetTable();
         string id = null;
         switch (type)
@@ -64,47 +64,54 @@ public class ReinforceSystem
 
         if (string.IsNullOrEmpty(id))
             return false;
-        
-        foreach (var data in table)
-        {
-            if (string.Equals(data.Value.material1, id))
-            {
-                if (!CheckMaterials(type, data.Value))
-                    return false;
 
-                switch (type)
-                {
-                    case Types.Skill:
-                        skills.Reinforce(indexOfInventory, data.Value.result);
-                        break;
-                    case Types.Weapon:
-                        inventory.Reinforce(ItemTypes.Weapon, indexOfInventory, data.Value.result);
-                        break;
-                    case Types.Armor:
-                        inventory.Reinforce(ItemTypes.Armor, indexOfInventory, data.Value.result);
-                        break;
-                    default:
-                        return false;
-                }
-                return true;
-            }
+        var data = GetData(id);
+        if (data == null)
+            return false;
+
+        if (!CheckMaterials(type, data))
+            return false;
+
+        switch (type)
+        {
+            case Types.Skill:
+                skills.Reinforce(indexOfInventory, data.result);
+                break;
+            case Types.Weapon:
+                inventory.Reinforce(ItemTypes.Weapon, indexOfInventory, data.result);
+                break;
+            case Types.Armor:
+                inventory.Reinforce(ItemTypes.Armor, indexOfInventory, data.result);
+                break;
+            default:
+                return false;
         }
-        return false;
+        return true;
     }
 
     public static bool CheckReinforcable(string materialId)
     {
-        var table = DataTableMgr.GetTable<ReinforceData>().GetTable();
-        foreach (var data in table)
-        {
-            if (string.Equals(data.Value.material1, materialId))
-                return true;
-        }
+        if (!isInitialized)
+            Initialize();
+        if (GetData(materialId) == null)
+            return false;
+        return true;
+    }
+
+    public static bool CheckMaterials(Types type, string id)
+    {
+        if (!isInitialized)
+            Initialize();
+        var data = GetData(id);
+        if (data != null)
+            return CheckMaterials(type, data);
         return false;
     }
 
-    public static bool CheckMaterials(Types type, ReinforceData data)
+    private static bool CheckMaterials(Types type, ReinforceData data)
     {
+        if (!isInitialized)
+            Initialize();
         var powderCount = inventory.GetConsumableCount(powder);
         var essenceCount = inventory.GetConsumableCount(essence);
         if (powderCount < data.powder || essenceCount < data.essence)
@@ -114,21 +121,43 @@ public class ReinforceSystem
         {
             case Types.Skill:
                 {
-                    var skillTable = DataTableMgr.GetTable<SkillData>().GetTable();
-                    foreach (var skillData in skillTable)
-                    {
-                        var value = skillData.Value;
-                        if (value.group == skillTable[data.material1].group && value.reinforce == 0)
-                        {
-                            if (skills.PossessedSkills.Contains(value.id))
-                                return true;
-                            break;
-                        }
-                    }
+                    var skillMaterial = GetSkillMaterial(data.material1);
+                    if (skillMaterial == null)
+                        return false;
+
+                    if (skills.PossessedSkills.Contains(skillMaterial.id))
+                        return true;
                     return false;
                 }
             default:
                 return true;
         }
+    }
+
+    public static SkillData GetSkillMaterial(string id)
+    {
+        if (!isInitialized)
+            Initialize();
+        var skillTable = DataTableMgr.GetTable<SkillData>().GetTable();
+        foreach (var skillData in skillTable)
+        {
+            var value = skillData.Value;
+            if (value.group == skillTable[id].group && value.reinforce == 0)
+                return value;
+        }
+        return null;
+    }
+
+    public static ReinforceData GetData(string toReinforceId)
+    {
+        if (!isInitialized)
+            Initialize();
+        var table = DataTableMgr.GetTable<ReinforceData>().GetTable();
+        foreach (var data in table)
+        {
+            if (string.Equals(data.Value.material1, toReinforceId))
+                return data.Value;
+        }
+        return null;
     }
 }

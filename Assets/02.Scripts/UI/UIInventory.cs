@@ -21,15 +21,13 @@ public class UIInventory : MonoBehaviour
     private void Awake()
     {
         playerInventory = GameManager.instance.player.GetComponent<PlayerInventory>();
-    }
-
-    private void Start()
-    {
+        Init();
     }
 
     public void OnEnable()
     {
-        Init();
+        itemType = ItemTypes.Weapon;
+        SetInventory((int)itemType);
     }
 
     public void Init()
