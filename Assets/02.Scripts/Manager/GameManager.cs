@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public EffectManager effectManager;
     public UIManager uiManager;
+    public GamblingManager gambling;
     public AttackColliderManager attackColliderManager;
    
     private void Awake()

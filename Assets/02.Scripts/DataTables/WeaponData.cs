@@ -16,7 +16,6 @@ public class WeaponData : ItemData
     public ItemClass weaponClass;
     public int reinforce;
     public int maxReinforce;
-    public string iconId;
     public int maximumAttack;
 
     public int sellable;
@@ -40,7 +39,6 @@ public class WeaponData : ItemData
         reinforce = int.Parse(line["Wea_Reinforce"]);
         maxReinforce = int.Parse(line["max_Wea_Reinforce"]);
         maximumAttack = int.Parse(line["Maximum_atk"]);
-
         sellable = int.Parse(line["Sellable"]);
         sellPowder = int.Parse(line["sellPowder"]);
         addStr = int.Parse(line["addStr"]);

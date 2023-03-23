@@ -22,6 +22,7 @@ public class DataTableMgr
         tables.Add(typeof(DGData), new DataTable<DGData>("DataTables/DG_Table"));
         tables.Add(typeof(DialogueData), new DataTable<DialogueData>("DataTables/Dialogue_Table"));
         tables.Add(typeof(DrawData), new DataTable<DrawData>("DataTables/Draw_Table"));
+        tables.Add(typeof(SkillDrawData), new DataTable<SkillDrawData>("DataTables/SkillDraw_Table"));
         tables.Add(typeof(DropData), new DataTable<DropData>("DataTables/Drop_Table"));
         tables.Add(typeof(MenuData), new DataTable<MenuData>("DataTables/Menu_Table"));
         tables.Add(typeof(MonsterData), new DataTable<MonsterData>("DataTables/Monster_Table"));
