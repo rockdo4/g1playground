@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using static PlayerInventory;
 
@@ -19,9 +21,9 @@ public class PlayerInventory : MonoBehaviour
     public string[] armorsTemp;     // for test
     [SerializeField] public Consumable[] consumablesTemp;   // for test
 
-    public List<string> weapons { get; private set; } = new List<string>();
-    public List<string> armors { get; private set; } = new List<string>();
-    public List<Consumable> consumables { get; private set; } = new List<Consumable>();
+    public List<string> Weapons { get; private set; } = new List<string>();
+    public List<string> Armors { get; private set; } = new List<string>();
+    public List<Consumable> Consumables { get; private set; } = new List<Consumable>();
     public string CurrWeapon { get; private set; }
     public string CurrArmor { get; private set; }
 
@@ -31,41 +33,56 @@ public class PlayerInventory : MonoBehaviour
         Hp,
         Mp,
     }
-    public string[] potionIds;
+    private string[] potionIds = new string[2];
     public int[] PotionCount { get; private set; } = new int[2];
 
     private void Awake()
     {
         status = GetComponent<Status>();
-        weapons = weaponsTemp.ToList();
-        armors = armorsTemp.ToList();
-        consumables = consumablesTemp.ToList();
+        Weapons = weaponsTemp.ToList();
+        Armors = armorsTemp.ToList();
+        Consumables = consumablesTemp.ToList();
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        foreach (var data in consumeTable)
+        {
+            switch (data.Value.consumeType)
+            {
+                case ConsumeTypes.HpPotion:
+                    potionIds[0] = data.Value.id;
+                    break;
+                case ConsumeTypes.MpPotion:
+                    potionIds[1] = data.Value.id;
+                    break;
+            }
+        }
     }
 
     public void SetWeapon(int index)
     {
-        if (weapons[index] == null)
+        if (Weapons[index] == null)
             return;
-        CurrWeapon = weapons[index];
-        weapons[index] = null;
+        var temp = CurrWeapon;
+        CurrWeapon = Weapons[index];
+        Weapons[index] = temp;
         ApplyStatus();
     }
 
     public void SetArmor(int index)
     {
-        if (armors[index] == null)
+        if (Armors[index] == null)
             return;
-        CurrArmor = armors[index];
-        armors[index] = null;
+        var temp = CurrArmor;
+        CurrArmor = Armors[index];
+        Armors[index] = temp;
         ApplyStatus();
     }
 
     private void Update()
     {
         if (status.CurrHp < status.FinalValue.maxHp / 2)
-            UsePotion(Potions.Hp);
+            UseHpPotion();
         if (status.CurrMp < status.FinalValue.maxMp / 2)
-            UsePotion(Potions.Mp);
+            UseMpPotion();
     }
 
     public void ApplyStatus()
@@ -98,10 +115,87 @@ public class PlayerInventory : MonoBehaviour
         status.AddValue(add);
     }
 
-    public int GetCount(string itemId)
+    public void AddWeapon(string id)
+    {
+        var len = Weapons.Count;
+        for (int i = 0; i < len; ++i)
+        {
+            if (string.IsNullOrEmpty(Weapons[i]))
+            {
+                Weapons[i] = id;
+                return;
+            }
+        }
+        Weapons.Add(id);
+    }
+
+    public void AddArmor(string id)
+    {
+        var len = Armors.Count;
+        for (int i = 0; i < len; ++i)
+        {
+            if (string.IsNullOrEmpty(Armors[i]))
+            {
+                Armors[i] = id;
+                return;
+            }
+        }
+        Armors.Add(id);
+    }
+
+    public void AddConsumable(string id, int count)
+    {
+        var len = Consumables.Count;
+        var maxCount = DataTableMgr.GetTable<ConsumeData>().Get(id).carryoverlap;
+        for (int i = 0; i < len; ++i)
+        {
+            if (!string.Equals(Consumables[i].id, id))
+                continue;
+
+            if (Consumables[i].count < maxCount)
+            {
+                var newConsumable = Consumables[i];
+                var addMax = maxCount - Consumables[i].count;
+                if (count > addMax)
+                {
+                    newConsumable.count = maxCount;
+                    count -= addMax;
+                }
+                else
+                {
+                    newConsumable.count += count;
+                    Consumables[i] = newConsumable;
+                    return;
+                }
+            }
+        }
+    }
+
+    public void Reinforce(ItemTypes type, int index, string newId)
+    {
+        switch (type)
+        {
+            case ItemTypes.Weapon:
+                if (index < 0)
+                    CurrWeapon = newId;
+                else
+                    Weapons[index] = newId;
+                break;
+            case ItemTypes.Armor:
+                if (index < 0)
+                    CurrArmor = newId;
+                else
+                    Armors[index] = newId;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public int GetConsumableCount(string itemId)
     {
         int count = 0;
-        foreach (var consumable in consumables)
+        foreach (var consumable in Consumables)
         {
             if (consumable.id == itemId)
                 count += consumable.count;
@@ -113,7 +207,7 @@ public class PlayerInventory : MonoBehaviour
     {
         for (int i = 0; i < PotionCount.Length; ++i)
         {
-            var count = GetCount(potionIds[i]);
+            var count = GetConsumableCount(potionIds[i]);
             if (count < 3)
                 PotionCount[i] = count;
             else
@@ -123,28 +217,26 @@ public class PlayerInventory : MonoBehaviour
 
     public void UseConsumable(string id, int need = 1)
     {
-        int len = consumables.Count;
+        int len = Consumables.Count;
         for (int i = len - 1; i >= 0; --i)
         {
-            if (consumables[i].id == id)
+            if (Consumables[i].id == id)
             {
-                var newConsumable = consumables[i];
+                var newConsumable = Consumables[i];
                 if (need < newConsumable.count)
                 {
                     newConsumable.count -= need;
-                    consumables[i] = newConsumable;
+                    Consumables[i] = newConsumable;
                     return;
                 }
                 else
                 {
                     need -= newConsumable.count;
-                    consumables.Remove(consumables[i]);
+                    Consumables.Remove(Consumables[i]);
                 }
             }
         }
     }
-
-
 
     public void UsePotion(Potions potion)
     {

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIInventory : MonoBehaviour
 {
     public int slotCount = 102;
+    private int currSlot;
     public UIItemSlot uiSlotPrefab;
     public RectTransform content;
 
@@ -15,19 +16,18 @@ public class UIInventory : MonoBehaviour
     public ItemTypes itemType;
 
     public UIItemInfo itemInfo;
+    public Button equipButton;
 
     private void Awake()
     {
         playerInventory = GameManager.instance.player.GetComponent<PlayerInventory>();
-    }
-
-    private void Start()
-    {
+        Init();
     }
 
     public void OnEnable()
     {
-        Init();
+        itemType = ItemTypes.Weapon;
+        SetInventory((int)itemType);
     }
 
     public void Init()
@@ -40,7 +40,10 @@ public class UIInventory : MonoBehaviour
 
             var button = slot.GetComponent<Button>();
             button.onClick.AddListener(() => itemInfo.Set(slot.Data));
+            int slotIndex = i;
+            button.onClick.AddListener(() => currSlot = slotIndex);
         }
+        equipButton.onClick.AddListener(() => Equip());
         SetInventory((int)itemType);
     }
 
@@ -56,6 +59,7 @@ public class UIInventory : MonoBehaviour
     {
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
+        this.itemType = (ItemTypes)itemType;
         List<string> ids = null;
         int len = 0;
         switch ((ItemTypes)itemType)
@@ -63,41 +67,78 @@ public class UIInventory : MonoBehaviour
             case ItemTypes.Weapon:
                 {
                     var table = DataTableMgr.GetTable<WeaponData>();
-                    ids = playerInventory.weapons;
-                    len = playerInventory.weapons.Count;
+                    ids = playerInventory.Weapons;
+                    len = playerInventory.Weapons.Count;
                     for (int i = 0; i < len; ++i)
                     {
-                        slotList[i].Set(i, table.Get(ids[i]));
+                        if (!string.IsNullOrEmpty(ids[i]))
+                            slotList[i].Set(i, table.Get(ids[i]));
                     }
                 }
                 break;
             case ItemTypes.Armor:
                 {
                     var table = DataTableMgr.GetTable<ArmorData>();
-                    ids = playerInventory.armors;
-                    len = playerInventory.armors.Count;
+                    ids = playerInventory.Armors;
+                    len = playerInventory.Armors.Count;
                     for (int i = 0; i < len; ++i)
                     {
-                        slotList[i].Set(i, table.Get(ids[i]));
+                        if (!string.IsNullOrEmpty(ids[i]))
+                            slotList[i].Set(i, table.Get(ids[i]));
                     }
                 }
                 break;
             case ItemTypes.Consumable:
                 {
                     var table = DataTableMgr.GetTable<ConsumeData>();
-                    var consumables = playerInventory.consumables;
+                    var consumables = playerInventory.Consumables;
                     ids = new List<string>();
                     foreach (var consumable in consumables)
                     {
                         ids.Add(consumable.id);
                     }
-                    len = playerInventory.consumables.Count;
+                    len = playerInventory.Consumables.Count;
                     for (int i = 0; i < len; ++i)
                     {
-                        slotList[i].Set(i, table.Get(ids[i]));
+                        if (!string.IsNullOrEmpty(ids[i]))
+                            slotList[i].Set(i, table.Get(ids[i]));
                     }
                 }
                 break;
+        }
+    }
+
+    public void Equip()
+    {
+        string id = null;
+        switch (itemType)
+        {
+            case ItemTypes.Weapon:
+                if (slotList[currSlot] != null && slotList[currSlot].Data != null)
+                {
+                    playerInventory.SetWeapon(currSlot);
+                    id = playerInventory.Weapons[currSlot];
+                    var table = DataTableMgr.GetTable<WeaponData>();
+                    if (string.IsNullOrEmpty(id))
+                        slotList[currSlot].SetEmpty();
+                    else
+                        slotList[currSlot].Set(currSlot, table.Get(id));
+                }
+                break;
+            case ItemTypes.Armor:
+                if (slotList[currSlot] != null && slotList[currSlot].Data != null)
+                {
+                    playerInventory.SetArmor(currSlot);
+                    id = playerInventory.Armors[currSlot];
+                    var table = DataTableMgr.GetTable<ArmorData>();
+                    if (string.IsNullOrEmpty(id))
+                        slotList[currSlot].SetEmpty();
+                    else
+                        slotList[currSlot].Set(currSlot, table.Get(id));
+                }
+                break;
+            default:
+                return;
         }
     }
 }

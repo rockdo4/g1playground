@@ -9,7 +9,6 @@ public class ArmorData : ItemData
     public ItemClass armorClass;
     public int reinforce;
     public int maxReinforce;
-    public string iconId;
 
     public int sellable;
     public int sellPowder;

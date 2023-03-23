@@ -1504,7 +1504,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5067821678208378385}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.05, z: 0}
   m_LocalScale: {x: 0.29999998, y: 0.3, z: 0.29999998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2245,6 +2245,7 @@ GameObject:
   - component: {fileID: 990491135}
   - component: {fileID: 441504609}
   - component: {fileID: 441504610}
+  - component: {fileID: 441504631}
   m_Layer: 6
   m_Name: CHA
   m_TagString: Player
@@ -2419,7 +2420,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9a9d40a78629aa84d99bf332f4a8ed3b, type: 2}
   - {fileID: 11400000, guid: 8e46024c5cacb964b9ab41c9e82130b8, type: 2}
   - {fileID: 11400000, guid: 7a60b3529dfee584a9fad7eabcdfc3b9, type: 2}
-  PossessedSkills:
+  PossessedSkillsTemp:
   - 10001
   - 10007
   toggles:
@@ -2441,7 +2442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponsTemp:
-  - 20001
+  - 20014
   - 20002
   - 20003
   - 20004
@@ -2468,9 +2469,6 @@ MonoBehaviour:
     count: 100
   - id: 40001
     count: 100
-  potionIds:
-  - 3
-  - 4
 --- !u!114 &1674795210733244910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2544,7 +2542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7f0bf233a51442ea2a8e2e66e95d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Method: 3
+  m_Method: 2
   m_Curve:
     serializedVersion: 2
     m_Curve:
@@ -2600,6 +2598,20 @@ NavMeshAgent:
   m_BaseOffset: -0.039
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
+--- !u!114 &441504631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374462481970909493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68b54b53168e2b4ab1356426404ae2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Level: 1
+  maxLevel: 20
 --- !u!1 &6047748371506495711
 GameObject:
   m_ObjectHideFlags: 0

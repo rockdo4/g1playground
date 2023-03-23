@@ -16,11 +16,12 @@ public class UISkillInventory : MonoBehaviour
     private void Awake()
     {
         playerSkills = GameManager.instance.player.GetComponent<PlayerSkills>();
+        Init();
     }
 
-    public void OnEnable()
+    private void OnEnable()
     {
-        Init();
+        SetInventory();
     }
 
     public void Init()
@@ -49,13 +50,8 @@ public class UISkillInventory : MonoBehaviour
     {
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
-        List<string> ids = new List<string>();
-        int len = 0;
-        foreach (var skill in playerSkills.PossessedSkills)
-        {
-            ids.Add(skill);
-        }
-        len = ids.Count;
+        List<string> ids = playerSkills.PossessedSkills;
+        int len = ids.Count;
         var table = DataTableMgr.GetTable<SkillData>();
         for (int i = 0; i < len; ++i)
         {

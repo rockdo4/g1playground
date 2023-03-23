@@ -16,7 +16,6 @@ public class WeaponData : ItemData
     public ItemClass weaponClass;
     public int reinforce;
     public int maxReinforce;
-    public string iconId;
     public int maximumAttack;
 
     public int sellable;

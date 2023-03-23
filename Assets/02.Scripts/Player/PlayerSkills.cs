@@ -1,7 +1,9 @@
+using Newtonsoft.Json.Schema;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -30,8 +32,8 @@ public class PlayerSkills : MonoBehaviour
 
     public SkillAttack[] allSkillsInInspector;
     private Dictionary<string, SkillAttack> allSkillGroups = new Dictionary<string, SkillAttack>();
-    public string[] PossessedSkills;
-    //public List<string> PossessedSkills { get; private set; } = new List<string>();
+    public string[] PossessedSkillsTemp;
+    public List<string> PossessedSkills { get; private set; }
 
     public Toggle[] toggles;
     public string[] defaultSkills;
@@ -52,6 +54,8 @@ public class PlayerSkills : MonoBehaviour
             skillStates[i].skillTimer = 0f;
             skillStates[i].skillUsable = true;
         }
+
+        PossessedSkills = PossessedSkillsTemp.ToList();
 
         for (int i = 0; i < skillCount; i++)
         {
@@ -173,6 +177,7 @@ public class PlayerSkills : MonoBehaviour
             return skill.id;
         return null;
     }
+
     public List<string> GetAllSkillIds()
     {
         var list = new List<string>();
@@ -182,4 +187,8 @@ public class PlayerSkills : MonoBehaviour
         }
         return list;
     }
+
+    public void AddSkill(string id) => PossessedSkills.Add(id);
+
+    public void Reinforce(int index, string newId) => PossessedSkills[index] = newId;
 }
