@@ -28,6 +28,7 @@ public class Portal : MonoBehaviour
 
             CanUse = true;
         }
+        ClosePortalInaWhile();
 
     }
 
@@ -60,10 +61,8 @@ public class Portal : MonoBehaviour
                     playerStat.CurrHp = playerStat.FinalValue.maxHp;
                     playerStat.CurrMp = playerStat.FinalValue.maxMp;
                     other.GetComponent<PlayerInventory>()?.RefillPotions();
-                    portal.CanUse = true;
                     //other.GetComponent<PlayerController>().AgentOnOff();
 
-                    CanUse = true;
                     Camera.main.transform.position = portal.gameObject.transform.position;
                     MapManager.instance.SetCurrentMapName(portal.transform.parent.name);
                     MapManager.instance.SetcurrentChapterName(portal.transform.parent.parent.name);
@@ -94,6 +93,24 @@ public class Portal : MonoBehaviour
 
         }
 
+    }
+
+    public void ClosePortalInaWhile()
+    {
+        Debug.Log(transform.parent.name);
+        CanUse = false;
+        Debug.Log("started");
+        StopCoroutine(CClosePortalInaWhile());
+        StartCoroutine(CClosePortalInaWhile());
+    }
+
+    IEnumerator CClosePortalInaWhile()
+    {
+        Debug.Log("co");
+
+        yield return new WaitForSeconds(2f);
+        CanUse = true;
+        Debug.Log("true");
     }
 
     private void OnDisable()
