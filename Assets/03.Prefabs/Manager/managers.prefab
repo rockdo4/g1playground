@@ -107,6 +107,7 @@ MonoBehaviour:
   player: {fileID: 0}
   effectManager: {fileID: 1053725796809169107}
   uiManager: {fileID: 1053725797803325503}
+  gambling: {fileID: 0}
   attackColliderManager: {fileID: 1053725798307262322}
 --- !u!1 &1053725797803325441
 GameObject:
@@ -153,9 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   btManager: {fileID: 3550933759107476892}
-  popupManager: {fileID: 0}
   charStatUI: {fileID: 0}
-  potion: {fileID: 0}
 --- !u!1 &1053725798282140984
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,6 +191,7 @@ Transform:
   - {fileID: 3550933759107476899}
   - {fileID: 8194739111394021625}
   - {fileID: 8194739109794423653}
+  - {fileID: 2981974479803122719}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -298,6 +298,53 @@ MonoBehaviour:
   customMaterial: {fileID: 2100000, guid: 510b89959f6284546b0b61011fc58d41, type: 2}
   originMaterial: {fileID: 2100000, guid: 067e560e11d1f4847beef5108ba2a9fc, type: 2}
   invisibleMaterial: {fileID: 2100000, guid: 7504549650e27427d93adfd5ba402df1, type: 2}
+--- !u!1 &1209615670792633616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2981974479803122719}
+  - component: {fileID: 2790166444481626083}
+  m_Layer: 0
+  m_Name: GamblingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2981974479803122719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209615670792633616}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1053725798282140985}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2790166444481626083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209615670792633616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e448e48a895514180d74dc4d517a0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reward: {fileID: 0}
+  rewardTen: {fileID: 0}
+  getElement: 
 --- !u!1 &3550933759107476898
 GameObject:
   m_ObjectHideFlags: 0
