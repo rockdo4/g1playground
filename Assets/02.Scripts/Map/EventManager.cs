@@ -123,7 +123,7 @@ public class EventManager : MonoBehaviour
             data = DataTableMgr.GetTable<StoryData>().Get(storyList[currStoryIndex].ToString());
             currStoryIndex++;
 
-            var icon = Resources.Load<Sprite>(data.iconId);//(DataTableMgr.GetTable<IconData>().Get(data.iconId).iconName); //
+            var icon = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconId).iconName);
             ShowStoryBoard(icon, data.storyLine);
         }
         else
