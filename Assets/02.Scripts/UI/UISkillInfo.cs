@@ -12,11 +12,11 @@ public class UISkillInfo : MonoBehaviour
     public Image secondEquipIcon;
     public TextMeshProUGUI skillName;
     public TextMeshProUGUI skillDesc;
-    private SkillData currSkillData;
+    //private SkillData currSkillData;
 
     public void SetEmpty()
     {
-        currSkillData = null;
+        //currSkillData = null;
         equipImage.sprite = null;
         useImage.sprite = null;
         firstEquipIcon.sprite = null;
@@ -32,26 +32,34 @@ public class UISkillInfo : MonoBehaviour
             SetEmpty();
             return;
         }
-        currSkillData = data;
+        //currSkillData = data;
         equipImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
         skillName.text = data.name;
         skillDesc.text = data.desc;
     }
 
-    public void SetPlayerSkill(int index)
-    {
-        if (currSkillData != null)
-        {
-            GameManager.instance.player.GetComponent<PlayerSkills>().SetSkill(index, currSkillData.id);
-            ShowCurrPlayerSkills();
-        }
-    }
+    //public void SetPlayerSkill(int index)
+    //{
+    //    if (currSkillData != null)
+    //    {
+    //        GameManager.instance.player.GetComponent<PlayerSkills>().SetSkill(index, currSkillData.id);
+    //        ShowCurrPlayerSkills();
+    //    }
+    //}
 
     public void ShowCurrPlayerSkills()
     {
         var playerSkills = GameManager.instance.player.GetComponent<PlayerSkills>();
         var skillTable = DataTableMgr.GetTable<SkillData>();
-        firstEquipIcon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillTable.Get(playerSkills.GetCurrSkillID(0)).iconSpriteId).iconName);
-        secondEquipIcon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillTable.Get(playerSkills.GetCurrSkillID(1)).iconSpriteId).iconName);
+        var firstSkill = playerSkills.GetCurrSkillID(0);
+        var secondSkill = playerSkills.GetCurrSkillID(1);
+        if (!string.IsNullOrEmpty(firstSkill))
+            firstEquipIcon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillTable.Get(firstSkill).iconSpriteId).iconName);
+        else
+            firstEquipIcon.sprite = null;
+        if (!string.IsNullOrEmpty(secondSkill))
+            secondEquipIcon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillTable.Get(secondSkill).iconSpriteId).iconName);
+        else
+            secondEquipIcon.sprite = null;
     }
 }

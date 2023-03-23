@@ -23,8 +23,9 @@ public class SavePlayerDataVer1 : SavePlayerData
     public string lastMapId;
     public Vector3 lastPlayerPos;
     public string lastChapter;
-    public string skill1;
-    public string skill2;
+    public List<string> possessedSkills;
+    public int skill1;
+    public int skill2;
 
     public override SaveData VersionUp()
     {

@@ -10,6 +10,7 @@ public class UISkillInventory : MonoBehaviour
 
     private List<UISkillSlot> slotList = new List<UISkillSlot>();
     private PlayerSkills playerSkills;
+    private int currSlot;
 
     public UISkillInfo skillInfo;
 
@@ -34,6 +35,8 @@ public class UISkillInventory : MonoBehaviour
 
             var button = slot.GetComponent<Button>();
             button.onClick.AddListener(() => skillInfo.Set(slot.Data));
+            var count = i;
+            button.onClick.AddListener(() => currSlot = count);
         }
         SetInventory();
     }
@@ -44,6 +47,7 @@ public class UISkillInventory : MonoBehaviour
         {
             slot.SetEmpty();
         }
+        currSlot = -1;
     }
 
     public void SetInventory()
@@ -58,6 +62,12 @@ public class UISkillInventory : MonoBehaviour
             slotList[i].Set(i, table.Get(ids[i]));
         }
         skillInfo.Set(table.Get(ids[0]));
+        skillInfo.ShowCurrPlayerSkills();
+    }
+
+    public void SetPlayerSkill(int index)
+    {
+        playerSkills.SetSkill(index, currSlot);
         skillInfo.ShowCurrPlayerSkills();
     }
 }

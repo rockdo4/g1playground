@@ -15,7 +15,7 @@ public class ComposeData : ICSVParsing
         id = line["compose_ID"];
         material1Id = line["material_1_ID"];
         material1Count = int.Parse(line["material_1_count"]);
-        material1Id = line["material_2_ID"];
+        material2Id = line["material_2_ID"];
         material2Count = int.Parse(line["material_2_count"]);
         resultItem = line["Result_item"];
     }

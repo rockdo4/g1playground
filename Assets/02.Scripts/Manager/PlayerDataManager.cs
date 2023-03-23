@@ -28,8 +28,9 @@ public class PlayerDataManager : MonoBehaviour
     public string lastSaveMapId;
     public string lastSaveChapterName;
     public Vector3 lastPlayerPos;
-    public string currskill1;
-    public string currskill2;
+    public List<string> possessedSkills;
+    public int currskill1;
+    public int currskill2;
 
 
     public void SaveFile()
@@ -38,6 +39,7 @@ public class PlayerDataManager : MonoBehaviour
         saveData.playerName = playerName;
         saveData.playerCurrHp = playerCurrHp;
         saveData.lastMapId = lastSaveMapId;
+        saveData.possessedSkills = possessedSkills;
         saveData.skill1 = currskill1;
         saveData.skill2 = currskill2;  
 
@@ -85,8 +87,9 @@ public class PlayerDataManager : MonoBehaviour
         playerCurrHp = playerStatus.CurrHp;
         playerCurrMp = playerStatus.CurrMp;
         var playerSkills = GameManager.instance.player.GetComponent<PlayerSkills>();
-        currskill1 = playerSkills.GetCurrSkillID(0);
-        currskill2 = playerSkills.GetCurrSkillID(1);
+        possessedSkills = playerSkills.PossessedSkills;
+        currskill1 = playerSkills.GetCurrSkillIndex(0);
+        currskill2 = playerSkills.GetCurrSkillIndex(1);
     }
 
     public void SetPlayerHpMp()

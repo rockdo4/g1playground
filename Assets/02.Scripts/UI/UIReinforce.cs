@@ -88,6 +88,7 @@ public class UIReinforce : MonoBehaviour
         ClearInventory();
         List<string> ids = null;
         int len = 0;
+        int count = 0;
         switch ((ReinforceSystem.Types)type)
         {
             case ReinforceSystem.Types.Weapon:
@@ -95,16 +96,12 @@ public class UIReinforce : MonoBehaviour
                     var table = DataTableMgr.GetTable<WeaponData>();
                     ids = playerInventory.Weapons;
                     len = ids.Count;
-                    int hasCurrWeapon = 0;
                     if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
-                    {
-                        itemSlotList[0].Set(-1, table.Get(playerInventory.CurrWeapon));
-                        hasCurrWeapon = 1;
-                    }
+                        itemSlotList[count++].Set(-1, table.Get(playerInventory.CurrWeapon));
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
-                            itemSlotList[i + hasCurrWeapon].Set(i, table.Get(ids[i]));
+                            itemSlotList[count++].Set(i, table.Get(ids[i]));
                     }
                 }
                 break;
@@ -113,16 +110,12 @@ public class UIReinforce : MonoBehaviour
                     var table = DataTableMgr.GetTable<ArmorData>();
                     ids = playerInventory.Armors;
                     len = ids.Count;
-                    int hasCurrArmor = 0;
-                    if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
-                    {
-                        itemSlotList[0].Set(-1, table.Get(playerInventory.CurrWeapon));
-                        hasCurrArmor = 1;
-                    }
+                    if (!string.IsNullOrEmpty(playerInventory.CurrArmor))
+                        itemSlotList[count++].Set(-1, table.Get(playerInventory.CurrArmor));
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
-                            itemSlotList[i + hasCurrArmor].Set(i, table.Get(ids[i]));
+                            itemSlotList[count++].Set(i, table.Get(ids[i]));
                     }
                 }
                 break;
@@ -154,7 +147,18 @@ public class UIReinforce : MonoBehaviour
 
     public void Reinforce()
     {
-        ReinforceSystem.Reinforce(type, currSlot);
+        int index = 0;
+        switch (type)
+        {
+            case ReinforceSystem.Types.Weapon:
+            case ReinforceSystem.Types.Armor:
+                index = itemSlotList[currSlot].index;
+                break;
+            case ReinforceSystem.Types.Skill:
+                index = skillSlotList[currSlot].index;
+                break;
+        }
+        ReinforceSystem.Reinforce(type, index);
         info.SetEmpty();
         SetInventory((int)type);
     }
