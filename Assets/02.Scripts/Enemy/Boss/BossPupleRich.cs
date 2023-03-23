@@ -28,6 +28,7 @@ public class BossPupleRich : Enemy
     private float spawnCoolTime;
     public float returnTime;
     private float returnCoolTime;
+
     public override EnemyState State
     {
         get { return state; }
@@ -99,6 +100,7 @@ public class BossPupleRich : Enemy
         mainColl = GetComponent<CapsuleCollider>();
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
         attackBox.SetActive(false);
+        skillPivot = GameObject.Find(gameObject.name + "/AttackPivot");
         State = EnemyState.None;
     }
     protected override void Start()
