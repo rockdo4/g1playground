@@ -58,6 +58,7 @@ public class StageController : MonoBehaviour
 
     private void Awake()
     {
+        SkyboxManager.instance.SetSkybox(skyboxIndex);
         GetObjectTiles();
         SetObjectTileOriginPos();
     }

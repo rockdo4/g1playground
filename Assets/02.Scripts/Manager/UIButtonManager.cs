@@ -51,11 +51,14 @@ public class UIButtonManager : MonoBehaviour
             if (popup.gameObject.name != "Option")
             {
                 var option = GameObject.Find("Option");
-                if (option.activeSelf)
+                if (option != null)
                 {
-                    option.SetActive(false);
-                    Time.timeScale = 0f;
-                }
+                    if (option.activeSelf)
+                    {
+                        option.SetActive(false);
+                        Time.timeScale = 0f;
+                    }
+                }  
             }
         }
         else
@@ -72,7 +75,8 @@ public class UIButtonManager : MonoBehaviour
         {
             popup.gameObject.SetActive(false);
         }
-        DungeonManager.instance.uiDungeonSelect.SetActive(false);
+        if (DungeonManager.instance != null)
+            DungeonManager.instance.uiDungeonSelect.SetActive(false);
     }
 
     public void CheckArea()
@@ -94,10 +98,14 @@ public class UIButtonManager : MonoBehaviour
                 }
             }
         }
-        if (DungeonManager.instance.uiDungeonSelect.activeSelf)
+        if (DungeonManager.instance != null)
         {
-            return;
+            if (DungeonManager.instance.uiDungeonSelect.activeSelf)
+            {
+                return;
+            }
         }
+        
         AllClosePopUp();
     }
 }

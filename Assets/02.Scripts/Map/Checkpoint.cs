@@ -29,7 +29,12 @@ public class Checkpoint : MonoBehaviour
         
         if (other.CompareTag("Player"))
         {
-            PlayerDataManager.instance.SaveLastPos(MapManager.instance.GetCurrentMapName(),MapManager.instance.GetCurrentChapterName(), transform.position);
+            if (PlayerDataManager.instance != null)
+            {
+                PlayerDataManager.instance.SaveLastPos(MapManager.instance.GetCurrentMapName(),
+                    MapManager.instance.GetCurrentChapterName(), transform.position);
+            }
+            
             //set effect
             if (effect != null)
             {
