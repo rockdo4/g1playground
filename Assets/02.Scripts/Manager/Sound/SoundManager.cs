@@ -61,7 +61,7 @@ public class SoundManager : MonoBehaviour
 
         //load volumes on load
         LoadVolume();
-        PlayBGM(bgmName);
+        //PlayBGM(bgmName);
     }
 
     //load volume set on sliders

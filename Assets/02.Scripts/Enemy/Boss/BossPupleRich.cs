@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class BossPupleRich : Enemy
@@ -23,6 +24,8 @@ public class BossPupleRich : Enemy
     private float projectileCoolTime;
     public float areaTime;
     private float areaCoolTime;
+    public float spawnTime;
+    private float spawnCoolTime;
     public float returnTime;
     private float returnCoolTime;
     public override EnemyState State
@@ -167,7 +170,7 @@ public class BossPupleRich : Enemy
         switch (State)
         {
             case EnemyState.None:
-                None();
+                NoneUpdate();
                 break;
             case EnemyState.Patrol:
                 PatrolUpdate();
@@ -180,6 +183,9 @@ public class BossPupleRich : Enemy
                 break;
             case EnemyState.Attack:
                 AttackUpdate();
+                break;
+            case EnemyState.Skill:
+                SkillUpdate();
                 break;
             case EnemyState.Die:
                 break;
@@ -194,7 +200,7 @@ public class BossPupleRich : Enemy
         }
     }
 
-    private void None()
+    private void NoneUpdate()
     {
         State = EnemyState.Patrol;
         SaveFloorLength(ref startPos, ref endPos);
@@ -266,15 +272,15 @@ public class BossPupleRich : Enemy
     {
         LookAtTarget();
     }
-
-    protected override void Skill()
+    protected  void SkillUpdate()
     {
-
+        LookAtTarget();
     }
 
     protected Vector3 startPos;
     protected Vector3 endPos;
 
+    private int attackCount;
     void BattleProcess()
     {
         if (areaCoolTime >= areaTime)
@@ -288,7 +294,7 @@ public class BossPupleRich : Enemy
         if (projectileCoolTime >= projectileTime && Vector3.Distance(transform.position, player.transform.position) >= attackRange)
         {
             projectileCoolTime = 0f;
-            State = EnemyState.Attack;
+            State = EnemyState.Skill;
             animator.SetTrigger("Projectile");
             return;
         }
@@ -302,29 +308,18 @@ public class BossPupleRich : Enemy
         }
     }
 
-
     private void Attack()
     {
         attackBox.SetActive(true);
-        isHit = false;
+        ++attackCount;
     }
 
     private void AttackDone()
     {
-        if (!isHit)
-        {
-            State = EnemyState.Chase;
-            attackBox.SetActive(false);
-            animator.SetTrigger("AttackEnd");
-        }
-
-    }
-
-    private void LastAttackDone()
-    {
-        State = EnemyState.Chase;
         attackBox.SetActive(false);
-        isHit = true;
+
+        if (attackCount >= 3)
+            State = EnemyState.Chase;
     }
 
     private bool isHit = false;
@@ -338,7 +333,6 @@ public class BossPupleRich : Enemy
 #if UNITY_EDITOR
             Debug.Log(State);
 #endif
-            isHit = true;
             meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
             attackBox.SetActive(false);
         }
@@ -346,9 +340,10 @@ public class BossPupleRich : Enemy
 
     private void Projectile()
     {
-        var playerDir = (player.transform.position - skillPivot.transform.position).normalized;
-
-        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, playerDir);
+        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);
+        //var playerDir = (player.transform.position - skillPivot.transform.position).normalized;
+        Debug.Log("shot");
+        //((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, playerDir);
     }
     private void ProjectileDone()
     {

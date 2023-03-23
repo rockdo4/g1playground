@@ -175,8 +175,6 @@ public class Enemy : MonoBehaviour
 
     protected bool AngleIgnoringHeight(float angle)
     {
-
-
         return Quaternion.Angle(
             transform.rotation, 
             Quaternion.LookRotation(
