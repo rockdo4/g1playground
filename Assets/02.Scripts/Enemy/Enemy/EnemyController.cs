@@ -212,16 +212,13 @@ public class EnemyController : Enemy, IAttackable
         NavMeshPath navMeshPath = new NavMeshPath();
 
         if (NavMesh.CalculatePath(transform.position, player.transform.position, NavMesh.AllAreas, navMeshPath)
-            &&/* Mathf.Abs(navMeshPath.corners[navMeshPath.corners.Length - 1].y - player.transform.position.y) < 0.1f*/ navMeshPath.status == NavMeshPathStatus.PathComplete)
-        //if (agent.CalculatePath(player.transform.position, navMeshPath))
+            && navMeshPath.status == NavMeshPathStatus.PathComplete)       
         {
-            Debug.Log("Found");
             Vector3 targetDirection = player.transform.position - transform.position;
             targetDirection.y = 0;
             targetDirection.Normalize();
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), Time.deltaTime * 10f);
             findingpathtime = 0;
-            //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized, Time.deltaTime * 10f);
 
             if (player.transform.position.x - transform.position.x > 0)
                 isGoingRight = true;
@@ -235,7 +232,6 @@ public class EnemyController : Enemy, IAttackable
             }
 
             if (AngleIgnoringHeight(10f))
-            //if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position).normalized) <= 10f)
             {
                 agent.isStopped = false;
                 agent.SetDestination(player.transform.position);
@@ -265,41 +261,12 @@ public class EnemyController : Enemy, IAttackable
             findingpathtime += Time.deltaTime;
             if (findingpathtime >= 1.5f)
             {
-              //  Debug.Log("reset");
                 State = EnemyState.None;
                 ResetPattern();
             }
         }
 
-        //Debug.Log($"agent.updateRotation:{agent.updateRotation}");
-        //Debug.Log($"agent.updatePosition:{agent.updatePosition}");
-        //Debug.Log("");
-
-        //if (AngleIgnoringHeight(10f)) //플레이어가 시야각 안
-        //{
-
-        //    agent.updatePosition = true;
-        //    agent.SetDestination(player.transform.position);
-        //}
-        //else //플레이어가 시야각 밖
-        //{
-        //    //agent.isStopped = true;
-        //    agent.updatePosition = false;
-
-        //}
-
-        //if (RayShooter(attackRange, isGoingRight))
-        //{
-        //    if (attackTime >= attackCool)
-        //        State = EnemyState.Attack;
-        //    else
-        //    {
-        //        agent.isStopped = true;
-        //        agent.velocity = Vector3.zero;
-        //    }
-        //}
-        //else
-        //    agent.isStopped = false;
+      
     }
 
     protected override void AttackUpdate()
