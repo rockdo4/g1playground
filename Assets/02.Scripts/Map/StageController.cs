@@ -126,8 +126,12 @@ public class StageController : MonoBehaviour
         SkyboxManager.instance.SetSkybox(skyboxIndex);
 
         //Show StageName
-        var stageName = DataTableMgr.GetTable<StageNameData>().Get(stageId.ToString()).stageName;
-        EventManager.instance.ShowStageTitile(stageName);
+        if (DataTableMgr.GetTable<StageNameData>().Get(stageId.ToString()) != null) 
+        {
+            var stageName = DataTableMgr.GetTable<StageNameData>().Get(stageId.ToString()).stageName;
+            EventManager.instance.ShowStageTitile(stageName);
+        }
+        
 
         //Change MiniMap
         MiniMap.instance.SetMiniMap(stageId);

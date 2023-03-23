@@ -60,6 +60,10 @@ public class MiniMap : MonoBehaviour
 
     public void SetMiniMap(int id)
     {
+        if (DataTableMgr.GetTable<MiniMapData>().Get(id.ToString()) == null)
+        {
+            return;
+        }
         MiniMapData data = DataTableMgr.GetTable<MiniMapData>().Get(id.ToString());
 
         var sprite = Resources.Load<Sprite>(data.miniMapId);

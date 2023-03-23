@@ -21,14 +21,16 @@ public class EventManager : MonoBehaviour
     [SerializeField] private float fastTextDelay = 0.0f;
 
     [Header("Image Board")]
-    [SerializeField] private Button imageBoard;
+    [SerializeField] private GameObject imageBoard;
+    [SerializeField] private Image buttonImage;
+    [SerializeField] private TextMeshProUGUI imageText;
 
-    private Color originTitleColor;
-    private Color originTextColor;
-
-    private float timer = 0f;
+    [Header("Text Board")]
+    [SerializeField] private GameObject TextBoard;
+    [SerializeField] private TextMeshProUGUI textBoardText;
 
     private List<int> storyList = new List<int>();
+
     private float originTextDelay;
 
     private int storyCount = 0;
@@ -60,11 +62,11 @@ public class EventManager : MonoBehaviour
 
             Destroy(gameObject);
         }
+
         originTextDelay = textDelay;
-        originTitleColor = stageTitlePanel.GetComponent<Image>().color;
-        originTextColor = titleText.color;
     }
 
+    ////////////////////////Stage Title///////////////////////////////
     public void ShowStageTitile(string title)
     {
         stageTitlePanel.gameObject.SetActive(true);
@@ -97,57 +99,55 @@ public class EventManager : MonoBehaviour
         storyCount = storyList.Count;        
     }
 
-    public void GetNextText()
-    {
-        //isButtonClick = true;
-        if (clickCount > 0)
-        {
-            PlayStory();
-        }
-        clickCount++;
-
-    }
-
     public void PlayStory()
     {
+        //when Click and text is not all printed reduce the textDelay
         if (!isClickable)
         {
             textDelay = fastTextDelay;
             return;
         }
+
+        //Get story and display them
         if (currStoryIndex < storyCount) 
         {
             textDelay = originTextDelay;
             isClickable = false;
-            StoryData data = null;
-            data = DataTableMgr.GetTable<StoryData>().Get(storyList[currStoryIndex].ToString());
+            StoryData data = DataTableMgr.GetTable<StoryData>().Get(storyList[currStoryIndex].ToString());
             currStoryIndex++;
 
             var icon = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconId).iconName);
-            ShowStoryBoard(icon, data.storyLine);
+
+            switch (int.Parse(data.type))
+            {
+                case 0:
+                    //Story Board
+                    imageBoard.SetActive(false);
+                    TextBoard.SetActive(false);
+                    ShowStoryBoard(icon, data.storyLine);
+                    break;
+                case 1:
+                    //Story only Image
+                    storyBoard.SetActive(false);
+                    TextBoard.SetActive(false);
+                    ShowStoryImage(icon, data.storyLine);
+                    break;
+                case 2:
+                    //Story only Text
+                    storyBoard.SetActive(false);
+                    imageBoard.SetActive(false);
+                    ShowStoryText(data.storyLine);
+                    break;
+            }       
         }
         else
         {
-            textDelay = originTextDelay;
-            currStoryIndex = 0;
-            Resume();
-            StopCoroutine("TextAnimationEffect");
-            storyBoard.SetActive(false);
+            //Reset story board
+            RestStory();
         }
     }
 
-    public void ShowStoryBoard(Sprite icon, string text)
-    {
-        storyBoard.SetActive(true);
-        storyIcon.sprite = icon;
-        text = text.Replace("n", "\n");
-
-        StartCoroutine(TextAnimationEffect(text));
-
-
-    }
-
-    IEnumerator TextAnimationEffect(string narration)
+    IEnumerator TextAnimationEffect(TextMeshProUGUI textBoard, string narration)
     {
         var writerText = "";
 
@@ -155,13 +155,13 @@ public class EventManager : MonoBehaviour
         //Debug.Log(narration.Length);
         for (int i = 0; i < narration.Length; i++)
         {
-            if (i >= narration.Length - 1) 
-            {                
+            if (i >= narration.Length - 1)
+            {
                 isClickable = true;
             }
             //Debug.Log(i);
             writerText += narration[i];
-            storyText.text = writerText;
+            textBoard.text = writerText;
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             while (stopwatch.Elapsed.TotalSeconds < textDelay)
@@ -169,19 +169,29 @@ public class EventManager : MonoBehaviour
                 yield return null;
             }
             stopwatch.Stop();
-            
-        }
 
-        ////Wait untill button click
-        //while (true)
-        //{
-        //    if (isButtonClick)
-        //    {
-        //        isButtonClick = false;
-        //        break;
-        //    }
-        //    yield return null;
-        //}
+        }
+    }
+
+    public void RestStory()
+    {
+        textDelay = originTextDelay;
+        currStoryIndex = 0;
+        Resume();
+        StopCoroutine("TextAnimationEffect");
+        storyBoard.SetActive(false);
+        imageBoard.SetActive(false);
+        TextBoard.SetActive(false);
+    }
+
+    //////////////////////Story Board/////////////////////////////////
+    public void ShowStoryBoard(Sprite icon, string text)
+    {
+        storyBoard.SetActive(true);
+        storyIcon.sprite = icon;
+        text = text.Replace("n", "\n");
+
+        StartCoroutine(TextAnimationEffect(storyText, text));
     }
 
     public void SkipStory()
@@ -194,10 +204,25 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    public void ShowStoryImage(Sprite storySprite)
+
+    /////////////////Image///////////////////////////
+    public void ShowStoryImage(Sprite storySprite, string text)
     {
-        imageBoard.image.sprite = storySprite;
+        imageBoard.SetActive(true);
+        buttonImage.sprite = storySprite;
+        imageText.text = text.Replace("n", "\n");
+        isClickable = true;
     }
+
+    /////////////////Text///////////////////////////
+    public void ShowStoryText(string text)
+    {
+        TextBoard.SetActive(true);
+        text = text.Replace("n", "\n");
+
+        StartCoroutine(TextAnimationEffect(textBoardText, text));
+    }
+
     ///////////////////////////////////////////////////////
 
     //Test Effect
