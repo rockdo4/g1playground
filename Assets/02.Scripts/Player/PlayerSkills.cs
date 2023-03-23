@@ -55,6 +55,8 @@ public class PlayerSkills : MonoBehaviour
             skillStates[i].skillUsable = true;
         }
 
+        PossessedSkills = PossessedSkillsTemp.ToList();
+
         for (int i = 0; i < skillCount; i++)
         {
             if (toggles[i] == null)
@@ -64,8 +66,6 @@ public class PlayerSkills : MonoBehaviour
             toggles[i].onValueChanged.AddListener(onOff => ToggleSkill(n, onOff));
             SetSkill(i, defaultSkills[i]);
         }
-
-        PossessedSkills = PossessedSkillsTemp.ToList();
     }
 
     private void Update()
@@ -187,6 +187,8 @@ public class PlayerSkills : MonoBehaviour
         }
         return list;
     }
+
+    public void AddSkill(string id) => PossessedSkills.Add(id);
 
     public void Reinforce(int index, string newId) => PossessedSkills[index] = newId;
 }

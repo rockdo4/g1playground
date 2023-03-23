@@ -52,13 +52,13 @@ public class ReinforceSystem
                 if (indexOfInventory < 0)
                     id = inventory.CurrWeapon;
                 else
-                    id = inventory.weapons[indexOfInventory];
+                    id = inventory.Weapons[indexOfInventory];
                 break;
             case Types.Armor:
                 if (indexOfInventory < 0)
                     id = inventory.CurrArmor;
                 else
-                    id = inventory.armors[indexOfInventory];
+                    id = inventory.Armors[indexOfInventory];
                 break;
         }
 

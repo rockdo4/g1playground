@@ -20,9 +20,9 @@ public class PlayerInventory : MonoBehaviour
     public string[] armorsTemp;     // for test
     [SerializeField] public Consumable[] consumablesTemp;   // for test
 
-    public List<string> weapons { get; private set; } = new List<string>();
-    public List<string> armors { get; private set; } = new List<string>();
-    public List<Consumable> consumables { get; private set; } = new List<Consumable>();
+    public List<string> Weapons { get; private set; } = new List<string>();
+    public List<string> Armors { get; private set; } = new List<string>();
+    public List<Consumable> Consumables { get; private set; } = new List<Consumable>();
     public string CurrWeapon { get; private set; }
     public string CurrArmor { get; private set; }
 
@@ -38,9 +38,9 @@ public class PlayerInventory : MonoBehaviour
     private void Awake()
     {
         status = GetComponent<Status>();
-        weapons = weaponsTemp.ToList();
-        armors = armorsTemp.ToList();
-        consumables = consumablesTemp.ToList();
+        Weapons = weaponsTemp.ToList();
+        Armors = armorsTemp.ToList();
+        Consumables = consumablesTemp.ToList();
         var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
         foreach (var data in consumeTable)
         {
@@ -58,21 +58,21 @@ public class PlayerInventory : MonoBehaviour
 
     public void SetWeapon(int index)
     {
-        if (weapons[index] == null)
+        if (Weapons[index] == null)
             return;
         var temp = CurrWeapon;
-        CurrWeapon = weapons[index];
-        weapons[index] = temp;
+        CurrWeapon = Weapons[index];
+        Weapons[index] = temp;
         ApplyStatus();
     }
 
     public void SetArmor(int index)
     {
-        if (armors[index] == null)
+        if (Armors[index] == null)
             return;
         var temp = CurrArmor;
-        CurrArmor = armors[index];
-        armors[index] = temp;
+        CurrArmor = Armors[index];
+        Armors[index] = temp;
         ApplyStatus();
     }
 
@@ -122,13 +122,13 @@ public class PlayerInventory : MonoBehaviour
                 if (index < 0)
                     CurrWeapon = newId;
                 else
-                    weapons[index] = newId;
+                    Weapons[index] = newId;
                 break;
             case ItemTypes.Armor:
                 if (index < 0)
                     CurrArmor = newId;
                 else
-                    armors[index] = newId;
+                    Armors[index] = newId;
                 break;
             default:
                 break;
@@ -138,7 +138,7 @@ public class PlayerInventory : MonoBehaviour
     public int GetConsumableCount(string itemId)
     {
         int count = 0;
-        foreach (var consumable in consumables)
+        foreach (var consumable in Consumables)
         {
             if (consumable.id == itemId)
                 count += consumable.count;
@@ -160,22 +160,22 @@ public class PlayerInventory : MonoBehaviour
 
     public void UseConsumable(string id, int need = 1)
     {
-        int len = consumables.Count;
+        int len = Consumables.Count;
         for (int i = len - 1; i >= 0; --i)
         {
-            if (consumables[i].id == id)
+            if (Consumables[i].id == id)
             {
-                var newConsumable = consumables[i];
+                var newConsumable = Consumables[i];
                 if (need < newConsumable.count)
                 {
                     newConsumable.count -= need;
-                    consumables[i] = newConsumable;
+                    Consumables[i] = newConsumable;
                     return;
                 }
                 else
                 {
                     need -= newConsumable.count;
-                    consumables.Remove(consumables[i]);
+                    Consumables.Remove(Consumables[i]);
                 }
             }
         }

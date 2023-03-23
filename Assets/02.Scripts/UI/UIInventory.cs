@@ -69,8 +69,8 @@ public class UIInventory : MonoBehaviour
             case ItemTypes.Weapon:
                 {
                     var table = DataTableMgr.GetTable<WeaponData>();
-                    ids = playerInventory.weapons;
-                    len = playerInventory.weapons.Count;
+                    ids = playerInventory.Weapons;
+                    len = playerInventory.Weapons.Count;
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
@@ -81,8 +81,8 @@ public class UIInventory : MonoBehaviour
             case ItemTypes.Armor:
                 {
                     var table = DataTableMgr.GetTable<ArmorData>();
-                    ids = playerInventory.armors;
-                    len = playerInventory.armors.Count;
+                    ids = playerInventory.Armors;
+                    len = playerInventory.Armors.Count;
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
@@ -93,13 +93,13 @@ public class UIInventory : MonoBehaviour
             case ItemTypes.Consumable:
                 {
                     var table = DataTableMgr.GetTable<ConsumeData>();
-                    var consumables = playerInventory.consumables;
+                    var consumables = playerInventory.Consumables;
                     ids = new List<string>();
                     foreach (var consumable in consumables)
                     {
                         ids.Add(consumable.id);
                     }
-                    len = playerInventory.consumables.Count;
+                    len = playerInventory.Consumables.Count;
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
@@ -119,7 +119,7 @@ public class UIInventory : MonoBehaviour
                 if (slotList[currSlot] != null && slotList[currSlot].Data != null)
                 {
                     playerInventory.SetWeapon(currSlot);
-                    id = playerInventory.weapons[currSlot];
+                    id = playerInventory.Weapons[currSlot];
                     var table = DataTableMgr.GetTable<WeaponData>();
                     if (string.IsNullOrEmpty(id))
                         slotList[currSlot].SetEmpty();
@@ -131,7 +131,7 @@ public class UIInventory : MonoBehaviour
                 if (slotList[currSlot] != null && slotList[currSlot].Data != null)
                 {
                     playerInventory.SetArmor(currSlot);
-                    id = playerInventory.armors[currSlot];
+                    id = playerInventory.Armors[currSlot];
                     var table = DataTableMgr.GetTable<ArmorData>();
                     if (string.IsNullOrEmpty(id))
                         slotList[currSlot].SetEmpty();
