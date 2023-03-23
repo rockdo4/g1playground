@@ -30,10 +30,10 @@ public class SkyboxManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (skyboxes != null)
-        {
-            RenderSettings.skybox = skyboxes[0];
-        }
+        //if (skyboxes != null)
+        //{
+        //    RenderSettings.skybox = skyboxes[0];
+        //}
     }
 
     public void SetSkybox(int index)

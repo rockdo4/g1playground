@@ -11,6 +11,6 @@ public class StageNameData : ICSVParsing
     public void Parse(Dictionary<string, string> line)
     {
         id = line["ID"];
-        stageName = line["Stage_Name"];        
+        stageName = line["Index"];        
     }
 }

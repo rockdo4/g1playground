@@ -3,22 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Diagnostics;
 
 public class EventManager : MonoBehaviour
 {
     [Header("StageTitle")]
-    [SerializeField] private GameObject stageTitlePanel;
-    [SerializeField] private TextMeshProUGUI textMesh;
-    [SerializeField] private float titlePanelDelay = 3f;
+    [SerializeField] private CanvasGroup stageTitlePanel;
+    [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private float fadeAmount = 0.01f;
+    [SerializeField] private float fadeDelay = 1f;
 
     [Header("Story")]
     [SerializeField] private GameObject storyBoard;
     [SerializeField] private TextMeshProUGUI storyText;
     [SerializeField] private Image storyIcon;
+    [SerializeField] private float textDelay = 0.1f;
+    [SerializeField] private float fastTextDelay = 0.0f;
+
+    [Header("Image Board")]
+    [SerializeField] private GameObject imageBoard;
+    [SerializeField] private Image buttonImage;
+    [SerializeField] private TextMeshProUGUI imageText;
+
+    [Header("Text Board")]
+    [SerializeField] private GameObject TextBoard;
+    [SerializeField] private TextMeshProUGUI textBoardText;
 
     private List<int> storyList = new List<int>();
+
+    private float originTextDelay;
+
     private int storyCount = 0;
     private int currStoryIndex = 0;
+    private int clickCount = 0;
+    private bool isClickable = true;
 
     private int effectCount = 0;
 
@@ -44,21 +62,34 @@ public class EventManager : MonoBehaviour
 
             Destroy(gameObject);
         }
+
+        originTextDelay = textDelay;
     }
 
+    ////////////////////////Stage Title///////////////////////////////
     public void ShowStageTitile(string title)
     {
-        stageTitlePanel.SetActive(true);
-        textMesh.text = title;
+        stageTitlePanel.gameObject.SetActive(true);
+        stageTitlePanel.alpha = 1f;
+        titleText.text = title.Replace("n", "\n");
         StartCoroutine(CoSetStageTitleFalse());
     }
 
     private IEnumerator CoSetStageTitleFalse()
     {
-        //wait for delay after falling then set active to false
-        yield return new WaitForSeconds(titlePanelDelay);
-        stageTitlePanel.SetActive(false);
-        StopAllCoroutines();
+        //wait for second
+        yield return new WaitForSeconds(fadeDelay);
+
+        //decrease alpha by every fixedupdate
+        while (stageTitlePanel.alpha > 0f)
+        {
+            stageTitlePanel.alpha -= fadeAmount;
+            yield return null;
+        }
+
+        stageTitlePanel.gameObject.SetActive(false);
+        StopCoroutine(CoSetStageTitleFalse());
+
     }
 
     /////////////////////////Story//////////////////////////////////
@@ -70,28 +101,97 @@ public class EventManager : MonoBehaviour
 
     public void PlayStory()
     {
+        //when Click and text is not all printed reduce the textDelay
+        if (!isClickable)
+        {
+            textDelay = fastTextDelay;
+            return;
+        }
+
+        //Get story and display them
         if (currStoryIndex < storyCount) 
         {
-            StoryData data = null;
-            data = DataTableMgr.GetTable<StoryData>().Get(storyList[currStoryIndex].ToString());
+            textDelay = originTextDelay;
+            isClickable = false;
+            StoryData data = DataTableMgr.GetTable<StoryData>().Get(storyList[currStoryIndex].ToString());
             currStoryIndex++;
 
-            var icon = Resources.Load<Sprite>(data.iconId);
-            ShowStoryBoard(icon, data.storyLine);
+            var icon = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconId).iconName);
+
+            switch (int.Parse(data.type))
+            {
+                case 0:
+                    //Story Board
+                    imageBoard.SetActive(false);
+                    TextBoard.SetActive(false);
+                    ShowStoryBoard(icon, data.storyLine);
+                    break;
+                case 1:
+                    //Story only Image
+                    storyBoard.SetActive(false);
+                    TextBoard.SetActive(false);
+                    ShowStoryImage(icon, data.storyLine);
+                    break;
+                case 2:
+                    //Story only Text
+                    storyBoard.SetActive(false);
+                    imageBoard.SetActive(false);
+                    ShowStoryText(data.storyLine);
+                    break;
+            }       
         }
         else
         {
-            currStoryIndex = 0;
-            Resume();
-            storyBoard.SetActive(false);
+            //Reset story board
+            RestStory();
         }
     }
 
+    IEnumerator TextAnimationEffect(TextMeshProUGUI textBoard, string narration)
+    {
+        var writerText = "";
+
+        //Text effect
+        //Debug.Log(narration.Length);
+        for (int i = 0; i < narration.Length; i++)
+        {
+            if (i >= narration.Length - 1)
+            {
+                isClickable = true;
+            }
+            //Debug.Log(i);
+            writerText += narration[i];
+            textBoard.text = writerText;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            while (stopwatch.Elapsed.TotalSeconds < textDelay)
+            {
+                yield return null;
+            }
+            stopwatch.Stop();
+
+        }
+    }
+
+    public void RestStory()
+    {
+        textDelay = originTextDelay;
+        currStoryIndex = 0;
+        Resume();
+        StopCoroutine("TextAnimationEffect");
+        storyBoard.SetActive(false);
+        imageBoard.SetActive(false);
+        TextBoard.SetActive(false);
+    }
+
+    //////////////////////Story Board/////////////////////////////////
     public void ShowStoryBoard(Sprite icon, string text)
     {
         storyBoard.SetActive(true);
         storyIcon.sprite = icon;
-        storyText.text = text;
+        text = text.Replace("n", "\n");
+
+        StartCoroutine(TextAnimationEffect(storyText, text));
     }
 
     public void SkipStory()
@@ -103,6 +203,26 @@ public class EventManager : MonoBehaviour
             storyBoard.SetActive(false);
         }
     }
+
+
+    /////////////////Image///////////////////////////
+    public void ShowStoryImage(Sprite storySprite, string text)
+    {
+        imageBoard.SetActive(true);
+        buttonImage.sprite = storySprite;
+        imageText.text = text.Replace("n", "\n");
+        isClickable = true;
+    }
+
+    /////////////////Text///////////////////////////
+    public void ShowStoryText(string text)
+    {
+        TextBoard.SetActive(true);
+        text = text.Replace("n", "\n");
+
+        StartCoroutine(TextAnimationEffect(textBoardText, text));
+    }
+
     ///////////////////////////////////////////////////////
 
     //Test Effect
@@ -118,7 +238,7 @@ public class EventManager : MonoBehaviour
         float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
         GameManager.instance.effectManager.ReturnEffectOnTime("Poof_electric", effect, destroyTime);
     }
-
+    
     public void ResetCount()
     {
         effectCount = 0;

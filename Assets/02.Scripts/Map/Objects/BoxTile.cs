@@ -113,6 +113,10 @@ public class BoxTile : ObjectTile
 
     void ChangeParent()
     {
+        if (transform.parent == null)
+        {
+            return;
+        }
         if (transform.parent.GetComponent<BoxTile>() != null)
         {
             transform.parent = transform.parent.parent;

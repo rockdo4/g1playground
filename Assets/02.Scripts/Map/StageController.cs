@@ -58,6 +58,7 @@ public class StageController : MonoBehaviour
 
     private void Awake()
     {
+        SkyboxManager.instance.SetSkybox(skyboxIndex);
         GetObjectTiles();
         SetObjectTileOriginPos();
     }
@@ -126,7 +127,12 @@ public class StageController : MonoBehaviour
         SkyboxManager.instance.SetSkybox(skyboxIndex);
 
         //Show StageName
-        EventManager.instance.ShowStageTitile(gameObject.name);
+        if (DataTableMgr.GetTable<StageNameData>().Get(stageId.ToString()) != null) 
+        {
+            var stageName = DataTableMgr.GetTable<StageNameData>().Get(stageId.ToString()).stageName;
+            EventManager.instance.ShowStageTitile(stageName);
+        }
+        
 
         //Change MiniMap
         MiniMap.instance.SetMiniMap(stageId);

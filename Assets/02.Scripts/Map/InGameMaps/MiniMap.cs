@@ -37,29 +37,33 @@ public class MiniMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MiniMapData data = DataTableMgr.GetTable<MiniMapData>().Get(0.ToString());
+        //MiniMapData data = DataTableMgr.GetTable<MiniMapData>().Get(0.ToString());
 
-        var sprite = Resources.Load<Sprite>(data.miniMapId);
-        var image = sprite.bounds.size;
+        //var sprite = Resources.Load<Sprite>(data.miniMapId);
+        //var image = sprite.bounds.size;
 
-        if (image.x >= image.y)
-        {
-            miniMapVertical.gameObject.SetActive(true);
-            miniMapHorizontal.gameObject.SetActive(false);
-            miniMapVertical.sprite = sprite;
+        //if (image.x >= image.y)
+        //{
+        //    miniMapVertical.gameObject.SetActive(true);
+        //    miniMapHorizontal.gameObject.SetActive(false);
+        //    miniMapVertical.sprite = sprite;
             
-        }
-        else
-        {
-            miniMapHorizontal.gameObject.SetActive(true);
-            miniMapVertical.gameObject.SetActive(false);
-            miniMapHorizontal.sprite = sprite;            
-        }
+        //}
+        //else
+        //{
+        //    miniMapHorizontal.gameObject.SetActive(true);
+        //    miniMapVertical.gameObject.SetActive(false);
+        //    miniMapHorizontal.sprite = sprite;            
+        //}
         
     }
 
     public void SetMiniMap(int id)
     {
+        if (DataTableMgr.GetTable<MiniMapData>().Get(id.ToString()) == null)
+        {
+            return;
+        }
         MiniMapData data = DataTableMgr.GetTable<MiniMapData>().Get(id.ToString());
 
         var sprite = Resources.Load<Sprite>(data.miniMapId);

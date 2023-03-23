@@ -32,6 +32,7 @@ public class DataTableMgr
         tables.Add(typeof(StoryData), new DataTable<StoryData>("DataTables/Story_Table"));
         tables.Add(typeof(TutorialData), new DataTable<TutorialData>("DataTables/Tutorial_Table"));
         tables.Add(typeof(MiniMapData), new DataTable<MiniMapData>("DataTables/MiniMapTable"));
+        tables.Add(typeof(StageNameData), new DataTable<StageNameData>("DataTables/StageNameTable"));
 
         isLoaded = true;
     }
