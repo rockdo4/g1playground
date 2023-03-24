@@ -188,4 +188,22 @@ public class ReinforceSystem
         }
         return null;
     }
+
+    public static void Disassemble(Types type, int indexOfInventory)
+    {
+        if (!isInitialized)
+            Initialize();
+        switch (type)
+        {
+            case Types.Weapon:
+                inventory.Disassemble(ItemTypes.Weapon, indexOfInventory);
+                break;
+            case Types.Armor:
+                inventory.Disassemble(ItemTypes.Armor, indexOfInventory);
+                break;
+            case Types.Skill:
+                skills.Disassemble(indexOfInventory);
+                break;
+        }
+    }
 }
