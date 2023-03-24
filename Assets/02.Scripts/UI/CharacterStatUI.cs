@@ -20,52 +20,36 @@ public class CharacterStatUI : MonoBehaviour
     public TextMeshProUGUI mp;
     public TextMeshProUGUI mHp;
     public TextMeshProUGUI mMp;
-    //public Text level;
+    public TextMeshProUGUI level;
+    public TextMeshProUGUI exp;
+    public TextMeshProUGUI mExp;
 
     public int maxHp;
     public int currHp;
     public int maxMp;
     public int currMp;
+    public int maxExp;
+    public int currExp;
+    public int playerLevel;
 
     public int currHpPotion;
     public int currMpPotion;
 
     private Status status;
     private PlayerInventory inventory;
-
-    //public int currExp;
-    //public int maxExp;
-    //private int increaseExp = 15;
-
-    //public int playerLv;
-
-    //private void Start()
-    //{
-    //    status = GameManager.instance.player.GetComponent<Status>();
-    //    status.currHp = status.FinalValue.maxHp;
-    //    status.currMp = status.FinalValue.maxMp;
-    //    //currExp = 0;
-    //    //maxExp = 100;
-    //    //playerLv = 1;
-    //}
+    private PlayerLevelManager levelManager;
 
     private void Awake()
     {
         charProfile = GameObject.Find("Character");
         characterImage = charProfile.GetComponent<Image>();
-    }
-
-    private void OnEnable()
-    {
         status = GameManager.instance.player.GetComponent<Status>();
         inventory = GameManager.instance.player.GetComponent<PlayerInventory>();
+        levelManager = GameManager.instance.player.GetComponent<PlayerLevelManager>();
     }
 
     private void Update()
     {
-        //level.text = playerLv.ToString();
-        //expSlider.fillAmount = (float)currExp / (float)maxExp;
-
         hpPotionCount.text = inventory.PotionCount[0].ToString();
         mpPotionCount.text = inventory.PotionCount[1].ToString();
     }
@@ -86,17 +70,13 @@ public class CharacterStatUI : MonoBehaviour
 
     public void SetExpBarValue()
     {
-
+        exp.text = levelManager.CurrExp.ToString() + " ";
+        mExp.text = "/ " + levelManager.MaxExp.ToString();
+        expSlider.fillAmount = (float)levelManager.CurrExp / (float)levelManager.MaxExp;
     }
 
-    //private void ExpIncrease()
-    //{
-    //    if (currExp + increaseExp >= maxExp)
-    //    {
-    //        playerLv++;
-    //        currExp = (currExp + increaseExp) - maxExp;
-    //    }
-    //    else
-    //        currExp += increaseExp;
-    //}
+    public void SetUIPlayerLevel()
+    {
+        level.text = levelManager.Level.ToString();
+    }
 }
