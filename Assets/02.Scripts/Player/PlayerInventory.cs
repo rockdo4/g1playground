@@ -192,6 +192,80 @@ public class PlayerInventory : MonoBehaviour
         ApplyStatus();
     }
 
+    public void Disassemble(ItemTypes type, int index)
+    {
+        if (type == ItemTypes.Consumable)
+            return;
+
+        int powderCount = 0;
+        var table = DataTableMgr.GetTable<ItemdisassembleData>().GetTable();
+        switch (type)
+        {
+            case ItemTypes.Weapon:
+                {
+                    string id;
+                    if (index < 0)
+                    {
+                        id = CurrWeapon;
+                        CurrWeapon = null;
+                    }
+                    else
+                    {
+                        id = Weapons[index];
+                        Weapons[index] = null;
+                    }
+                    var weaponData = DataTableMgr.GetTable<WeaponData>().Get(id);
+                    foreach (var data in table)
+                    {
+                        if (weaponData.weaponClass == data.Value.itemClass && weaponData.reinforce == data.Value.itemReinforce)
+                        {
+                            powderCount = data.Value.powder;
+                            break;
+                        }
+                    }
+                }
+                break;
+            case ItemTypes.Armor:
+                {
+                    string id;
+                    if (index < 0)
+                    {
+                        id = CurrArmor;
+                        CurrArmor = null;
+                    }
+                    else
+                    {
+                        id = Armors[index];
+                        Armors[index] = null;
+                    }
+                    var armorData = DataTableMgr.GetTable<ArmorData>().Get(id);
+                    foreach (var data in table)
+                    {
+                        if (armorData.armorClass == data.Value.itemClass && armorData.reinforce == data.Value.itemReinforce)
+                        {
+                            powderCount = data.Value.powder;
+                            break;
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
+        {
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
+        AddConsumable(powderId, powderCount);
+        ApplyStatus();
+    }
+
     public void Compose(ItemTypes type, ComposeData data, int[] indexs)
     {
         if (type == ItemTypes.Consumable)

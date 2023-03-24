@@ -34,6 +34,8 @@ public class DataTableMgr
         //tables.Add(typeof(TutorialData), new DataTable<TutorialData>("DataTables/Tutorial_Table"));
         tables.Add(typeof(MiniMapData), new DataTable<MiniMapData>("DataTables/MiniMapTable"));
         tables.Add(typeof(StageNameData), new DataTable<StageNameData>("DataTables/StageNameTable"));
+        tables.Add(typeof(ItemdisassembleData), new DataTable<ItemdisassembleData>("DataTables/Itemdisassemble_Table"));
+        tables.Add(typeof(SkilldisassembleData), new DataTable<SkilldisassembleData>("DataTables/Skilldisassemble_Table"));
 
         isLoaded = true;
     }
