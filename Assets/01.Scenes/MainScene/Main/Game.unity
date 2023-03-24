@@ -152,8 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1665f7426e446444b8b6ec7bb19547ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miniMapVertical: {fileID: 666614349}
   miniMapHorizontal: {fileID: 666614349}
+  miniMapRect: {fileID: 0}
+  playerPos: {fileID: 0}
+  minimapObject: {fileID: 0}
+  mask: {fileID: 0}
 --- !u!4 &98161296
 Transform:
   m_ObjectHideFlags: 0
@@ -187,6 +190,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 990491134}
+    - target: {fileID: 1053725797112615864, guid: 17c2ce3318eae9b4e9a8df6c73a2e2d6,
+        type: 3}
+      propertyPath: gambling
+      value: 
+      objectReference: {fileID: 155297788}
     - target: {fileID: 1053725797803325503, guid: 17c2ce3318eae9b4e9a8df6c73a2e2d6,
         type: 3}
       propertyPath: potion
@@ -486,6 +494,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f70f9cf9eea9ae4380d3f7ffdfe0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &155297788 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2790166444481626083, guid: 17c2ce3318eae9b4e9a8df6c73a2e2d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 155297786}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e448e48a895514180d74dc4d517a0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &245139903 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5906699128049564887, guid: dc1d5b8d4449844ef9d44a5a43ecec8c,
@@ -705,6 +725,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &955165938 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 886563149, guid: 00f43e2ece1935d41991954295923c74,
+    type: 3}
+  m_PrefabInstance: {fileID: 4683458551420042549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &955165939 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 251826835, guid: 00f43e2ece1935d41991954295923c74,
+    type: 3}
+  m_PrefabInstance: {fileID: 4683458551420042549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &955165940 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4574473720526121266, guid: 00f43e2ece1935d41991954295923c74,
+    type: 3}
+  m_PrefabInstance: {fileID: 4683458551420042549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,8 +1132,9 @@ MonoBehaviour:
   lastSaveMapId: 
   lastSaveChapterName: 
   lastPlayerPos: {x: 0, y: 0, z: 0}
-  currskill1: 
-  currskill2: 
+  possessedSkills: []
+  currskill1: 0
+  currskill2: 0
 --- !u!4 &1858241718
 Transform:
   m_ObjectHideFlags: 0
@@ -1219,6 +1276,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cinemachine: {fileID: 245139903}
+  currentMapCollider: {fileID: 0}
+  outlines: []
 --- !u!4 &2035109722
 Transform:
   m_ObjectHideFlags: 0
@@ -1630,6 +1689,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5236865518324479006, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: exp
+      value: 
+      objectReference: {fileID: 955165939}
+    - target: {fileID: 5236865518324479006, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: mExp
+      value: 
+      objectReference: {fileID: 955165938}
+    - target: {fileID: 5236865518324479006, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: level
+      value: 
+      objectReference: {fileID: 955165940}
     - target: {fileID: 5236865518514278541, guid: 00f43e2ece1935d41991954295923c74,
         type: 3}
       propertyPath: m_AnchorMax.y
