@@ -143,7 +143,7 @@ public class StageController : MonoBehaviour
         for (int i = 0; i < childCount; ++i)
         {
             var child = gameObject.transform.GetChild(i);
-            if (child.CompareTag("Enemy"))
+            if (child.CompareTag("Enemy"))                
                 enemies.Add(child.gameObject);
         }
 
@@ -163,13 +163,14 @@ public class StageController : MonoBehaviour
             green.SetActive(true);
         }
 
-        if (enemies.Count > 0 || switchcheck)
-            StartCoroutine(DisablePortal());
+        
 
         ResetObject();
         SetObjectTileActive();
         if (!isClear)
         {
+            if (enemies.Count > 0 || switchcheck)
+                StartCoroutine(DisablePortal());
             TileColorManager.instance.ChangeTileMaterial(transform.name, false);
         }
     }
@@ -180,7 +181,10 @@ public class StageController : MonoBehaviour
         {
             obj.GetComponent<ObjectTile>().ResetObject();
         }
-
+        foreach (var enemy in enemies)
+        {
+            enemy.SetActive(true);
+        }
     }
 
     private void SetObjectTileOriginPos()
@@ -313,5 +317,17 @@ public class StageController : MonoBehaviour
     {
         wMapButton.interactable = true;
         wMapButton.GetComponent<Image>().sprite = TileColorManager.instance.GetImageSprite(imageColor);
+    }
+
+    public bool FindEnemiesActive()
+    {
+        foreach (var enemy in enemies)
+        {
+            if (enemy.activeSelf)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
