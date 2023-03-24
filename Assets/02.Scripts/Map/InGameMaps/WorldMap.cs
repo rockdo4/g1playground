@@ -20,12 +20,18 @@ public class WorldMap : MonoBehaviour
 
     private void SetStage(StageController stage)
     {
+        if (!GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).
+            Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().IsClear)
+        {
+            return;
+        }
         GameManager.instance.player.GetComponent<PlayerInventory>().RefillPotions();
         GameManager.instance.player.transform.SetParent(null);
 
-
+        
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).
             Find(MapManager.instance.GetCurrentMapName()).gameObject.SetActive(false);
+
 
         stage.gameObject.SetActive(true);
         stage.PrevStageName = MapManager.instance.GetCurrentMapName();
