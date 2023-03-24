@@ -100,8 +100,8 @@ public class PlayerInventory : MonoBehaviour
             add.intel += weaponData.addInt;
             add.meleePower += weaponData.addMeleePower;
             add.skillPower += weaponData.addSkillPower;
-            add.meleeCriChance += weaponData.addMeleeCriChance;
-            add.meleeCriDamage += weaponData.addMeleeCriDamage;
+            //add.meleeCriChance += weaponData.addMeleeCriChance;
+            //add.meleeCriDamage += weaponData.addMeleeCriDamage;
         }
         if (armorData != null)
         {

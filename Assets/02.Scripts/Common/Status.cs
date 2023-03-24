@@ -124,19 +124,19 @@ public class Status : MonoBehaviour
         {
             case Types.Player:
                 value.meleePower = (int)(value.str / 70f) + (int)(value.dex / 30f);
-                value.meleeCriChance = (int)(value.dex / 75f);
+                value.meleeCriChance = value.dex / 75f / 100f;
                 value.meleeDef = (int)(value.str / 10f);
                 value.skillPower = (int)(value.intel / 15f);
-                value.skillCriChance = (int)(value.intel / 75f);
+                value.skillCriChance = value.intel / 75f / 100f;
                 value.skillDef = (int)(value.intel / 10f);
                 break;
             case Types.Monster:
                 var damageFigure = DataTableMgr.GetTable<MonsterData>().Get(id).damageFigure;
                 value.meleePower = (int)(value.str * 1.7f * damageFigure);
-                value.meleeCriChance = (int)(value.dex / 200f);
+                value.meleeCriChance = value.dex / 200f / 100f;
                 value.meleeDef = (int)(value.str / 10f);
                 value.skillPower = (int)(value.intel / 5f * damageFigure);
-                value.skillCriChance = (int)(value.intel / 75f);
+                value.skillCriChance = value.intel / 200f / 100f;
                 value.skillDef = (int)(value.intel / 10f);
                 break;
         }
