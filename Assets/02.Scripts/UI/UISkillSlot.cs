@@ -16,7 +16,9 @@ public class UISkillSlot : MonoBehaviour
 
     public void SetEmpty()
     {
+        data = null;
         button.interactable = false;
+        icon.sprite = null;
     }
 
     public void Set(int index, SkillData data)

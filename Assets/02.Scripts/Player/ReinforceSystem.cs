@@ -75,7 +75,20 @@ public class ReinforceSystem
         switch (type)
         {
             case Types.Skill:
-                skills.Reinforce(indexOfInventory, data.result);
+                {
+                    var material = GetSkillMaterial(id);
+                    int materialIndex = 0;
+                    int len = skills.PossessedSkills.Count;
+                    for (int i = 0; i < len; ++i)
+                    {
+                        if (string.Equals(skills.PossessedSkills[i], material.id))
+                        {
+                            materialIndex = i;
+                            break;
+                        }
+                    }
+                    skills.Reinforce(indexOfInventory, materialIndex, data.result);
+                }
                 break;
             case Types.Weapon:
                 inventory.Reinforce(ItemTypes.Weapon, indexOfInventory, data.result);
@@ -125,8 +138,23 @@ public class ReinforceSystem
                     if (skillMaterial == null)
                         return false;
 
-                    if (skills.PossessedSkills.Contains(skillMaterial.id))
-                        return true;
+                    if (!string.Equals(data.material1, skillMaterial.id))
+                    {
+                        if (skills.PossessedSkills.Contains(skillMaterial.id))
+                            return true;
+                    }
+                    else
+                    {
+                        var count = 0;
+                        foreach (var skill in skills.PossessedSkills)
+                        {
+                            if (string.Equals(skill, skillMaterial.id))
+                                ++count;
+
+                            if (count >= 2)
+                                return true;
+                        }
+                    }
                     return false;
                 }
             default:

@@ -13,6 +13,7 @@ public class PlayerSkills : MonoBehaviour
 {
     public struct SkillState
     {
+        public int index;
         public SkillAttack skill;
         public bool skillOn;
         public bool skillUsable;
@@ -36,7 +37,7 @@ public class PlayerSkills : MonoBehaviour
     public List<string> PossessedSkills { get; private set; }
 
     public Toggle[] toggles;
-    public string[] defaultSkills;
+    public int[] defaultSkills;
     private SkillState[] skillStates;
     private int skillCount = 0;
 
@@ -95,15 +96,21 @@ public class PlayerSkills : MonoBehaviour
     {
         for (int i = 0; i < skillStates.Length; ++i)
         {
-            skillStates[i].skill = null;
-            toggles[i].image.sprite = null;
+            SetEmpty(i);
         }
     }
 
-    public void SetSkill(int index, string id)
+    public void SetEmpty(int index)
+    {
+        skillStates[index].index = -1;
+        skillStates[index].skill = null;
+        toggles[index].image.sprite = null;
+    }
+
+    public void SetSkill(int index, int possessedIndex)
     {
         var len = skillStates.Length;
-        var skillData = DataTableMgr.GetTable<SkillData>().Get(id);
+        var skillData = DataTableMgr.GetTable<SkillData>().Get(PossessedSkills[possessedIndex]);
         for (int i = 0; i < len; ++i)
         {
             if (i == index)
@@ -112,17 +119,12 @@ public class PlayerSkills : MonoBehaviour
                 return;
         }
 
-        foreach (var possessedSkill in PossessedSkills)
-        {
-            if (string.Equals(possessedSkill, id))
-            {
-                toggles[index].isOn = false;
-                var skill = allSkillGroups[skillData.group];
-                skill.SetData(id);
-                skillStates[index].Set(skill);
-                toggles[index].image.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillData.iconSpriteId).iconName);
-            }
-        }
+        toggles[index].isOn = false;
+        var skill = allSkillGroups[skillData.group];
+        skill.SetData(PossessedSkills[possessedIndex]);
+        skillStates[index].index = possessedIndex;
+        skillStates[index].Set(skill);
+        toggles[index].image.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillData.iconSpriteId).iconName);
     }
 
     public void UseSkill(int index)
@@ -170,6 +172,8 @@ public class PlayerSkills : MonoBehaviour
             EndSkill(index);
     }
 
+    public int GetCurrSkillIndex(int index) => skillStates[index].index;
+
     public string GetCurrSkillID(int index)
     {
         var skill = skillStates[index].skill;
@@ -189,6 +193,30 @@ public class PlayerSkills : MonoBehaviour
     }
 
     public void AddSkill(string id) => PossessedSkills.Add(id);
+    
+    public void RemoveSkill(int index)
+    {
+        for (int i = 0; i < skillStates.Length; ++i)
+        {
+            if (skillStates[i].index == index)
+                SetEmpty(i);
+        }
+        PossessedSkills.RemoveAt(index);
+        for (int i = 0; i < skillStates.Length; ++i)
+        {
+            if (skillStates[i].index > index)
+                SetSkill(i, skillStates[i].index - 1);
+        }
+    }
 
-    public void Reinforce(int index, string newId) => PossessedSkills[index] = newId;
+    public void Reinforce(int index, int materialIndex, string newId)
+    {
+        PossessedSkills[index] = newId;
+        for (int i = 0; i < skillStates.Length; ++i)
+        {
+            if (skillStates[i].index == index)
+                SetSkill(i, index);
+        }
+        RemoveSkill(materialIndex);
+    }
 }

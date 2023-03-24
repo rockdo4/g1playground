@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
-using static PlayerInventory;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -101,8 +100,8 @@ public class PlayerInventory : MonoBehaviour
             add.intel += weaponData.addInt;
             add.meleePower += weaponData.addMeleePower;
             add.skillPower += weaponData.addSkillPower;
-            add.meleeCriChance += weaponData.addMeleeCriChance;
-            add.meleeCriDamage += weaponData.addMeleeCriDamage;
+            //add.meleeCriChance += weaponData.addMeleeCriChance;
+            //add.meleeCriDamage += weaponData.addMeleeCriDamage;
         }
         if (armorData != null)
         {
@@ -190,6 +189,38 @@ public class PlayerInventory : MonoBehaviour
             default:
                 break;
         }
+        ApplyStatus();
+    }
+
+    public void Compose(ItemTypes type, ComposeData data, int[] indexs)
+    {
+        if (type == ItemTypes.Consumable)
+            return;
+
+        switch (type)
+        {
+            case ItemTypes.Weapon:
+                foreach (var index in indexs)
+                {
+                    if (index < 0)
+                        CurrWeapon = null;
+                    else
+                        Weapons[index] = null;
+                }
+                AddWeapon(data.resultItem);
+                break;
+            case ItemTypes.Armor:
+                foreach (var index in indexs)
+                {
+                    if (index < 0)
+                        CurrArmor = null;
+                    else
+                        Armors[index] = null;
+                }
+                AddArmor(data.resultItem);
+                break;
+        }
+        ApplyStatus();
     }
 
     public int GetConsumableCount(string itemId)
