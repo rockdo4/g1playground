@@ -38,6 +38,8 @@ public class PlayerLevelManager : MonoBehaviour
         status.id = level.ToString();
         status.LoadFromTable();
         inventory.ApplyStatus();
+        SetExpUi();
+        SetLevelUi();
     }
 
     public void GetExp(int exp)
@@ -49,5 +51,9 @@ public class PlayerLevelManager : MonoBehaviour
             LevelUp();
             CurrExp = leftExp;
         }
+        SetExpUi();
     }
+
+    public void SetExpUi() => GameManager.instance.uiManager.PlayerExpBar(MaxExp, CurrExp);
+    public void SetLevelUi() => GameManager.instance.uiManager.PlayerLevel(Level);
 }

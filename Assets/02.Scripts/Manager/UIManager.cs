@@ -26,11 +26,6 @@ public class UIManager : MonoBehaviour
         popupStack = new Stack<GameObject>();
     }
 
-    public  void CharacterImageSwap()
-    {
-        
-    }
-
     public void PlayerHpBar(int maxhp, int currhp)
     {
         charStatUI.maxHp = maxhp;
@@ -43,6 +38,19 @@ public class UIManager : MonoBehaviour
         charStatUI.maxMp = maxMp;
         charStatUI.currMp = currMp;
         charStatUI.SetMPBarValue();
+    }
+
+    public void PlayerExpBar(int maxExp, int currExp)
+    {
+        charStatUI.maxExp = maxExp;
+        charStatUI.currExp = currExp;
+        charStatUI.SetExpBarValue();
+    }
+
+    public void PlayerLevel(int playerlevel)
+    {
+        charStatUI.playerLevel = playerlevel;
+        charStatUI.SetUIPlayerLevel();
     }
 
     public void AddPopUp(GameObject popup)
