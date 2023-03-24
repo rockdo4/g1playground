@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.Android;
 
 public class BossPupleRich : Enemy
 {
@@ -357,70 +359,102 @@ public class BossPupleRich : Enemy
         Vector3 rightSummonPosition = new Vector3(transform.position.x + summonDistance, transform.position.y, transform.position.z);
         NavMeshHit leftNavMeshHit, rightNavMeshHit;
 
-        //bool leftNavMeshAvailable = NavMesh.SamplePosition(leftSummonPosition, out leftNavMeshHit, summonDistance, NavMesh.AllAreas);
-        //bool rightNavMeshAvailable = NavMesh.SamplePosition(rightSummonPosition, out rightNavMeshHit, summonDistance, NavMesh.AllAreas);
+        ////bool leftNavMeshAvailable = NavMesh.SamplePosition(leftSummonPosition, out leftNavMeshHit, summonDistance, NavMesh.AllAreas);
+        ////bool rightNavMeshAvailable = NavMesh.SamplePosition(rightSummonPosition, out rightNavMeshHit, summonDistance, NavMesh.AllAreas);
 
 
 
-        //if (!leftNavMeshAvailable)
-        //{
-        //    leftSummonPosition = transform.position;
-        //    Debug.Log("lf");
-        //}
-        //else
-        //{
-        //    leftSummonPosition = leftNavMeshHit.position;
-        //    Debug.Log("lt");
+        ////if (!leftNavMeshAvailable)
+        ////{
+        ////    leftSummonPosition = transform.position;
+        ////    Debug.Log("lf");
+        ////}
+        ////else
+        ////{
+        ////    leftSummonPosition = leftNavMeshHit.position;
+        ////    Debug.Log("lt");
 
-        //}
+        ////}
 
-        //if (!rightNavMeshAvailable)
-        //{
-        //    rightSummonPosition = transform.position;
-        //    Debug.Log("rf");
+        ////if (!rightNavMeshAvailable)
+        ////{
+        ////    rightSummonPosition = transform.position;
+        ////    Debug.Log("rf");
 
-        //}
-        //else
-        //{
-        //    rightSummonPosition = rightNavMeshHit.position;
-        //    Debug.Log("rt");
-        //}
+        ////}
+        ////else
+        ////{
+        ////    rightSummonPosition = rightNavMeshHit.position;
+        ////    Debug.Log("rt");
+        ////}
 
-        NavMeshHit hit;
-        //if (!NavMesh.SamplePosition(leftSummonPosition, out hit, 0.1f, NavMesh.AllAreas))
-        //{
-        //    leftSummonPosition = transform.position;
-        //}
-        //if (!NavMesh.SamplePosition(rightSummonPosition, out hit, 0.1f, NavMesh.AllAreas))
-        //{
-        //    rightSummonPosition = transform.position;
-        //}
+        //NavMeshHit hit;
+        ////if (!NavMesh.SamplePosition(leftSummonPosition, out hit, 0.1f, NavMesh.AllAreas))
+        ////{
+        ////    leftSummonPosition = transform.position;
+        ////}
+        ////if (!NavMesh.SamplePosition(rightSummonPosition, out hit, 0.1f, NavMesh.AllAreas))
+        ////{
+        ////    rightSummonPosition = transform.position;
+        ////}
 
-        StartCoroutine(CoSpawnDelay(leftSummonPosition, rightSummonPosition));
-
-    }
-
-    IEnumerator CoSpawnDelay(Vector3 leftPos, Vector3 rightPos)
-    {
         GameObject leftEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
         if (leftEnemy != null)
         {
-            leftEnemy.transform.position = leftPos;
-            leftEnemy.transform.rotation = Quaternion.identity;
+            var agent = leftEnemy.GetOrAddComponent<NavMeshAgent>();
+            agent.enabled = false;
+            leftEnemy.GetComponent<Enemy>().SetStartPos(leftSummonPosition);
+            //leftEnemy.transform.position = leftPos;
+            //leftEnemy.transform.rotation = Quaternion.identity;
+            leftEnemy.SetActive(true);
+            agent.enabled = true;
         }
 
         GameObject rightEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
         if (rightEnemy != null)
         {
-            rightEnemy.transform.position = rightPos;
-            rightEnemy.transform.rotation = Quaternion.identity;
+            agent = rightEnemy.GetOrAddComponent<NavMeshAgent>();
+            agent.enabled = false;
+            rightEnemy.GetComponent<Enemy>().SetStartPos(rightSummonPosition);
+            //rightEnemy.transform.position = leftPos;
+            //rightEnemy.transform.rotation = Quaternion.identity;
+            rightEnemy.SetActive(true);
+            agent.enabled = true;
         }
 
-        yield return null;
 
-        leftEnemy.SetActive(true);
-        rightEnemy.SetActive(true);
+        //StartCoroutine(CoSpawnDelay(leftSummonPosition, rightSummonPosition));
+
     }
+
+    //IEnumerator CoSpawnDelay(Vector3 leftPos, Vector3 rightPos)
+    //{
+    //    GameObject leftEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
+    //    if (leftEnemy != null)
+    //    {
+    //        //var agent = leftEnemy.GetOrAddComponent<NavMeshAgent>();
+    //        leftEnemy.GetComponent<Enemy>().SetStartPos(leftPos);
+    //        //agent.enabled = false;
+    //        //leftEnemy.transform.position = leftPos;
+    //        //leftEnemy.transform.rotation = Quaternion.identity;
+    //        leftEnemy.SetActive(true);
+    //        //agent.enabled = true;
+    //    }
+
+    //    GameObject rightEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
+    //    if (rightEnemy != null)
+    //    {
+    //        //agent = rightEnemy.GetOrAddComponent<NavMeshAgent>();
+    //        rightEnemy.GetComponent<Enemy>().SetStartPos(leftPos);
+    //        //agent.enabled = false;
+    //        //rightEnemy.transform.position = leftPos;
+    //        //rightEnemy.transform.rotation = Quaternion.identity;
+    //        rightEnemy.SetActive(true);
+    //        //agent.enabled = true;
+    //    }
+
+    //    yield return null;
+    //}
     private void Projectile()
     {
         ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);

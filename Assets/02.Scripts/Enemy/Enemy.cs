@@ -43,6 +43,10 @@ public class Enemy : MonoBehaviour
         protected set;
     }
 
+    public void SetStartPos(Vector3 pos)
+    {
+        mySpawnPos = pos;
+    }
     protected virtual void Awake()
     {
         status = GetComponent<Status>();
