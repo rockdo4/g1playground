@@ -89,10 +89,6 @@ public class CharacterStatUI : MonoBehaviour
 
     }
 
-    public void CharImageSwap(string id)
-    {
-    }
-
     //private void ExpIncrease()
     //{
     //    if (currExp + increaseExp >= maxExp)
