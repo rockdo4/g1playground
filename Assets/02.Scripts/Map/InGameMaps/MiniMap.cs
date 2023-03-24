@@ -68,6 +68,8 @@ public class MiniMap : MonoBehaviour
 
         miniMapRect.anchoredPosition= new Vector2(miniMapRect.anchoredPosition.x, (miniMapRect.rect.height * normalizedPlayerY-needminus)*-1 );
 
+        if (boxes.Count <= 0)
+            return;
         minX = boxes[0].transform.position.x;
         minY = boxes[0].transform.position.y;
         maxX = boxes[0].transform.position.x;
