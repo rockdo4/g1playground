@@ -97,20 +97,15 @@ public class Portal : MonoBehaviour
 
     public void ClosePortalInaWhile()
     {
-        Debug.Log(transform.parent.name);
         CanUse = false;
-        Debug.Log("started");
         StopCoroutine(CClosePortalInaWhile());
         StartCoroutine(CClosePortalInaWhile());
     }
 
     IEnumerator CClosePortalInaWhile()
     {
-        Debug.Log("co");
-
         yield return new WaitForSeconds(2f);
         CanUse = true;
-        Debug.Log("true");
     }
 
     private void OnDisable()
