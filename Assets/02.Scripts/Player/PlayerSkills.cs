@@ -219,4 +219,32 @@ public class PlayerSkills : MonoBehaviour
         }
         RemoveSkill(materialIndex);
     }
+
+    public void Disassemble(int index)
+    {
+        int powderCount = 0;
+        var table = DataTableMgr.GetTable<SkilldisassembleData>().GetTable();
+        string id = PossessedSkills[index];
+        RemoveSkill(index);
+        var skillData = DataTableMgr.GetTable<SkillData>().Get(id);
+        foreach (var data in table)
+        {
+            if (skillData.reinforce == data.Value.skillReinforce)
+            {
+                powderCount = data.Value.powder;
+                break;
+            }
+        }
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
+        {
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
+        GetComponent<PlayerInventory>()?.AddConsumable(powderId, powderCount);
+    }
 }
