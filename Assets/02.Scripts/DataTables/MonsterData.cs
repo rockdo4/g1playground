@@ -27,7 +27,7 @@ public class MonsterData : StatusData
         str = int.Parse(line["monStr"]);
         dex = int.Parse(line["monDex"]);
         intel = int.Parse(line["monInt"]);
-        monAttackRange = float.Parse(line["monAttackRange"]);
+        //monAttackRange = float.Parse(line["monAttackRange"]);
         maxHp = int.Parse(line["monHealth"]);
         detectRange = int.Parse(line["detectRange"]);
         exp = int.Parse(line["exp"]);

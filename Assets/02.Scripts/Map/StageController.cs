@@ -19,8 +19,16 @@ public class StageController : MonoBehaviour
         public bool isOn;
     }
 
+    private struct EachCorner
+    {
+        public Vector2 LT;
+        public Vector2 RT;
+        public Vector2 RB;
+        public Vector2 LB;
+    }
+
     [Header("Skybox")]
-    [Range(0,4)]
+    [Range(0, 4)]
     [SerializeField] private int skyboxIndex;
 
     [Header("StageID")]
@@ -56,11 +64,16 @@ public class StageController : MonoBehaviour
 
     public string PrevStageName { get; set; }
 
+    public static RectTransform minimapPlayerpos;
+
+    private PolygonCollider2D wholeStateCollider;
+    private EachCorner eachCorner;
     private void Awake()
     {
         SkyboxManager.instance.SetSkybox(skyboxIndex);
         GetObjectTiles();
         SetObjectTileOriginPos();
+
     }
 
     IEnumerator AttachObject()
@@ -119,7 +132,39 @@ public class StageController : MonoBehaviour
         }
     }
 
+    IEnumerator CSetStageCollider()
+    {
+        yield return null;
 
+        wholeStateCollider = MapManager.instance.currentMapCollider;
+        GetStateColliderEachCornerWorldSpace();
+
+
+    }
+
+    private void GetStateColliderEachCornerWorldSpace()
+    {
+        var colliderWorldPosition = wholeStateCollider.transform.position;
+        eachCorner.LT = new Vector2(colliderWorldPosition.x - wholeStateCollider.bounds.extents.x, colliderWorldPosition.y + wholeStateCollider.bounds.extents.y);
+        eachCorner.RT = new Vector2(colliderWorldPosition.x + wholeStateCollider.bounds.extents.x, colliderWorldPosition.y + wholeStateCollider.bounds.extents.y);
+        eachCorner.RB = new Vector2(colliderWorldPosition.x + wholeStateCollider.bounds.extents.x, colliderWorldPosition.y - wholeStateCollider.bounds.extents.y);
+        eachCorner.LB = new Vector2(colliderWorldPosition.x - wholeStateCollider.bounds.extents.x, colliderWorldPosition.y - wholeStateCollider.bounds.extents.y);
+
+        MapManager.instance.outlines.Clear();
+
+        var outline = transform.Find("Outline");
+        int outlinechildcount = outline.childCount;
+        for(int i = 0; i < outlinechildcount; i++)
+        {
+            var child = outline.GetChild(i);
+            if (child.GetComponent<BoxCollider>() != null)
+            {
+                MapManager.instance.outlines.Add(child.gameObject);
+            }
+        }
+        Debug.Log(MapManager.instance.outlines.Count);
+
+    }
 
     private void OnEnable()
     {
@@ -127,15 +172,24 @@ public class StageController : MonoBehaviour
         SkyboxManager.instance.SetSkybox(skyboxIndex);
 
         //Show StageName
-        if (DataTableMgr.GetTable<StageNameData>().Get(stageId.ToString()) != null) 
+        if (DataTableMgr.GetTable<StageNameData>().Get(stageId.ToString()) != null)
         {
             var stageName = DataTableMgr.GetTable<StageNameData>().Get(stageId.ToString()).stageName;
             EventManager.instance.ShowStageTitile(stageName);
         }
-        
 
         //Change MiniMap
         MiniMap.instance.SetMiniMap(stageId);
+
+        if (MapManager.instance.currentMapCollider != null && wholeStateCollider == null)
+        {
+            StopCoroutine(CSetStageCollider());
+
+            StartCoroutine(CSetStageCollider());
+
+        }
+
+
 
         var switchcheck = false;
         enemies = new List<GameObject>();
