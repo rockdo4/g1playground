@@ -260,6 +260,7 @@ public class PlayerController : MonoBehaviour
 
                 if (count == 0 && enemies.Count != 0)
                 {
+                    yield return new WaitForSeconds(3f);
                     //문 따라가게
                     var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
                     foreach (var portal in portals)
@@ -371,10 +372,9 @@ public class PlayerController : MonoBehaviour
             if (hitTimer > playerController.hitDuration)
             {
                 if (playerController.IsAuto)
-                    playerController.SetState<AutoMoveState>();
+                    playerController.SetState<AutoMoveState>(); 
                 else
                     playerController.SetState<IdleState>();
-                return;
             }
         }
 
