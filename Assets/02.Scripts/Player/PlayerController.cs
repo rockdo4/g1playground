@@ -121,8 +121,6 @@ public class PlayerController : MonoBehaviour
     }
     public void AgentOnOff()
     {
-        playerRb.isKinematic = !playerRb.isKinematic;
-        agent.enabled = !agent.enabled;
         if (IsAuto)
         {
             if (SceneManager.GetActiveScene().name == "Scene02")
@@ -231,7 +229,7 @@ public class PlayerController : MonoBehaviour
         if (enemies == null)
             yield break;
 
-        SetMoveX(LastMoveX);
+        //SetMoveX(LastMoveX);
         yield return new WaitForEndOfFrame();
         //Debug.Log("1");
         while (true)
@@ -240,39 +238,40 @@ public class PlayerController : MonoBehaviour
             float temp = 999999f;
             var count = 0;
 
-            foreach (var enemy in enemies)
+            if (currState.GetType() != typeof(JumpState) && agent.isOnNavMesh)
             {
-                if (enemy.GetComponent<Enemy>().GetIsLive() &&
-                    agent.CalculatePath(enemy.transform.position, path))
+                foreach (var enemy in enemies)
                 {
-                    count++;
-                    enemyPathLength = GetLength(path);
-                    if (temp >= enemyPathLength)
+                    if (enemy.GetComponent<Enemy>().GetIsLive() &&
+                        agent.CalculatePath(enemy.transform.position, path))
                     {
-                        temp = enemyPathLength;
-                        target = enemy.transform;
-                        agent.isStopped = false;
+                        count++;
+                        enemyPathLength = GetLength(path);
+                        if (temp >= enemyPathLength)
+                        {
+                            temp = enemyPathLength;
+                            target = enemy.transform;
+                        }
                     }
                 }
-            }
+                if (target != null && path != null)
+                    agent.SetDestination(target.transform.position);
 
-            if (target != null)
-                agent.SetDestination(target.transform.position);
 
-            if (count == 0 && enemies.Count != 0)
-            {
-                //문 따라가게
-                var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
-                foreach (var portal in portals)
+                if (count == 0 && enemies.Count != 0)
                 {
-                    if (portal.GetNextStageName().CompareTo(GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().PrevStageName) != 0)
+                    //문 따라가게
+                    var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
+                    foreach (var portal in portals)
                     {
-                        agent.isStopped = false;
-                        target = portal.transform;
-                        agent.SetDestination(target.position);
+                        if (portal.GetNextStageName().CompareTo(GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().PrevStageName) != 0)
+                        {
+                            target = portal.transform;
+                            agent.SetDestination(target.position);
+                        }
                     }
+                    yield break;
                 }
-                yield break;
             }
         }
     }
@@ -333,11 +332,13 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter()
         {
+            jumpTime = 0f;
         }
 
         public override void Update()
         {
-            if (playerController.isGrounded)
+            jumpTime +=Time.deltaTime;
+            if (jumpTime >= 0.3f && playerController.isGrounded)
             {
                 if (!Mathf.Approximately(playerController.playerRb.velocity.x, 0f))
                     playerController.SetState<MoveState>();
