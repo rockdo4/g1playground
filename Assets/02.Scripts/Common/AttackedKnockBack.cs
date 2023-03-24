@@ -24,13 +24,13 @@ public class AttackedKnockBack : MonoBehaviour, IAttackable
     {
         if (!attack.IsKnockBackable || hitOnThisFrame)
             return;
+        if (CompareTag("Player"))
+            GetComponent<PlayerController>().SetState<HitState>();
         var dir = new Vector3(Mathf.Sign(transform.position.x - attackPos.x), 0f, 0f);
         dir.y = up;
         dir.Normalize();
         rb.velocity = Vector3.zero;
         rb.AddForce(dir * force, ForceMode.Impulse);
         hitOnThisFrame = true;
-        if (CompareTag("Player"))
-            GetComponent<PlayerController>().SetState<HitState>();
     }
 }

@@ -362,7 +362,6 @@ public class PlayerController : MonoBehaviour
         public override void Enter()
         {
             playerController.playerAnimator.SetTrigger("Hit");
-            playerController.AgentOff();
             hitTimer = 0f;
         }
 
@@ -372,13 +371,9 @@ public class PlayerController : MonoBehaviour
             if (hitTimer > playerController.hitDuration)
             {
                 if (playerController.IsAuto)
-                {
-                    playerController.AgentOn();
                     playerController.SetState<AutoMoveState>(); 
-                }
                 else
                     playerController.SetState<IdleState>();
-                return;
             }
         }
 
