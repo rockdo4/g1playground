@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -48,11 +49,10 @@ public class PlayerController : MonoBehaviour
 
     private NavMeshAgent agent;
     private NavMeshPath path;
-    public Transform[] jumpPoints;
+    private Vector3 prevPosition;
 
     private Coroutine cor;
     private float enemyPathLength;
-    private float pointPathLength;
 
     public Toggle autoToggle;
 
@@ -71,13 +71,13 @@ public class PlayerController : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.enabled = false;
+        agent.updateRotation = false;
+        prevPosition = agent.transform.position;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
 
+        autoToggle.onValueChanged.AddListener((isAuto) => IsAuto = isAuto);
         autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
-
-      
-
     }
 
     private void Start()
@@ -101,27 +101,6 @@ public class PlayerController : MonoBehaviour
             SetMoveX(1f);
         else
             SetMoveX(0f);
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            enemies = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().GetStageEnemies();
-            cor = StartCoroutine(SearchTarget());
-            SetState<AutoMoveState>();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            AgentOff();
-            StopCoroutine(cor);
-            cor = null;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            agent.CalculatePath(transform.position + Vector3.right * 3f, path);
-            agent.SetDestination(transform.position + Vector3.right * 3f);
-        }
-
     }
     private void FixedUpdate()
     {
@@ -130,34 +109,32 @@ public class PlayerController : MonoBehaviour
     }
     public void AgentOn()
     {
-        IsAuto = true;
         playerRb.isKinematic = true;
         agent.enabled = true;
+        cor = StartCoroutine(SearchTarget());
     }
     public void AgentOff()
     {
-        IsAuto = false;
         playerRb.isKinematic = false;
         agent.enabled = false;
-        SetState<IdleState>();
+        StopCoroutine(cor);
     }
     public void AgentOnOff()
     {
-        IsAuto = !IsAuto;
-        playerRb.isKinematic = !playerRb.isKinematic;
-        agent.enabled = !agent.enabled;
         if (IsAuto)
         {
             if (SceneManager.GetActiveScene().name == "Scene02")
                 enemies = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().GetStageEnemies();
             else if (SceneManager.GetActiveScene().name != "Scene02")
                 enemies = DungeonManager.instance.Enemies;
-            cor = StartCoroutine(SearchTarget());
+            if (enemies != null)
+                cor = StartCoroutine(SearchTarget());
             SetState<AutoMoveState>();
         }
         else
         {
-            StopCoroutine(cor);
+            if (cor != null)
+                StopCoroutine(cor);
             SetState<IdleState>();
         }
     }
@@ -192,27 +169,10 @@ public class PlayerController : MonoBehaviour
         {
             int layerMask = ~LayerMask.GetMask("Projectile");
             var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f, layerMask);
-            //Debug.DrawRay(playerPosition, new Vector3(moveX * 0.5f, 0, 0), Color.green);
             foreach (var hit in hits)
             {
-
-                //if (hit.collider != null)
-                //{
-                //    if (!(hit.transform.CompareTag("CheckPoint") ||
-                //        hit.transform.CompareTag("Falling") ||
-                //        hit.transform.CompareTag("Portal") ||
-                //    hit.transform.CompareTag("Stage") ||
-                //        hit.transform.CompareTag("Player") ||
-                //        hit.collider.CompareTag("AttackBox") ||
-                //        (hit.transform.CompareTag("Pushable") && isGrounded) ||
-                //        hit.transform.CompareTag("Door")))
-                //    {
-                //        IsBlocked = true;
-                //        return;
-                //    }
-                //}
                 if (((hit.transform.CompareTag("Pushable") && !isGrounded)) ||
-                    hit.transform.CompareTag("Ground"))
+                    hit.transform.CompareTag("Ground") || hit.transform.CompareTag("Falling"))
                 {
                     IsBlocked = true;
                     return;
@@ -244,7 +204,7 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpCount >= maxJumpCount)
             return;
-        playerRb.velocity = Vector3.zero;
+        playerRb.velocity = new Vector3(moveX, 0f, 0f);
         playerRb.AddForce(Vector3.up * force, ForceMode.Impulse);
         playerAnimator.SetTrigger("Jump");
         SetState<JumpState>();
@@ -266,83 +226,65 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator SearchTarget()
     {
+        if (enemies == null)
+            yield break;
+
+        //SetMoveX(LastMoveX);
+        yield return new WaitForEndOfFrame();
         //Debug.Log("1");
         while (true)
         {
             yield return new WaitForSeconds(0.2f);
-            if (enemies == null)
-            {
-                //Debug.Log("Failed");
-                AgentOnOff();
-                yield break;
-            }
             float temp = 999999f;
             var count = 0;
-            foreach (var enemy in enemies)
+
+            if (currState.GetType() != typeof(JumpState) && agent.isOnNavMesh)
             {
-                if (enemy.GetComponent<Enemy>().GetIsLive() && 
-                    agent.CalculatePath(enemy.transform.position, path))
+                foreach (var enemy in enemies)
                 {
-                    count++;
-                    enemyPathLength = GetLength(path);
-                    if (temp >= enemyPathLength)
+                    if (enemy.GetComponent<Enemy>().GetIsLive() &&
+                        agent.CalculatePath(enemy.transform.position, path))
                     {
-                        temp = enemyPathLength;
-                        target = enemy.transform;
-                        agent.isStopped = false;
+                        count++;
+                        enemyPathLength = GetLength(path);
+                        if (temp >= enemyPathLength)
+                        {
+                            temp = enemyPathLength;
+                            target = enemy.transform;
+                        }
                     }
                 }
+                if (target != null && path != null)
+                    agent.SetDestination(target.transform.position);
+
+
+                if (count == 0 && enemies.Count != 0)
+                {
+                    //문 따라가게
+                    var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
+                    foreach (var portal in portals)
+                    {
+                        if (portal.GetNextStageName().CompareTo(GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().PrevStageName) != 0)
+                        {
+                            target = portal.transform;
+                            agent.SetDestination(target.position);
+                        }
+                    }
+                    yield break;
+                }
             }
-
-            if (Vector3.Distance(agent.transform.position, target.position) < 2f)
-            {
-                SetMoveX(target.position.x - agent.transform.position.x);
-                agent.isStopped = true;
-            }
-            else
-                SetMoveX(agent.velocity.x);
-
-            if (!agent.isStopped)
-            {
-                //Debug.Log(target.name);
-                agent.SetDestination(target.transform.position);
-                SetMoveX(agent.velocity.x);
-            }
-
-
-
-            //Debug.Log("!");
-            if (count == 0)
-            {
-                AgentOnOff();
-                autoToggle.isOn = false;
-                //문 따라가게
-                //var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
-                
-                //foreach (var portal in portals)
-                //{
-                //    if (portal.GetNextStageName().CompareTo(GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().PrevStageName) != 0)
-                //    {
-                //        target = portal.transform;
-                //        agent.SetDestination(target.position);
-                //    }
-                //}
-                yield break;
-            }
-               
         }
     }
-
     public class IdleState : State
     {
         public IdleState(PlayerController controller) : base(controller) { }
 
-        public override void Enter() { }
+        public override void Enter() 
+        {
+        }
 
         public override void Update()
         {
-            if (playerController.IsAuto)
-                playerController.SetState<AutoMoveState>();
             if (!Mathf.Approximately(playerController.moveX, 0f))
             {
                 playerController.SetState<MoveState>();
@@ -350,6 +292,10 @@ public class PlayerController : MonoBehaviour
             }
             playerController.playerAnimator.SetFloat("MoveX", playerController.moveX);
             playerController.Jump();
+            if (playerController.IsAuto && 
+                playerController.currState.GetType() != typeof(JumpState) && 
+                playerController.isGrounded)
+                playerController.SetState<AutoMoveState>();
         }
 
         public override void Exit() { }
@@ -363,8 +309,6 @@ public class PlayerController : MonoBehaviour
 
         public override void Update()
         {
-            if (playerController.IsAuto)
-                playerController.SetState<AutoMoveState>();
             if (Mathf.Approximately(playerController.moveX, 0f))
             {
                 playerController.SetState<IdleState>();
@@ -382,21 +326,28 @@ public class PlayerController : MonoBehaviour
 
     public class JumpState : State
     {
-        public JumpState(PlayerController controller) : base(controller) { }
 
-        public override void Enter() { }
+        public JumpState(PlayerController controller) : base(controller) { }
+        public float jumpTime;
+
+        public override void Enter()
+        {
+            jumpTime = 0f;
+        }
 
         public override void Update()
         {
-            if (playerController.IsAuto)
-                playerController.SetState<AutoMoveState>();
-            if (playerController.isGrounded)
+            jumpTime +=Time.deltaTime;
+            if (jumpTime >= 0.3f && playerController.isGrounded)
             {
-                playerController.SetState<IdleState>();
+                if (!Mathf.Approximately(playerController.playerRb.velocity.x, 0f))
+                    playerController.SetState<MoveState>();
+                else
+                    playerController.SetState<IdleState>();
                 return;
             }
-            playerController.Move(playerController.moveSpeed);
             playerController.Jump();
+            playerController.Move(playerController.moveSpeed);
         }
 
         public override void Exit() { }
@@ -441,10 +392,31 @@ public class PlayerController : MonoBehaviour
         public override void Update()
         {
             playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
+
+            var agentVec = (playerController.agent.transform.position - playerController.prevPosition).normalized;
+            if (!Mathf.Approximately(agentVec.x, 0f))
+            {
+                playerController.SetMoveX(agentVec.x);
+            }
+            playerController.prevPosition = playerController.agent.transform.position;
+            if (playerController.input.Jump)
+            {
+                playerController.AgentOff();
+                playerController.Jump();
+                return;
+            }
+
+            if (playerController.input.LeftMove || playerController.input.RightMove)
+            {
+                playerController.SetState<MoveState>();
+                return;
+            }
+
         }
 
         public override void Exit()
         {
+            playerController.AgentOff();
         }
     }
 }
