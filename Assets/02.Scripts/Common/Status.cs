@@ -113,46 +113,39 @@ public class Status : MonoBehaviour
         //defaultValue.skillDef = data.skillDef;
         defaultValue.maxHp = data.maxHp;
         defaultValue.maxMp = data.maxMp;
+        defaultValue = Calculate(defaultValue);
         FinalValue = defaultValue;
-        Calculate();
     }
 
-    private void Calculate()
+    private Value Calculate(Value value)
     {
-        var value = FinalValue;
         switch (type)
         {
             case Types.Player:
-                value.meleePower = (int)(value.str / 70f) + (int)(value.dex / 30f);
-                value.meleeCriChance = value.dex / 75f / 100f;
-                value.meleeDef = (int)(value.str / 10f);
-                value.skillPower = (int)(value.intel / 15f);
-                value.skillCriChance = value.intel / 75f / 100f;
-                value.skillDef = (int)(value.intel / 10f);
+                value.meleePower += (int)(value.str / 70f * value.dex / 30f);
+                value.meleeCriChance += value.dex / 75f / 100f;
+                value.meleeDef += (int)(value.str / 10f);
+                value.skillPower += (int)(value.intel / 15f);
+                value.skillCriChance += value.intel / 75f / 100f;
+                value.skillDef += (int)(value.intel / 10f);
                 break;
             case Types.Monster:
                 var damageFigure = DataTableMgr.GetTable<MonsterData>().Get(id).damageFigure;
-                value.meleePower = (int)(value.str * 1.7f * damageFigure);
-                value.meleeCriChance = value.dex / 200f / 100f;
-                value.meleeDef = (int)(value.str / 10f);
-                value.skillPower = (int)(value.intel / 5f * damageFigure);
-                value.skillCriChance = value.intel / 200f / 100f;
-                value.skillDef = (int)(value.intel / 10f);
+                value.meleePower += (int)(value.str * 1.7f * damageFigure);
+                value.meleeCriChance += value.dex / 200f / 100f;
+                value.meleeDef += (int)(value.str / 10f);
+                value.skillPower += (int)(value.intel / 5f * damageFigure);
+                value.skillCriChance += value.intel / 200f / 100f;
+                value.skillDef += (int)(value.intel / 10f);
                 break;
         }
-        FinalValue = value;
+        return value;
     }
 
     public void AddValue(Value addValue)
     {
+        addValue = Calculate(addValue);
         FinalValue = defaultValue + addValue;
-        Calculate();
-        var value = FinalValue;
-        value.meleePower += addValue.meleePower;
-        value.skillPower += addValue.skillPower;
-        value.meleeDef += addValue.meleeDef;
-        value.skillDef += addValue.skillDef;
-        FinalValue = value;
     }
 
     public void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, CurrHp);
