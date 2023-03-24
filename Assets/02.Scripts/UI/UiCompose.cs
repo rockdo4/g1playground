@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +19,7 @@ public class UiCompose : MonoBehaviour
     private List<UIItemSlot> selectedSlots = new List<UIItemSlot>();
     public UiComposeInfo info;
     public Button composeButton;
+    public GameObject resultPopup;
 
     private void Awake()
     {
@@ -163,7 +166,7 @@ public class UiCompose : MonoBehaviour
     {
         if (selectedSlots.Count < 2)
         {
-            Debug.Log("Àç·á°¡ ºÎÁ·ÇÕ´Ï´Ù");
+            StartCoroutine(CoShowPopup("ìž¬ë£Œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤"));
             return;
         }
         var data = ComposeSystem.GetData(selectedSlots[0].Data.id);
@@ -173,5 +176,19 @@ public class UiCompose : MonoBehaviour
         ComposeSystem.Compose(type, data, indexs);
         info.SetEmptyAll();
         SetInventory((int)type);
+    }
+
+    public IEnumerator CoShowPopup(string text)
+    {
+        resultPopup.SetActive(true);
+        resultPopup.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        while (stopwatch.Elapsed.TotalSeconds < 1)
+        {
+            yield return null;
+        }
+        stopwatch.Stop();
+        resultPopup.SetActive(false);
     }
 }
