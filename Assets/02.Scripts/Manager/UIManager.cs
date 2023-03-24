@@ -7,7 +7,9 @@ public class UIManager : MonoBehaviour
 {
     public UIButtonManager btManager;
     public CharacterStatUI charStatUI;
-    
+    public GameObject itemInventory;
+    public GameObject skillInventory;
+
     private GameObject potion;
     private GameObject skillToggle;
 
