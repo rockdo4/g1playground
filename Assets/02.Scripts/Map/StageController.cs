@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StageController : MonoBehaviour
 {
@@ -150,20 +151,24 @@ public class StageController : MonoBehaviour
         eachCorner.RB = new Vector2(colliderWorldPosition.x + wholeStateCollider.bounds.extents.x, colliderWorldPosition.y - wholeStateCollider.bounds.extents.y);
         eachCorner.LB = new Vector2(colliderWorldPosition.x - wholeStateCollider.bounds.extents.x, colliderWorldPosition.y - wholeStateCollider.bounds.extents.y);
 
-        if (MapManager.instance.GetCurrentMapName() != "Village")
+        if (MapManager.instance.GetCurrentMapName() != "Village" || SceneManager.GetActiveScene().name != "Scene02") 
         {
             MapManager.instance.outlines.Clear();
 
             var outline = transform.Find("Outline");
-            int outlinechildcount = outline.childCount;
-            for (int i = 0; i < outlinechildcount; i++)
+            if (outline != null)
             {
-                var child = outline.GetChild(i);
-                if (child.GetComponent<BoxCollider>() != null)
+                int outlinechildcount = outline.childCount;
+                for (int i = 0; i < outlinechildcount; i++)
                 {
-                    MapManager.instance.outlines.Add(child.gameObject);
+                    var child = outline.GetChild(i);
+                    if (child.GetComponent<BoxCollider>() != null)
+                    {
+                        MapManager.instance.outlines.Add(child.gameObject);
+                    }
                 }
             }
+            
         }
        
 
@@ -199,7 +204,7 @@ public class StageController : MonoBehaviour
 
         }
 
-
+        EventManager.instance.ResetCount();
 
         var switchcheck = false;
         enemies = new List<GameObject>();
@@ -305,8 +310,9 @@ public class StageController : MonoBehaviour
                 greenwallopen = false;
                 break;
             }
-            else if (enemy == enemies.Last())
+            else if (enemy == enemies.Last() && !IsClear)
             {
+                EventManager.instance.PlayEffect();
                 greenwallopen = true;
             }
         }
@@ -320,7 +326,7 @@ public class StageController : MonoBehaviour
                 EventManager.instance.PlayStory();
                 EventManager.instance.Pause();
             }
-            //TileColorManager.instance.PlayEffect();
+            
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
             foreach (var green in greenWall)
             {

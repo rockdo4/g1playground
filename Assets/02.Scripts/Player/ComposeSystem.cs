@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using static UnityEditor.PlayerSettings;
 
 public class ComposeSystem
 {
