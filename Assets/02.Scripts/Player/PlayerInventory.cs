@@ -23,8 +23,8 @@ public class PlayerInventory : MonoBehaviour
     public List<string> Weapons { get; private set; } = new List<string>();
     public List<string> Armors { get; private set; } = new List<string>();
     public List<Consumable> Consumables { get; private set; } = new List<Consumable>();
-    public string CurrWeapon { get; private set; }
-    public string CurrArmor { get; private set; }
+    public string CurrWeapon;// { get; private set; }
+    public string CurrArmor;// { get; private set; }
 
     // if in-game consumable item except potion exists, need to change code
     public enum Potions
@@ -34,6 +34,7 @@ public class PlayerInventory : MonoBehaviour
     }
     private string[] potionIds = new string[2];
     public int[] PotionCount { get; private set; } = new int[2];
+    public float[] potionRate = new float[2];
 
     private void Awake()
     {
@@ -88,30 +89,34 @@ public class PlayerInventory : MonoBehaviour
     {
         WeaponData weaponData = null;
         ArmorData armorData = null;
+        Status.Value weaponValue = new Status.Value();
+        Status.Value armorValue = new Status.Value();
         if (CurrWeapon != null)
             weaponData = DataTableMgr.GetTable<WeaponData>().Get(CurrWeapon);
         if (CurrArmor != null)
             armorData = DataTableMgr.GetTable<ArmorData>().Get(CurrArmor);
-        Status.Value add = new Status.Value();
         if (weaponData != null)
         {
-            add.str += weaponData.addStr;
-            add.dex += weaponData.addDex;
-            add.intel += weaponData.addInt;
-            add.meleePower += weaponData.addMeleePower;
-            add.skillPower += weaponData.addSkillPower;
+            weaponValue.str += weaponData.addStr;
+            weaponValue.dex += weaponData.addDex;
+            weaponValue.intel += weaponData.addInt;
+            weaponValue.meleePower += weaponData.addMeleePower;
+            weaponValue.skillPower += weaponData.addSkillPower;
             //add.meleeCriChance += weaponData.addMeleeCriChance;
             //add.meleeCriDamage += weaponData.addMeleeCriDamage;
         }
         if (armorData != null)
         {
-            add.str += armorData.addStr;
-            add.dex += armorData.addDex;
-            add.intel += armorData.addInt;
-            add.meleeDef += armorData.addMeleeDef;
-            add.skillDef += armorData.addSkillDef;
+            armorValue.str += armorData.addStr;
+            armorValue.dex += armorData.addDex;
+            armorValue.intel += armorData.addInt;
+            armorValue.meleeDef += armorData.addMeleeDef;
+            armorValue.skillDef += armorData.addSkillDef;
         }
-        status.AddValue(add);
+        List<Status.Value> values = new List<Status.Value>();
+        values.Add(weaponValue);
+        values.Add(armorValue);
+        status.AddValue(values);
     }
 
     public void AddWeapon(string id)
@@ -352,12 +357,12 @@ public class PlayerInventory : MonoBehaviour
             case Potions.Hp:
                 if (status.CurrHp == status.FinalValue.maxHp)
                     return;
-                status.CurrHp = status.FinalValue.maxHp;
+                status.CurrHp = (int)(status.FinalValue.maxHp * potionRate[0]);
                 break;
             case Potions.Mp:
                 if (status.CurrMp == status.FinalValue.maxMp)
                     return;
-                status.CurrMp = status.FinalValue.maxMp;
+                status.CurrMp = (int)(status.FinalValue.maxMp * potionRate[1]);
                 break;
         }
         PotionCount[(int)potion] -= 1;

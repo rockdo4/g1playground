@@ -146,10 +146,15 @@ public class Status : MonoBehaviour
         return value;
     }
 
-    public void AddValue(Value addValue)
+    public void AddValue(List<Value> addValue)
     {
-        addValue = Calculate(addValue);
-        FinalValue = defaultValue + addValue;
+        Value value = new Value();
+        for (int i = 0; i < addValue.Count; ++i)
+        {
+            addValue[i] = Calculate(addValue[i]);
+            value += addValue[i];
+        }
+        FinalValue = defaultValue + value;
     }
 
     public void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, CurrHp);

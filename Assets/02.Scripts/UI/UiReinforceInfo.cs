@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +14,7 @@ public class UiReinforceInfo : MonoBehaviour
     public Image material3;
     private Sprite powderSprite;
     private Sprite essenceSprite;
+    public GameObject resultPopup;
 
     private void Awake()
     {
@@ -44,7 +47,7 @@ public class UiReinforceInfo : MonoBehaviour
     {
         if (!ReinforceSystem.CheckReinforcable(id))
         {
-            // message
+            ShowPopUp("이 아이템은 더 이상 강화할 수 없습니다");
             SetEmpty();
             return false;
         }
@@ -58,7 +61,7 @@ public class UiReinforceInfo : MonoBehaviour
 
         if (!ReinforceSystem.CheckMaterials(type, id))
         {
-            //message
+            ShowPopUp("재료가 부족합니다");
             SetEmpty();
             switch (type)
             {
@@ -100,5 +103,20 @@ public class UiReinforceInfo : MonoBehaviour
                 break;
         }
         return true;
+    }
+    public void ShowPopUp(string text) => StartCoroutine(CoShowPopup(text));
+
+    public IEnumerator CoShowPopup(string text)
+    {
+        resultPopup.SetActive(true);
+        resultPopup.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        while (stopwatch.Elapsed.TotalSeconds < 1)
+        {
+            yield return null;
+        }
+        stopwatch.Stop();
+        resultPopup.SetActive(false);
     }
 }
