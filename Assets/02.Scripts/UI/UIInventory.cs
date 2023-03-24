@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIInventory : MonoBehaviour
 {
-    public int slotCount = 102;
+    public int slotCount;
     private int currSlot;
     public UIItemSlot uiSlotPrefab;
     public RectTransform content;
@@ -141,4 +141,25 @@ public class UIInventory : MonoBehaviour
                 return;
         }
     }
+
+    public void SlotInstantiate(int count)
+    {
+        for (int i = 0; i < count; ++i)
+        {
+            var slot = Instantiate(uiSlotPrefab, content);
+            slot.SetEmpty();
+            slotList.Add(slot);
+
+            var button = slot.GetComponent<Button>();
+            button.onClick.AddListener(() => itemInfo.Set(slot.Data));
+            int slotIndex = slotCount + i;
+            button.onClick.AddListener(() => currSlot = slotIndex);
+        }
+        slotCount += count;
+        SetInventory((int)itemType);
+    }
 }
+//slotcount = 10
+//new + 10
+// 0 1 2 3 4 5 6 7 8 9 = 기존 슬롯 인덱스
+// 10 11 12 13 14 15 16 17 18 19 = 추가 슬롯 인덱스

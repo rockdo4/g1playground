@@ -7,17 +7,24 @@ using UnityEngine.UIElements;
 
 public class GamblingManager : MonoBehaviour
 {
-    private PlayerInventory inventory;
+    private PlayerInventory playerInventory;
+    private PlayerSkills playerSkills;
     public Dictionary<string, DrawData> drawDatas = new Dictionary<string, DrawData>();
     public Dictionary<string, SkillDrawData> skillDrawDatas = new Dictionary<string, SkillDrawData>();
     public GameObject reward;
     public GameObject rewardTen;
 
+    private UIInventory itemInventory;
+    private UISkillInventory skillInventory;
+
     private void Awake()
     {
-        inventory = GameManager.instance.player.GetComponent<PlayerInventory>();
+        playerInventory = GameManager.instance.player.GetComponent<PlayerInventory>();
+        playerSkills = GameManager.instance.player.GetComponent<PlayerSkills>();
         drawDatas = DataTableMgr.GetTable<DrawData>().GetTable();
         skillDrawDatas = DataTableMgr.GetTable<SkillDrawData>().GetTable();
+        itemInventory = GameManager.instance.uiManager.itemInventory.GetComponent<UIInventory>();
+        skillInventory = GameManager.instance.uiManager.skillInventory.GetComponent<UISkillInventory>();
     }
 
     public void TryOne()
@@ -29,20 +36,19 @@ public class GamblingManager : MonoBehaviour
     public void TryTen()
     {
         rewardTen.SetActive(true);
-         GetEquipments(10);
+        GetEquipments(10);
     }
 
     public void TryOneSkill()
     {
+        reward.SetActive(true);
         GetSkills(1);
     }
 
     public void TryTenSkills()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            GetSkills(i);
-        }
+        rewardTen.SetActive(true);
+        GetSkills(10);
     }
 
     public void GetEquipments(int count)
@@ -58,13 +64,15 @@ public class GamblingManager : MonoBehaviour
             var tempId = list[0];
             if (int.Parse(tempId[0].ToString()) == 2)
             {
-                inventory.Weapons.Add(tempId);
+                playerInventory.Weapons.Add(tempId);
                 reward.GetComponent<RewardPanel>().OpenRewardPopUp(tempId);
+                // 무기 갯수
             }
             else
             {
-                inventory.Armors.Add(tempId);
+                playerInventory.Armors.Add(tempId);
                 reward.GetComponent<RewardPanel>().OpenRewardPopUp(tempId);
+                // 방어구 갯수
             }
         }
         else
@@ -74,14 +82,29 @@ public class GamblingManager : MonoBehaviour
                 var tempId = list[i];
                 if (int.Parse(tempId[0].ToString()) == 2)
                 {
-                    inventory.Weapons.Add(tempId);
+                    playerInventory.Weapons.Add(tempId);
                 }
                 else
                 {
-                    inventory.Armors.Add(tempId);
+                    playerInventory.Armors.Add(tempId);
                 }
             }
             rewardTen.GetComponent<RewardPanel>().OpenTenRewardPopUp(list.ToArray());
+        }
+
+        int weaponRemainder = itemInventory.slotCount - playerInventory.Weapons.Count;
+        int armorRemainder = itemInventory.slotCount - playerInventory.Armors.Count;
+
+        if (weaponRemainder <= count || armorRemainder <= count)
+        {
+            if ((weaponRemainder < 5 && count <= 5) || (armorRemainder < 5 && count <= 5))
+            {
+                itemInventory.SlotInstantiate(5);
+            }
+            else if ((weaponRemainder < 10 && count > 5) || (armorRemainder < 10 && count > 5))
+            {
+                itemInventory.SlotInstantiate(10);
+            }
         }
     }
 
@@ -109,8 +132,41 @@ public class GamblingManager : MonoBehaviour
 
     public void GetSkills(int count)
     {
-        string tempId;
-        tempId = PickSkill();
+        var list = new List<string>();
+        for (var i = 0; i < count; ++i)
+        {
+            list.Add(PickSkill());
+        }
+
+        if (count == 1)
+        {
+            var tempId = list[0];
+            playerSkills.PossessedSkills.Add(tempId);
+            reward.GetComponent<RewardPanel>().OpenRewardPopUp(tempId);
+        }
+        else
+        {
+            for (var i = 0; i < count; ++i)
+            {
+                var tempId = list[i];
+                playerSkills.PossessedSkills.Add(tempId);
+            }
+            rewardTen.GetComponent<RewardPanel>().OpenTenRewardPopUp(list.ToArray());
+        }
+
+        int remainder = skillInventory.slotCount - playerSkills.PossessedSkills.Count;
+
+        if (remainder <= count)
+        {
+            if (remainder < 5 && count <= 5)
+            {
+                skillInventory.SlotInstantiate(5);
+            }
+            else if(remainder < 10 && count > 5)
+            {
+                skillInventory.SlotInstantiate(10);
+            }
+        }
     }
 
     public string PickSkill()

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UISkillInventory : MonoBehaviour
 {
-    public int slotCount = 54;
+    public int slotCount;
     public UISkillSlot uiSlotPrefab;
     public RectTransform content;
 
@@ -59,5 +59,18 @@ public class UISkillInventory : MonoBehaviour
         }
         skillInfo.Set(table.Get(ids[0]));
         skillInfo.ShowCurrPlayerSkills();
+    }
+
+    public void SlotInstantiate(int count)
+    {
+        for (int i = 0; i < count; ++i)
+        {
+            var slot = Instantiate(uiSlotPrefab, content);
+            slot.SetEmpty();
+            slotList.Add(slot);
+
+            var button = slot.GetComponent<Button>();
+            button.onClick.AddListener(() => skillInfo.Set(slot.Data));
+        }
     }
 }
