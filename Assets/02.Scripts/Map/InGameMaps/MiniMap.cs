@@ -39,11 +39,16 @@ public class MiniMap : MonoBehaviour
 
     private void Update()
     {
-        if (MapManager.instance.outlines == null||MapManager.instance.GetCurrentMapName()=="Village") {
+        if (MapManager.instance.outlines == null || MapManager.instance.GetCurrentMapName() == "Village") 
+        {
             minimapObject.SetActive(false);
             return;
-        }else
+        }
+        else
+        {
             minimapObject.SetActive(true);
+        }
+            
 
         var collider = MapManager.instance.currentMapCollider;
         var boxes = MapManager.instance.outlines;
@@ -158,7 +163,7 @@ public class MiniMap : MonoBehaviour
         size.y = size.x / ratio;
         miniMapHorizontal.rectTransform.sizeDelta = size;
 
-
+        minimapObject.SetActive(true);
 
 
     }

@@ -150,19 +150,25 @@ public class StageController : MonoBehaviour
         eachCorner.RB = new Vector2(colliderWorldPosition.x + wholeStateCollider.bounds.extents.x, colliderWorldPosition.y - wholeStateCollider.bounds.extents.y);
         eachCorner.LB = new Vector2(colliderWorldPosition.x - wholeStateCollider.bounds.extents.x, colliderWorldPosition.y - wholeStateCollider.bounds.extents.y);
 
-        MapManager.instance.outlines.Clear();
-
-        var outline = transform.Find("Outline");
-        int outlinechildcount = outline.childCount;
-        for(int i = 0; i < outlinechildcount; i++)
+        if (MapManager.instance.GetCurrentMapName() != "Village")
         {
-            var child = outline.GetChild(i);
-            if (child.GetComponent<BoxCollider>() != null)
+            MapManager.instance.outlines.Clear();
+
+            var outline = transform.Find("Outline");
+            int outlinechildcount = outline.childCount;
+            for (int i = 0; i < outlinechildcount; i++)
             {
-                MapManager.instance.outlines.Add(child.gameObject);
+                var child = outline.GetChild(i);
+                if (child.GetComponent<BoxCollider>() != null)
+                {
+                    MapManager.instance.outlines.Add(child.gameObject);
+                }
             }
         }
-        Debug.Log(MapManager.instance.outlines.Count);
+       
+
+        
+        //Debug.Log(MapManager.instance.outlines.Count);
 
     }
 
@@ -179,7 +185,11 @@ public class StageController : MonoBehaviour
         }
 
         //Change MiniMap
-        MiniMap.instance.SetMiniMap(stageId);
+        if (MiniMap.instance != null)
+        {
+            MiniMap.instance.SetMiniMap(stageId);
+        }
+        
 
         if (MapManager.instance.currentMapCollider != null && wholeStateCollider == null)
         {
