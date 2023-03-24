@@ -75,7 +75,11 @@ public class Status : MonoBehaviour
                 SetMpUi();
         }
     }
-
+    private void OnEnable()
+    {
+        if (type == Types.Monster)
+            CurrHp = FinalValue.maxHp;
+    }
     private void Start()
     {
         LoadFromTable();

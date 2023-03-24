@@ -296,31 +296,31 @@ public class BossPupleRich : Enemy
             animator.SetTrigger("Spawn");
         }
 
-        //if (projectileCount == 2)
-        //{
-        //    projectileCount = 0;
-        //    State = EnemyState.Skill;
-        //    animator.SetTrigger("Area");
-        //    indicatorBox.SetActive(true);
-        //    indicatorBox.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z);
-        //    return;
-        //}
+        if (projectileCount == 2)
+        {
+            projectileCount = 0;
+            State = EnemyState.Skill;
+            animator.SetTrigger("Area");
+            indicatorBox.SetActive(true);
+            indicatorBox.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z);
+            return;
+        }
 
 
-        //if (projectileCoolTime >= projectileTime && Vector3.Distance(transform.position, player.transform.position) >= attackRange)
-        //{
-        //    projectileCoolTime = 0f;
-        //    State = EnemyState.Skill;
-        //    animator.SetTrigger("Projectile");
-        //    return;
-        //}
+        if (projectileCoolTime >= projectileTime && Vector3.Distance(transform.position, player.transform.position) >= attackRange)
+        {
+            projectileCoolTime = 0f;
+            State = EnemyState.Skill;
+            animator.SetTrigger("Projectile");
+            return;
+        }
 
-        //if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
-        //{
-        //    animator.SetTrigger("Attack");
-        //    State = EnemyState.Attack;
-        //    return;
-        //}
+        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+        {
+            animator.SetTrigger("Attack");
+            State = EnemyState.Attack;
+            return;
+        }
     }
 
     private void Attack()
@@ -357,7 +357,32 @@ public class BossPupleRich : Enemy
     {
         Vector3 leftSummonPosition = new Vector3(transform.position.x - summonDistance, transform.position.y, transform.position.z);
         Vector3 rightSummonPosition = new Vector3(transform.position.x + summonDistance, transform.position.y, transform.position.z);
-        NavMeshHit leftNavMeshHit, rightNavMeshHit;
+
+        GameObject leftEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
+        if (leftEnemy != null)
+        {
+            var agent = leftEnemy.GetOrAddComponent<NavMeshAgent>();
+            agent.enabled = false;
+            leftEnemy.GetComponent<Enemy>().SetStartPos(leftSummonPosition);
+            //leftEnemy.transform.position = leftPos;
+            //leftEnemy.transform.rotation = Quaternion.identity;
+            leftEnemy.SetActive(true);
+            agent.enabled = true;
+        }
+
+        GameObject rightEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
+        if (rightEnemy != null)
+        {
+            agent = rightEnemy.GetOrAddComponent<NavMeshAgent>();
+            agent.enabled = false;
+            rightEnemy.GetComponent<Enemy>().SetStartPos(rightSummonPosition);
+            //rightEnemy.transform.position = leftPos;
+            //rightEnemy.transform.rotation = Quaternion.identity;
+            rightEnemy.SetActive(true);
+            agent.enabled = true;
+        }
+
+        //NavMeshHit leftNavMeshHit, rightNavMeshHit;
 
         ////bool leftNavMeshAvailable = NavMesh.SamplePosition(leftSummonPosition, out leftNavMeshHit, summonDistance, NavMesh.AllAreas);
         ////bool rightNavMeshAvailable = NavMesh.SamplePosition(rightSummonPosition, out rightNavMeshHit, summonDistance, NavMesh.AllAreas);
@@ -398,29 +423,7 @@ public class BossPupleRich : Enemy
         ////    rightSummonPosition = transform.position;
         ////}
 
-        GameObject leftEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
-        if (leftEnemy != null)
-        {
-            var agent = leftEnemy.GetOrAddComponent<NavMeshAgent>();
-            agent.enabled = false;
-            leftEnemy.GetComponent<Enemy>().SetStartPos(leftSummonPosition);
-            //leftEnemy.transform.position = leftPos;
-            //leftEnemy.transform.rotation = Quaternion.identity;
-            leftEnemy.SetActive(true);
-            agent.enabled = true;
-        }
 
-        GameObject rightEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
-        if (rightEnemy != null)
-        {
-            agent = rightEnemy.GetOrAddComponent<NavMeshAgent>();
-            agent.enabled = false;
-            rightEnemy.GetComponent<Enemy>().SetStartPos(rightSummonPosition);
-            //rightEnemy.transform.position = leftPos;
-            //rightEnemy.transform.rotation = Quaternion.identity;
-            rightEnemy.SetActive(true);
-            agent.enabled = true;
-        }
 
 
         //StartCoroutine(CoSpawnDelay(leftSummonPosition, rightSummonPosition));
