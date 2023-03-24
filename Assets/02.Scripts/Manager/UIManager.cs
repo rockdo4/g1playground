@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         potion = GameObject.Find("Potion");
-        potion.SetActive(false);
+        //potion.SetActive(false);
     }
 
     private void Start()
