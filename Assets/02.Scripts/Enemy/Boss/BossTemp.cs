@@ -65,7 +65,7 @@ public class BossTemp : Enemy
                 AttackUpdate();
                 break;
             case EnemyState.Skill:
-                Skill();
+                SkillUpdate();
                 break;
             case EnemyState.TakeDamage:
                 TakeDamageUpdate();
@@ -93,7 +93,7 @@ public class BossTemp : Enemy
     {
     }
 
-    protected override void Skill()
+    protected override void SkillUpdate()
     {
 
     }

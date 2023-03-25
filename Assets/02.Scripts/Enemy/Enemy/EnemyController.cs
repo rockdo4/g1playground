@@ -38,7 +38,7 @@ public class EnemyController : Enemy, IAttackable
         protected set
         {
             var prevState = state;
-            if (EnemyState.Die == prevState)
+            if (EnemyState.Die == prevState && EnemyState.None != value)
                 return;
 
             state = value;
@@ -75,10 +75,23 @@ public class EnemyController : Enemy, IAttackable
                     rb.isKinematic = true;
                     break;
                 case EnemyState.TakeDamage:
+                    agent.speed = chaseSpeed;
+                    agent.enabled = true;
+                    agent.isStopped = false;
+                    rb.isKinematic = true;
+                    //agent.isStopped = true;
+                    //agent.enabled = false;
+                    //rb.isKinematic = false;
+                    break;
+                case EnemyState.KnockBack:
                     agent.isStopped = true;
-                    //agent.velocity = Vector3.zero;
                     agent.enabled = false;
                     rb.isKinematic = false;
+                    break;
+                case EnemyState.Stun:
+                    agent.isStopped = true;
+                    agent.enabled = true;
+                    rb.isKinematic = true;
                     break;
                 case EnemyState.Die:
                     agent.velocity = Vector3.zero;
@@ -88,7 +101,7 @@ public class EnemyController : Enemy, IAttackable
                     break;
             }
 
-            //Debug.Log(State);
+            Debug.Log(State);
         }
     }
 
@@ -102,6 +115,8 @@ public class EnemyController : Enemy, IAttackable
         attackBox = GameObject.Find(gameObject.name + "/AttackBox");
         attackBox.SetActive(false);
         preGoingRight = isGoingRight;
+        linkMover = GetComponent<AgentLinkMover>();
+
     }
     private IEnumerator RestorePosition()
     {
@@ -113,21 +128,64 @@ public class EnemyController : Enemy, IAttackable
         animator.ResetTrigger("TakeDamage");
         base.Start();
     }
+
+    protected AgentLinkMover linkMover;
     protected override void OnEnable()
     {
         base.OnEnable();
 
         State = EnemyState.None;
+        //RemoveAgentLinkMover();
+        //AddAgentLinkMover();
         ResetPattern();
+        //agent.isOnOffMeshLink = true;
+        //linkMover.YourLogicCoroutine();
+    }
+    void RemoveAgentLinkMover()
+    {
+        AgentLinkMover agentLinkMover = GetComponent<AgentLinkMover>();
+        if (agentLinkMover != null)
+        {
+            Destroy(agentLinkMover);
+        }
     }
 
+    void AddAgentLinkMover()
+    {
+        gameObject.AddComponent<AgentLinkMover>();
+    }
 
+    IEnumerator WaitForAgentInitialization()
+    {
+        while (agent.enabled && agent.pathPending)
+        {
+            yield return null;
+        }
+
+        if (linkMover == null)
+        {
+            Debug.LogError("AgentLinkMover not found.");
+            yield break;
+        }
+
+        // NavMeshAgent가 초기화 및 연결된 이후에 AgentLinkMover를 활성화
+        linkMover.enabled = true;
+    }
 
     protected void Update()
     {
         attackTime += Time.deltaTime;
 
-      
+
+        if (isStun)
+        {
+            stunCoolTime += Time.deltaTime;
+
+            if (State != EnemyState.KnockBack && State != EnemyState.Stun)
+            {
+                State = EnemyState.Stun;
+            }
+        }
 
         switch (State)
         {
@@ -150,12 +208,22 @@ public class EnemyController : Enemy, IAttackable
             case EnemyState.TakeDamage:
                 TakeDamageUpdate();
                 break;
+            case EnemyState.Stun:
+                StunUpdate();
+                break;
             case EnemyState.Die:
                 DieUpdate();
                 break;
         }
 
-        animator.SetFloat("Move", agent.velocity.magnitude/ chaseSpeed);
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            State = EnemyState.Die;
+            animator.SetTrigger("Die");
+            status.CurrHp -= 19000;
+        }
+
+        animator.SetFloat("Move", agent.velocity.magnitude / chaseSpeed);
     }
     protected void None()
     {
@@ -206,13 +274,13 @@ public class EnemyController : Enemy, IAttackable
 
     private bool currGoingRight;
     private float findingpathtime;
-    
+
     protected override void ChaseUpdate()
     {
         NavMeshPath navMeshPath = new NavMeshPath();
 
         if (NavMesh.CalculatePath(transform.position, player.transform.position, NavMesh.AllAreas, navMeshPath)
-            && navMeshPath.status == NavMeshPathStatus.PathComplete)       
+            && navMeshPath.status == NavMeshPathStatus.PathComplete)
         {
             Vector3 targetDirection = player.transform.position - transform.position;
             targetDirection.y = 0;
@@ -254,10 +322,10 @@ public class EnemyController : Enemy, IAttackable
             else
                 agent.isStopped = false;
 
-        } 
-        else 
+        }
+        else
         {
-           
+
             findingpathtime += Time.deltaTime;
             if (findingpathtime >= 1.5f)
             {
@@ -266,7 +334,7 @@ public class EnemyController : Enemy, IAttackable
             }
         }
 
-      
+
     }
 
     protected override void AttackUpdate()
@@ -284,15 +352,25 @@ public class EnemyController : Enemy, IAttackable
 
     }
 
-    public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
+    private void StunUpdate()
     {
-        if (State == EnemyState.Die)
-            return;
-
-        State = EnemyState.TakeDamage;
-        animator.SetTrigger("TakeDamage");
-        // takeDamageCoolTime = 0f;
+        if (stunCoolTime >= stunCool)
+        {
+            stunCool = 0f;
+            stunCoolTime = 0f;
+            isStun = false;
+            State = EnemyState.Chase;
+        }
     }
+
+    //public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
+    //{
+    //    if (State == EnemyState.Die)
+    //        return;
+
+    //    State = EnemyState.TakeDamage;
+    //    animator.SetTrigger("TakeDamage");
+    //}
     protected override void DieUpdate()
     {
     }
@@ -373,5 +451,33 @@ public class EnemyController : Enemy, IAttackable
     private void DieDone()
     {
         gameObject.SetActive(false);
+    }
+
+    protected override void KnockBack()
+    {
+        if (State == EnemyState.Die)
+            return;
+
+        State = EnemyState.KnockBack;
+        animator.SetTrigger("TakeDamage");
+    }
+
+    private bool isStun = false;
+    private int stunCount = 0;
+    private float stunCool;
+    private float stunCoolTime = 0;
+    protected override void Stun(float stunCool)
+    {
+        if (isStun)
+            this.stunCool += SetStunTime(stunCool, stunCount);
+        else
+            this.stunCool = SetStunTime(stunCool, stunCount);
+
+        ++stunCount;
+
+        if (stunCoolTime <= 0f)
+            return;
+
+        isStun = true;
     }
 }

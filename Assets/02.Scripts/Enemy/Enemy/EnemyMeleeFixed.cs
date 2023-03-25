@@ -21,7 +21,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
         protected set
         {
             var prevState = state;
-            if (EnemyState.Die == prevState)
+            if (EnemyState.Die == prevState && EnemyState.None != value)
                 return;
 
             state = value;

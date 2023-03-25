@@ -17,7 +17,30 @@ public class AgentLinkMover : MonoBehaviour
     public OffMeshLinkMoveMethod m_Method = OffMeshLinkMoveMethod.Parabola;
     public AnimationCurve m_Curve = new AnimationCurve();
 
-    IEnumerator Start()
+    void Start()
+    {
+        //NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        //agent.autoTraverseOffMeshLink = false;
+        //while (true)
+        //{
+        //    if (agent.isOnOffMeshLink)
+        //    {
+        //        if (m_Method == OffMeshLinkMoveMethod.NormalSpeed)
+        //            yield return StartCoroutine(NormalSpeed(agent));
+        //        else if (m_Method == OffMeshLinkMoveMethod.Parabola)
+        //            yield return StartCoroutine(Parabola(agent, 2.0f, 0.5f));
+        //        else if (m_Method == OffMeshLinkMoveMethod.Curve)
+        //            yield return StartCoroutine(Curve(agent, 0.5f));
+        //        else if (m_Method == OffMeshLinkMoveMethod.Player)
+        //            yield return StartCoroutine(Player(agent, 0.5f));
+        //        agent.CompleteOffMeshLink();
+        //    }
+        //    yield return null;
+        //}
+        StartCoroutine(YourLogicCoroutine());
+    }
+
+    public IEnumerator YourLogicCoroutine()
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
         agent.autoTraverseOffMeshLink = false;
@@ -38,6 +61,7 @@ public class AgentLinkMover : MonoBehaviour
             yield return null;
         }
     }
+
 
     IEnumerator NormalSpeed(NavMeshAgent agent)
     {

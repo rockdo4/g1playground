@@ -37,7 +37,7 @@ public class BossPupleRich : Enemy
         {
             var prevState = state;
             state = value;
-            if (EnemyState.Die == prevState)
+            if (EnemyState.Die == prevState && EnemyState.None != value)
                 return;
 
             if (prevState == state)

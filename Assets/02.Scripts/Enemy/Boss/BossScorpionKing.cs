@@ -33,7 +33,7 @@ public class BossScorpionKing : Enemy
         {
             var prevState = state;
             state = value;
-            if (EnemyState.Die == prevState)
+            if (EnemyState.Die == prevState && EnemyState.None != value)
                 return;
 
             if (prevState == state)
@@ -269,7 +269,7 @@ public class BossScorpionKing : Enemy
         LookAtTarget();
     }
 
-    protected override void Skill()
+    protected override void SkillUpdate()
     {
 
     }

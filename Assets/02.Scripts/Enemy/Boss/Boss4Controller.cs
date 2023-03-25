@@ -36,7 +36,7 @@ public class Boss4Controller : Enemy
         {
             var prevState = state;
             state = value;
-            if (EnemyState.Die == prevState)
+            if (EnemyState.Die == prevState && EnemyState.None != value)
                 return;
 
             if (prevState == state)
@@ -163,7 +163,7 @@ public class Boss4Controller : Enemy
                 AttackUpdate();
                 break;
             case EnemyState.Skill:
-                Skill();
+                SkillUpdate();
                 break;
             case EnemyState.TakeDamage:
                 TakeDamageUpdate();
@@ -237,7 +237,7 @@ public class Boss4Controller : Enemy
         LookAtTarget();
     }
 
-    protected override void Skill()
+    protected override void SkillUpdate()
     {
         if (isSkillType)
         {

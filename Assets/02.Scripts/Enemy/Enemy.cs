@@ -27,6 +27,8 @@ public class Enemy : MonoBehaviour
         Attack,
         Skill,
         TakeDamage,
+        KnockBack,
+        Stun,
         Groggy,
         Die,
     }
@@ -86,7 +88,7 @@ public class Enemy : MonoBehaviour
     protected virtual void PatrolUpdate() { }
     protected virtual void ChaseUpdate() { }
     protected virtual void AttackUpdate() { }
-    protected virtual void Skill() { }
+    protected virtual void SkillUpdate() { }
     protected virtual void TakeDamageUpdate() { }
     protected virtual void Groggy() { }
     protected virtual void DieUpdate() { }
@@ -180,10 +182,35 @@ public class Enemy : MonoBehaviour
     protected bool AngleIgnoringHeight(float angle)
     {
         return Quaternion.Angle(
-            transform.rotation, 
+            transform.rotation,
             Quaternion.LookRotation(
-                new Vector3(player.transform.position.x, 0, player.transform.position.z) - 
-                new Vector3(transform.position.x, 0, transform.position.z)).normalized) 
+                new Vector3(player.transform.position.x, 0, player.transform.position.z) -
+                new Vector3(transform.position.x, 0, transform.position.z)).normalized)
             <= angle;
+    }
+
+
+    protected virtual void KnockBack() { }
+
+
+    protected virtual void Stun(float stunCool) { }
+    protected float SetStunTime(float stunCool, int count)
+    {
+        if (count == 0)
+        {
+            return stunCool * 1f;
+        }
+        else if (count == 1)
+        {
+            return stunCool * 0.7f;
+        }
+        else if (count == 2)
+        {
+            return stunCool * 0.5f;
+        }
+        else
+        {
+            return 0f;
+        }
     }
 }
