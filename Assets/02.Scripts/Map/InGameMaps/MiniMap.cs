@@ -49,22 +49,11 @@ public class MiniMap : MonoBehaviour
             minimapObject.SetActive(true);
         }
             
-
-        var collider = MapManager.instance.currentMapCollider;
         var boxes = MapManager.instance.outlines;
-        var points=collider.points;
         float minX, maxX;
         float minY, maxY;
         Vector2 LB;
         Vector2 RT;
-        //for (var i = 0; i < points.Length; i++)
-        //{
-        //    points[i] = collider.transform.TransformPoint(points[i]);
-        //}
-        //minX = points[0].x;
-        //minY= points[0].y;
-        //maxX = points[0].x;
-        //maxY = points[0].y;
 
         //normalized
         float normalizedPlayerY = playerPos.rectTransform.anchoredPosition.y/ miniMapRect.rect.height; 
