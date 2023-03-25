@@ -155,6 +155,8 @@ public class Status : MonoBehaviour
             value += addValue[i];
         }
         FinalValue = defaultValue + value;
+        SetHpUi();
+        SetMpUi();
     }
 
     public void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, CurrHp);

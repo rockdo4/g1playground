@@ -73,20 +73,20 @@ public class PlayerSkills : MonoBehaviour
     {
         for (int i = 0; i < skillCount; ++i)
         {
-            if (skillStates[i].skillOn)
+            if (!skillStates[i].skill.isOnOffSkill)
             {
-                if (skillStates[i].skill.isOnOffSkill)
-                    skillStates[i].skill.Update();
+                if (skillStates[i].skillTimer < skillStates[i].skill.coolDown)
+                    skillStates[i].skillTimer += Time.deltaTime;
                 else
                 {
-                    if (skillStates[i].skillTimer < skillStates[i].skill.coolDown)
-                        skillStates[i].skillTimer += Time.deltaTime;
-                    else
-                    {
-                        skillStates[i].skillTimer = 0f;
-                        skillStates[i].skillUsable = true;
-                    }
+                    skillStates[i].skillTimer = 0f;
+                    skillStates[i].skillUsable = true;
                 }
+            }
+
+            if (skillStates[i].skillOn)
+            {
+                skillStates[i].skill.Update();
                 UseSkill(i);
             }
         }

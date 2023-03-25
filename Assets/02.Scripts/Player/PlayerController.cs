@@ -24,6 +24,10 @@ public class PlayerController : MonoBehaviour
         public abstract void Update();
         public abstract void Exit();
     }
+
+    private Status status;
+    private PlayerInventory inventory;
+
     private PlayerInput input;
     private Dictionary<Type, State> states = new Dictionary<Type, State>();
     public State currState;
@@ -67,6 +71,8 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
+        status = GetComponent<Status>();
+        inventory = GetComponent<PlayerInventory>();
         playerRb = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
@@ -392,6 +398,11 @@ public class PlayerController : MonoBehaviour
         public override void Update()
         {
             playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
+
+            if (playerController.status.CurrHp < playerController.status.FinalValue.maxHp / 2 + 1)
+                playerController.inventory.UseHpPotion();
+            if (playerController.status.CurrMp < playerController.status.FinalValue.maxMp / 2 + 1)
+                playerController.inventory.UseMpPotion();
 
             var agentVec = (playerController.agent.transform.position - playerController.prevPosition).normalized;
             if (!Mathf.Approximately(agentVec.x, 0f))

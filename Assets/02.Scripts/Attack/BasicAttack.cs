@@ -11,7 +11,9 @@ public class BasicAttack : AttackDefinition
         if (isCritical)
             damage *= attacker.FinalValue.meleeCriDamage;
         damage -= defenser.FinalValue.meleeDef;
-        return new Attack((int)damage);
+        if (damage < 0)
+            damage = 0;
+        return new Attack((int)damage, 7f);
     }
 
     public override void ExecuteAttack(GameObject attacker, GameObject defender, Vector3 attackPos)

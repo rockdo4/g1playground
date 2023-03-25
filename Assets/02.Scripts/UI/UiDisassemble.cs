@@ -137,6 +137,14 @@ public class UiDisassemble : MonoBehaviour
         }
     }
 
+    public void Deselct()
+    {
+        if (currSlot < 0)
+            return;
+        currSlot = -1;
+        info.SetEmpty();
+    }
+
     public void Disassemble()
     {
         if (currSlot == -1)
