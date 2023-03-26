@@ -587,13 +587,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeAttack: {fileID: 11400000, guid: 9b934b5d7c7731041a6691c30fdb5634, type: 2}
-  EnemyStatePattern: []
+  EnemyStatePattern:
+  - state: 4
+    second: 1
+  - state: 5
+    second: 3
   isGoingRight: 0
   patrolSpeed: 5
-  chaseSpeed: 50
+  chaseSpeed: 10
   searchRange: 7
-  attackRange: 1
-  attackCool: 3
+  attackRange: 2
+  attackCool: 1
   preGoingRight: 0
 --- !u!114 &3198499351488000126
 MonoBehaviour:
@@ -609,6 +613,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   id: 100002
+  FinalValue:
+    str: 0
+    dex: 0
+    intel: 0
+    meleePower: 0
+    skillPower: 0
+    meleeCriChance: 0
+    meleeCriDamage: 0
+    skillCriChance: 0
+    skillCriDamage: 0
+    meleeDef: 0
+    skillDef: 0
+    maxHp: 0
+    maxMp: 0
 --- !u!114 &210253167059485956
 MonoBehaviour:
   m_ObjectHideFlags: 0

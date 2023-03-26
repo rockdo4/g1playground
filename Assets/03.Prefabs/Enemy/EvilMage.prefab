@@ -194,7 +194,7 @@ NavMeshAgent:
   m_Height: 1.45
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &3389830800870338551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,15 +210,15 @@ MonoBehaviour:
   projectileSkill: {fileID: 11400000, guid: 38bb32e31c583cf498f0897d44b0c96c, type: 2}
   skillPivot: {fileID: 0}
   EnemyStatePattern:
-  - state: 5
-    second: 5
   - state: 4
     second: 2
+  - state: 5
+    second: 4
   isGoingRight: 0
   patrolSpeed: 3
-  chaseSpeed: 6
+  chaseSpeed: 4
   searchRange: 7
-  attackRange: 5
+  attackRange: 7
   attackCool: 2
   preGoingRight: 0
 --- !u!114 &108855180307782291
@@ -235,6 +235,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   id: 100011
+  FinalValue:
+    str: 0
+    dex: 0
+    intel: 0
+    meleePower: 0
+    skillPower: 0
+    meleeCriChance: 0
+    meleeCriDamage: 0
+    skillCriChance: 0
+    skillCriDamage: 0
+    meleeDef: 0
+    skillDef: 0
+    maxHp: 0
+    maxMp: 0
 --- !u!114 &3389830800870338537
 MonoBehaviour:
   m_ObjectHideFlags: 0
