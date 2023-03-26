@@ -39,7 +39,6 @@ public abstract class AttackCollider : MonoBehaviour
     {
         if (!other.gameObject.activeSelf ||
             other.CompareTag("AttackBox") ||
-            other.CompareTag("Portal") ||
             (other.attachedRigidbody != null && other.attachedRigidbody.CompareTag(attacker.tag)) ||
             attackedList.Contains(other.gameObject))
             return false;

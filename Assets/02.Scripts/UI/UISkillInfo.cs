@@ -21,6 +21,10 @@ public class UISkillInfo : MonoBehaviour
         useImage.sprite = null;
         firstEquipIcon.sprite = null;
         secondEquipIcon.sprite = null;
+        equipImage.color = Color.clear;
+        useImage.color = Color.clear;
+        firstEquipIcon.color = Color.clear;
+        secondEquipIcon.color = Color.clear;
         skillName.text = string.Empty;
         skillDesc.text = string.Empty;
     }
@@ -34,6 +38,7 @@ public class UISkillInfo : MonoBehaviour
         }
         //currSkillData = data;
         equipImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
+        equipImage.color = Color.white;
         skillName.text = data.name;
         skillDesc.text = data.desc;
     }
@@ -54,12 +59,24 @@ public class UISkillInfo : MonoBehaviour
         var firstSkill = playerSkills.GetCurrSkillID(0);
         var secondSkill = playerSkills.GetCurrSkillID(1);
         if (!string.IsNullOrEmpty(firstSkill))
+        {
             firstEquipIcon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillTable.Get(firstSkill).iconSpriteId).iconName);
+            firstEquipIcon.color = Color.white;
+        }
         else
+        {
             firstEquipIcon.sprite = null;
+            firstEquipIcon.color = Color.clear;
+        }
         if (!string.IsNullOrEmpty(secondSkill))
+        {
             secondEquipIcon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillTable.Get(secondSkill).iconSpriteId).iconName);
+            secondEquipIcon.color = Color.white;
+        }
         else
+        {
             secondEquipIcon.sprite = null;
+            secondEquipIcon.color = Color.clear;
+        }
     }
 }

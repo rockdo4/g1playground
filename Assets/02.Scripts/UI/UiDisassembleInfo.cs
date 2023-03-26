@@ -10,11 +10,15 @@ public class UiDisassembleInfo : MonoBehaviour
     public void SetEmpty()
     {
         if (image != null)
+        {
             image.sprite = null;
+            image.color = Color.clear;
+        }
     }
 
     public void Set(ReinforceSystem.Types type, string id)
     {
+        image.color = Color.white;
         var iconTable = DataTableMgr.GetTable<IconData>();
         switch (type)
         {
