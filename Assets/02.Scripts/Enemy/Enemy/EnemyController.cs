@@ -12,7 +12,7 @@ public class EnemyController : Enemy
     GameObject attackBox;
     private CapsuleCollider mainColl;
     public BasicAttack meleeAttack;
-
+    private OnGround onGround;
     [System.Serializable]
     public class EnemyStateData
     {
@@ -121,7 +121,7 @@ public class EnemyController : Enemy
         attackBox.SetActive(false);
         preGoingRight = isGoingRight;
         linkMover = GetComponent<AgentLinkMover>();
-
+        onGround = GetComponent<OnGround>();
     }
     private IEnumerator RestorePosition()
     {
@@ -132,8 +132,8 @@ public class EnemyController : Enemy
     {
         animator.ResetTrigger("TakeDamage");
         base.Start();
-        defaultPatrolSpeed = patrolSpeed;
-        defaultChaseSpeed = chaseSpeed;
+        patrolSpeed = defaultPatrolSpeed;
+        chaseSpeed = defaultChaseSpeed;
 
     }
 
