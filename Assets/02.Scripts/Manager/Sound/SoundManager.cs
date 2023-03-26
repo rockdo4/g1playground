@@ -8,12 +8,20 @@ using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
+    Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
+
     [Header("Audio Mixer")]
     [SerializeField] private AudioMixer audioMixer;
 
     [Header("Audio Source")]
     [SerializeField] public AudioSource bgmSource;
     [SerializeField] public AudioSource seSource;
+    [SerializeField] public AudioSource playerSource;
+    [SerializeField] public AudioSource enemySource;
+
+    [SerializeField] public int playerSourceCount = 10;
+    [SerializeField] private AudioMixerGroup playerMixer;
+    private List<AudioSource> playerSources = new List<AudioSource>();
 
     [Header("BGMs")]
     //bgms
@@ -59,6 +67,14 @@ public class SoundManager : MonoBehaviour
         bgmClips = Resources.LoadAll<AudioClip>(BgmFolderPath).ToList();
         seClips = Resources.LoadAll<AudioClip>(EffectFolderPath).ToList();
 
+        for (int i = 0; i < playerSourceCount; i++)
+        {
+            var playerSE = Instantiate(playerSource);
+
+            playerSources.Add(playerSE);
+            playerSE.transform.parent = seSource.transform;
+        }
+
         //load volumes on load
         LoadVolume();
         //PlayBGM(bgmName);
@@ -90,6 +106,11 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    //stop Bgm
+    public void StopBGM()
+    {
+        bgmSource.Stop();
+    }
 
     //play SE by file name find in SE list
     public void PlaySoundEffect(string name)
@@ -109,6 +130,43 @@ public class SoundManager : MonoBehaviour
     {
         //seSource.Stop();
         seSource.PlayOneShot(clip);   
+    }
+
+    //play SE of player
+    public void PlayPlayerEffect(string name)
+    {
+        //search for not playing audio source
+        foreach (var source in playerSources)
+        {
+            if (!source.isPlaying)
+            {
+                //search for sound clip
+                foreach (var se in seClips)
+                {
+                    if (se.name.Equals(name))
+                    {
+                        Debug.Log(source.name);
+                        source.clip = se;
+                        source.Play();
+                        return;
+
+                    }
+
+                }
+
+#if UNITY_EDITOR
+                Debug.Log("No sound Clip match");
+#endif
+
+                return;
+            }
+        }
+
+#if UNITY_EDITOR
+        Debug.Log("All player audio source playing");
+#endif
+
+        return;
     }
 
     //Pause playing SoundEffect
