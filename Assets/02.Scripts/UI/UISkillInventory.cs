@@ -61,7 +61,11 @@ public class UISkillInventory : MonoBehaviour
         {
             slotList[i].Set(i, table.Get(ids[i]));
         }
-        skillInfo.Set(table.Get(ids[0]));
+        if (len > 0)
+        {
+            skillInfo.Set(table.Get(ids[0]));
+            currSlot = 0;
+        }
         skillInfo.ShowCurrPlayerSkills();
     }
 
@@ -80,6 +84,9 @@ public class UISkillInventory : MonoBehaviour
 
     public void SetPlayerSkill(int index)
     {
+        if (currSlot < 0)
+            return;
+
         playerSkills.SetSkill(index, currSlot);
         skillInfo.ShowCurrPlayerSkills();
     }

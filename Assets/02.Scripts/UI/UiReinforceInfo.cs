@@ -41,6 +41,10 @@ public class UiReinforceInfo : MonoBehaviour
         material1.sprite = null;
         material2.sprite = null;
         material3.sprite = null;
+        result.color = Color.clear;
+        material1.color = Color.clear;
+        material2.color = Color.clear;
+        material3.color = Color.clear;
     }
 
     public bool Set(ReinforceSystem.Types type, string id)
@@ -63,6 +67,8 @@ public class UiReinforceInfo : MonoBehaviour
         {
             ShowPopUp("재료가 부족합니다");
             SetEmpty();
+            result.color = Color.white;
+            material1.color = Color.white;
             switch (type)
             {
                 case ReinforceSystem.Types.Weapon:
@@ -81,6 +87,10 @@ public class UiReinforceInfo : MonoBehaviour
             return false;
         }
 
+        result.color = Color.white;
+        material1.color = Color.white;
+        material2.color = Color.white;
+        material3.color = Color.white;
         switch (type)
         {
             case ReinforceSystem.Types.Weapon:
