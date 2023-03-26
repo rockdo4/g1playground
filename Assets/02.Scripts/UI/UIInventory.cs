@@ -59,6 +59,7 @@ public class UIInventory : MonoBehaviour
     {
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
+        currSlot = -1;
         this.itemType = (ItemTypes)itemType;
         List<string> ids = null;
         int len = 0;
@@ -110,36 +111,24 @@ public class UIInventory : MonoBehaviour
 
     public void Equip()
     {
+        if (currSlot < 0)
+            return;
         string id = null;
         switch (itemType)
         {
             case ItemTypes.Weapon:
                 if (slotList[currSlot] != null && slotList[currSlot].Data != null)
-                {
                     playerInventory.SetWeapon(currSlot);
-                    id = playerInventory.Weapons[currSlot];
-                    var table = DataTableMgr.GetTable<WeaponData>();
-                    if (string.IsNullOrEmpty(id))
-                        slotList[currSlot].SetEmpty();
-                    else
-                        slotList[currSlot].Set(currSlot, table.Get(id));
-                }
                 break;
             case ItemTypes.Armor:
                 if (slotList[currSlot] != null && slotList[currSlot].Data != null)
-                {
                     playerInventory.SetArmor(currSlot);
-                    id = playerInventory.Armors[currSlot];
-                    var table = DataTableMgr.GetTable<ArmorData>();
-                    if (string.IsNullOrEmpty(id))
-                        slotList[currSlot].SetEmpty();
-                    else
-                        slotList[currSlot].Set(currSlot, table.Get(id));
-                }
                 break;
             default:
                 return;
         }
+        itemInfo.SetEmpty();
+        SetInventory((int)itemType);
     }
 
     public void SlotInstantiate(int count)

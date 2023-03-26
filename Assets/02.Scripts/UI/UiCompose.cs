@@ -140,24 +140,29 @@ public class UiCompose : MonoBehaviour
     {
         if (index == 0)
         {
+            if (selectedSlots.Count < 1)
+                return;
             selectedSlots.Clear();
             info.SetEmptyAll();
             foreach (var itemSlot in itemSlotList)
             {
-                itemSlot.button.interactable = true;
+                if (itemSlot.Data != null)
+                    itemSlot.button.interactable = true;
             }
         }
         else
         {
+            if (selectedSlots.Count < 2)
+                return;
             selectedSlots.RemoveAt(index);
             info.SetEmpty(index);
             var secondMaterial = ComposeSystem.Get2ndMaterial(selectedSlots[0].Data.id);
             foreach (var itemSlot in itemSlotList)
             {
-                if (itemSlot == selectedSlots[0] || (itemSlot.Data != null && !string.Equals(itemSlot.Data.id, secondMaterial)))
-                    itemSlot.button.interactable = false;
-                else
+                if (itemSlot != selectedSlots[0] && itemSlot.Data != null && string.Equals(itemSlot.Data.id, secondMaterial))
                     itemSlot.button.interactable = true;
+                else
+                    itemSlot.button.interactable = false;
             }
         }
     }

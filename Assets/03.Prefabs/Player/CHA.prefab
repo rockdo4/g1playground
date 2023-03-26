@@ -2343,7 +2343,6 @@ MonoBehaviour:
   maxJumpCount: 2
   isGrounded: 0
   hitDuration: 0.5
-  jumpPoints: []
   autoToggle: {fileID: 0}
 --- !u!114 &1674795210733244912
 MonoBehaviour:
@@ -2423,12 +2422,12 @@ MonoBehaviour:
   PossessedSkillsTemp:
   - 10001
   - 10007
+  - 10007
+  - 10001
   toggles:
   - {fileID: 0}
   - {fileID: 0}
-  defaultSkills:
-  - 10001
-  - 10007
+  defaultSkills: 0000000001000000
 --- !u!114 &1674795210733244911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2456,7 +2455,7 @@ MonoBehaviour:
   - 30001
   - 30002
   - 30003
-  - 30004
+  - 30003
   - 30005
   consumablesTemp:
   - id: 40001
@@ -2469,6 +2468,11 @@ MonoBehaviour:
     count: 100
   - id: 40001
     count: 100
+  CurrWeapon: 
+  CurrArmor: 
+  potionRate:
+  - 0.3
+  - 0.3
 --- !u!114 &1674795210733244910
 MonoBehaviour:
   m_ObjectHideFlags: 0

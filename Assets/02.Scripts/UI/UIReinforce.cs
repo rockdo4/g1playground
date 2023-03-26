@@ -89,6 +89,7 @@ public class UIReinforce : MonoBehaviour
         this.type = (ReinforceSystem.Types)type;
         ClearInventory();
         List<string> ids = null;
+        currSlot = -1;
         int len = 0;
         int count = 0;
         switch ((ReinforceSystem.Types)type)
@@ -147,8 +148,18 @@ public class UIReinforce : MonoBehaviour
         reinforceButton.interactable = false;
     }
 
+    public void Deselect()
+    {
+        if (currSlot < 0)
+            return;
+        currSlot = -1;
+        info.SetEmpty();
+    }
+
     public void Reinforce()
     {
+        if (currSlot < 0)
+            return;
         int index = 0;
         switch (type)
         {

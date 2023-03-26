@@ -60,7 +60,9 @@ public class SkillAttack : AttackDefinition
         if (isCritical)
             damage *= (attacker.FinalValue.skillCriDamage + this.criticalDamage);
         damage -= defenser.FinalValue.skillDef;
-        return new Attack((int)damage);
+        if (damage < 0)
+            damage = 0;
+        return new Attack((int)damage, knockBackForce);
     }
 
     public override void ExecuteAttack(GameObject attacker, GameObject defender, Vector3 attackPos)

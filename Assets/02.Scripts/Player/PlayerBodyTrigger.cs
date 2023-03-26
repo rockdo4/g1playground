@@ -51,7 +51,7 @@ public class PlayerBodyTrigger : MonoBehaviour
         if (isOnDelay)
             return;
         Attack attack;
-        attack = new Attack(damage);
+        attack = new Attack(damage, 7f);
         var attackables = transform.parent.GetComponents<IAttackable>();
         var attacker = other.transform.parent.gameObject;
         var attackPos = other.transform.position;

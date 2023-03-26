@@ -6,7 +6,6 @@ using static PlayerController;
 public class AttackedKnockBack : MonoBehaviour, IAttackable
 {
     private float up = 1f;
-    private float force = 7f;
     private Rigidbody rb;
     private bool hitOnThisFrame;
 
@@ -22,15 +21,17 @@ public class AttackedKnockBack : MonoBehaviour, IAttackable
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
-        if (!attack.IsKnockBackable || hitOnThisFrame)
+        if (Mathf.Approximately(attack.KnockBackForce, 0f) || hitOnThisFrame)
             return;
         if (CompareTag("Player"))
             GetComponent<PlayerController>().SetState<HitState>();
+        if (CompareTag("Enemy"))
+            ;
         var dir = new Vector3(Mathf.Sign(transform.position.x - attackPos.x), 0f, 0f);
         dir.y = up;
         dir.Normalize();
         rb.velocity = Vector3.zero;
-        rb.AddForce(dir * force, ForceMode.Impulse);
+        rb.AddForce(dir * attack.KnockBackForce, ForceMode.Impulse);
         hitOnThisFrame = true;
     }
 }

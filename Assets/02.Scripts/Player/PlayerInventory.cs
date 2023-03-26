@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.VolumeComponent;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -63,7 +64,10 @@ public class PlayerInventory : MonoBehaviour
             return;
         var temp = CurrWeapon;
         CurrWeapon = Weapons[index];
-        Weapons[index] = temp;
+        if (string.IsNullOrEmpty(temp))
+            RemoveWeapon(index);
+        else
+            Weapons[index] = temp;
         ApplyStatus();
     }
 
@@ -73,16 +77,11 @@ public class PlayerInventory : MonoBehaviour
             return;
         var temp = CurrArmor;
         CurrArmor = Armors[index];
-        Armors[index] = temp;
+        if (string.IsNullOrEmpty(temp))
+            RemoveArmor(index);
+        else
+            Armors[index] = temp;
         ApplyStatus();
-    }
-
-    private void Update()
-    {
-        if (status.CurrHp < status.FinalValue.maxHp / 2)
-            UseHpPotion();
-        if (status.CurrMp < status.FinalValue.maxMp / 2)
-            UseMpPotion();
     }
 
     public void ApplyStatus()
@@ -173,6 +172,22 @@ public class PlayerInventory : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void RemoveWeapon(int index)
+    {
+        if (index < 0)
+            CurrWeapon = null;
+        else
+            Weapons.RemoveAt(index);
+    }
+
+    public void RemoveArmor(int index)
+    {
+        if (index < 0)
+            CurrArmor = null;
+        else
+            Armors.RemoveAt(index);
     }
 
     public void Reinforce(ItemTypes type, int index, string newId)
@@ -281,20 +296,14 @@ public class PlayerInventory : MonoBehaviour
             case ItemTypes.Weapon:
                 foreach (var index in indexs)
                 {
-                    if (index < 0)
-                        CurrWeapon = null;
-                    else
-                        Weapons[index] = null;
+                    RemoveWeapon(index);
                 }
                 AddWeapon(data.resultItem);
                 break;
             case ItemTypes.Armor:
                 foreach (var index in indexs)
                 {
-                    if (index < 0)
-                        CurrArmor = null;
-                    else
-                        Armors[index] = null;
+                    RemoveArmor(index);
                 }
                 AddArmor(data.resultItem);
                 break;
@@ -357,12 +366,12 @@ public class PlayerInventory : MonoBehaviour
             case Potions.Hp:
                 if (status.CurrHp == status.FinalValue.maxHp)
                     return;
-                status.CurrHp = (int)(status.FinalValue.maxHp * potionRate[0]);
+                status.CurrHp += (int)(status.FinalValue.maxHp * potionRate[0]);
                 break;
             case Potions.Mp:
                 if (status.CurrMp == status.FinalValue.maxMp)
                     return;
-                status.CurrMp = (int)(status.FinalValue.maxMp * potionRate[1]);
+                status.CurrMp += (int)(status.FinalValue.maxMp * potionRate[1]);
                 break;
         }
         PotionCount[(int)potion] -= 1;
