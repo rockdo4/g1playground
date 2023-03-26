@@ -123,7 +123,7 @@ public class Boss4Controller : Enemy
     protected override void OnEnable()
     {
         base.OnEnable();
-
+        mainColl.enabled = true;
         mask.SetActive(true);
         attackBox.SetActive(false);
         dashBox.SetActive(false);
