@@ -377,7 +377,7 @@ public class PlayerController : MonoBehaviour
             hitTimer += Time.deltaTime;
             if (hitTimer > playerController.hitDuration)
             {
-                if (playerController.IsAuto)
+                if (playerController.IsAuto && playerController.isGrounded)
                     playerController.SetState<AutoMoveState>(); 
                 else
                     playerController.SetState<IdleState>();
