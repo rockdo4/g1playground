@@ -5,7 +5,7 @@ using UnityEngine;
 public class OnGround : MonoBehaviour
 {
     private CapsuleCollider onGround;
-    public bool isGround = false;
+    private bool isGround = false;
     private void Awake()
     {
         onGround = GetComponent<CapsuleCollider>();
@@ -20,8 +20,9 @@ public class OnGround : MonoBehaviour
         }
         else
             isGround = true;
-
-
-
+    }
+    public bool GetIsGround()
+    {
+        return isGround;
     }
 }

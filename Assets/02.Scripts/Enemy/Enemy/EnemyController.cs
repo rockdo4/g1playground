@@ -121,7 +121,7 @@ public class EnemyController : Enemy
         attackBox.SetActive(false);
         preGoingRight = isGoingRight;
         linkMover = GetComponent<AgentLinkMover>();
-        onGround = GetComponent<OnGround>();
+        onGround = GetComponentInChildren<OnGround>();
     }
     private IEnumerator RestorePosition()
     {
@@ -215,6 +215,9 @@ public class EnemyController : Enemy
                 break;
             case EnemyState.TakeDamage:
                 TakeDamageUpdate();
+                break;
+            case EnemyState.KnockBack:
+                KnockBackUpdate();
                 break;
             case EnemyState.Stun:
                 StunUpdate();
@@ -360,6 +363,13 @@ public class EnemyController : Enemy
 
     }
 
+    public void KnockBackUpdate()
+    {
+        if (onGround.GetIsGround() && isGround)
+        {
+            State = EnemyState.Chase;
+        }
+    }
     private void StunUpdate()
     {
         if (stunCoolTime >= stunCool)
@@ -453,7 +463,8 @@ public class EnemyController : Enemy
         if (State == EnemyState.Die)
             return;
 
-        State = EnemyState.Chase;
+        isGround = false;
+
     }
 
     private void DieDone()
@@ -461,10 +472,12 @@ public class EnemyController : Enemy
         gameObject.SetActive(false);
     }
 
+    private bool isGround;
     public override void KnockBack()
     {
         if (State == EnemyState.Die)
             return;
+        isGround = true;
 
         State = EnemyState.KnockBack;
         animator.SetTrigger("TakeDamage");
