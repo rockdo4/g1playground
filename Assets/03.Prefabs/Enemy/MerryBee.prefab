@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 210253167059485956}
   - component: {fileID: 210253167059485957}
   - component: {fileID: 210253167059485954}
-  - component: {fileID: 3198499351488000125}
+  - component: {fileID: 9101751131494018204}
   m_Layer: 9
   m_Name: MerryBee
   m_TagString: Enemy
@@ -608,12 +608,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 210253167066756807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4cce4536f12014ba442bbe49be272e, type: 3}
+  m_Script: {fileID: 11500000, guid: 035b921a4da894c4bb7526a1d69962c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
   id: 100002
-  FinalValue:
+  <FinalValue>k__BackingField:
     str: 0
     dex: 0
     intel: 0
@@ -706,7 +705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59b7229bcaa41b4c942c681478c153b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3198499351488000125
+--- !u!114 &9101751131494018204
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -715,9 +714,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 210253167066756807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a45da68ca56f0b44cac1acb8750c7131, type: 3}
+  m_Script: {fileID: 11500000, guid: acc6b912e573bf34d9a1246670f60546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canKnockBack: 1
+  canStun: 1
+  canSlowDown: 1
+  canReduceDef: 1
+  maxKBCount: 3
+  kBResistTime: 30
+  maxStunCount: 3
+  stunResistTime: 30
 --- !u!1 &210253167066756809
 GameObject:
   m_ObjectHideFlags: 0

@@ -102,7 +102,7 @@ public class EnemyController : Enemy
                     break;
             }
 
-            Debug.Log(State);
+            //Debug.Log(State);
         }
     }
 
@@ -467,7 +467,7 @@ public class EnemyController : Enemy
     private int stunCount = 0;
     private float stunCool;
     private float stunCoolTime = 0;
-    protected override void Stun(float stunCool)
+    public override void Stun(float stunCool)
     {
         if (isStun)
             this.stunCool += SetStunTime(stunCool, stunCount);

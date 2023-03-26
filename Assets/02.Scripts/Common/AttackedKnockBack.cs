@@ -21,7 +21,7 @@ public class AttackedKnockBack : MonoBehaviour, IAttackable
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
-        if (Mathf.Approximately(attack.KnockBackForce, 0f) || hitOnThisFrame)
+        if (Mathf.Approximately(attack.cc.knockBackForce, 0f) || hitOnThisFrame)
             return;
         if (CompareTag("Player"))
             GetComponent<PlayerController>().SetState<HitState>();
@@ -31,7 +31,7 @@ public class AttackedKnockBack : MonoBehaviour, IAttackable
         dir.y = up;
         dir.Normalize();
         rb.velocity = Vector3.zero;
-        rb.AddForce(dir * attack.KnockBackForce, ForceMode.Impulse);
+        rb.AddForce(dir * attack.cc.knockBackForce, ForceMode.Impulse);
         hitOnThisFrame = true;
     }
 }

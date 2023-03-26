@@ -15,18 +15,11 @@ public class SkillAttack : AttackDefinition
     public float damageFigure;
     public float criticalChance;
     public float criticalDamage;
-    public float knockBackForce;
-    public float stunTime;
-    public float slowDown;
-    public float slowTime;
-    public float reduceDef;
-    public float reduceDefTime;
+    [SerializeField] public Attack.CC cc;
     public float coolDown;
 
     [Header("Values only fix on Inspector")]
     public bool isOnOffSkill = false;
-    public float lifeTime;
-    public float range;
     public string fireSoundEffect;
     public string inUseSoundEffect;
     public string hitSoundEffect;
@@ -39,15 +32,10 @@ public class SkillAttack : AttackDefinition
         MaxReinfore= data.maxReinfore;
         reqMana = data.reqMana;
         damageFigure = data.damageFigure;
-        criticalChance= data.criticalChance;
+        criticalChance = data.criticalChance;
         criticalDamage = data.criticalDamage;
-        knockBackForce = data.knockBackForce;
-        stunTime= data.stunTime;
+        cc = data.cc;
         coolDown = data.CoolDown;
-        slowDown = data.slowDown;
-        slowTime = data.slowTime;
-        reduceDef = data.reduceDef;
-        reduceDefTime = data.reduceDefTime;
     }
 
     public virtual void Update() { }
@@ -62,7 +50,7 @@ public class SkillAttack : AttackDefinition
         damage -= defenser.FinalValue.skillDef;
         if (damage < 0)
             damage = 0;
-        return new Attack((int)damage, knockBackForce);
+        return new Attack((int)damage, cc);
     }
 
     public override void ExecuteAttack(GameObject attacker, GameObject defender, Vector3 attackPos)
@@ -112,12 +100,12 @@ public class SkillAttack : AttackDefinition
                     damageFigure, ',',
                     criticalChance, ',',
                     criticalDamage, ',',
-                    stunTime, ',',
-                    knockBackForce, ',',
-                    slowDown, ',',
-                    slowTime, ',',
-                    reduceDef, ',',
-                    reduceDefTime, ','
+                    cc.stunTime, ',',
+                    cc.knockBackForce, ',',
+                    cc.slowDown, ',',
+                    cc.slowTime, ',',
+                    cc.reduceDef, ',',
+                    cc.reduceDefTime, ','
                     );
                 break;
             }

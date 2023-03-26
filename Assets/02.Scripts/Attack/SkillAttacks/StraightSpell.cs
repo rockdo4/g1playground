@@ -6,6 +6,8 @@ using UnityEngine.Pool;
 [CreateAssetMenu(fileName = "StraightSpell", menuName = "SkillAttack/StraightSpell")]
 public class StraightSpell : SkillAttack
 {
+    public float lifeTime;
+    public float range;
     public string projectileId;
     public int maxCount;
     public float interval;

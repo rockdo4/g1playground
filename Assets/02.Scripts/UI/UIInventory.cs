@@ -113,7 +113,7 @@ public class UIInventory : MonoBehaviour
     {
         if (currSlot < 0)
             return;
-        string id = null;
+
         switch (itemType)
         {
             case ItemTypes.Weapon:

@@ -1783,7 +1783,7 @@ GameObject:
   - component: {fileID: 7184736934768367698}
   - component: {fileID: 7184736934768367699}
   - component: {fileID: 7184736934768367700}
-  - component: {fileID: 5565589594298543403}
+  - component: {fileID: 8850010756217132207}
   m_Layer: 9
   m_Name: GreenPlant
   m_TagString: Enemy
@@ -1917,12 +1917,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7184736934775630737}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4cce4536f12014ba442bbe49be272e, type: 3}
+  m_Script: {fileID: 11500000, guid: 035b921a4da894c4bb7526a1d69962c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
   id: 100005
-  FinalValue:
+  <FinalValue>k__BackingField:
     str: 0
     dex: 0
     intel: 0
@@ -2015,7 +2014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59b7229bcaa41b4c942c681478c153b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5565589594298543403
+--- !u!114 &8850010756217132207
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2024,9 +2023,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7184736934775630737}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a45da68ca56f0b44cac1acb8750c7131, type: 3}
+  m_Script: {fileID: 11500000, guid: acc6b912e573bf34d9a1246670f60546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canKnockBack: 1
+  canStun: 1
+  canSlowDown: 1
+  canReduceDef: 1
+  maxKBCount: 3
+  kBResistTime: 30
+  maxStunCount: 3
+  stunResistTime: 30
 --- !u!1 &7952630617036885514
 GameObject:
   m_ObjectHideFlags: 0
