@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
+
 
 public class SoundManager : MonoBehaviour
 {
@@ -21,7 +24,8 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] public int playerSourceCount = 10;
     [SerializeField] private AudioMixerGroup playerMixer;
-    private List<AudioSource> playerSources = new List<AudioSource>();
+    //private List<AudioSource> playerSourceList = new List<AudioSource>();
+    //private Dictionary<int, AudioSource> playerSources = new Dictionary<int, AudioSource>();
 
     [Header("BGMs")]
     //bgms
@@ -40,6 +44,54 @@ public class SoundManager : MonoBehaviour
 
     public string BgmFolderPath = "Sounds/BGM";
     public string EffectFolderPath = "Sounds/Effect";
+
+    [Header("Player Sound Pool")]
+    [SerializeField] private PlayerSound playerSound;
+    public int maxPoolSize = 200;
+    public int stackDefaultCapacity = 10;
+
+    private IObjectPool<PlayerSound> playerSoundPool;
+    public IObjectPool<PlayerSound> PlayerSoundPool
+    {
+        get
+        {
+            if (playerSoundPool == null)
+                playerSoundPool =
+                    new ObjectPool<PlayerSound>(
+                        CreateSound,
+                        OnTakeFromPool,
+                        OnReturnedToPool,
+                        OnDestroyPoolObject,
+                        true,
+                        stackDefaultCapacity,
+                        maxPoolSize);
+            return playerSoundPool;
+        }
+    }
+
+    private PlayerSound CreateSound()
+    {
+        PlayerSound pSound = Instantiate(playerSound, seSource.transform);
+        pSound.PlayerSoundPool = PlayerSoundPool;
+        return pSound;
+    }
+
+    private void OnTakeFromPool(PlayerSound sound)
+    {
+        sound.gameObject.SetActive(true);
+
+    }
+
+    private void OnReturnedToPool(PlayerSound sound)
+    {
+        sound.gameObject.SetActive(false);
+
+    }
+
+    private void OnDestroyPoolObject(PlayerSound sound)
+    {
+        Destroy(sound.gameObject);
+    }
 
     private static SoundManager m_instance;
     public static SoundManager instance
@@ -67,17 +119,9 @@ public class SoundManager : MonoBehaviour
         bgmClips = Resources.LoadAll<AudioClip>(BgmFolderPath).ToList();
         seClips = Resources.LoadAll<AudioClip>(EffectFolderPath).ToList();
 
-        for (int i = 0; i < playerSourceCount; i++)
-        {
-            var playerSE = Instantiate(playerSource);
-
-            playerSources.Add(playerSE);
-            playerSE.transform.parent = seSource.transform;
-        }
-
         //load volumes on load
         LoadVolume();
-        //PlayBGM(bgmName);
+        PlayBGM(bgmName);
     }
 
     //load volume set on sliders
@@ -92,6 +136,7 @@ public class SoundManager : MonoBehaviour
         audioMixer.SetFloat(VolumeSetting.MIXER_SE, Mathf.Log10(seVolume) * 20);
     }
 
+    ///////////////////BGM/////////////////////////
     //play BGM by file name
     public void PlayBGM(string name)
     {
@@ -112,6 +157,20 @@ public class SoundManager : MonoBehaviour
         bgmSource.Stop();
     }
 
+    //Pause playing BGM
+    public void PauseBGM()
+    {
+        bgmSource.Pause();
+    }
+
+    //Resume paused BGM
+    public void UnPauseBGM()
+    {
+        bgmSource.UnPause();
+    }
+
+
+    ///////////////////SE/////////////////////////
     //play SE by file name find in SE list
     public void PlaySoundEffect(string name)
     {
@@ -132,64 +191,123 @@ public class SoundManager : MonoBehaviour
         seSource.PlayOneShot(clip);   
     }
 
-    //play SE of player
+    //Play Player SoundEffect by searching sound clip
     public void PlayPlayerEffect(string name)
     {
-        //search for not playing audio source
-        foreach (var source in playerSources)
+        //search if there is same clip playing
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
         {
-            if (!source.isPlaying)
+            if (pSource.audioSource.clip.name == name)
             {
-                //search for sound clip
-                foreach (var se in seClips)
-                {
-                    if (se.name.Equals(name))
-                    {
-                        Debug.Log(source.name);
-                        source.clip = se;
-                        source.Play();
-                        return;
+                return;
+            }
+            
+        }
 
-                    }
-
-                }
-
-#if UNITY_EDITOR
-                Debug.Log("No sound Clip match");
-#endif
+        //search for sound clip
+        foreach (var se in seClips)
+        {
+            if (se.name == (name))
+            {
+                var pSE = PlayerSoundPool.Get();
+                pSE.InitSound(se);
 
                 return;
             }
         }
-
-#if UNITY_EDITOR
-        Debug.Log("All player audio source playing");
-#endif
-
-        return;
     }
 
     //Pause playing SoundEffect
     public void PauseSoundEffect()
     {
         seSource.Pause();
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            pSource.PauseAudio();
+        }
+    }
+
+    //Pause Player SoundEffect by searching sound clip
+    public void PausePlayerSound(string name)
+    {
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            if (pSource.audioSource.clip.name == name)
+            {
+                pSource.PauseAudio();
+            }
+            
+        }
     }
 
     //Resume paused SoundEffect
     public void UnPauseSoundEffect()
     {
         seSource.UnPause();
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            pSource.ResumeAudio();
+        }
     }
 
-    //Pause playing BGM
-    public void PauseBGM()
+    //Resume Player SoundEffect by searching sound clip
+    public void UnPausePlayerSound(string name)
     {
-        bgmSource.Pause();
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            if (pSource.audioSource.clip.name == name)
+            {
+                pSource.ResumeAudio();
+            }
+
+        }
     }
 
-    //Resume paused BGM
-    public void UnPauseBGM()
+    public void StopSoundEffect()
     {
-        bgmSource.UnPause();
+        seSource.Stop();
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            pSource.StopAudio();
+        }
+    }
+
+    //Stop Player SoundEffect by searching sound clip
+    public void StopPlayerSound(string name)
+    {
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            if (pSource.audioSource.clip.name == name)
+            {
+                pSource.StopAudio();
+            }
+
+        }
+    }
+
+    ////////////////////////////////////////////
+    public void PauseAll()
+    {
+        PauseBGM();
+        PauseSoundEffect();
+    }
+
+    public void ResumeAll()
+    {
+        UnPauseBGM();
+        UnPauseSoundEffect();
+    }
+
+    public void StopAll()
+    {
+        StopBGM();
+        StopSoundEffect();
     }
 }

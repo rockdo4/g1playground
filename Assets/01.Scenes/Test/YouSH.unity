@@ -644,6 +644,10 @@ MonoBehaviour:
   bgmName: Playing
   BgmFolderPath: Sounds/BGM
   EffectFolderPath: Sounds/Effect
+  playerSound: {fileID: 6140213999059819679, guid: ff7df085877e141e98e8b4c6b92392b0,
+    type: 3}
+  maxPoolSize: 20
+  stackDefaultCapacity: 10
 --- !u!4 &151772536
 Transform:
   m_ObjectHideFlags: 0
@@ -1505,14 +1509,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 151772535}
         m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: UnPauseSoundEffect
-        m_Mode: 1
+        m_MethodName: UnPausePlayerSound
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Coins01
+          m_StringArgument: Fire Burst 2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &454500484
@@ -2383,7 +2387,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 204897579}
-  - {fileID: 1632378763}
   m_Father: {fileID: 151772536}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2903,7 +2906,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Explosion Grenade 4
+          m_StringArgument: Fire Burst 2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1237504758
@@ -3442,12 +3445,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562142529}
   m_CullTransparentMesh: 1
---- !u!4 &1632378763 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-    type: 3}
-  m_PrefabInstance: {fileID: 4634984636841384139}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1639055573
 GameObject:
   m_ObjectHideFlags: 0
@@ -4014,14 +4011,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 151772535}
         m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: PauseSoundEffect
-        m_Mode: 1
+        m_MethodName: PausePlayerSound
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Coins01
+          m_StringArgument: Fire Burst 2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1871447101
@@ -4416,72 +4413,3 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2090211811}
   m_CullTransparentMesh: 1
---- !u!1001 &4634984636841384139
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1024201234}
-    m_Modifications:
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878080, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4634984636317878081, guid: ff7df085877e141e98e8b4c6b92392b0,
-        type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ff7df085877e141e98e8b4c6b92392b0, type: 3}
