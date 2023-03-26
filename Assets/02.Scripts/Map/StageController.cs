@@ -20,14 +20,6 @@ public class StageController : MonoBehaviour
         public bool isOn;
     }
 
-    private struct EachCorner
-    {
-        public Vector2 LT;
-        public Vector2 RT;
-        public Vector2 RB;
-        public Vector2 LB;
-    }
-
     [Header("Skybox")]
     [Range(0, 4)]
     [SerializeField] private int skyboxIndex;
@@ -67,8 +59,7 @@ public class StageController : MonoBehaviour
 
     public static RectTransform minimapPlayerpos;
 
-    private PolygonCollider2D wholeStateCollider;
-    private EachCorner eachCorner;
+    // private EachCorner eachCorner;
     private void Awake()
     {
         SkyboxManager.instance.SetSkybox(skyboxIndex);
@@ -137,21 +128,14 @@ public class StageController : MonoBehaviour
     {
         yield return null;
 
-        wholeStateCollider = MapManager.instance.currentMapCollider;
         GetStateColliderEachCornerWorldSpace();
-
 
     }
 
     private void GetStateColliderEachCornerWorldSpace()
     {
-        var colliderWorldPosition = wholeStateCollider.transform.position;
-        eachCorner.LT = new Vector2(colliderWorldPosition.x - wholeStateCollider.bounds.extents.x, colliderWorldPosition.y + wholeStateCollider.bounds.extents.y);
-        eachCorner.RT = new Vector2(colliderWorldPosition.x + wholeStateCollider.bounds.extents.x, colliderWorldPosition.y + wholeStateCollider.bounds.extents.y);
-        eachCorner.RB = new Vector2(colliderWorldPosition.x + wholeStateCollider.bounds.extents.x, colliderWorldPosition.y - wholeStateCollider.bounds.extents.y);
-        eachCorner.LB = new Vector2(colliderWorldPosition.x - wholeStateCollider.bounds.extents.x, colliderWorldPosition.y - wholeStateCollider.bounds.extents.y);
 
-        if (MapManager.instance.GetCurrentMapName() != "Village" || SceneManager.GetActiveScene().name != "Scene02") 
+        if (MapManager.instance.GetCurrentMapName() != "Village" && SceneManager.GetActiveScene().name == "Scene02")
         {
             MapManager.instance.outlines.Clear();
 
@@ -168,12 +152,8 @@ public class StageController : MonoBehaviour
                     }
                 }
             }
-            
-        }
-       
 
-        
-        //Debug.Log(MapManager.instance.outlines.Count);
+        }
 
     }
 
@@ -194,9 +174,9 @@ public class StageController : MonoBehaviour
         {
             MiniMap.instance.SetMiniMap(stageId);
         }
-        
 
-        if (MapManager.instance.currentMapCollider != null && wholeStateCollider == null)
+
+        if (MapManager.instance.currentMapCollider != null )
         {
             StopCoroutine(CSetStageCollider());
 
@@ -212,7 +192,7 @@ public class StageController : MonoBehaviour
         for (int i = 0; i < childCount; ++i)
         {
             var child = gameObject.transform.GetChild(i);
-            if (child.CompareTag("Enemy"))                
+            if (child.CompareTag("Enemy"))
                 enemies.Add(child.gameObject);
         }
 
@@ -347,12 +327,12 @@ public class StageController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             foreach (var kill in enemies)
-            {
+            {                
                 kill.SetActive(false);
             }
         }
 
-        if (canOpen)
+        if (canOpen||isClear)
         {
 
             if (portals != null)
@@ -399,5 +379,14 @@ public class StageController : MonoBehaviour
             }
         }
         return true;
+    }
+
+    public void EnemiesReset()
+    {
+        foreach(var enemy in enemies)
+        {
+            enemy.SetActive(false);
+            enemy.SetActive(true);
+        }
     }
 }
