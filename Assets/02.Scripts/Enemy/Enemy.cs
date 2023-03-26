@@ -190,7 +190,7 @@ public class Enemy : MonoBehaviour
     }
 
 
-    protected virtual void KnockBack() { }
+    public virtual void KnockBack() { }
 
 
     protected virtual void Stun(float stunCool) { }

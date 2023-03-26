@@ -26,7 +26,7 @@ public class AttackedKnockBack : MonoBehaviour, IAttackable
         if (CompareTag("Player"))
             GetComponent<PlayerController>().SetState<HitState>();
         if (CompareTag("Enemy"))
-            ;
+            GetComponent<Enemy>().KnockBack();
         var dir = new Vector3(Mathf.Sign(transform.position.x - attackPos.x), 0f, 0f);
         dir.y = up;
         dir.Normalize();

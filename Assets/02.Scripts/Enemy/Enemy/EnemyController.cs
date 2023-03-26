@@ -6,7 +6,7 @@ using UnityEngine.AI;
 using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
-public class EnemyController : Enemy, IAttackable
+public class EnemyController : Enemy
 {
     GameObject attackBox;
     private CapsuleCollider mainColl;
@@ -453,7 +453,7 @@ public class EnemyController : Enemy, IAttackable
         gameObject.SetActive(false);
     }
 
-    protected override void KnockBack()
+    public override void KnockBack()
     {
         if (State == EnemyState.Die)
             return;
