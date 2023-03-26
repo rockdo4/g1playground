@@ -47,6 +47,7 @@ public class Boss4Controller : Enemy
                 case EnemyState.None:
                     rb.isKinematic = true;
                     agent.enabled = true;
+                    agent.isStopped = true;
                     break;
                 case EnemyState.Spawn:
                     rb.isKinematic = true;
@@ -87,6 +88,7 @@ public class Boss4Controller : Enemy
                 case EnemyState.Die:
                     agent.velocity = Vector3.zero;
                     agent.enabled = true;
+                    agent.isStopped = true;
                     rb.isKinematic = true;
                     mainColl.enabled = false;
                     break;
@@ -135,6 +137,7 @@ public class Boss4Controller : Enemy
         {
             if (Vector3.Distance(player.transform.position, transform.position) <= 20f)
             {
+
                 State = EnemyState.Spawn;
             }
         }
@@ -173,6 +176,13 @@ public class Boss4Controller : Enemy
                 break;
         }
         animator.SetFloat("Move", agent.velocity.magnitude);
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            State = EnemyState.Die;
+            animator.SetTrigger("Die");
+            status.CurrHp -= 19000;
+        }
         //Debug.Log(State);
     }
     protected override void Spawn()

@@ -96,6 +96,7 @@ public class EnemyController : Enemy
                 case EnemyState.Die:
                     agent.velocity = Vector3.zero;
                     agent.enabled = true;
+                    agent.isStopped = true;
                     rb.isKinematic = true;
                     mainColl.enabled = false;
                     break;
