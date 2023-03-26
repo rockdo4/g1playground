@@ -193,7 +193,7 @@ public class Enemy : MonoBehaviour
     public virtual void KnockBack() { }
 
 
-    protected virtual void Stun(float stunCool) { }
+    public virtual void Stun(float stunCool) { }
     protected float SetStunTime(float stunCool, int count)
     {
         if (count == 0)

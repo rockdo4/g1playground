@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
+using static UnityEditor.Rendering.InspectorCurveEditor;
 
 public class EnemyController : Enemy
 {
@@ -26,8 +27,11 @@ public class EnemyController : Enemy
     private float patternTime = 0f;
     public bool isGoingRight;
 
-    public float patrolSpeed;
-    public float chaseSpeed;
+
+    public float defaultPatrolSpeed;
+    public float defaultChaseSpeed;
+    private float patrolSpeed;
+    private float chaseSpeed;
     public float searchRange;
     public float attackRange;
     public float attackCool;
@@ -128,6 +132,9 @@ public class EnemyController : Enemy
     {
         animator.ResetTrigger("TakeDamage");
         base.Start();
+        defaultPatrolSpeed = patrolSpeed;
+        defaultChaseSpeed = chaseSpeed;
+
     }
 
     protected AgentLinkMover linkMover;
@@ -467,7 +474,7 @@ public class EnemyController : Enemy
     private int stunCount = 0;
     private float stunCool;
     private float stunCoolTime = 0;
-    protected override void Stun(float stunCool)
+    public override void Stun(float stunCool)
     {
         if (isStun)
             this.stunCool += SetStunTime(stunCool, stunCount);
@@ -480,5 +487,40 @@ public class EnemyController : Enemy
             return;
 
         isStun = true;
+    }
+
+    private bool onSlowDown;
+    private float slowDownTime = 0;
+    private float slowDownTimer;
+
+    public void SlowDown(float newSlowDown, float newSlowTime)
+    {
+        onSlowDown = true;
+        slowDownTime = newSlowTime;
+        slowDownTimer = 0f;
+        patrolSpeed = defaultPatrolSpeed * (1f - newSlowDown);
+        chaseSpeed = defaultChaseSpeed * (1f - newSlowDown);
+        SetSpeed();
+    }
+
+    private void SetSpeed()
+    {
+        switch (State)
+        {
+            case EnemyState.Chase:
+                agent.speed = chaseSpeed;
+                break;
+            case EnemyState.Patrol:
+                agent.speed = patrolSpeed;
+                break;
+        }
+    }
+
+    public void EndSlowDown()
+    {
+        slowDownTimer = 0f;
+        patrolSpeed = defaultPatrolSpeed;
+        chaseSpeed = defaultChaseSpeed;
+        SetSpeed();
     }
 }
