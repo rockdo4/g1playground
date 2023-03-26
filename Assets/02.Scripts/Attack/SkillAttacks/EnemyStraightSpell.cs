@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyStraightSpell", menuName = "SkillAttack/EnemyStraightSpell")]
 public class EnemyStraightSpell : SkillAttack
 {
+    public float lifeTime;
+    public float range;
     public string projectileId;
 
     public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction)

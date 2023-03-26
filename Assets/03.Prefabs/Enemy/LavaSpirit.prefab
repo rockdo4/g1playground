@@ -457,7 +457,7 @@ GameObject:
   - component: {fileID: 3289195890045399459}
   - component: {fileID: 3289195890045399458}
   - component: {fileID: 3289195890045399461}
-  - component: {fileID: 228610657940767962}
+  - component: {fileID: 914765104476129714}
   m_Layer: 9
   m_Name: LavaSpirit
   m_TagString: Enemy
@@ -585,12 +585,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3289195890036032096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4cce4536f12014ba442bbe49be272e, type: 3}
+  m_Script: {fileID: 11500000, guid: 035b921a4da894c4bb7526a1d69962c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
-  id: 0
-  FinalValue:
+  id: 
+  <FinalValue>k__BackingField:
     str: 0
     dex: 0
     intel: 0
@@ -683,7 +682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59b7229bcaa41b4c942c681478c153b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &228610657940767962
+--- !u!114 &914765104476129714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -692,6 +691,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3289195890036032096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a45da68ca56f0b44cac1acb8750c7131, type: 3}
+  m_Script: {fileID: 11500000, guid: acc6b912e573bf34d9a1246670f60546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canKnockBack: 1
+  canStun: 1
+  canSlowDown: 1
+  canReduceDef: 1
+  maxKBCount: 3
+  kBResistTime: 30
+  maxStunCount: 3
+  stunResistTime: 30

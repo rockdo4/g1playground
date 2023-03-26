@@ -1,15 +1,42 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 
 public class Attack
 {
+    [Serializable]
+    public struct CC
+    {
+        public float knockBackForce;
+        public float stunTime;
+        public float slowDown;
+        public float slowTime;
+        public int reduceDef;
+        public float reduceDefTime;
+
+        public static CC None
+        {
+            get
+            {
+                CC newCC;
+                newCC.knockBackForce = 0f;
+                newCC.stunTime = 0f;
+                newCC.slowDown = 0f;
+                newCC.slowTime = 0f;
+                newCC.reduceDef = 0;
+                newCC.reduceDefTime = 0f;
+                return newCC;
+            }
+        }
+    }
     public int Damage { get; private set; }
-    public float KnockBackForce { get; private set; }
+    public CC cc { get; private set; }
     // addtional option
 
-    public Attack(int damage, float knockBackForce = 0f)
+    public Attack(int damage, CC cc)
     {
         Damage = damage;
-        KnockBackForce = knockBackForce;
+        this.cc = cc;
     }
 }

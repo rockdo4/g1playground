@@ -13,7 +13,9 @@ public class BasicAttack : AttackDefinition
         damage -= defenser.FinalValue.meleeDef;
         if (damage < 0)
             damage = 0;
-        return new Attack((int)damage, 7f);
+        Attack.CC newCC = Attack.CC.None;
+        newCC.knockBackForce = 7f;
+        return new Attack((int)damage, newCC);
     }
 
     public override void ExecuteAttack(GameObject attacker, GameObject defender, Vector3 attackPos)

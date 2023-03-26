@@ -399,10 +399,14 @@ public class PlayerController : MonoBehaviour
         {
             playerController.playerAnimator.SetFloat("MoveX", playerController.agent.velocity.x);
 
-            if (playerController.status.CurrHp < playerController.status.FinalValue.maxHp / 2 + 1)
+            while (playerController.status.CurrHp < playerController.status.FinalValue.maxHp / 2 + 1 && playerController.inventory.PotionCount[0] > 0)
+            {
                 playerController.inventory.UseHpPotion();
-            if (playerController.status.CurrMp < playerController.status.FinalValue.maxMp / 2 + 1)
+            }
+            while (playerController.status.CurrMp < playerController.status.FinalValue.maxMp / 2 + 1 && playerController.inventory.PotionCount[1] > 0)
+            {
                 playerController.inventory.UseMpPotion();
+            }
 
             var agentVec = (playerController.agent.transform.position - playerController.prevPosition).normalized;
             if (!Mathf.Approximately(agentVec.x, 0f))

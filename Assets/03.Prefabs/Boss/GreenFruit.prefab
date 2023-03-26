@@ -1098,9 +1098,9 @@ GameObject:
   - component: {fileID: 4136827915513395988}
   - component: {fileID: 4136827915513395986}
   - component: {fileID: 4136827915513395991}
-  - component: {fileID: 4136827915513395987}
   - component: {fileID: 4136827915513395985}
   - component: {fileID: 4136827915513395984}
+  - component: {fileID: 5901852229770141004}
   m_Layer: 0
   m_Name: GreenFruit
   m_TagString: Enemy
@@ -1231,22 +1231,6 @@ MonoBehaviour:
   idleTime: 1
   dashTime: 15
   projectileTime: 20
---- !u!114 &4136827915513395987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7260659575736892374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4cce4536f12014ba442bbe49be272e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  id: 3
-  currHp: 0
-  currMp: 0
 --- !u!114 &4136827915513395985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1271,6 +1255,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59b7229bcaa41b4c942c681478c153b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5901852229770141004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7260659575736892374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 035b921a4da894c4bb7526a1d69962c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 100006
+  <FinalValue>k__BackingField:
+    str: 0
+    dex: 0
+    intel: 0
+    meleePower: 0
+    skillPower: 0
+    meleeCriChance: 0
+    meleeCriDamage: 0
+    skillCriChance: 0
+    skillCriDamage: 0
+    meleeDef: 0
+    skillDef: 0
+    maxHp: 0
+    maxMp: 0
 --- !u!1 &7425491512403816033
 GameObject:
   m_ObjectHideFlags: 0

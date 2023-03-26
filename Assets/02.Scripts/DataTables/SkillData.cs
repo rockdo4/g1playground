@@ -15,12 +15,7 @@ public class SkillData : ICSVParsing
     public float criticalChance;
     public float criticalDamage;
     public float lifeTime;
-    public float knockBackForce;
-    public float stunTime;
-    public float slowDown;
-    public float slowTime;
-    public float reduceDef;
-    public float reduceDefTime;
+    public Attack.CC cc;
     public float CoolDown;
 
     public virtual void Parse(Dictionary<string, string> line)
@@ -36,12 +31,13 @@ public class SkillData : ICSVParsing
         damageFigure = float.Parse(line["damageFigure"]);
         criticalChance = float.Parse(line["criticalPercent"]);
         criticalDamage = float.Parse(line["criticalDamage"]);
-        stunTime = float.Parse(line["stunTime"]);
-        knockBackForce = float.Parse(line["kBForce"]);
-        slowDown = float.Parse(line["slowDown"]);
-        slowTime = float.Parse(line["slowTime"]);
-        reduceDef = float.Parse(line["reduceDef"]);
-        reduceDefTime = float.Parse(line["reduceDefTime"]);
+        cc = new Attack.CC();
+        cc.knockBackForce = float.Parse(line["kBForce"]);
+        cc.stunTime = float.Parse(line["stunTime"]);
+        cc.slowDown = float.Parse(line["slowDown"]);
+        cc.slowTime = float.Parse(line["slowTime"]);
+        cc.reduceDef = int.Parse(line["reduceDef"]);
+        cc.reduceDefTime = float.Parse(line["reduceDefTime"]);
         group = line["SkillGroup"];
 
         lifeTime = 0f;

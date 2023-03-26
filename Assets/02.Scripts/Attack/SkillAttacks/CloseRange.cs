@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CloseRange", menuName = "SkillAttack/CloseRange")]
 public class CloseRange : SkillAttack
 {
+    public float lifeTime;
+    public float range;
     public bool isAttachedToAttacker = false;
     public string rangeColliderId;
     public bool isContinuousAttack = false;

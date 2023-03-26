@@ -106,7 +106,7 @@ public class EnemyController : Enemy
                     break;
             }
 
-            Debug.Log(State);
+            //Debug.Log(State);
         }
     }
 

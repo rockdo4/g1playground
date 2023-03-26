@@ -1,17 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Status : MonoBehaviour
+public abstract class Status : MonoBehaviour
 {
     public enum Types
     {
         Player,
         Monster,
     }
+
     [Serializable]
     public struct Value
     {
@@ -28,6 +30,28 @@ public class Status : MonoBehaviour
         public int skillDef;
         public int maxHp;
         public int maxMp;
+
+        public static Value Zero
+        {
+            get
+            {
+                Value value;
+                value.str = 0;
+                value.dex = 0;
+                value.intel = 0;
+                value.meleePower = 0;
+                value.skillPower = 0;
+                value.meleeCriChance = 0;
+                value.meleeCriDamage = 0;
+                value.skillCriChance = 0;
+                value.skillCriDamage = 0;
+                value.meleeDef = 0;
+                value.skillDef = 0;
+                value.maxHp = 0;
+                value.maxMp = 0;
+                return value;
+            }
+        }
 
         public static Value operator +(Value lhs, Value rhs)
         {
@@ -49,47 +73,40 @@ public class Status : MonoBehaviour
         }
     }
 
-    public Types type;
+    protected Types type;
     public string id;
-    private Value defaultValue;
-    [SerializeField] public Value FinalValue;//{ get; private set; }
-    private int currHp;
+    protected bool isLoaded = false;
+    protected Value defaultValue;
+    public Value DebuffValue { get; protected set; }
+    [field: SerializeField] public Value FinalValue { get; protected set; }
+    protected int currHp;
     public int CurrHp
     {
         get => currHp;
         set
         {
             currHp = value;
-            if (type == Types.Player)
-                SetHpUi();
+            SetHpUi();
         }
     }
-    private int currMp;
+    protected int currMp;
     public int CurrMp
     {
         get => currMp;
         set
         {
             currMp = value;
-            if (type == Types.Player)
-                SetMpUi();
+            SetMpUi();
         }
     }
-    private void OnEnable()
-    {
-        if (type == Types.Monster)
-            CurrHp = FinalValue.maxHp;
-    }
-    private void Start()
+
+    protected void Start()
     {
         LoadFromTable();
         CurrHp = FinalValue.maxHp;
         CurrMp = FinalValue.maxMp;
-        if (CompareTag("Player"))
-        {
-            SetHpUi();
-            SetMpUi();
-        }
+        SetHpUi();
+        SetMpUi();
     }
 
     public void LoadFromTable()
@@ -117,48 +134,19 @@ public class Status : MonoBehaviour
         //defaultValue.skillDef = data.skillDef;
         defaultValue.maxHp = data.maxHp;
         defaultValue.maxMp = data.maxMp;
-        defaultValue = Calculate(defaultValue);
-        FinalValue = defaultValue;
+        isLoaded = true;
+        defaultValue = CalculateValue(defaultValue);
+        SetFinalValue();
     }
 
-    private Value Calculate(Value value)
+    protected abstract Value CalculateValue(Value value);
+    public virtual void AddValue(List<Value> addValue) { }
+    public void Debuff(Value value)
     {
-        switch (type)
-        {
-            case Types.Player:
-                value.meleePower += (int)(value.str / 70f * value.dex / 30f);
-                value.meleeCriChance += value.dex / 75f / 100f;
-                value.meleeDef += (int)(value.str / 10f);
-                value.skillPower += (int)(value.intel / 15f);
-                value.skillCriChance += value.intel / 75f / 100f;
-                value.skillDef += (int)(value.intel / 10f);
-                break;
-            case Types.Monster:
-                var damageFigure = DataTableMgr.GetTable<MonsterData>().Get(id).damageFigure;
-                value.meleePower += (int)(value.str * 1.7f * damageFigure);
-                value.meleeCriChance += value.dex / 200f / 100f;
-                value.meleeDef += (int)(value.str / 10f);
-                value.skillPower += (int)(value.intel / 5f * damageFigure);
-                value.skillCriChance += value.intel / 200f / 100f;
-                value.skillDef += (int)(value.intel / 10f);
-                break;
-        }
-        return value;
+        DebuffValue = value;
+        SetFinalValue();
     }
-
-    public void AddValue(List<Value> addValue)
-    {
-        Value value = new Value();
-        for (int i = 0; i < addValue.Count; ++i)
-        {
-            addValue[i] = Calculate(addValue[i]);
-            value += addValue[i];
-        }
-        FinalValue = defaultValue + value;
-        SetHpUi();
-        SetMpUi();
-    }
-
-    public void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, CurrHp);
-    public void SetMpUi() => GameManager.instance.uiManager.PlayerMpBar(FinalValue.maxMp, CurrMp);
+    protected abstract void SetFinalValue();
+    public virtual void SetHpUi() { }
+    public virtual void SetMpUi() { }
 }

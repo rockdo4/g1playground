@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RotateAttacker", menuName = "SkillAttack/RotateAttacker")]
 public class RotateAttacker : SkillAttack
 {
+    public float lifeTime;
+    public float range;
     private GameObject attacker;
     private Status aStat;
     private Transform attackPivot;
