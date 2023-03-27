@@ -57,4 +57,14 @@ public class DataTableMgr
 
         return tables[typeof(T)] as DataTable<T>;
     }
+    public static Sprite LoadIcon(string id)
+    {
+        IconData iconData = GetTable<IconData>().Get(id);
+        if (iconData != null)
+        {
+            Sprite sprite = Resources.Load<Sprite>(iconData.iconName);
+            return sprite;
+        }
+        return null;
+    }
 }

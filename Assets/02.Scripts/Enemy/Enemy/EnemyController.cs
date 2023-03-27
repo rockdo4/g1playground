@@ -173,7 +173,7 @@ public class EnemyController : Enemy
             yield break;
         }
 
-        // NavMeshAgent°¡ ÃÊ±âÈ­ ¹× ¿¬°áµÈ ÀÌÈÄ¿¡ AgentLinkMover¸¦ È°¼ºÈ­
+        // NavMeshAgentï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ä¿ï¿½ AgentLinkMoverï¿½ï¿½ È°ï¿½ï¿½È­
         linkMover.enabled = true;
     }
 
