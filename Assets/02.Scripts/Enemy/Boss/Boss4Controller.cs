@@ -14,7 +14,7 @@ public class Boss4Controller : Enemy
     public GameObject dashBox;
     public GameObject skillPivot;
     public GameObject indicatorBox;
-    
+
     private CapsuleCollider mainColl;
 
     public BasicAttack meleeAttack;
@@ -258,7 +258,7 @@ public class Boss4Controller : Enemy
     }
 
     protected override void TakeDamageUpdate()
-    { 
+    {
 
     }
 
@@ -408,14 +408,14 @@ public class Boss4Controller : Enemy
         if (State == EnemyState.None && State == EnemyState.Spawn)
             return;
 
-            if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
-            {
-                //Debug.Log(State);
+        if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
+        {
+            //Debug.Log(State);
 
-                if (State == EnemyState.Attack)
-                    meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
-                else if (State == EnemyState.Skill)
-                    meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
-            }
+            if (State == EnemyState.Attack)
+                meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+            else if (State == EnemyState.Skill)
+                meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+        }
     }
 }
