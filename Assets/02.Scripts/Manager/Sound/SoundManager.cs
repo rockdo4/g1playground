@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
+
 
 public class SoundManager : MonoBehaviour
 {
@@ -14,13 +17,13 @@ public class SoundManager : MonoBehaviour
     [Header("Audio Source")]
     [SerializeField] public AudioSource bgmSource;
     [SerializeField] public AudioSource seSource;
+    [SerializeField] public AudioSource playerSource;
+    [SerializeField] public AudioSource enemySource;   
 
     [Header("BGMs")]
-    //bgms
     [SerializeField] public List<AudioClip> bgmClips = new List<AudioClip>();
 
     [Header("Sound Effects")]
-    //sound effects
     [SerializeField] public List<AudioClip> seClips = new List<AudioClip>();
 
     [Header("Start BGM")]
@@ -32,6 +35,54 @@ public class SoundManager : MonoBehaviour
 
     public string BgmFolderPath = "Sounds/BGM";
     public string EffectFolderPath = "Sounds/Effect";
+
+    [Header("Player Sound Pool")]
+    [SerializeField] private PlayerSound playerSound;
+    public int maxPoolSize = 200;
+    public int stackDefaultCapacity = 10;
+
+    private IObjectPool<PlayerSound> playerSoundPool;
+    public IObjectPool<PlayerSound> PlayerSoundPool
+    {
+        get
+        {
+            if (playerSoundPool == null)
+                playerSoundPool =
+                    new ObjectPool<PlayerSound>(
+                        CreateSound,
+                        OnTakeFromPool,
+                        OnReturnedToPool,
+                        OnDestroyPoolObject,
+                        true,
+                        stackDefaultCapacity,
+                        maxPoolSize);
+            return playerSoundPool;
+        }
+    }
+
+    private PlayerSound CreateSound()
+    {
+        PlayerSound pSound = Instantiate(playerSound, seSource.transform);
+        pSound.PlayerSoundPool = PlayerSoundPool;
+        return pSound;
+    }
+
+    private void OnTakeFromPool(PlayerSound sound)
+    {
+        sound.gameObject.SetActive(true);
+
+    }
+
+    private void OnReturnedToPool(PlayerSound sound)
+    {
+        sound.gameObject.SetActive(false);
+
+    }
+
+    private void OnDestroyPoolObject(PlayerSound sound)
+    {
+        Destroy(sound.gameObject);
+    }
 
     private static SoundManager m_instance;
     public static SoundManager instance
@@ -61,7 +112,7 @@ public class SoundManager : MonoBehaviour
 
         //load volumes on load
         LoadVolume();
-        //PlayBGM(bgmName);
+        PlayBGM(bgmName);
     }
 
     //load volume set on sliders
@@ -76,6 +127,7 @@ public class SoundManager : MonoBehaviour
         audioMixer.SetFloat(VolumeSetting.MIXER_SE, Mathf.Log10(seVolume) * 20);
     }
 
+    ///////////////////BGM/////////////////////////
     //play BGM by file name
     public void PlayBGM(string name)
     {
@@ -90,7 +142,26 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    //stop Bgm
+    public void StopBGM()
+    {
+        bgmSource.Stop();
+    }
 
+    //Pause playing BGM
+    public void PauseBGM()
+    {
+        bgmSource.Pause();
+    }
+
+    //Resume paused BGM
+    public void UnPauseBGM()
+    {
+        bgmSource.UnPause();
+    }
+
+
+    ///////////////////SE/////////////////////////
     //play SE by file name find in SE list
     public void PlaySoundEffect(string name)
     {
@@ -111,27 +182,128 @@ public class SoundManager : MonoBehaviour
         seSource.PlayOneShot(clip);   
     }
 
+    //Play Player SoundEffect by searching sound clip
+    public void PlayPlayerEffect(string name)
+    {
+        //search for sound clip
+        foreach (var se in seClips)
+        {
+            if (se.name == (name))
+            {
+                var pSE = PlayerSoundPool.Get();
+                pSE.InitSound(se);
+
+                return;
+            }
+        }
+    }
+
     //Pause playing SoundEffect
     public void PauseSoundEffect()
     {
         seSource.Pause();
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            pSource.PauseAudio();
+        }
+    }
+
+    //Pause Player SoundEffect by searching sound clip
+    public void PausePlayerSound(string name)
+    {
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            if (pSource.audioSource.clip.name == name)
+            {
+                pSource.PauseAudio();
+            }
+            
+        }
     }
 
     //Resume paused SoundEffect
     public void UnPauseSoundEffect()
     {
         seSource.UnPause();
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            pSource.ResumeAudio();
+        }
     }
 
-    //Pause playing BGM
-    public void PauseBGM()
+    //Resume Player SoundEffect by searching sound clip
+    public void UnPausePlayerSound(string name)
     {
-        bgmSource.Pause();
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            if (pSource.audioSource.clip.name == name)
+            {
+                pSource.ResumeAudio();
+            }
+
+        }
     }
 
-    //Resume paused BGM
-    public void UnPauseBGM()
+    public void StopSoundEffect()
     {
-        bgmSource.UnPause();
+        seSource.Stop();
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            pSource.StopAudio();
+        }
+    }
+
+    //Stop Player SoundEffect by searching sound clip
+    public void StopPlayerSound(string name)
+    {
+        var playerSource = GetComponentsInChildren<PlayerSound>();
+        foreach (var pSource in playerSource)
+        {
+            if (pSource.audioSource.clip.name == name)
+            {
+                pSource.StopAudio();
+            }
+
+        }
+    }
+
+    ////////////////////////////////////////////
+    public void PauseAll()
+    {
+        PauseBGM();
+        PauseSoundEffect();
+    }
+
+    public void ResumeAll()
+    {
+        UnPauseBGM();
+        UnPauseSoundEffect();
+    }
+
+    public void StopAll()
+    {
+        StopBGM();
+        StopSoundEffect();
+    }
+
+    ////////////////////////////////////////////
+    public AudioClip GetAudioClip(string name)
+    {
+        AudioClip audioClip = null;
+        foreach (var clip in  seClips)
+        {
+            if (clip.name == name)
+            {
+                audioClip = clip;
+                break;
+            }
+        }
+
+        return audioClip;
     }
 }
