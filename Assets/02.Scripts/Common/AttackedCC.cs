@@ -112,7 +112,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
             ReduceDef(attack.cc.reduceDef, attack.cc.reduceDefTime);
     }
 
-    protected virtual void KnockBack(Vector3 attackPos, float force)
+    private void KnockBack(Vector3 attackPos, float force)
     {
         Debug.Log(kBCount);
         if (kBCount >= maxKBCount || Mathf.Approximately(force, 0f) || knockBackedOnThisFrame)

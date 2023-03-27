@@ -78,12 +78,15 @@ public class PlayerSkills : MonoBehaviour
 
             if (!skillStates[i].skill.isOnOffSkill)
             {
-                if (skillStates[i].skillTimer < skillStates[i].skill.coolDown)
-                    skillStates[i].skillTimer += Time.deltaTime;
-                else
+                if (!skillStates[i].skillUsable)
                 {
-                    skillStates[i].skillTimer = 0f;
-                    skillStates[i].skillUsable = true;
+                    if (skillStates[i].skillTimer < skillStates[i].skill.coolDown)
+                        skillStates[i].skillTimer += Time.deltaTime;
+                    else
+                    {
+                        skillStates[i].skillTimer = 0f;
+                        skillStates[i].skillUsable = true;
+                    }
                 }
             }
 
