@@ -31,12 +31,15 @@ public class Attack
         }
     }
     public int Damage { get; private set; }
-    public CC cc { get; private set; }
+    public CC Cc { get; private set; }
+    public bool IsCritical { get; private set; }
+
     // addtional option
 
-    public Attack(int damage, CC cc)
+    public Attack(int damage, CC cc, bool isCritical)
     {
         Damage = damage;
-        this.cc = cc;
+        Cc = cc;
+        IsCritical = isCritical;
     }
 }

@@ -103,13 +103,13 @@ public class AttackedCC : MonoBehaviour, IAttackable
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
         if (canKnockBack)
-            KnockBack(attackPos, attack.cc.knockBackForce);
+            KnockBack(attackPos, attack.Cc.knockBackForce);
         if (canStun)
-            Stun(attack.cc.stunTime);
+            Stun(attack.Cc.stunTime);
         if (canSlowDown)
-            SlowDown(attack.cc.slowDown, attack.cc.slowTime);
+            SlowDown(attack.Cc.slowDown, attack.Cc.slowTime);
         if (canReduceDef)
-            ReduceDef(attack.cc.reduceDef, attack.cc.reduceDefTime);
+            ReduceDef(attack.Cc.reduceDef, attack.Cc.reduceDefTime);
     }
 
     private void KnockBack(Vector3 attackPos, float force)
@@ -157,12 +157,17 @@ public class AttackedCC : MonoBehaviour, IAttackable
         }
         else
             return;
-
+     
         //if (CompareTag("Player"))
         //    ((PlayerController)controller).;
         //if (CompareTag("Enemy"))
         //    ((Enemy)controller).SlowDown(1 - slowDown, slowDownTime);
         onSlowDown = true;
+
+        GameObject effect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow(blue)");
+        effect.transform.position = transform.position;
+        GameManager.instance.effectManager.ReturnEffectOnTime("Fog_speedSlow(blue)", effect, newSlowTime);
+        effect.transform.SetParent(transform);
     }
 
     private void ReduceDef(int newReduceDef, float newReduceDefTime)
@@ -181,5 +186,10 @@ public class AttackedCC : MonoBehaviour, IAttackable
         newDebuff.skillDef = -reduceDef;
         status.Debuff(newDebuff);
         onReduceDef = true;
+
+        GameObject effect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow");
+        effect.transform.position = transform.position;
+        GameManager.instance.effectManager.ReturnEffectOnTime("Fog_speedSlow", effect, newReduceDefTime);
+        effect.transform.SetParent(transform);
     }
 }

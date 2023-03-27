@@ -50,7 +50,7 @@ public class SkillAttack : AttackDefinition
         damage -= defenser.FinalValue.skillDef;
         if (damage < 0)
             damage = 0;
-        return new Attack((int)damage, cc);
+        return new Attack((int)damage, cc, isCritical);
     }
 
     public override void ExecuteAttack(GameObject attacker, GameObject defender, Vector3 attackPos)

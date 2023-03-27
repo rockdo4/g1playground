@@ -21,6 +21,7 @@ public abstract class AttackCollider : MonoBehaviour
 
     public virtual void Reset()
     {
+        hitEffect = null;//temp
         OnCollided = null;
         gameObject.SetActive(true);
         timer = 0f;
