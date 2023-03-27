@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     private GameObject potion;
     private GameObject skillToggle;
 
+    public Button[] buttons;
+
     public Stack<GameObject> popupStack;
 
     private void Awake()
@@ -83,5 +85,21 @@ public class UIManager : MonoBehaviour
     public void SkillToggleOff()
     {
         skillToggle.SetActive(false);
+    }
+
+    public void ButtonOn()
+    {
+        foreach (var button in buttons)
+        {
+            button.interactable = true;
+        }
+    }
+
+    public void ButtonOff()
+    {
+        foreach (var button in buttons)
+        {
+            button.interactable = false;
+        }
     }
 }
