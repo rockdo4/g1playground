@@ -372,7 +372,7 @@ public class DungeonManager : MonoBehaviour
         yield return null;
 
         enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
-        Debug.Log("enemy");
+      //  Debug.Log("enemy");
         isDungeon = true;
         playerStatus = GameManager.instance.player.GetComponent<Status>();
         var player = GameManager.instance.player;
@@ -383,16 +383,16 @@ public class DungeonManager : MonoBehaviour
         //Debug.Log("empty");
 
         player.GetComponent<PlayerSkills>().SetSkill(0, PlayerDataManager.instance.currskill1);
-        Debug.Log("SetSkill0");
+        //Debug.Log("SetSkill0");
 
         player.GetComponent<PlayerSkills>().SetSkill(1, PlayerDataManager.instance.currskill2);
-        Debug.Log("SetSkill1");
+       // Debug.Log("SetSkill1");
 
         GameManager.instance.uiManager.PotionOn();
         homeButton.gameObject.SetActive(true);
 
         GameManager.instance.player.transform.position = GameObject.FindGameObjectWithTag("StartPoint").transform.position;
-        Debug.Log("startpoint");
+     //   Debug.Log("startpoint");
 
     }
 
@@ -452,12 +452,15 @@ public class DungeonManager : MonoBehaviour
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
         scenename.Append("_");
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
-        SceneManager.LoadScene(scenename.ToString());
+
+        SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        SceneManager.LoadScene(scenename.ToString(), LoadSceneMode.Additive);
 
         remaningtime.gameObject.SetActive(true);
         pannel.gameObject.SetActive(false);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
 
+       // Debug.Log("loaded");
         StartCoroutine(SetEnemy());
         //foreach (var enemy in enemies)
         //{
