@@ -12,6 +12,7 @@ public class NewGameButton : ButtonUi
     }
     public void ChangeScene()
     {
-        SceneManager.LoadScene("Tutorial");
+        SceneLoader.Instance.LoadScene("Tutorial");
+        //SceneManager.LoadScene("Tutorial");
     }
 }

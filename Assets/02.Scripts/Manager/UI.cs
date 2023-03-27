@@ -13,27 +13,25 @@ public enum LayoutState
 }
 public class UI : MonoBehaviour
 {
-    public Layout title;
+    public TitleLayout title;
     public Layout tutorial;
     public Layout village;
     public Layout main;
     public Layout weekly;
+    //public SceneLoader loading;
 
     private LayoutState State;
 
     private void Awake()
     {
-        title = GetComponent<Layout>();
-        title.ActiveTrue();
-        tutorial = GetComponent<Layout>();
-        tutorial.ActiveFalse();
-        village = GetComponent<Layout>();
-        village.ActiveFalse();
-        main = GetComponent<Layout>();
-        main.ActiveFalse();
-        weekly = GetComponent<Layout>();
-        weekly.ActiveFalse();
-        State = LayoutState.Title;
+        title = GetComponentInChildren<TitleLayout>(true);
+        //title.ActiveTrue();
+        //loading.GetComponentInChildren<SceneLoader>(true);
+        //tutorial = GetComponentInChildren<Layout>();
+        //village = GetComponentInChildren<Layout>();
+        //main = GetComponentInChildren<Layout>();
+        //weekly = GetComponentInChildren<Layout>();
+        //State = LayoutState.Title;
     }
 
     public void SetState(LayoutState state)
