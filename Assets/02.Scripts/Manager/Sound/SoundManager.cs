@@ -11,8 +11,6 @@ using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
-    Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
-
     [Header("Audio Mixer")]
     [SerializeField] private AudioMixer audioMixer;
 
@@ -20,19 +18,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] public AudioSource bgmSource;
     [SerializeField] public AudioSource seSource;
     [SerializeField] public AudioSource playerSource;
-    [SerializeField] public AudioSource enemySource;
-
-    [SerializeField] public int playerSourceCount = 10;
-    [SerializeField] private AudioMixerGroup playerMixer;
-    //private List<AudioSource> playerSourceList = new List<AudioSource>();
-    //private Dictionary<int, AudioSource> playerSources = new Dictionary<int, AudioSource>();
+    [SerializeField] public AudioSource enemySource;   
 
     [Header("BGMs")]
-    //bgms
     [SerializeField] public List<AudioClip> bgmClips = new List<AudioClip>();
 
     [Header("Sound Effects")]
-    //sound effects
     [SerializeField] public List<AudioClip> seClips = new List<AudioClip>();
 
     [Header("Start BGM")]
@@ -194,17 +185,6 @@ public class SoundManager : MonoBehaviour
     //Play Player SoundEffect by searching sound clip
     public void PlayPlayerEffect(string name)
     {
-        //search if there is same clip playing
-        var playerSource = GetComponentsInChildren<PlayerSound>();
-        foreach (var pSource in playerSource)
-        {
-            if (pSource.audioSource.clip.name == name)
-            {
-                return;
-            }
-            
-        }
-
         //search for sound clip
         foreach (var se in seClips)
         {
@@ -309,5 +289,21 @@ public class SoundManager : MonoBehaviour
     {
         StopBGM();
         StopSoundEffect();
+    }
+
+    ////////////////////////////////////////////
+    public AudioClip GetAudioClip(string name)
+    {
+        AudioClip audioClip = null;
+        foreach (var clip in  seClips)
+        {
+            if (clip.name == name)
+            {
+                audioClip = clip;
+                break;
+            }
+        }
+
+        return audioClip;
     }
 }
