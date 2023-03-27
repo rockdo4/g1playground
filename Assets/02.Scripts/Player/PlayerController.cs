@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private Status status;
     private PlayerInventory inventory;
+    private PlayerSkills playerSkills;
 
     private PlayerInput input;
     private Dictionary<Type, State> states = new Dictionary<Type, State>();
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviour
         input = GetComponent<PlayerInput>();
         status = GetComponent<Status>();
         inventory = GetComponent<PlayerInventory>();
+        playerSkills = GetComponent<PlayerSkills>();
         playerRb = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
@@ -81,9 +83,13 @@ public class PlayerController : MonoBehaviour
         prevPosition = agent.transform.position;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
-
         autoToggle.onValueChanged.AddListener((isAuto) => IsAuto = isAuto);
         autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
+        for (int i = 0; i < playerSkills.toggles.Length; i++)
+        {
+            var index = i;
+            autoToggle.onValueChanged.AddListener((isAuto)=>playerSkills.toggles[index].isOn = SkillOnOff(IsAuto , index));
+        }
     }
 
     private void Start()
@@ -112,6 +118,10 @@ public class PlayerController : MonoBehaviour
     {
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
+    }
+    public bool SkillOnOff(bool isOn , int index)
+    {
+        return playerSkills.toggles[index].isOn = isOn;
     }
     public void AgentOn()
     {
