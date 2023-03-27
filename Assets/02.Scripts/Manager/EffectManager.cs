@@ -68,11 +68,21 @@ public class EffectManager : MonoBehaviour
             return;
         }
 
+        ResetParent();
+
         effect.SetActive(false);
         effectPool[effectName].Enqueue(effect);
     }
 
-
+    private void ResetParent()
+    {
+        if (transform.parent != null)
+        {
+            transform.parent = transform.parent.parent;
+            ResetParent();
+        }
+        
+    }
     public void ReturnEffectOnTime(string effectName, GameObject effect, float destroyTime)
     {
         StartCoroutine(DelaySetfalse(effectName, effect, destroyTime));

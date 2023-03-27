@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 using static UnityEditor.Rendering.InspectorCurveEditor;
@@ -487,6 +488,13 @@ public class EnemyController : Enemy
             return;
 
         isStun = true;
+
+        var effect=GameManager.instance.effectManager.GetEffect("Stun");
+        Bounds bounds = transform.GetComponent<Collider>().bounds;
+        effect.transform.position = new Vector3(transform.position.x, bounds.center.y + bounds.max.y + 5, transform.position.z);
+        GameManager.instance.effectManager.ReturnEffectOnTime("Stun", effect, stunCool);
+        effect.transform.SetParent(transform);
+       
     }
 
     private bool onSlowDown;
@@ -501,6 +509,11 @@ public class EnemyController : Enemy
         patrolSpeed = defaultPatrolSpeed * (1f - newSlowDown);
         chaseSpeed = defaultChaseSpeed * (1f - newSlowDown);
         SetSpeed();
+        GameObject effect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow(blue)");
+        effect.transform.position = transform.position;
+        GameManager.instance.effectManager.ReturnEffectOnTime("Fog_speedSlow(blue)", effect, newSlowTime);
+        effect.transform.SetParent(transform);
+
     }
 
     private void SetSpeed()

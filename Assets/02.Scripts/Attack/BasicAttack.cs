@@ -15,7 +15,7 @@ public class BasicAttack : AttackDefinition
             damage = 0;
         Attack.CC newCC = Attack.CC.None;
         newCC.knockBackForce = 7f;
-        return new Attack((int)damage, newCC);
+        return new Attack((int)damage, newCC, isCritical);
     }
 
     public override void ExecuteAttack(GameObject attacker, GameObject defender, Vector3 attackPos)

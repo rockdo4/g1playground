@@ -52,7 +52,7 @@ public class PlayerBodyTrigger : MonoBehaviour
             return;
         Attack.CC newCC = Attack.CC.None;
         newCC.knockBackForce = 7f;
-        Attack attack = new Attack(damage, newCC);
+        Attack attack = new Attack(damage, newCC, false);
         var attackables = transform.parent.GetComponents<IAttackable>();
         var attacker = other.transform.parent.gameObject;
         var attackPos = other.transform.position;

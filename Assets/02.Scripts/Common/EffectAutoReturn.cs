@@ -19,4 +19,10 @@ public class EffectAutoReturn : MonoBehaviour
         timeLeft = main.startLifetimeMultiplier + main.duration;
         GameManager.instance.effectManager.ReturnEffectOnTime(effectName, gameObject, timeLeft);
     }
+
+    private void Update()
+    {
+        if (system.isStopped)
+            GameManager.instance.effectManager.ReturnEffect(effectName, gameObject);
+    }
 }
