@@ -120,7 +120,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
 
         force *= Mathf.Pow(0.5f, kBCount);
         if (CompareTag("Player"))
-            ((PlayerController)controller).SetState<HitState>();
+            ((PlayerController)controller).SetState<KnockBackState>();
         if (CompareTag("Enemy"))
             ((Enemy)controller).KnockBack();
         var dir = new Vector3(Mathf.Sign(transform.position.x - attackPos.x), 0f, 0f);

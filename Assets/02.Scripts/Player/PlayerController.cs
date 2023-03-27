@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
         states.Add(typeof(IdleState), new IdleState(this));
         states.Add(typeof(MoveState), new MoveState(this));
         states.Add(typeof(JumpState), new JumpState(this));
-        states.Add(typeof(HitState), new HitState(this));
+        states.Add(typeof(KnockBackState), new KnockBackState(this));
         states.Add(typeof(AutoMoveState), new AutoMoveState(this));
         SetState<IdleState>();
         GetComponent<DestructedEvent>().OnDestroyEvent = GameManager.instance.Respawn;
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
         IsBlocked = false;
         for (int i = 0; i < 3; i++)
         {
-            int layerMask = ~LayerMask.GetMask("Projectile");
+            int layerMask = ~(LayerMask.GetMask("Falling") | LayerMask.GetMask("Projectile"));
             var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f, layerMask);
             foreach (var hit in hits)
             {
@@ -373,11 +373,11 @@ public class PlayerController : MonoBehaviour
         public override void Exit() { }
     }
 
-    public class HitState : State
+    public class KnockBackState : State
     {
         private float hitTimer;
 
-        public HitState(PlayerController controller) : base(controller) { }
+        public KnockBackState(PlayerController controller) : base(controller) { }
 
         public override void Enter()
         {
