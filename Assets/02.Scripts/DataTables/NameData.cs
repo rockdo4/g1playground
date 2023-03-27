@@ -10,6 +10,6 @@ public class NameData : ICSVParsing
     public void Parse(Dictionary<string, string> line)
     {
         id = line["Name_ID"];
-        name = line["name"];
+        name = line["name"].Replace("n", "\n");
     }
 }

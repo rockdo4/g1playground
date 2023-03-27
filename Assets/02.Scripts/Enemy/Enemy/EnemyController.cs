@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering.UI;
-using UnityEngine.UI;
-using static UnityEditor.Rendering.InspectorCurveEditor;
 
 public class EnemyController : Enemy
 {

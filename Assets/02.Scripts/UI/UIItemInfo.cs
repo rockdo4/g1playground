@@ -25,7 +25,7 @@ public class UIItemInfo : MonoBehaviour
         }
 
         weaponImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
-        itemName.text = data.name;
-        itemInfo.text = data.desc;
+        itemName.text = DataTableMgr.GetTable<NameData>().Get(data.name).name;
+        itemInfo.text = DataTableMgr.GetTable<DescData>().Get(data.desc).text;
     }
 }

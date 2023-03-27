@@ -39,8 +39,8 @@ public class UISkillInfo : MonoBehaviour
         //currSkillData = data;
         equipImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
         equipImage.color = Color.white;
-        skillName.text = data.name;
-        skillDesc.text = data.desc;
+        skillName.text = DataTableMgr.GetTable<NameData>().Get(data.name).name;
+        skillDesc.text = DataTableMgr.GetTable<DescData>().Get(data.desc).text;
     }
 
     //public void SetPlayerSkill(int index)
