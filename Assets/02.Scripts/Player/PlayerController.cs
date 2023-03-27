@@ -130,7 +130,19 @@ public class PlayerController : MonoBehaviour
         if (IsAuto)
         {
             if (SceneManager.GetActiveScene().name == "Scene02")
-                enemies = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().GetStageEnemies();
+            {
+                var stageController = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>();
+                if(stageController.lockRequirement == StageController.UnLockRequirement.Fight)
+                    enemies = stageController.GetStageEnemies();
+                else if(stageController.lockRequirement == StageController.UnLockRequirement.Puzzle ||
+                    stageController.lockRequirement == StageController.UnLockRequirement.Heal)
+                {
+                    IsAuto = false;
+                    autoToggle.isOn = false;
+                    SetState<IdleState>();
+                    return;
+                }
+            }
             else if (SceneManager.GetActiveScene().name != "Scene02")
                 enemies = DungeonManager.instance.Enemies;
             if (enemies != null)
@@ -288,6 +300,7 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter() 
         {
+            playerController.playerRb.velocity = new Vector3(0f, playerController.playerRb.velocity.y, 0f);
         }
 
         public override void Update()
