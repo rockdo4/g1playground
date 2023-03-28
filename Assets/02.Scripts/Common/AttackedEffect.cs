@@ -11,5 +11,6 @@ public class AttackedEffect : MonoBehaviour, IAttackable
         var eff = attack.IsCritical ? string.Format(effect.hitEffect) : string.Format(effect.criticalHitEffect);
         var feect=GameManager.instance.effectManager.GetEffect(eff);
         feect.transform.position = transform.position;
+        GameManager.instance.effectManager.ReturnEffectOnTime(eff,feect, 1);
     }
 }
