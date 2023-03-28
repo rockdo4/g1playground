@@ -101,6 +101,7 @@ public class EffectManager : MonoBehaviour
 
         effect.SetActive(false);
         effectPool[effectName].Enqueue(effect);
+        ResetParent();
     }
 
 }
