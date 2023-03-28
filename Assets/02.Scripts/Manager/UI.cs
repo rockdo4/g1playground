@@ -13,6 +13,8 @@ public enum LayoutState
 }
 public class UI : MonoBehaviour
 {
+    public static UI Instance { get; private set; }
+
     public TitleLayout title;
     public Layout tutorial;
     public Layout village;
@@ -24,6 +26,15 @@ public class UI : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         title = GetComponentInChildren<TitleLayout>(true);
         //title.ActiveTrue();
         //loading.GetComponentInChildren<SceneLoader>(true);
