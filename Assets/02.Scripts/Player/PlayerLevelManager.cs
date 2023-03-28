@@ -6,10 +6,37 @@ public class PlayerLevelManager : MonoBehaviour
 {
     private Status status;
     private PlayerInventory inventory;
-    public int Level; // { get; private set; }
+    [field: SerializeField] public int Level { get; private set; }
     public int maxLevel = 20;
     public int MaxExp { get; private set; }
-    public int CurrExp { get; private set; }
+    private int currExp;
+    public int CurrExp
+    {
+        get => currExp;
+        set
+        {
+            currExp += value;
+            if (currExp >= MaxExp)
+            {
+                var leftExp = currExp - MaxExp;
+                LevelUp();
+                currExp = leftExp;
+            }
+            SetExpUi();
+        }
+    }
+
+    public void Load(int currLevel, int currExp)
+    {
+        Level = currLevel;
+        CurrExp = currExp;
+    }
+
+    public void SetDefault()
+    {
+        Level = 0;
+        CurrExp = 0;
+    }
 
     private void Awake()
     {
@@ -42,22 +69,10 @@ public class PlayerLevelManager : MonoBehaviour
         status.id = level.ToString();
         status.LoadFromTable();
         inventory.ApplyStatus();
-        SetExpUi();
+        status.Restore();
         SetLevelUi();
     }
 
-    public void GetExp(int exp)
-    {
-        CurrExp += exp;
-        if (CurrExp >= MaxExp)
-        {
-            var leftExp = CurrExp - MaxExp;
-            LevelUp();
-            CurrExp = leftExp;
-        }
-        SetExpUi();
-    }
-
-    public void SetExpUi() => GameManager.instance.uiManager.PlayerExpBar(MaxExp, CurrExp);
+    public void SetExpUi() => GameManager.instance.uiManager.PlayerExpBar(MaxExp, currExp);
     public void SetLevelUi() => GameManager.instance.uiManager.PlayerLevel(Level);
 }

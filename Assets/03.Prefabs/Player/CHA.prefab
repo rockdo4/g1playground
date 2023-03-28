@@ -2247,6 +2247,8 @@ GameObject:
   - component: {fileID: 441504610}
   - component: {fileID: 441504631}
   - component: {fileID: 441504632}
+  - component: {fileID: 441504619}
+  - component: {fileID: 441504618}
   m_Layer: 6
   m_Name: CHA
   m_TagString: Player
@@ -2419,15 +2421,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9a9d40a78629aa84d99bf332f4a8ed3b, type: 2}
   - {fileID: 11400000, guid: 8e46024c5cacb964b9ab41c9e82130b8, type: 2}
   - {fileID: 11400000, guid: 7a60b3529dfee584a9fad7eabcdfc3b9, type: 2}
-  PossessedSkillsTemp:
-  - 10001
-  - 10007
-  - 10007
-  - 10001
+  defaultPossessedSkills: []
   toggles:
   - {fileID: 0}
   - {fileID: 0}
-  defaultSkills: 0000000001000000
 --- !u!114 &1674795210733244911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2440,36 +2437,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba27b3d651054ff448491bd377d542c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponsTemp:
-  - 20001
-  - 20002
-  - 20003
-  - 20004
-  - 20005
-  - 20006
-  - 20007
-  - 20008
-  - 20009
-  - 20010
-  armorsTemp:
+  defaultWeapons:
+  - 20015
+  defaultArmors:
   - 30001
-  - 30002
-  - 30003
-  - 30003
-  - 30005
-  consumablesTemp:
-  - id: 40001
-    count: 30000
-  - id: 40002
-    count: 200
-  - id: 40003
-    count: 200
-  - id: 40004
-    count: 100
-  - id: 40001
-    count: 100
-  CurrWeapon: 
-  CurrArmor: 
+  defaultConsumables: []
+  <CurrWeapon>k__BackingField: 
+  <CurrArmor>k__BackingField: 
   potionRate:
   - 0.3
   - 0.3
@@ -2622,7 +2596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68b54b53168e2b4ab1356426404ae2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Level: 1
+  <Level>k__BackingField: 0
   maxLevel: 20
 --- !u!114 &441504632
 MonoBehaviour:
@@ -2637,6 +2611,121 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: 1d4f0b889be0ce644933b3f431eb43e2, type: 2}
+--- !u!82 &441504619
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374462481970909493}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 8069915677202042291, guid: 63249c73d329e4157aaca859dec94791,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &441504618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374462481970909493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 826a0238bd5f94a4ea89b8b660018e6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grassFootSound: {fileID: 11400000, guid: 830bfe2e421ed41c6a494d800673fa32, type: 2}
+  sandFootSound: {fileID: 11400000, guid: 201fd08e26a97491d9566a4e03a33830, type: 2}
+  villageFootSound: {fileID: 11400000, guid: e5c4b5dbf2dad4b81b163ca149ec9fe1, type: 2}
+  grassJumpSound: {fileID: 11400000, guid: b74473f4b2cdf418393e874b068a1ad3, type: 2}
+  sandJumpSound: {fileID: 11400000, guid: dd8f340f89070440bb1a665dff635e60, type: 2}
+  villageJumpSound: {fileID: 11400000, guid: 9e8e9be3967104d9bb373728ed7adf49, type: 2}
 --- !u!1 &6047748371506495711
 GameObject:
   m_ObjectHideFlags: 0

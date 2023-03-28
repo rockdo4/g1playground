@@ -33,14 +33,25 @@ public class PlayerSkills : MonoBehaviour
 
     public SkillAttack[] allSkillsInInspector;
     private Dictionary<string, SkillAttack> allSkillGroups = new Dictionary<string, SkillAttack>();
-    public string[] PossessedSkillsTemp;
+    public string[] defaultPossessedSkills;
     public List<string> PossessedSkills { get; private set; }
 
     public Toggle[] toggles;
-    public int[] defaultSkills;
     private SkillState[] skillStates;
     private int skillCount = 0;
 
+    public void Load(List<string> possessedSkills, int currSkill1, int currSkill2)
+    {
+        PossessedSkills = possessedSkills;
+        SetSkill(0, currSkill1);
+        SetSkill(1, currSkill2);
+    }
+    
+    public void SetDefault()
+    {
+        PossessedSkills = defaultPossessedSkills.ToList();
+        SetEmpty();
+    }
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
@@ -56,8 +67,6 @@ public class PlayerSkills : MonoBehaviour
             skillStates[i].skillUsable = true;
         }
 
-        PossessedSkills = PossessedSkillsTemp.ToList();
-
         for (int i = 0; i < skillCount; i++)
         {
             if (toggles[i] == null)
@@ -65,7 +74,6 @@ public class PlayerSkills : MonoBehaviour
             int n = i;
             toggles[i].onValueChanged.AddListener(onOff => SkillOnOff(n, onOff));
             toggles[i].onValueChanged.AddListener(onOff => ToggleSkill(n, onOff));
-            SetSkill(i, defaultSkills[i]);
         }
     }
 
@@ -115,6 +123,15 @@ public class PlayerSkills : MonoBehaviour
 
     public void SetSkill(int index, int possessedIndex)
     {
+        if (possessedIndex < 0)
+            SetEmpty(index);
+
+        if (PossessedSkills == null)
+            PossessedSkills = new List<string>();
+
+        if (PossessedSkills.Count < 1)
+            return;
+
         var len = skillStates.Length;
         var skillData = DataTableMgr.GetTable<SkillData>().Get(PossessedSkills[possessedIndex]);
         for (int i = 0; i < len; ++i)
@@ -198,8 +215,13 @@ public class PlayerSkills : MonoBehaviour
         return list;
     }
 
-    public void AddSkill(string id) => PossessedSkills.Add(id);
-    
+    public void AddSkill(string id)
+    {
+        if (PossessedSkills == null)
+            PossessedSkills = new List<string>();
+        PossessedSkills.Add(id);
+    }
+
     public void RemoveSkill(int index)
     {
         for (int i = 0; i < skillStates.Length; ++i)

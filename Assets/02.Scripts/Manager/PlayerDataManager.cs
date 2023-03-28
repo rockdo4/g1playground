@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerInventory;
 
 public class PlayerDataManager : MonoBehaviour
 {
@@ -23,29 +24,57 @@ public class PlayerDataManager : MonoBehaviour
     }
 
     public string playerName;
-    public int playerCurrHp;
-    public int playerCurrMp;
     public string lastSaveMapId;
     public string lastSaveChapterName;
     public Vector3 lastPlayerPos;
+
+    public int playerCurrHp;
+    public int playerCurrMp;
+
+    public List<string> weapons;
+    public List<string> armors;
+    public List<Consumable> consumables;
+    public string currWeapon;
+    public string currArmor;
+
     public List<string> possessedSkills;
     public int currskill1;
     public int currskill2;
 
+    public int currLevel;
+    public int currExp;
+
+    public bool endTutorial = false;
+
+    public void Start()
+    {
+        LoadFile();
+    }
 
     public void SaveFile()
     {
         var saveData = new SavePlayerDataVer1();
         saveData.playerName = playerName;
-        saveData.playerCurrHp = playerCurrHp;
         saveData.lastMapId = lastSaveMapId;
-        saveData.possessedSkills = possessedSkills;
-        saveData.skill1 = currskill1;
-        saveData.skill2 = currskill2;  
-
-        saveData.lastChapter= lastSaveChapterName;
+        saveData.lastChapter = lastSaveChapterName;
         //saveData.lastPlayerPos = player.transform.position;
         saveData.lastPlayerPos = lastPlayerPos;
+
+        saveData.playerCurrHp = playerCurrHp;
+        saveData.playerCurrMp = playerCurrMp;
+
+        saveData.weapons = weapons;
+        saveData.armors = armors;
+        saveData.consumables = consumables;
+        saveData.currWeapon = currWeapon;
+        saveData.currArmor = currArmor;
+        
+        saveData.possessedSkills = possessedSkills;
+        saveData.currskill1 = currskill1;
+        saveData.currskill2 = currskill2;
+
+        saveData.currLevel = currLevel;
+        saveData.currExp = currExp;
 
         SaveLoadSystem.Save(saveData);
     }
@@ -53,16 +82,44 @@ public class PlayerDataManager : MonoBehaviour
     public void LoadFile()
     {
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
+        if (saveData == null || !saveData.endTutorial)
+        {
+            playerName = string.Empty;
+            lastSaveMapId = string.Empty;
+            lastSaveChapterName = string.Empty;
+            lastPlayerPos = Vector3.zero;
+
+            GameManager.instance.player.GetComponent<PlayerInventory>().SetDefault();
+            GameManager.instance.player.GetComponent<PlayerSkills>().SetDefault();
+            GameManager.instance.player.GetComponent<PlayerLevelManager>().SetDefault();
+
+            return;
+        }
         playerName = saveData.playerName;
-        playerCurrHp = saveData.playerCurrHp;
         lastSaveMapId = saveData.lastMapId;
         lastSaveChapterName = saveData.lastChapter;
         lastPlayerPos = saveData.lastPlayerPos;
-        currskill1 = saveData.skill1;
-        currskill2 = saveData.skill2;
+
+        weapons = saveData.weapons;
+        armors = saveData.armors;
+        consumables = saveData.consumables;
+        currWeapon = saveData.currWeapon;
+        currArmor = saveData.currArmor;
+
+        possessedSkills = saveData.possessedSkills;
+        currskill1 = saveData.currskill1;
+        currskill2 = saveData.currskill2;
+
+        currLevel = saveData.currLevel;
+        currExp = saveData.currExp;
+
+        playerCurrHp = saveData.playerCurrHp;
+        playerCurrMp = saveData.playerCurrMp;
+
+        LoadPlayer();
     }
 
-    public void SaveLastPos(string mapId,string chapter, Vector3 pos)
+    public void SaveLastPos(string mapId, string chapter, Vector3 pos)
     {
         //lastChapter = chapter;
         lastSaveMapId = mapId;
@@ -83,33 +140,62 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SavePlayer()
     {
-        var playerStatus = GameManager.instance.player.GetComponent<Status>();
+        SaveLevel();
+        SaveInventory();
+        SaveSkills();
+        SavePlayerHpMp();
+    }
+
+    public void LoadPlayer()
+    {
+        LoadLevel();
+        LoadInventory();
+        LoadSkills();
+        LoadPlayerHpMp();
+    }
+
+    public void SavePlayerHpMp()
+    {
+        var playerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
         playerCurrHp = playerStatus.CurrHp;
         playerCurrMp = playerStatus.CurrMp;
+    }
+
+    public void LoadPlayerHpMp()
+    {
+        var playerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
+        playerStatus.CurrHp = playerCurrHp;
+        playerStatus.CurrMp = playerCurrMp;
+    }
+
+    public void SaveInventory()
+    {
+        var playerInventory = GameManager.instance.player.GetComponent<PlayerInventory>();
+        weapons = playerInventory.Weapons;
+        armors = playerInventory.Armors;
+        consumables = playerInventory.Consumables;
+        currWeapon = playerInventory.CurrWeapon;
+        currArmor = playerInventory.CurrArmor;
+    }
+
+    public void LoadInventory() => GameManager.instance.player.GetComponent<PlayerInventory>().Load(weapons, armors, consumables, currWeapon, currArmor);
+
+    public void SaveSkills()
+    {
         var playerSkills = GameManager.instance.player.GetComponent<PlayerSkills>();
         possessedSkills = playerSkills.PossessedSkills;
         currskill1 = playerSkills.GetCurrSkillIndex(0);
         currskill2 = playerSkills.GetCurrSkillIndex(1);
     }
 
-    public void SetPlayerHpMp()
+    public void LoadSkills() => GameManager.instance.player.GetComponent<PlayerSkills>().Load(possessedSkills, currskill1, currskill2);
+
+    public void SaveLevel()
     {
-        SetPlayerHpMp(playerCurrHp, playerCurrMp);
+        var playerLevel = GameManager.instance.player.GetComponent<PlayerLevelManager>();
+        currLevel = playerLevel.Level;
+        currExp = playerLevel.CurrExp;
     }
 
-    public void SetPlayerHpMp(int hp, int mp)
-    {
-        var playerStatus = GameManager.instance.player.GetComponent<Status>();
-        playerStatus.CurrHp = hp;
-        playerStatus.CurrMp = mp;
-
-    }
-
-    public void FillPlayerHpMp()
-    {
-        var playerStatus = GameManager.instance.player.GetComponent<Status>();
-        playerStatus.CurrHp = playerStatus.FinalValue.maxHp;
-        playerStatus.CurrMp = playerStatus.FinalValue.maxMp;
-
-    }
+    public void LoadLevel() => GameManager.instance.player.GetComponent<PlayerLevelManager>().Load(currLevel, currExp);
 }

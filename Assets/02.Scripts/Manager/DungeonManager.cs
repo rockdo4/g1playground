@@ -145,7 +145,7 @@ public class DungeonManager : MonoBehaviour
         if (scene.name == "Scene02")
         {
             remaningtime.gameObject.SetActive(false);
-            PlayerDataManager.instance.SetPlayerHpMp();
+            PlayerDataManager.instance.LoadPlayerHpMp();
             PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
         }
 
@@ -325,7 +325,7 @@ public class DungeonManager : MonoBehaviour
         pannel.gameObject.SetActive(false);
         popUp.gameObject.SetActive(false);
         homeButton.gameObject.SetActive(false);
-       // SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        // SceneManager.LoadScene("Game", LoadSceneMode.Single);
         SceneManager.LoadScene("Scene02");
 
 
@@ -356,10 +356,10 @@ public class DungeonManager : MonoBehaviour
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
         PlayerDataManager.instance.SavePlayer();
 
-        SceneManager.LoadScene("Game",LoadSceneMode.Single);
+        SceneManager.LoadScene("Game", LoadSceneMode.Single);
         SceneManager.LoadScene(scenename.ToString(), LoadSceneMode.Additive);
 
-   
+
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
         StartCoroutine(SetEnemy());
@@ -372,7 +372,7 @@ public class DungeonManager : MonoBehaviour
         yield return null;
 
         enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
-      //  Debug.Log("enemy");
+        //  Debug.Log("enemy");
         isDungeon = true;
         playerStatus = GameManager.instance.player.GetComponent<Status>();
         var player = GameManager.instance.player;
@@ -386,13 +386,13 @@ public class DungeonManager : MonoBehaviour
         //Debug.Log("SetSkill0");
 
         player.GetComponent<PlayerSkills>().SetSkill(1, PlayerDataManager.instance.currskill2);
-       // Debug.Log("SetSkill1");
+        // Debug.Log("SetSkill1");
 
         GameManager.instance.uiManager.PotionOn();
         homeButton.gameObject.SetActive(true);
 
         GameManager.instance.player.transform.position = GameObject.FindGameObjectWithTag("StartPoint").transform.position;
-     //   Debug.Log("startpoint");
+        //   Debug.Log("startpoint");
 
     }
 
@@ -460,7 +460,7 @@ public class DungeonManager : MonoBehaviour
         pannel.gameObject.SetActive(false);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
 
-       // Debug.Log("loaded");
+        // Debug.Log("loaded");
         StartCoroutine(SetEnemy());
         //foreach (var enemy in enemies)
         //{

@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         //respawn state
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalClose();
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().EnemiesReset();
-        PlayerDataManager.instance.FillPlayerHpMp();
+        player.GetComponent<Status>().Restore();
         MapManager.instance.SetLastCheckpointMapTurnOn();
        
         //
