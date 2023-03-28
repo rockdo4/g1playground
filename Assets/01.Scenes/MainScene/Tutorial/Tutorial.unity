@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.215265, g: 0.30571723, b: 0.33143777, a: 1}
+  m_IndirectSpecularColor: {r: 0.21535635, g: 0.30600128, b: 0.33173656, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8735,7 +8735,7 @@ PrefabInstance:
     - target: {fileID: 5906699128049564886, guid: dc1d5b8d4449844ef9d44a5a43ecec8c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.100000024
+      value: 0.10000014
       objectReference: {fileID: 0}
     - target: {fileID: 5906699128049564886, guid: dc1d5b8d4449844ef9d44a5a43ecec8c,
         type: 3}
@@ -9582,11 +9582,16 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 63249c73d329e4157aaca859dec94791, type: 2}
   bgmSource: {fileID: 1473938699}
   seSource: {fileID: 2005369881}
+  playerSource: {fileID: 0}
+  enemySource: {fileID: 0}
   bgmClips: []
   seClips: []
   bgmName: village_loop
   BgmFolderPath: Sounds/BGM
   EffectFolderPath: Sounds/Effect
+  playerSound: {fileID: 0}
+  maxPoolSize: 200
+  stackDefaultCapacity: 10
 --- !u!4 &649076279
 Transform:
   m_ObjectHideFlags: 0
@@ -14859,7 +14864,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -29.535183, y: 1.9132148, z: -10}
+  m_LocalPosition: {x: -27.322147, y: 1.9132147, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -37316,6 +37321,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3156614020974359009, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3156614020974359011, guid: 00f43e2ece1935d41991954295923c74,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -37680,6 +37690,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7313008125504464697, guid: 00f43e2ece1935d41991954295923c74,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8170121255967542107, guid: 00f43e2ece1935d41991954295923c74,
         type: 3}
@@ -42923,6 +42938,7 @@ MonoBehaviour:
   player: {fileID: 441504593}
   effectManager: {fileID: 9162038848487544349}
   uiManager: {fileID: 9162038849381037809}
+  ui: {fileID: 0}
   gambling: {fileID: 0}
   attackColliderManager: {fileID: 9162038847806169532}
   enemyManager: {fileID: 0}
@@ -42974,3 +42990,4 @@ MonoBehaviour:
   charStatUI: {fileID: 1656122169}
   itemInventory: {fileID: 0}
   skillInventory: {fileID: 0}
+  buttons: []
