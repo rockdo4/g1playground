@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class GamblingResult10PopUp : PopupUI
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnDisable()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //Dont Clear
     }
 }
