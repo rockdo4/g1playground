@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.UI.Image;
@@ -48,19 +49,31 @@ public class MiniMap : MonoBehaviour
         {
             minimapObject.SetActive(true);
         }
-            
+
         var boxes = MapManager.instance.outlines;
         float minX, maxX;
         float minY, maxY;
         Vector2 LB;
         Vector2 RT;
-
         //normalized
-        float normalizedPlayerY = playerPos.rectTransform.anchoredPosition.y/ miniMapRect.rect.height; 
+        float normalizedPlayerY = playerPos.rectTransform.anchoredPosition.y / miniMapRect.rect.height;
 
-        float needminus=miniMapRect.rect.height/2;
+        float needminus = miniMapRect.rect.height / 2;
 
-        miniMapRect.anchoredPosition= new Vector2(miniMapRect.anchoredPosition.x, (miniMapRect.rect.height * normalizedPlayerY-needminus)*-1 );
+        float pivotcenter = miniMapRect.rect.height / 4;
+
+        if (miniMapRect.rect.height > 80)
+        {
+            miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, (miniMapRect.rect.height * normalizedPlayerY - needminus) * -1);
+            if (Mathf.Abs(miniMapRect.anchoredPosition.y) >= pivotcenter)
+            {
+                if (miniMapRect.anchoredPosition.y >= 0)
+                    miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, pivotcenter);
+                else
+                    miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, pivotcenter*-1);
+
+            }
+        }
 
         if (boxes.Count <= 0)
             return;
