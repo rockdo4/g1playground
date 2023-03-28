@@ -57,5 +57,6 @@ public class WorldMap : MonoBehaviour
             GameManager.instance.uiManager.PotionOn();
         }
 
+        EventManager.instance.Resume();
     }
 }

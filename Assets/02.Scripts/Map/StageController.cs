@@ -50,10 +50,10 @@ public class StageController : MonoBehaviour
     public List<Portal> Portals { get { return portals; } set { portals = value; } }
 
     [SerializeField] private List<GameObject> switches;
-    private bool canOpen;
+    private bool canOpen = true;
     [SerializeField]
     private List<GameObject> greenWall;
-    private bool greenwallopen = false;
+    private bool greenwallopen = true;
 
     public string PrevStageName { get; set; }
 
@@ -186,7 +186,8 @@ public class StageController : MonoBehaviour
 
         EventManager.instance.ResetCount();
 
-        var switchcheck = false;
+        
+        //Set enemies
         enemies = new List<GameObject>();
         var childCount = gameObject.transform.childCount;
         for (int i = 0; i < childCount; ++i)
@@ -196,8 +197,11 @@ public class StageController : MonoBehaviour
                 enemies.Add(child.gameObject);
         }
 
+        //Set portals
         portals = gameObject.GetComponentsInChildren<Portal>().ToList();
 
+        //Set Switches
+        var switchcheck = false;
         foreach (var swit in switches)
         {
             if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
@@ -207,20 +211,41 @@ public class StageController : MonoBehaviour
             }
         }
 
-        foreach (var green in greenWall)
+        //Set Walls
+        if (greenWall != null)
         {
-            green.SetActive(true);
+            foreach (var green in greenWall)
+            {
+                green.SetActive(true);
+            }
         }
 
-        
-
+        //Reset objects
         ResetObject();
         SetObjectTileActive();
+
+        if (enemies.Count <= 0)
+        {
+            isClear = true;
+            greenwallopen = true;
+
+            //Set worldmap stage button on
+            if (wMapButton != null && isChanged)
+            {
+                isChanged = false;
+                SetWorldMapButton();
+            }
+        }
+
         if (!isClear)
         {
             if (enemies.Count > 0 || switchcheck)
                 StartCoroutine(DisablePortal());
             TileColorManager.instance.ChangeTileMaterial(transform.name, false);
+        }
+        else
+        {
+            TileColorManager.instance.ChangeTileMaterial(transform.name, true);
         }
     }
 
@@ -270,10 +295,7 @@ public class StageController : MonoBehaviour
     }
 
     private void Update()
-    {
-        canOpen = true;
-        greenwallopen = true;
-
+    {        
         foreach (var swit in switches)
         {
             if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
@@ -282,46 +304,45 @@ public class StageController : MonoBehaviour
                 break;
             }
         }
-        foreach (var enemy in enemies)
+
+        //Enemies check
+        //Walls check
+        //If cleared once
+        if (!isClear)
         {
-            if (enemy.gameObject.activeSelf)
+            CheckEnemies();
+            CheckWalls();
+        }
+
+        if (isClear && isStoryStage) 
+        {            
+            isStoryStage = false;
+            EventManager.instance.SetStoryList(storyIdList);
+            EventManager.instance.ChangeColorEffect(transform.name);           
+        }
+
+        if (canOpen || isClear) 
+        {
+
+            if (portals != null)
             {
-                canOpen = false;
-                greenwallopen = false;
-                break;
+                foreach (var portal in portals)
+                {
+                   
+                    portal.gameObject.SetActive(true);
+                }
             }
-            else if (enemy == enemies.Last() && !IsClear)
+            //Set worldmap stage button on
+            if (wMapButton != null && isChanged)
             {
-                EventManager.instance.PlayEffect();
-                greenwallopen = true;
+                isChanged = false;
+                SetWorldMapButton();
             }
         }
 
-        if (enemies.Count == 0 || greenwallopen)
+        if (lockRequirement == UnLockRequirement.Heal)
         {
-            if (isStoryStage)
-            {
-                isStoryStage = false;
-                EventManager.instance.SetStoryList(storyIdList);
-                EventManager.instance.PlayStory();
-                EventManager.instance.Pause();
-            }
-            
-            TileColorManager.instance.ChangeTileMaterial(transform.name, true);
-            foreach (var green in greenWall)
-            {
-                green.SetActive(false);
-            }
-        }
-
-        if (greenwallopen)
-        {
-            foreach (var green in greenWall)
-            {
-                green.SetActive(false);
-                TileColorManager.instance.ChangeTileMaterial(transform.name, true);
-
-            }
+            //
         }
 
         if (Input.GetKeyDown(KeyCode.K))
@@ -331,32 +352,51 @@ public class StageController : MonoBehaviour
                 kill.SetActive(false);
             }
         }
+    }
 
-        if (canOpen||isClear)
+    private void CheckEnemies()
+    {
+        if (enemies.Count > 0)
         {
-
-            if (portals != null)
+            foreach (var enemy in enemies)
             {
-                foreach (var portal in portals)
+                if (enemy.gameObject.activeSelf)
                 {
-                    //Set worldmap stage button on
-                    if (wMapButton != null && isChanged)
+                    canOpen = false;
+                    greenwallopen = false;
+                    break;
+                }
+                else if (enemy == enemies.Last())
+                {
+                    if (!isStoryStage)
                     {
-                        isChanged = false;
-                        SetWorldMapButton();
+                        EventManager.instance.ChangeColorEffect();
+                        TileColorManager.instance.ChangeTileMaterial(transform.name, true);
                     }
                     isClear = true;
-                    portal.gameObject.SetActive(true);
-                    TileColorManager.instance.ChangeTileMaterial(transform.name, true);
+                    canOpen = true;
+                    greenwallopen = true;
+
                 }
             }
         }
+    }
 
-        if (lockRequirement == UnLockRequirement.Heal)
+    private void CheckWalls()
+    {
+        if (greenWall != null)
         {
-            //
+            if (enemies.Count == 0 || greenwallopen)
+            {
+                foreach (var green in greenWall)
+                {
+                    green.SetActive(false);
+                }
+            }
         }
     }
+
+
 
     public List<GameObject> GetStageEnemies()
     {

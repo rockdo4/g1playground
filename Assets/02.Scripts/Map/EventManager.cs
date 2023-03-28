@@ -37,6 +37,7 @@ public class EventManager : MonoBehaviour
     private int currStoryIndex = 0;
     private int clickCount = 0;
     private bool isClickable = true;
+    private bool isPlayingStory = false;
 
     private int effectCount = 0;
 
@@ -96,7 +97,8 @@ public class EventManager : MonoBehaviour
     public void SetStoryList(List<int> stories)
     {
         storyList = stories;
-        storyCount = storyList.Count;        
+        storyCount = storyList.Count;
+        isPlayingStory = true;
     }
 
     public void PlayStory()
@@ -182,6 +184,7 @@ public class EventManager : MonoBehaviour
         storyBoard.SetActive(false);
         imageBoard.SetActive(false);
         TextBoard.SetActive(false);
+        isPlayingStory = false;
     }
 
     //////////////////////Story Board/////////////////////////////////
@@ -223,10 +226,8 @@ public class EventManager : MonoBehaviour
         StartCoroutine(TextAnimationEffect(textBoardText, text));
     }
 
-    ///////////////////////////////////////////////////////
-
-    //Test Effect
-    public void PlayEffect()
+    /////////////////Color Effect/////////////////////////////
+    public void ChangeColorEffect()
     {
         if (effectCount > 0)
         {
@@ -238,12 +239,44 @@ public class EventManager : MonoBehaviour
         float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
         GameManager.instance.effectManager.ReturnEffectOnTime("Poof_electric", effect, destroyTime);
     }
-    
+
+    public void ChangeColorEffect(string stageName)
+    {
+        if (effectCount > 0)
+        {
+            return;
+        }
+        effectCount++;
+        var effect = GameManager.instance.effectManager.GetEffect("Poof_electric");
+        effect.transform.position = GameManager.instance.player.transform.position;
+        float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
+        GameManager.instance.effectManager.ReturnEffectOnTime("Poof_electric", effect, destroyTime);
+        TileColorManager.instance.ChangeTileMaterial(stageName, true);
+        StartCoroutine(CoPlayStoryDelay(stageName, destroyTime));
+    }
+
+    IEnumerator CoPlayStoryDelay(string stageName, float delay)
+    {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        while (stopwatch.Elapsed.TotalSeconds < delay)
+        {
+            yield return null;
+        }
+        stopwatch.Stop();
+
+        isPlayingStory = false;
+        Pause();
+        PlayStory();
+    }
+
     public void ResetCount()
     {
         effectCount = 0;
     }
 
+
+    //////////////////////////////////////////////////////////////
     public void Pause()
     {
         Time.timeScale = 0f;       

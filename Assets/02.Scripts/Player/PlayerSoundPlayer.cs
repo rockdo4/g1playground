@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerSoundPlayer : MonoBehaviour
 {
     private AudioSource audioSource;
-    private Animator animator;
     private GroundType.Type type = GroundType.Type.None;
 
     [SerializeField] private PlayerFootSound grassFootSound;
@@ -19,8 +18,7 @@ public class PlayerSoundPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>(); 
     }
 
     public void SetType(GroundType.Type type)

@@ -12,7 +12,10 @@ public class PlayerGroundCollider : MonoBehaviour
     private void Start()
     {
         playerController = GetComponentInParent<PlayerController>();
-        playerSoundPlayer = GetComponentInParent<PlayerSoundPlayer>();
+        if (GetComponentInParent<PlayerSoundPlayer>() != null)
+        {
+            playerSoundPlayer = GetComponentInParent<PlayerSoundPlayer>();
+        }
         playerRb = GetComponentInParent<Rigidbody>();
     }
 
@@ -33,7 +36,10 @@ public class PlayerGroundCollider : MonoBehaviour
             if (!playerController.isGrounded)
             {
                 //play landing sound
-                playerSoundPlayer.Landing();
+                if (playerSoundPlayer != null)
+                {
+                    playerSoundPlayer.Landing();
+                }                
             }
             playerController.OnGround(true);
         }
