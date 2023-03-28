@@ -20,12 +20,12 @@ public class EnemyStatus : Status
     protected override Value CalculateValue(Value value)
     {
         var damageFigure = DataTableMgr.GetTable<MonsterData>().Get(id).damageFigure;
-        value.meleePower += (int)(value.str * 1.7f * damageFigure);
-        value.meleeCriChance += value.dex / 200f / 100f;
-        value.meleeDef += (int)(value.str / 10f);
-        value.skillPower += (int)(value.intel / 5f * damageFigure);
-        value.skillCriChance += value.intel / 200f / 100f;
-        value.skillDef += (int)(value.intel / 10f);
+        value.meleePower = (int)(value.str * 1.7f * damageFigure);
+        value.meleeCriChance = value.dex / 200f / 100f;
+        value.meleeDef = (int)(value.str / 10f);
+        value.skillPower = (int)(value.intel / 5f * damageFigure);
+        value.skillCriChance = value.intel / 200f / 100f;
+        value.skillDef = (int)(value.intel / 10f);
         return value;
     }
 
