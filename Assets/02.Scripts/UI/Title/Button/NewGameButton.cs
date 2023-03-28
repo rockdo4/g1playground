@@ -13,7 +13,7 @@ public class NewGameButton : ButtonUi
     public void ChangeScene()
     {
         SceneLoader.Instance.LoadScene("Tutorial");
-        UI.Instance.SetState(LayoutState.Tutorial);
+        //UI.Instance.SetState(LayoutState.Tutorial);
         //SceneManager.LoadScene("Tutorial");
     }
 }
