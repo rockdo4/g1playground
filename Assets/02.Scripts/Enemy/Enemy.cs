@@ -65,6 +65,8 @@ public class Enemy : MonoBehaviour
         player = GameManager.instance.player;
         GetComponent<DestructedEvent>().OnDestroyEvent = () =>
         {
+            //Play Die Sound
+
             State = EnemyState.Die;
             animator.ResetTrigger("TakeDamage");
             animator.SetTrigger("Die");

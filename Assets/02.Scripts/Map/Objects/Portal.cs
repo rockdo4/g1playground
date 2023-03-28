@@ -11,6 +11,9 @@ public class Portal : MonoBehaviour
     [SerializeField]
     private GameObject pos;
     public bool CanUse { get; set; }
+
+    [SerializeField] private string enterPortalClip = "Stone Debris 3_5";
+
     public string GetNextStageName()
     {
         return nextStage.name;
@@ -78,6 +81,8 @@ public class Portal : MonoBehaviour
                     }
 
                     transform.parent.gameObject.SetActive(false);
+
+                    SoundManager.instance.PlaySoundEffect(enterPortalClip);
 
                     break;
                 }
