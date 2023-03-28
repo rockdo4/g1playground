@@ -147,7 +147,8 @@ public class PlayerSkills : MonoBehaviour
         skill.SetData(PossessedSkills[possessedIndex]);
         skillStates[index].index = possessedIndex;
         skillStates[index].Set(skill);
-        toggles[index].image.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillData.iconSpriteId).iconName);
+        //toggles[index].image.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillData.iconSpriteId).iconName);
+        toggles[index].image.sprite = DataTableMgr.LoadIcon(skillData.iconSpriteId);
     }
 
     public void UseSkill(int index)
