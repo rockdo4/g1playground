@@ -13,25 +13,42 @@ public enum LayoutState
 }
 public class UI : MonoBehaviour
 {
+    public static UI Instance { get; private set; }
+
     public TitleLayout title;
-    public Layout tutorial;
-    public Layout village;
-    public Layout main;
-    public Layout weekly;
+    public PopUpPanel popupPanel;
+    public CharacterUIPanel charaterUIPanel;
+    public ControllerPanel controllerPanel;
+    public MenuPanel menuPanel;
+    public PotionPanel potionPanel;
+    public MiniMapPanel minimapPanel;
+    public SkillPanel skillPanel;
+    public AutoPanel autoPanel;
     //public SceneLoader loading;
 
     private LayoutState State;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         title = GetComponentInChildren<TitleLayout>(true);
-        //title.ActiveTrue();
-        //loading.GetComponentInChildren<SceneLoader>(true);
-        //tutorial = GetComponentInChildren<Layout>();
-        //village = GetComponentInChildren<Layout>();
-        //main = GetComponentInChildren<Layout>();
-        //weekly = GetComponentInChildren<Layout>();
-        //State = LayoutState.Title;
+        popupPanel = GetComponentInChildren<PopUpPanel>(true);
+        charaterUIPanel = GetComponentInChildren<CharacterUIPanel>(true);
+        controllerPanel = GetComponentInChildren<ControllerPanel>(true);
+        menuPanel = GetComponentInChildren<MenuPanel>(true);
+        potionPanel = GetComponentInChildren<PotionPanel>(true);
+        minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
+        skillPanel = GetComponentInChildren<SkillPanel>(true);
+        autoPanel = GetComponentInChildren<AutoPanel>(true);
+
     }
 
     public void SetState(LayoutState state)
@@ -41,18 +58,6 @@ public class UI : MonoBehaviour
             case LayoutState.Title:
                 title.ActiveFalse();
                 break;
-            case LayoutState.Tutorial:
-                tutorial.ActiveFalse();
-                break;
-            case LayoutState.Village:
-                village.ActiveFalse();
-                break;
-            case LayoutState.Main:
-                main.ActiveFalse();
-                break;
-            case LayoutState.Weekly:
-                weekly.ActiveFalse();
-                break;
         }
 
         State = state;
@@ -61,18 +66,6 @@ public class UI : MonoBehaviour
         {
             case LayoutState.Title:
                 title.ActiveTrue();
-                break;
-            case LayoutState.Tutorial:
-                tutorial.ActiveTrue();
-                break;
-            case LayoutState.Village:
-                village.ActiveTrue();
-                break;
-            case LayoutState.Main:
-                main.ActiveTrue();
-                break;
-            case LayoutState.Weekly:
-                weekly.ActiveTrue();
                 break;
         }
     }

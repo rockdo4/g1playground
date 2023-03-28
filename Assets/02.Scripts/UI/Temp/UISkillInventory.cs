@@ -79,7 +79,11 @@ public class UISkillInventory : MonoBehaviour
 
             var button = slot.GetComponent<Button>();
             button.onClick.AddListener(() => skillInfo.Set(slot.Data));
+            var slotIndex = slotCount + i;
+            button.onClick.AddListener(() => currSlot = slotIndex);
         }
+        slotCount += count;
+        SetInventory();
     }
 
     public void SetPlayerSkill(int index)

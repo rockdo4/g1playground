@@ -6,7 +6,7 @@ public class CrewPanel : PanelUi
 {
     public void ClickPanel()
     {
-        GameManager.instance.ui.title.titlePanel.ActiveTrue();
-        GameManager.instance.ui.title.crewPanel.ActiveFalse();
+        UI.Instance.title.titlePanel.ActiveTrue();
+        UI.Instance.title.crewPanel.ActiveFalse();
     }
 }

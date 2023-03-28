@@ -24,7 +24,6 @@ public class UIButtonManager : MonoBehaviour
             CheckArea();
         }
 
-
         if (GameManager.instance.uiManager.popupStack.Count > 0 && Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.instance.uiManager.popupStack.Clear();

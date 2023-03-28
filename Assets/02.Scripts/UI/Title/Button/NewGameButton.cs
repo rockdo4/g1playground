@@ -6,13 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class NewGameButton : ButtonUi
 {
-    public override void ClickButton()
+    public void ClickButton()
     {
         ChangeScene();
     }
     public void ChangeScene()
     {
         SceneLoader.Instance.LoadScene("Tutorial");
+        UI.Instance.SetState(LayoutState.Tutorial);
         //SceneManager.LoadScene("Tutorial");
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ContinueButton : ButtonUi
 {
-    public override void ClickButton()
+    public void ClickButton()
     {
 
     }
