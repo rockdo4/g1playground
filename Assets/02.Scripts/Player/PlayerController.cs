@@ -398,9 +398,9 @@ public class PlayerController : MonoBehaviour
         public override void Update()
         {
             hitTimer += Time.deltaTime;
-            if (hitTimer > playerController.hitDuration)
+            if (hitTimer > playerController.hitDuration && playerController.isGrounded)
             {
-                if (playerController.IsAuto && playerController.isGrounded)
+                if (playerController.IsAuto)
                     playerController.SetState<AutoMoveState>(); 
                 else
                     playerController.SetState<IdleState>();

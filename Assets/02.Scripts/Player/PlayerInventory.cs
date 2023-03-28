@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.Rendering.VolumeComponent;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -17,15 +16,15 @@ public class PlayerInventory : MonoBehaviour
     }
 
     private Status status;
-    public string[] weaponsTemp;    // for test
-    public string[] armorsTemp;     // for test
-    [SerializeField] public Consumable[] consumablesTemp;   // for test
+    public string[] defaultWeapons;    // for test
+    public string[] defaultArmors;     // for test
+    [SerializeField] public Consumable[] defaultConsumables;   // for test
 
     public List<string> Weapons { get; private set; } = new List<string>();
     public List<string> Armors { get; private set; } = new List<string>();
     public List<Consumable> Consumables { get; private set; } = new List<Consumable>();
-    public string CurrWeapon;// { get; private set; }
-    public string CurrArmor;// { get; private set; }
+    [field: SerializeField] public string CurrWeapon { get; private set; }
+    [field: SerializeField] public string CurrArmor { get; private set; }
 
     // if in-game consumable item except potion exists, need to change code
     public enum Potions
@@ -33,29 +32,31 @@ public class PlayerInventory : MonoBehaviour
         Hp,
         Mp,
     }
-    private string[] potionIds = new string[2];
     public int[] PotionCount { get; private set; } = new int[2];
     public float[] potionRate = new float[2];
 
     private void Awake()
     {
         status = GetComponent<Status>();
-        Weapons = weaponsTemp.ToList();
-        Armors = armorsTemp.ToList();
-        Consumables = consumablesTemp.ToList();
-        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
-        foreach (var data in consumeTable)
-        {
-            switch (data.Value.consumeType)
-            {
-                case ConsumeTypes.HpPotion:
-                    potionIds[0] = data.Value.id;
-                    break;
-                case ConsumeTypes.MpPotion:
-                    potionIds[1] = data.Value.id;
-                    break;
-            }
-        }
+        SetDefault();
+    }
+
+    public void SetDefault()
+    {
+        Weapons = defaultWeapons.ToList();
+        Armors = defaultArmors.ToList();
+        Consumables = defaultConsumables.ToList();
+        CurrWeapon = null;
+        CurrArmor = null;
+    }
+
+    public void Load(List<string> weapons, List<string> armors, List<Consumable> consumables, string currWeapon, string currArmor)
+    {
+        Weapons = weapons;
+        Armors = armors;
+        Consumables = consumables;
+        CurrWeapon = currWeapon;
+        CurrArmor = currArmor;
     }
 
     public void SetWeapon(int index)
@@ -326,11 +327,7 @@ public class PlayerInventory : MonoBehaviour
     {
         for (int i = 0; i < PotionCount.Length; ++i)
         {
-            var count = GetConsumableCount(potionIds[i]);
-            if (count < 3)
-                PotionCount[i] = count;
-            else
-                PotionCount[i] = 3;
+            PotionCount[i] = 3;
         }
     }
 
@@ -375,8 +372,6 @@ public class PlayerInventory : MonoBehaviour
                 break;
         }
         PotionCount[(int)potion] -= 1;
-        var potionId = potionIds[(int)potion];
-        UseConsumable(potionId);
     }
 
     public void UseHpPotion() => UsePotion(Potions.Hp);

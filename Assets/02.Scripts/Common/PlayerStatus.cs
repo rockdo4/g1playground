@@ -17,7 +17,7 @@ public class PlayerStatus : Status
         Value value = new Value();
         for (int i = 0; i < addValue.Count; ++i)
         {
-            addValue[i] = CalculateValue(addValue[i]);
+            addValue[i] = ItemValue(addValue[i]);
             value += addValue[i];
         }
         equipValue = value;
@@ -27,6 +27,17 @@ public class PlayerStatus : Status
     }
 
     protected override Value CalculateValue(Value value)
+    {
+        value.meleePower = (int)(value.str / 70f * value.dex / 30f);
+        value.meleeCriChance = value.dex / 75f / 100f;
+        value.meleeDef = (int)(value.str / 10f);
+        value.skillPower = (int)(value.intel / 15f);
+        value.skillCriChance = value.intel / 75f / 100f;
+        value.skillDef = (int)(value.intel / 10f);
+        return value;
+    }
+
+    private Value ItemValue(Value value)
     {
         value.meleePower += (int)(value.str / 70f * value.dex / 30f);
         value.meleeCriChance += value.dex / 75f / 100f;

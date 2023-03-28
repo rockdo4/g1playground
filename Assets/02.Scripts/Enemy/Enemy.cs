@@ -72,7 +72,7 @@ public class Enemy : MonoBehaviour
 
             enemyBody.SetActive(false);
 
-            player.GetComponent<PlayerLevelManager>().GetExp(DataTableMgr.GetTable<MonsterData>().Get(status.id).exp);
+            player.GetComponent<PlayerLevelManager>().CurrExp = DataTableMgr.GetTable<MonsterData>().Get(status.id).exp;
         };
     }
     protected virtual void OnEnable()

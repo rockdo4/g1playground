@@ -149,4 +149,9 @@ public abstract class Status : MonoBehaviour
     protected abstract void SetFinalValue();
     public virtual void SetHpUi() { }
     public virtual void SetMpUi() { }
+    public void Restore()
+    {
+        CurrHp = FinalValue.maxHp;
+        CurrMp = FinalValue.maxMp;
+    }
 }
