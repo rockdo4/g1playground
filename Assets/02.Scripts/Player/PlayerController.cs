@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.enabled = false;
         agent.updateRotation = false;
-        agent.stoppingDistance = 1f;
+
         prevPosition = agent.transform.position;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
@@ -283,7 +283,7 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-                if (target != null && path != null)
+                if (target != null && path != null && isGrounded)
                     agent.SetDestination(target.transform.position);
 
                 if (count == 0 && enemies.Count != 0)
