@@ -5,7 +5,7 @@ using UnityEngine;
 public class CrewButton : ButtonUi
 {
 
-    public override void ClickButton()
+    public void ClickButton()
     {
         UI.Instance.title.titlePanel.ActiveFalse();
         UI.Instance.title.crewPanel.ActiveTrue();

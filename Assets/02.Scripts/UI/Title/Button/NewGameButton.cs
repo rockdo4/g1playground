@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class NewGameButton : ButtonUi
 {
-    public override void ClickButton()
+    public void ClickButton()
     {
         ChangeScene();
     }

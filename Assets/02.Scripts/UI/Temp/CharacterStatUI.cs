@@ -41,8 +41,8 @@ public class CharacterStatUI : MonoBehaviour
 
     private void Awake()
     {
-        charProfile = GameObject.Find("Character");
-        characterImage = charProfile.GetComponent<Image>();
+        //charProfile = GameObject.Find("Character");
+        //characterImage = charProfile.GetComponent<Image>();
         status = GameManager.instance.player.GetComponent<Status>();
         inventory = GameManager.instance.player.GetComponent<PlayerInventory>();
         levelManager = GameManager.instance.player.GetComponent<PlayerLevelManager>();
