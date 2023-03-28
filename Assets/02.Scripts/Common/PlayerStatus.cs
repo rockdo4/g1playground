@@ -51,5 +51,11 @@ public class PlayerStatus : Status
     public override void SetHpUi() => GameManager.instance.uiManager.PlayerHpBar(FinalValue.maxHp, CurrHp);
     public override void SetMpUi() => GameManager.instance.uiManager.PlayerMpBar(FinalValue.maxMp, CurrMp);
 
-    protected override void SetFinalValue() => FinalValue = defaultValue + equipValue + DebuffValue;
+    protected override void SetFinalValue()
+    {
+        var value = defaultValue + equipValue;
+        value.meleeDef *= (int)(1f - reduceDef);
+        value.skillDef *= (int)(1f - reduceDef);
+        FinalValue = value;
+    }
 }

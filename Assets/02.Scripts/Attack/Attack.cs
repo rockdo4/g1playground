@@ -12,7 +12,7 @@ public class Attack
         public float stunTime;
         public float slowDown;
         public float slowTime;
-        public int reduceDef;
+        public float reduceDef;
         public float reduceDefTime;
 
         public static CC None
@@ -24,7 +24,7 @@ public class Attack
                 newCC.stunTime = 0f;
                 newCC.slowDown = 0f;
                 newCC.slowTime = 0f;
-                newCC.reduceDef = 0;
+                newCC.reduceDef = 0f;
                 newCC.reduceDefTime = 0f;
                 return newCC;
             }

@@ -32,7 +32,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
     private float slowDownTimer = 0f;
 
     private bool onReduceDef;
-    private int reduceDef;
+    private float reduceDef;
     private float reduceDefTime;
     private float reduceDefTimer = 0f;
 
@@ -87,10 +87,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
             {
                 onReduceDef = false;
                 reduceDefTimer = 0f;
-                Status.Value newDebuffValue = status.DebuffValue;
-                newDebuffValue.meleeDef = 0;
-                newDebuffValue.skillDef = 0;
-                status.Debuff(newDebuffValue);
+                status.ReduceDef(0f);
             }
         }
     }
@@ -170,7 +167,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
         //effect.transform.SetParent(transform);
     }
 
-    private void ReduceDef(int newReduceDef, float newReduceDefTime)
+    private void ReduceDef(float newReduceDef, float newReduceDefTime)
     {
         if (Mathf.Approximately(reduceDef, newReduceDef))
             reduceDefTime = reduceDefTime > newReduceDefTime ? reduceDefTime : newReduceDefTime;
@@ -181,10 +178,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
         }
         else
             return;
-        Status.Value newDebuff = status.DebuffValue;
-        newDebuff.meleeDef = -reduceDef;
-        newDebuff.skillDef = -reduceDef;
-        status.Debuff(newDebuff);
+        status.ReduceDef(reduceDef);
         onReduceDef = true;
 
         //GameObject effect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow");

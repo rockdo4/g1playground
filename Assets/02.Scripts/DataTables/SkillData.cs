@@ -36,7 +36,7 @@ public class SkillData : ICSVParsing
         cc.stunTime = float.Parse(line["stunTime"]);
         cc.slowDown = float.Parse(line["slowDown"]);
         cc.slowTime = float.Parse(line["slowTime"]);
-        cc.reduceDef = int.Parse(line["reduceDef"]);
+        cc.reduceDef = float.Parse(line["reduceDef"]);
         cc.reduceDefTime = float.Parse(line["reduceDefTime"]);
         group = line["SkillGroup"];
 

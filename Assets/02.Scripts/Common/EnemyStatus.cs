@@ -29,5 +29,11 @@ public class EnemyStatus : Status
         return value;
     }
 
-    protected override void SetFinalValue() => FinalValue = defaultValue + DebuffValue;
+    protected override void SetFinalValue()
+    {
+        var value = defaultValue;
+        value.meleeDef *= (int)(1f - reduceDef);
+        value.skillDef *= (int)(1f - reduceDef);
+        FinalValue = value;
+    }
 }

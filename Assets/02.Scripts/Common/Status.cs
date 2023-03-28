@@ -77,7 +77,7 @@ public abstract class Status : MonoBehaviour
     public string id;
     protected bool isLoaded = false;
     protected Value defaultValue;
-    public Value DebuffValue { get; protected set; }
+    protected float reduceDef; 
     [field: SerializeField] public Value FinalValue { get; protected set; }
     protected int currHp;
     public int CurrHp
@@ -141,9 +141,9 @@ public abstract class Status : MonoBehaviour
 
     protected abstract Value CalculateValue(Value value);
     public virtual void AddValue(List<Value> addValue) { }
-    public void Debuff(Value value)
+    public void ReduceDef(float reduceDef)
     {
-        DebuffValue = value;
+        this.reduceDef = reduceDef;
         SetFinalValue();
     }
     protected abstract void SetFinalValue();
