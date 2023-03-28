@@ -291,7 +291,7 @@ public class SoundManager : MonoBehaviour
         StopSoundEffect();
     }
 
-    ////////////////////////////////////////////
+    /////////////////Audio Clip//////////////////////
     public AudioClip GetAudioClip(string name)
     {
         AudioClip audioClip = null;
