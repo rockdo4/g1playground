@@ -9,8 +9,8 @@ public class AttackedEffect : MonoBehaviour, IAttackable
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
     {
         var eff = attack.IsCritical ? string.Format(effect.hitEffect) : string.Format(effect.criticalHitEffect);
-        var feect=GameManager.instance.effectManager.GetEffect(eff);
-        feect.transform.position = transform.position;
+        var feect = GameManager.instance.effectManager.GetEffect(eff);
+        feect.transform.position = attackPos;
         GameManager.instance.effectManager.ReturnEffectOnTime(eff,feect, 1);
     }
 }

@@ -16,24 +16,25 @@ MonoBehaviour:
   id: 10055
   Reinforce: 0
   MaxReinfore: 5
-  reqMana: 10
-  damageFigure: 0.05
-  criticalChance: 0.4
-  criticalDamage: 1.4
-  knockBackForce: 0
-  stunTime: 2
-  slowDown: 0
-  slowTime: 0
-  reduceDef: 0
-  reduceDefTime: 0
-  coolDown: 5
+  reqMana: 20
+  damageFigure: 0.1
+  criticalChance: 0
+  criticalDamage: 1.5
+  cc:
+    knockBackForce: 7
+    stunTime: 0
+    slowDown: 0
+    slowTime: 0
+    reduceDef: 0.1
+    reduceDefTime: 2
+  coolDown: 6
   isOnOffSkill: 0
-  lifeTime: 3
-  range: 2
   fireSoundEffect: Flame Whoosh 2
   inUseSoundEffect: 
   hitSoundEffect: Flame Whoosh 10
+  lifeTime: 3
+  range: 2
   isAttachedToAttacker: 1
   rangeColliderId: FlameThrower
   isContinuousAttack: 1
-  interval: 0.1
+  interval: 0.5

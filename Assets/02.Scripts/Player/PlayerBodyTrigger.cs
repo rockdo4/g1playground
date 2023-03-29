@@ -22,6 +22,7 @@ public class PlayerBodyTrigger : MonoBehaviour
     private bool isOnDelay = false;
     private bool transparentMode = false;
     public int damage;
+    private Vector3 bodyCenter = new Vector3(0f, 0.5f, 0f);
     [SerializeField] public InvisibleRendering player;
     [SerializeField] public InvisibleRendering weapon;
 
@@ -55,7 +56,8 @@ public class PlayerBodyTrigger : MonoBehaviour
         Attack attack = new Attack(damage, newCC, false);
         var attackables = transform.parent.GetComponents<IAttackable>();
         var attacker = other.transform.parent.gameObject;
-        var attackPos = other.transform.position;
+        var bodyPos = transform.position + bodyCenter;
+        var attackPos = other.ClosestPoint(bodyPos);
         foreach (var attackable in attackables)
         {
             attackable.OnAttack(attacker, attack, attackPos);

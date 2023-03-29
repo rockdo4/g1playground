@@ -9,6 +9,7 @@ public class ReinforceData : ICSVParsing
     public int material1Count;
     public int powder;
     public int essence;
+    public float rate;
     public string result;
 
     public void Parse(Dictionary<string, string> line)
@@ -18,6 +19,7 @@ public class ReinforceData : ICSVParsing
         material1Count = int.Parse(line["material_1_count"]);
         powder = int.Parse(line["powder"]);
         essence = int.Parse(line["Essence"]);
+        rate = float.Parse(line["Rate"]);
         result = line["Result"];
     }
 }
