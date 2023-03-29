@@ -84,13 +84,15 @@ public class PlayerController : MonoBehaviour
         prevPosition = agent.transform.position;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
-        autoToggle.onValueChanged.AddListener((isAuto) => IsAuto = isAuto);
-        autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
-        for (int i = 0; i < playerSkills.toggles.Length; i++)
+        autoToggle.onValueChanged.AddListener((isAuto) =>
         {
-            var index = i;
-            autoToggle.onValueChanged.AddListener((isAuto)=>playerSkills.toggles[index].isOn = SkillOnOff(IsAuto , index));
-        }
+            IsAuto = isAuto;
+            for (int i = 0; i < playerSkills.toggles.Length; i++)
+            {
+                playerSkills.toggles[i].isOn = IsAuto;
+            }
+            AgentOnOff();
+        });
     }
 
     private void Start()
@@ -134,7 +136,8 @@ public class PlayerController : MonoBehaviour
     {
         playerRb.isKinematic = false;
         agent.enabled = false;
-        StopCoroutine(cor);
+        if (cor != null)
+            StopCoroutine(cor);
     }
     public void AgentOnOff()
     {
@@ -148,7 +151,6 @@ public class PlayerController : MonoBehaviour
                 else if(stageController.lockRequirement == StageController.UnLockRequirement.Puzzle ||
                     stageController.lockRequirement == StageController.UnLockRequirement.Heal)
                 {
-                    IsAuto = false;
                     autoToggle.isOn = false;
                     SetState<IdleState>();
                     return;
