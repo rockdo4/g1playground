@@ -415,6 +415,7 @@ public class EnemyController : Enemy
                 {
                     attackBox.SetActive(true);
                     //Play Attack Sound
+                    enemySound.PlayAttackSound();
                 }
                 break;
         }

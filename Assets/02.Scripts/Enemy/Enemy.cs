@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     protected EnemyState state;
     protected Status status;
 
+    protected EnemySoundPlayer enemySound;
     protected GameObject player;
     protected Vector3 mySpawnPos;
     protected Quaternion mySpawnDir;
@@ -51,6 +52,7 @@ public class Enemy : MonoBehaviour
     }
     protected virtual void Awake()
     {
+        enemySound = GetComponent<EnemySoundPlayer>();
         status = GetComponent<Status>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -66,7 +68,7 @@ public class Enemy : MonoBehaviour
         GetComponent<DestructedEvent>().OnDestroyEvent = () =>
         {
             //Play Die Sound
-
+            enemySound.PlayDeathSound();
             State = EnemyState.Die;
             animator.ResetTrigger("TakeDamage");
             animator.SetTrigger("Die");
