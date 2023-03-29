@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.21532243, g: 0.30583096, b: 0.33173516, a: 1}
+  m_IndirectSpecularColor: {r: 0.21533085, g: 0.30583036, b: 0.33173925, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9522,7 +9522,6 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 63249c73d329e4157aaca859dec94791, type: 2}
   bgmSource: {fileID: 1473938699}
   seSource: {fileID: 2005369881}
-  playerSource: {fileID: 0}
   enemySource: {fileID: 0}
   bgmClips: []
   seClips: []
@@ -9549,40 +9548,18 @@ Transform:
   m_Father: {fileID: 9162038847814603767}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &649818207 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 333046523039172619, guid: 97a4803aba7d48f49895509181650255,
-    type: 3}
-  m_PrefabInstance: {fileID: 1126337125}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &649818210 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7520250986124373291, guid: 97a4803aba7d48f49895509181650255,
     type: 3}
   m_PrefabInstance: {fileID: 1126337125}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 649818207}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &649818213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 649818207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 009b735204ada09489532cc8132aa932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollRect: {fileID: 649818210}
-  content: {fileID: 161816243}
-  layoutGroup: {fileID: 161816243}
-  itemHeight: 0
 --- !u!1001 &650446663
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13184,6 +13161,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 863485074}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &865816326 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3031682786565939880, guid: 97a4803aba7d48f49895509181650255,
+    type: 3}
+  m_PrefabInstance: {fileID: 1126337125}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &866241058 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1979290889500462, guid: 911ae13cfd12c6943a486d0f8fc70333,
@@ -13547,6 +13536,7 @@ MonoBehaviour:
   imageColor: 0
   isStoryStage: 0
   storyIdList: 
+  stageClearClip: Success 1
   lockRequirement: 0
   switches: []
   greenWall: []
@@ -14822,7 +14812,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.316689, y: 1.9132147, z: -10}
+  m_LocalPosition: {x: -27.790161, y: 1.9132147, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19845,6 +19835,40 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1175787886}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1179529110 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2561416485328096422, guid: 97a4803aba7d48f49895509181650255,
+    type: 3}
+  m_PrefabInstance: {fileID: 1126337125}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1179529112 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7030040079076686194, guid: 97a4803aba7d48f49895509181650255,
+    type: 3}
+  m_PrefabInstance: {fileID: 1126337125}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179529110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1179529113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179529110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009b735204ada09489532cc8132aa932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollRect: {fileID: 649818210}
+  content: {fileID: 161816243}
+  layoutGroup: {fileID: 1179529112}
+  scrollbar: {fileID: 865816326}
 --- !u!114 &1180021621 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 48634600676294972, guid: 68ce26c60eeda4745842fe4980c1f878,
@@ -26398,6 +26422,7 @@ MonoBehaviour:
   imageColor: 0
   isStoryStage: 1
   storyIdList: 34e6020035e6020036e6020037e6020038e6020039e602003ae602003be602003ce60200
+  stageClearClip: Success 1
   lockRequirement: 0
   switches: []
   greenWall:
@@ -38424,7 +38449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f066d284ca884f344a8aca57218a1129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btManager: {fileID: 4683458553130722130}
+  ui: {fileID: 0}
   charStatUI: {fileID: 25814275}
   itemInventory: {fileID: 301784746}
   skillInventory: {fileID: 117253403}
