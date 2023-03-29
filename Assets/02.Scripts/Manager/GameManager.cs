@@ -35,16 +35,16 @@ public class GameManager : MonoBehaviour
 
     public void Respawn()
     {
-        if (SceneManager.GetActiveScene().name != "Scene02")
+        if (SceneManager.GetActiveScene().name != "Scene02"|| PlayerDataManager.instance.lastSaveChapterName==null)
             return;
 
         player.GetComponent<PlayerInventory>().RefillPotions();
         player.transform.SetParent(null);
 
-        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();                          
-                  
+        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();
+
         //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().ResetObject();
-        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.SetActive(false);
+        MapManager.instance.GetCurrentStageObject().gameObject.SetActive(false);
 
         GameObject.FindWithTag("Map").transform.Find(PlayerDataManager.instance.lastSaveChapterName).Find(PlayerDataManager.instance.lastSaveMapId).gameObject.SetActive(true);
 
@@ -55,8 +55,8 @@ public class GameManager : MonoBehaviour
         MapManager.instance.SetcurrentChapterName(PlayerDataManager.instance.lastSaveChapterName);
 
         //respawn state
-        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalClose();
-        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().EnemiesReset();
+        MapManager.instance.GetCurrentStageObject().gameObject.GetComponent<StageController>().PortalClose();
+        MapManager.instance.GetCurrentStageObject().gameObject.GetComponent<StageController>().EnemiesReset();
         player.GetComponent<Status>().Restore();
         MapManager.instance.SetLastCheckpointMapTurnOn();
        

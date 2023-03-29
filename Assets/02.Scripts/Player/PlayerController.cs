@@ -290,10 +290,10 @@ public class PlayerController : MonoBehaviour
                 {
                     yield return new WaitForSeconds(3f);
                     //문 따라가게
-                    var portals = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().Portals;
+                    var portals = MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().Portals;
                     foreach (var portal in portals)
                     {
-                        if (portal.GetNextStageName().CompareTo(GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>().PrevStageName) != 0)
+                        if (portal.GetNextStageName().CompareTo(MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().PrevStageName) != 0)
                         {
                             target = portal.transform;
                             agent.SetDestination(target.position);

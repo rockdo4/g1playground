@@ -13,6 +13,12 @@ public class MapManager : MonoBehaviour
     private string currentChapterName;
     private static MapManager m_instance;
     public List<GameObject> outlines;
+    private GameObject currentStageObject;
+    private GameObject currentChapterObject;
+
+    public GameObject GetCurrentStageObject() => currentStageObject;
+    public GameObject GetCurrentChapterObject() => currentChapterObject;
+
     public static MapManager instance
     {
         get
@@ -51,6 +57,15 @@ public class MapManager : MonoBehaviour
         maps = GameObject.FindGameObjectsWithTag("Stage").ToList();
         currentMapName = name;
 
+        foreach(var map in maps)
+        {
+            if (map.name == name)
+            {
+                currentStageObject = map;
+                break;
+            }
+        }
+
         var collider = GameObject.Find(currentMapName).GetComponentInChildren<PolygonCollider2D>();
         if (collider != null)
         {
@@ -63,7 +78,7 @@ public class MapManager : MonoBehaviour
     public void SetcurrentChapterName(string name)
     {
         currentChapterName = name;
-
+        currentChapterObject = GameObject.Find(name);
     }
 
     public void SetLastCheckpointMapTurnOn()

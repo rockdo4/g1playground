@@ -84,9 +84,9 @@ public class PlayerDataManager : MonoBehaviour
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
         if (saveData == null || !saveData.endTutorial)
         {
-            playerName = string.Empty;
-            lastSaveMapId = string.Empty;
-            lastSaveChapterName = string.Empty;
+            playerName = null;
+            lastSaveMapId = null;
+            lastSaveChapterName = null;
             lastPlayerPos = Vector3.zero;
 
             GameManager.instance.player.GetComponent<PlayerInventory>().SetDefault();
