@@ -92,6 +92,7 @@ public class Enemy : MonoBehaviour
     protected virtual void AttackUpdate() { }
     protected virtual void SkillUpdate() { }
     protected virtual void TakeDamageUpdate() { }
+    protected virtual void KnockBackUpdate() { }
     protected virtual void Groggy() { }
     protected virtual void DieUpdate() { }
 

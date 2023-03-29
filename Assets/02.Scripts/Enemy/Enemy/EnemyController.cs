@@ -119,7 +119,7 @@ public class EnemyController : Enemy
         attackBox.SetActive(false);
         preGoingRight = isGoingRight;
         linkMover = GetComponent<AgentLinkMover>();
-        onGround = GetComponent<OnGround>();
+        onGround = GetComponentInChildren<OnGround>();
     }
     private IEnumerator RestorePosition()
     {
@@ -213,6 +213,9 @@ public class EnemyController : Enemy
                 break;
             case EnemyState.TakeDamage:
                 TakeDamageUpdate();
+                break;
+            case EnemyState.KnockBack:
+                KnockBackUpdate();
                 break;
             case EnemyState.Stun:
                 StunUpdate();
@@ -354,9 +357,16 @@ public class EnemyController : Enemy
         }
     }
 
-    public void TakeDamageUpdate()
+    protected override void TakeDamageUpdate()
     {
 
+    }
+    protected override void KnockBackUpdate()
+    {
+        if (onGround.isGround && !isKbAnimation) 
+        {
+            State = EnemyState.Chase;
+        }
     }
 
     private void StunUpdate()
@@ -447,13 +457,13 @@ public class EnemyController : Enemy
         State = EnemyState.Chase;
         attackBox.SetActive(false);
     }
-
+    public bool isKbAnimation;
     private void TakeDamageDone()
     {
         if (State == EnemyState.Die)
             return;
-
-        State = EnemyState.Chase;
+        isKbAnimation = false;
+        //State = EnemyState.Chase;
     }
 
     private void DieDone()
@@ -465,7 +475,7 @@ public class EnemyController : Enemy
     {
         if (State == EnemyState.Die)
             return;
-
+        isKbAnimation = true;
         State = EnemyState.KnockBack;
         animator.SetTrigger("TakeDamage");
     }
