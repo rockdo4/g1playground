@@ -74,9 +74,20 @@ public class Projectile : AttackCollider
             }
         }
         if (!string.IsNullOrEmpty(fireSoundEffect))
-            SoundManager.instance.PlaySoundEffect(fireSoundEffect);
+        {
+            //SoundManager.instance.PlaySoundEffect(fireSoundEffect);
+            var se = SoundManager.instance.PlayerSoundPool.Get();
+            var clip = SoundManager.instance.GetAudioClip(fireSoundEffect);
+            se.InitSound(clip);
+        }       
         if (!string.IsNullOrEmpty(inUseSoundEffect))
-            SoundManager.instance.PlaySoundEffect(inUseSoundEffect);
+        {
+            //SoundManager.instance.PlaySoundEffect(inUseSoundEffect);
+            soundEffect = SoundManager.instance.PlayerSoundPool.Get();
+            var clip = SoundManager.instance.GetAudioClip(hitSoundEffect);
+            soundEffect.InitLoopSound(clip);
+        }
+            
     }
 
     protected override bool OnTriggerStay(Collider other)
@@ -87,7 +98,8 @@ public class Projectile : AttackCollider
         var isAttackable = other.CompareTag("Player") || other.CompareTag("Enemy");
         if (!isPenetrable || !isAttackable)
         {
-            // In Use Sound ²ô´Â ±â´É Ãß°¡
+            // In Use Sound ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+            soundEffect.Release();
             GameManager.instance.attackColliderManager.Release(this);
         }
         return true;
