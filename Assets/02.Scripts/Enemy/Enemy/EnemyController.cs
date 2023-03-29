@@ -227,6 +227,7 @@ public class EnemyController : Enemy
             State = EnemyState.Die;
             animator.SetTrigger("Die");
             status.CurrHp -= 19000;
+
         }
 
         animator.SetFloat("Move", agent.velocity.magnitude / chaseSpeed);

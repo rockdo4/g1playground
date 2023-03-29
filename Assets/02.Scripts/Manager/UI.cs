@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,7 +28,8 @@ public class UI : MonoBehaviour
     //public SceneLoader loading;
 
     private LayoutState State;
-
+    [SerializeField]
+    private string sceneName;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -37,9 +39,13 @@ public class UI : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
-        title = GetComponentInChildren<TitleLayout>(true);
+        bool isEqual = sceneName.Equals("Title", StringComparison.OrdinalIgnoreCase);
+
+        if (isEqual)
+            title = GetComponentInChildren<TitleLayout>(true);
+
         popupPanel = GetComponentInChildren<PopUpPanel>(true);
         charaterUIPanel = GetComponentInChildren<CharacterUIPanel>(true);
         controllerPanel = GetComponentInChildren<ControllerPanel>(true);
