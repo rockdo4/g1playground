@@ -37,6 +37,9 @@ public class StageController : MonoBehaviour
     [SerializeField] private bool isStoryStage = false;
     [SerializeField] List<int> storyIdList = new List<int>();
 
+    [Header("Clear Sound Effect")]
+    [SerializeField] private string stageClearClip = "Success 1";
+
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
@@ -68,14 +71,7 @@ public class StageController : MonoBehaviour
 
     }
 
-    IEnumerator AttachObject()
-    {
-        yield return null;
-
-        GetObjectTiles();
-
-    }
-
+    //Get all Object tiles
     private void GetObjectTiles()
     {
         var childCount = gameObject.transform.childCount;
@@ -89,13 +85,14 @@ public class StageController : MonoBehaviour
             }
 
         }
+
         //save the objects status
         SaveStatus();
     }
 
+    //Save the very first state of the tiles
     private void SaveStatus()
     {
-
         foreach (var block in objectTiles)
         {
             BlocksOriginStatus temp = new BlocksOriginStatus();
@@ -224,6 +221,7 @@ public class StageController : MonoBehaviour
         ResetObject();
         SetObjectTileActive();
 
+        //If there is no enemies in the stage
         if (enemies.Count <= 0)
         {
             isClear = true;
@@ -373,6 +371,8 @@ public class StageController : MonoBehaviour
                         EventManager.instance.ChangeColorEffect();
                         TileColorManager.instance.ChangeTileMaterial(transform.name, true);
                     }
+                    //Clear Sound
+                    SoundManager.instance.PlaySoundEffect(stageClearClip);
                     isClear = true;
                     canOpen = true;
                     greenwallopen = true;

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class Checkpoint : MonoBehaviour
 {
     [SerializeField] private string effectName = "Area_star_ellow";
+    [SerializeField] private string soundClip = "Checkpoint";
     private GameObject effect;
 
     private void Awake()
@@ -21,9 +22,9 @@ public class Checkpoint : MonoBehaviour
         {
             GameManager.instance.effectManager.ReturnEffect(effectName, effect);
             effect = null;
-        }        
+        }
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {        
         
@@ -42,6 +43,7 @@ public class Checkpoint : MonoBehaviour
             }
             effect = GameManager.instance.effectManager.GetEffect(effectName);
             effect.transform.position = transform.position;
+            SoundManager.instance.PlaySoundEffect(soundClip);
             //float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
             
         }
