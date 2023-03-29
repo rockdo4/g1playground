@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
 
     private NavMeshAgent agent;
     private NavMeshPath path;
+    private AgentLinkMover linkMover;
     private Vector3 prevPosition;
 
     private Coroutine cor;
@@ -80,7 +81,7 @@ public class PlayerController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.enabled = false;
         agent.updateRotation = false;
-
+        linkMover = GetComponent<AgentLinkMover>();
         prevPosition = agent.transform.position;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
@@ -122,6 +123,18 @@ public class PlayerController : MonoBehaviour
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
     }
+    //public void RemoveAgentLinkMover()
+    //{
+    //    AgentLinkMover agentLinkMover = GetComponent<AgentLinkMover>();
+    //    if (agentLinkMover != null)
+    //    {
+    //        Destroy(agentLinkMover);
+    //    }
+    //}
+    //public void AddAgentLinkMover()
+    //{
+    //    gameObject.AddComponent<AgentLinkMover>();
+    //}
     public bool SkillOnOff(bool isOn , int index)
     {
         return playerSkills.toggles[index].isOn = isOn;
