@@ -74,10 +74,14 @@ public class Portal : MonoBehaviour
                     if (portal.transform.parent.name == "Village")
                     {
                         GameManager.instance.uiManager.PotionOff();
+                        GameManager.instance.uiManager.SkillToggleOff();
+                        GameManager.instance.uiManager.AutoOff();
                     }
                     else
                     {
                         GameManager.instance.uiManager.PotionOn();
+                        GameManager.instance.uiManager.SkillToggleOn();
+                        GameManager.instance.uiManager.AutoOn();
                     }
 
                     transform.parent.gameObject.SetActive(false);

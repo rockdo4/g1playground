@@ -43,8 +43,8 @@ public class UIInventory : MonoBehaviour
             int slotIndex = i;
             button.onClick.AddListener(() => currSlot = slotIndex);
         }
-        equipButton.onClick.AddListener(() => Equip());
         SetInventory((int)itemType);
+        equipButton.onClick.AddListener(() => Equip());
     }
 
     public void ClearInventory()

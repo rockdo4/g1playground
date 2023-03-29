@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public UIButtonManager btManager;
+    public UI ui;
     public CharacterStatUI charStatUI;
     public GameObject itemInventory;
     public GameObject skillInventory;
 
     private GameObject potion;
     private GameObject skillToggle;
+    private GameObject auto;
 
     public Button[] buttons;
 
@@ -19,8 +20,12 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        potion = GameObject.Find("Potion");
-        //potion.SetActive(false);
+        potion = GameObject.Find("PotionPanel");
+        skillToggle = GameObject.Find("SkillPanel");
+        auto = GameObject.Find("AutoPanel");
+        potion.SetActive(false);
+        skillToggle.SetActive(false);
+        auto.SetActive(false);
     }
 
     private void Start()
@@ -85,6 +90,16 @@ public class UIManager : MonoBehaviour
     public void SkillToggleOff()
     {
         skillToggle.SetActive(false);
+    }
+
+    public void AutoOn()
+    {
+        auto.SetActive(true);
+    }
+
+    public void AutoOff()
+    {
+        auto.SetActive(false);
     }
 
     public void ButtonOn()
