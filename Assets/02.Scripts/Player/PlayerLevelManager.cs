@@ -15,8 +15,8 @@ public class PlayerLevelManager : MonoBehaviour
         get => currExp;
         set
         {
-            currExp += value;
-            if (currExp >= MaxExp)
+            currExp = value;
+            while (currExp >= MaxExp)
             {
                 var leftExp = currExp - MaxExp;
                 LevelUp();
