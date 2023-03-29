@@ -56,21 +56,21 @@ public class CharacterStatUI : MonoBehaviour
 
     public void SetHPBarValue()
     {
-        hp.text = status.CurrHp.ToString() + " ";
+        hp.text = "HP bar " + status.CurrHp.ToString() + " ";
         mHp.text = "/ " + status.FinalValue.maxHp.ToString();
         hpSlider.fillAmount = (float)status.CurrHp / (float)status.FinalValue.maxHp;
     }
 
     public void SetMPBarValue()
     {
-        mp.text = status.CurrMp.ToString() + " ";
+        mp.text = "MP bar " + status.CurrMp.ToString() + " ";
         mMp.text = "/ " + status.FinalValue.maxMp.ToString();
         mpSlider.fillAmount = (float)status.CurrMp / (float)status.FinalValue.maxMp;
     }
 
     public void SetExpBarValue()
     {
-        exp.text = levelManager.CurrExp.ToString() + " ";
+        exp.text = "XP bar " + levelManager.CurrExp.ToString() + " ";
         mExp.text = "/ " + levelManager.MaxExp.ToString();
         expSlider.fillAmount = (float)levelManager.CurrExp / (float)levelManager.MaxExp;
     }
