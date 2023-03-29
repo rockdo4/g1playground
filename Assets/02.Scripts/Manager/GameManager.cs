@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
 
         player.GetComponent<PlayerInventory>().RefillPotions();
         player.transform.SetParent(null);
+        player.GetComponent<PlayerController>().autoToggle.isOn = false;
 
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();
 

@@ -185,7 +185,7 @@ public class MiniMap : MonoBehaviour
 
     }
 
-    IEnumerator CSetCollider()
+    IEnumerator CSetColliderAndCheckPoint()
     {
         yield return null;
         yield return null;
@@ -242,7 +242,6 @@ public class MiniMap : MonoBehaviour
                 maxY = point.transform.position.y;
             }
         }
-        Debug.Log("set");
 
         LB = new Vector2(minX - gap, minY - gap - 1);
         RT = new Vector2(maxX + gap, maxY + gap);
@@ -259,7 +258,7 @@ public class MiniMap : MonoBehaviour
             shouldrelease.Clear();
 
             recentMapName = MapManager.instance.GetCurrentMapName();
-            var currentcheckpoints = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponentsInChildren<Checkpoint>();
+            var currentcheckpoints = MapManager.instance.GetCurrentStageObject().GetComponentsInChildren<Checkpoint>();
 
             if (currentcheckpoints.Length > 0)
             {
@@ -300,7 +299,7 @@ public class MiniMap : MonoBehaviour
 
 
 
-        StartCoroutine(CSetCollider());
+        StartCoroutine(CSetColliderAndCheckPoint());
 
 
 
