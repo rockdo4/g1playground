@@ -51,10 +51,14 @@ public class WorldMap : MonoBehaviour
         if (checkpoint.transform.parent.name == "Village")
         {
             GameManager.instance.uiManager.PotionOff();
+            GameManager.instance.uiManager.SkillToggleOff();
+            GameManager.instance.uiManager.AutoOff();
         }
         else
         {
             GameManager.instance.uiManager.PotionOn();
+            GameManager.instance.uiManager.SkillToggleOn();
+            GameManager.instance.uiManager.AutoOn();
         }
 
         EventManager.instance.Resume();
