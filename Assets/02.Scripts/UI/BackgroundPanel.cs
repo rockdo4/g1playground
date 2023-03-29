@@ -8,6 +8,5 @@ public class BackgroundPanel : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         UI.Instance.popupPanel.menuPopUp.GetComponent<UIPopupAnimator>().MenuPopUpExit();
-
     }
 }

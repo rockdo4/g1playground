@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class MenuPopUp : PopupUI
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnEnable()
     {
-        
+        //Dont Clear
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnDisable()
     {
-        
+        //Dont Clear
     }
 }
