@@ -23,6 +23,8 @@ public class UISkillSlot : MonoBehaviour
 
     public void Set(int index, SkillData data)
     {
+        if (data == null)
+            SetEmpty();
         this.index = index;
         this.data = data;
         button.interactable = true;
