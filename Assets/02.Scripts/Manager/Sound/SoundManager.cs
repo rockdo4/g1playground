@@ -162,6 +162,9 @@ public class SoundManager : MonoBehaviour
 
 
     ///////////////////SE/////////////////////////
+    /// 
+    /// Play
+    /// 
     //play SE by file name find in SE list
     public void PlaySoundEffect(string name)
     {
@@ -174,7 +177,7 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-
+   
     //play SE by audio clip
     public void PlaySoundEffect(AudioClip clip)
     {
@@ -198,10 +201,29 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    //Play Enemy SoundEffect by searching sound clip
+    public void PlayEnemyEffect(string name)
+    {
+        //search for sound clip
+        foreach (var se in seClips)
+        {
+            if (se.name == (name))
+            {
+                //enemySource.clip = se;
+                enemySource.PlayOneShot(se);
+                return;
+            }
+        }
+    }
+
+    /// 
+    /// Pause
+    /// 
     //Pause playing SoundEffect
     public void PauseSoundEffect()
     {
         seSource.Pause();
+        enemySource.Pause();
         var playerSource = GetComponentsInChildren<PlayerSound>();
         foreach (var pSource in playerSource)
         {
@@ -223,10 +245,14 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// 
+    /// Resume
+    /// 
     //Resume paused SoundEffect
     public void UnPauseSoundEffect()
     {
         seSource.UnPause();
+        enemySource.UnPause();
         var playerSource = GetComponentsInChildren<PlayerSound>();
         foreach (var pSource in playerSource)
         {
@@ -248,9 +274,14 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    /// 
+    /// Stop
+    /// 
+
     public void StopSoundEffect()
     {
         seSource.Stop();
+        enemySource.Stop();
         var playerSource = GetComponentsInChildren<PlayerSound>();
         foreach (var pSource in playerSource)
         {

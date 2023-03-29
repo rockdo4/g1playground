@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class EnemySoundPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum EnemyType
     {
-        
+        None = -1,
+        Death,
+        EarthWorm,
+        EvilMage,
+        Golem,
+        GreenBug,
+        GreenOrc,
+        GreenPlant,
+        GrimReaper,
+        LavaSpirit,
+        MerryBee,
+        PurpleBomb,
+    }
+    
+    [SerializeField] private EnemyEffectSound effectSound;
+
+    public void PlayAttackSound()
+    {
+        var clip = effectSound.attackClip;
+        SoundManager.instance.PlayEnemyEffect(clip);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayDeathSound()
     {
-        
+        var clip = effectSound.deathClip;
+        SoundManager.instance.PlayEnemyEffect(clip);
     }
 }
