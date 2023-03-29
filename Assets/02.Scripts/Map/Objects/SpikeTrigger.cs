@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpikeTrigger : MonoBehaviour
 {
+    [SerializeField] private string hitSound = "Spikes 3_1";
     private Animator animator;
 
     // Start is called before the first frame update
@@ -16,6 +17,8 @@ public class SpikeTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            SoundManager.instance.PlaySoundEffect(hitSound);
+
             animator.SetBool("Attack", true);
 
         }

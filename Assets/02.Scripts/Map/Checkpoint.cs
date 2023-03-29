@@ -14,14 +14,13 @@ public class Checkpoint : MonoBehaviour
         //GameManager.instance.effectManager.ReturnEffect(effectName, effect);
 
     }
-
-    private void OnDisable()
+    private void OnEnable()
     {
         if (effect != null)
         {
             GameManager.instance.effectManager.ReturnEffect(effectName, effect);
             effect = null;
-        }        
+        }
     }
 
     private void OnTriggerEnter(Collider other)

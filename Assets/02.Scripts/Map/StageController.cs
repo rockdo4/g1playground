@@ -37,6 +37,9 @@ public class StageController : MonoBehaviour
     [SerializeField] private bool isStoryStage = false;
     [SerializeField] List<int> storyIdList = new List<int>();
 
+    [Header("Clear Sound Effect")]
+    [SerializeField] private string stageClearClip = "Success 1";
+
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
@@ -373,6 +376,8 @@ public class StageController : MonoBehaviour
                         EventManager.instance.ChangeColorEffect();
                         TileColorManager.instance.ChangeTileMaterial(transform.name, true);
                     }
+                    //Clear Sound
+                    SoundManager.instance.PlaySoundEffect(stageClearClip);
                     isClear = true;
                     canOpen = true;
                     greenwallopen = true;
