@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UI;
+using static StageController;
 using static UnityEngine.UI.Image;
 
 public class MiniMap : MonoBehaviour
@@ -19,9 +21,10 @@ public class MiniMap : MonoBehaviour
     [SerializeField] private GameObject minimapObject;
     [SerializeField] private RectTransform mask;
     [SerializeField] private Image checkpointPrefab;
+    [SerializeField] private Image blockPrefab;
+    [SerializeField] private Image enemyPrefab;
     //  private List<Image> checkpointicon = new List<Image>();
 
-    List<Image> shouldrelease = new List<Image>();
     Vector2 LB;
     Vector2 RT;
     Rect rect;
@@ -29,26 +32,63 @@ public class MiniMap : MonoBehaviour
 
     public int maxPoolSize = 50;
     public int stackDefaultCapacity = 10;
+
+    List<Image> checkPointIconUsingPool = new List<Image>();
+    Dictionary<Image, GameObject> blockIconUsingPool = new Dictionary<Image, GameObject>();
+    Dictionary<Image, GameObject> enemiesIconUsingPool = new Dictionary<Image, GameObject>();
+
     private IObjectPool<Image> checkpointiconPool;
-    public IObjectPool<Image> CheckpointiconPool
+    public IObjectPool<Image> CheckPointIconPool
     {
         get
         {
             if (checkpointiconPool == null)
-                checkpointiconPool =
-                    new ObjectPool<Image>(
-                        CreateCannonBall,
-                        OnTakeFromPool,
-                        OnReturnedToPool,
-                        OnDestroyPoolObject,
-                        true,
-                        stackDefaultCapacity,
-                        maxPoolSize);
+            {
+                checkpointiconPool = new ObjectPool<Image>(CreateCheckPoint, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, true, stackDefaultCapacity, maxPoolSize);
+            }
             return checkpointiconPool;
         }
     }
 
-    private Image CreateCannonBall()
+    private IObjectPool<Image> blockPool;
+    public IObjectPool<Image> BlockPool
+    {
+        get
+        {
+            if (blockPool == null)
+            {
+                blockPool = new ObjectPool<Image>(CreateBlock, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, true, stackDefaultCapacity, maxPoolSize);
+            }
+            return blockPool;
+        }
+    }
+
+    private IObjectPool<Image> enemiesPool;
+    public IObjectPool<Image> EnemiesPool
+    {
+        get
+        {
+            if (enemiesPool == null)
+            {
+                enemiesPool = new ObjectPool<Image>(CreateEnemy, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, true, stackDefaultCapacity, maxPoolSize);
+            }
+            return enemiesPool;
+        }
+    }
+
+    private Image CreateEnemy()
+    {
+        Image ball = Instantiate(enemyPrefab, transform);
+
+        return ball;
+    }
+    private Image CreateBlock()
+    {
+        Image ball = Instantiate(blockPrefab, transform);
+
+        return ball;
+    }
+    private Image CreateCheckPoint()
     {
         Image ball = Instantiate(checkpointPrefab, transform);
 
@@ -72,8 +112,6 @@ public class MiniMap : MonoBehaviour
         Destroy(ball.gameObject);
     }
 
-
-    private string recentMapName = "village";
     public static MiniMap instance
     {
         get
@@ -88,8 +126,9 @@ public class MiniMap : MonoBehaviour
     }
     private void Awake()
     {
-        checkpointiconPool = new ObjectPool<Image>(CreateCannonBall, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
-
+        checkpointiconPool = new ObjectPool<Image>(CreateCheckPoint, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
+        blockPool = new ObjectPool<Image>(CreateBlock, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
+        enemiesPool= new ObjectPool<Image>(CreateEnemy, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
         //singleton
         if (instance != this)
         {
@@ -97,7 +136,7 @@ public class MiniMap : MonoBehaviour
         }
     }
 
-  
+
     private void Update()
     {
         if (MapManager.instance.outlines == null || MapManager.instance.GetCurrentMapName() == "Village")
@@ -110,52 +149,56 @@ public class MiniMap : MonoBehaviour
             minimapObject.SetActive(true);
         }
 
-    
 
         //normalized
         float playerx = (player.transform.position.x - LB.x) / rect.width;
         float playery = (player.transform.position.y - LB.y) / rect.height;
 
-         miniMapsize = miniMapHorizontal.rectTransform.sizeDelta;
+        miniMapsize = miniMapHorizontal.rectTransform.sizeDelta;
+        if (playerx == float.PositiveInfinity || playery == float.NegativeInfinity)
+        {         
+            return;
+        }
 
         playerPos.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * playerx - miniMapsize.x / 2, miniMapsize.y * playery - miniMapsize.y / 2);
 
+        float normalizedPlayerY = playerPos.rectTransform.anchoredPosition.y / miniMapRect.rect.height;
 
+        float needminus = miniMapRect.rect.height / 2;
 
-        //checkpoint
+        float pivotcenter = miniMapRect.rect.height / 4;
 
-      
-    }
-
-    IEnumerator CSetCheckPoint()
-    {
-        yield return null;
-        if (recentMapName != MapManager.instance.GetCurrentMapName())
+        if (miniMapRect.rect.height > 80)
         {
-            foreach (var rel in shouldrelease)
+
+            miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, (miniMapRect.rect.height * normalizedPlayerY - needminus) * -1);
+            if (Mathf.Abs(miniMapRect.anchoredPosition.y) > pivotcenter)
             {
-                checkpointiconPool.Release(rel);
-            }
-            shouldrelease.Clear();
+                if (miniMapRect.anchoredPosition.y >= 0)
+                    miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, pivotcenter);
+                else
+                    miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, pivotcenter * -1);
 
-            recentMapName = MapManager.instance.GetCurrentMapName();
-            var currentcheckpoints = GameObject.Find(MapManager.instance.GetCurrentChapterName()).transform.Find(MapManager.instance.GetCurrentMapName()).GetComponentsInChildren<Checkpoint>();
-
-            if (currentcheckpoints.Length > 0)
-            {
-                for (int i = 0; i < currentcheckpoints.Length; i++)
-                {
-                    float x = (currentcheckpoints[i].transform.position.x - LB.x) / rect.width;
-                    float y = (currentcheckpoints[i].transform.position.y - LB.y) / rect.height;
-
-                    var temp1 = checkpointiconPool.Get();
-                    temp1.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
-                    temp1.transform.SetParent(miniMapHorizontal.transform, false);
-                    shouldrelease.Add(temp1);
-
-                }
             }
         }
+
+        foreach (var pool in blockIconUsingPool)
+        {
+            pool.Key.gameObject.SetActive(pool.Value.activeSelf);
+            pool.Key.enabled=pool.Value.activeSelf;
+
+        }
+
+        foreach (var enemy in enemiesIconUsingPool)
+        {
+            enemy.Key.gameObject.SetActive(enemy.Value.activeSelf);
+            enemy.Key.enabled = enemy.Value.activeSelf;
+            float x = (enemy.Value.transform.position.x - LB.x) / rect.width;
+            float y = (enemy.Value.transform.position.y - LB.y) / rect.height;
+            enemy.Key.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
+
+        }
+
     }
 
 
@@ -163,25 +206,6 @@ public class MiniMap : MonoBehaviour
     void Start()
     {
         player = GameManager.instance.player;
-
-        //MiniMapData data = DataTableMgr.GetTable<MiniMapData>().Get(0.ToString());
-
-        //var sprite = Resources.Load<Sprite>(data.miniMapId);
-        //var image = sprite.bounds.size;
-
-        //if (image.x >= image.y)
-        //{
-        //    miniMapVertical.gameObject.SetActive(true);
-        //    miniMapHorizontal.gameObject.SetActive(false);
-        //    miniMapVertical.sprite = sprite;
-
-        //}
-        //else
-        //{
-        //    miniMapHorizontal.gameObject.SetActive(true);
-        //    miniMapVertical.gameObject.SetActive(false);
-        //    miniMapHorizontal.sprite = sprite;            
-        //}
 
     }
 
@@ -194,26 +218,6 @@ public class MiniMap : MonoBehaviour
 
         float minX, maxX;
         float minY, maxY;
-
-        //normalized
-        float normalizedPlayerY = playerPos.rectTransform.anchoredPosition.y / miniMapRect.rect.height;
-
-        float needminus = miniMapRect.rect.height / 2;
-
-        float pivotcenter = miniMapRect.rect.height / 4;
-
-        if (miniMapRect.rect.height > 80)
-        {
-            miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, (miniMapRect.rect.height * normalizedPlayerY - needminus) * -1);
-            if (Mathf.Abs(miniMapRect.anchoredPosition.y) >= pivotcenter)
-            {
-                if (miniMapRect.anchoredPosition.y >= 0)
-                    miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, pivotcenter);
-                else
-                    miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, pivotcenter * -1);
-
-            }
-        }
 
         if (boxes.Count <= 0)
             yield break;
@@ -249,32 +253,79 @@ public class MiniMap : MonoBehaviour
         rect = new Rect(LB + ((RT - LB) / 2), RT - LB);
 
 
-        if (recentMapName != MapManager.instance.GetCurrentMapName())
+        foreach (var rel in checkPointIconUsingPool)
         {
-            foreach (var rel in shouldrelease)
+            checkpointiconPool.Release(rel);
+        }
+        checkPointIconUsingPool.Clear();
+        foreach (var rel in blockIconUsingPool)
+        {
+            blockPool.Release(rel.Key);
+        }
+        blockIconUsingPool.Clear();
+        foreach (var rel in enemiesIconUsingPool)
+        {
+            enemiesPool.Release(rel.Key);
+        }
+        enemiesIconUsingPool.Clear();
+
+        var currentcheckpoints = MapManager.instance.GetCurrentStageObject().GetComponentsInChildren<Checkpoint>();
+
+        if (currentcheckpoints.Length > 0)
+        {
+            for (int i = 0; i < currentcheckpoints.Length; i++)
             {
-                checkpointiconPool.Release(rel);
-            }
-            shouldrelease.Clear();
+                float x = (currentcheckpoints[i].transform.position.x - LB.x) / rect.width;
+                float y = (currentcheckpoints[i].transform.position.y - LB.y) / rect.height;
 
-            recentMapName = MapManager.instance.GetCurrentMapName();
-            var currentcheckpoints = MapManager.instance.GetCurrentStageObject().GetComponentsInChildren<Checkpoint>();
+                var temp1 = checkpointiconPool.Get();
+                temp1.transform.SetParent(miniMapHorizontal.transform);
+                temp1.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
+                checkPointIconUsingPool.Add(temp1);
 
-            if (currentcheckpoints.Length > 0)
-            {
-                for (int i = 0; i < currentcheckpoints.Length; i++)
-                {
-                    float x = (currentcheckpoints[i].transform.position.x - LB.x) / rect.width;
-                    float y = (currentcheckpoints[i].transform.position.y - LB.y) / rect.height;
-
-                    var temp1 = checkpointiconPool.Get();
-                    temp1.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
-                    temp1.transform.SetParent(miniMapHorizontal.transform, false);
-                    shouldrelease.Add(temp1);
-
-                }
             }
         }
+
+        var currentEnemies = MapManager.instance.GetCurrentStageObject().GetComponentsInChildren<EnemyController>();
+        for (int i = 0; i < currentEnemies.Length; i++)
+        {
+            float x = (currentEnemies[i].transform.position.x - LB.x) / rect.width;
+            float y = (currentEnemies[i].transform.position.y - LB.y) / rect.height;
+
+            var temp1 = enemiesPool.Get();
+            if (!currentEnemies[i].gameObject.activeSelf)
+            {
+                temp1.enabled = false;
+            }
+            temp1.transform.SetParent(miniMapHorizontal.transform, false);
+            temp1.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
+            enemiesIconUsingPool.Add(temp1, currentEnemies[i].gameObject);
+
+        }
+
+
+        if (MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().lockRequirement != UnLockRequirement.Puzzle)
+            yield break;
+             
+
+        var currentBlock = MapManager.instance.GetCurrentStageObject().transform.Find("Floor");
+        for (int i = 0; i < currentBlock.childCount; i++)
+        {
+            float x = (currentBlock.GetChild(i).transform.position.x - LB.x) / rect.width;
+            float y = (currentBlock.GetChild(i).transform.position.y - LB.y) / rect.height;
+
+            var temp1 = blockPool.Get();
+            if (!currentBlock.GetChild(i).gameObject.activeSelf)
+            {
+                temp1.enabled = false;
+            }
+            temp1.transform.SetParent(miniMapHorizontal.transform, false);
+            temp1.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
+            blockIconUsingPool.Add(temp1, currentBlock.GetChild(i).gameObject);
+
+        }
+
+
     }
 
     public void SetMiniMap(int id)
@@ -297,11 +348,6 @@ public class MiniMap : MonoBehaviour
 
         minimapObject.SetActive(true);
 
-
-
         StartCoroutine(CSetColliderAndCheckPoint());
-
-
-
     }
 }
