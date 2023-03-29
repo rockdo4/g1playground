@@ -15,7 +15,8 @@ public class Checkpoint : MonoBehaviour
         //GameManager.instance.effectManager.ReturnEffect(effectName, effect);
 
     }
-    private void OnEnable()
+
+    private void OnDisable()
     {
         if (effect != null)
         {
@@ -23,7 +24,7 @@ public class Checkpoint : MonoBehaviour
             effect = null;
         }
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {        
         
