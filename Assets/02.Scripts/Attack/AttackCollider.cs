@@ -33,7 +33,10 @@ public abstract class AttackCollider : MonoBehaviour
     {
         timer += Time.deltaTime;
         if (timer > lifeTime)
+        {
+            // In Use Sound Effect ≤®¡÷±‚
             GameManager.instance.attackColliderManager.Release(this);
+        }
     }
 
     protected virtual bool OnTriggerStay(Collider other)

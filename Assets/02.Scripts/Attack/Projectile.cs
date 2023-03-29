@@ -86,7 +86,10 @@ public class Projectile : AttackCollider
 
         var isAttackable = other.CompareTag("Player") || other.CompareTag("Enemy");
         if (!isPenetrable || !isAttackable)
+        {
+            // In Use Sound 끄는 기능 추가
             GameManager.instance.attackColliderManager.Release(this);
+        }
         return true;
     }
 }
