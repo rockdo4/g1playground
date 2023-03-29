@@ -4,24 +4,33 @@ using UnityEngine;
 
 public class OnGround : MonoBehaviour
 {
-    private CapsuleCollider onGround;
+    private Collider onGround;
     public bool isGround = false;
     private void Awake()
     {
-        onGround = GetComponent<CapsuleCollider>();
+        onGround = GetComponent<Collider>();
     }
 
-    private void OnTriggerEnter(Collider collider)
+    //private void OnTriggerEnter(Collider collider)
+    //{
+    //    if (collider.tag != "Ground")
+    //    {
+    //        isGround = false;
+    //        return;
+    //    }
+    //    else
+    //        isGround = true;
+    //}
+    private void OnTriggerStay(Collider other)
     {
-        if (collider.tag != "Ground")
-        {
-            isGround = false;
+        if (!other.CompareTag("Ground"))
             return;
-        }
-        else
-            isGround = true;
-
-
-
+        isGround = true;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Ground"))
+            return;
+        isGround = false;
     }
 }

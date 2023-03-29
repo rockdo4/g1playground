@@ -7,6 +7,7 @@ public class EnemyRange : Enemy, IAttackable
     private CapsuleCollider mainColl;
     public SkillAttack projectileSkill;
     public GameObject skillPivot;
+    private OnGround onGround;
 
     [System.Serializable]
     public class EnemyStateData
@@ -28,6 +29,7 @@ public class EnemyRange : Enemy, IAttackable
     public float attackRange;
     public float attackCool;
     private float attackTime;
+    private bool isKbAnimation;
     public override EnemyState State
     {
         get { return state; }
@@ -97,6 +99,7 @@ public class EnemyRange : Enemy, IAttackable
 
         base.Awake();
         mainColl = GetComponent<CapsuleCollider>();
+        onGround = GetComponentInChildren<OnGround>();
         skillPivot = GameObject.Find(gameObject.name + "/AttackPivot");
         preGoingRight = isGoingRight;
     }
@@ -144,6 +147,9 @@ public class EnemyRange : Enemy, IAttackable
                 break;
             case EnemyState.TakeDamage:
                 TakeDamageUpdate();
+                break;
+            case EnemyState.KnockBack:
+                KnockBackUpdate();
                 break;
             case EnemyState.Die:
                 DieUpdate();
@@ -259,9 +265,16 @@ public class EnemyRange : Enemy, IAttackable
         }
     }
 
-    public void TakeDamageUpdate()
+    protected override void TakeDamageUpdate()
     {
 
+    }
+    protected override void KnockBackUpdate()
+    {
+        if (onGround.isGround && !isKbAnimation)
+        {
+            State = EnemyState.Chase;
+        }
     }
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
@@ -295,7 +308,7 @@ public class EnemyRange : Enemy, IAttackable
         {
 #if UNITY_EDITOR
             Debug.Log("Arrangement Fail");
-            Debug.Log("¹èÄ¡ Á¦´ë·Î !!");
+            Debug.Log("ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ !!");
 #endif
         }
     }
@@ -388,9 +401,10 @@ public class EnemyRange : Enemy, IAttackable
     {
         if (State == EnemyState.Die)
             return;
-
-        State = EnemyState.Chase;
+        isKbAnimation = false;
+        //State = EnemyState.Chase;
     }
+
     private void DieDone()
     {
         gameObject.SetActive(false);
