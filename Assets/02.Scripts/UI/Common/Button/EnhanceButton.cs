@@ -17,6 +17,9 @@ public class EnhanceButton : ButtonUi
     private void OpenReinforcePopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
+
         UI.Instance.popupPanel.reinforcePopUp.ActiveTrue();
+        UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
 }

@@ -17,6 +17,9 @@ public class GambleButton : ButtonUi
     private void OpenGamblingPopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
+
         UI.Instance.popupPanel.gamblingPopUp.ActiveTrue();
+        UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
 }

@@ -17,6 +17,8 @@ public class MapButton : ButtonUi
     private void OpenMapPopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
+
         UI.Instance.popupPanel.worldMapPopUp.ActiveTrue();
     }
 }

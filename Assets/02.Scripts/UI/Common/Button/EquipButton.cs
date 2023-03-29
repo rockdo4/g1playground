@@ -17,6 +17,8 @@ public class EquipButton : ButtonUi
     private void OpenEquipPopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
         UI.Instance.popupPanel.equipPopUp.ActiveTrue();
+        UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
 }

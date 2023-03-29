@@ -17,6 +17,9 @@ public class SyntheticButton : ButtonUi
     private void OpenSyntheticPopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
+
         UI.Instance.popupPanel.syntheticPopUp.ActiveTrue();
+        UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
 }
