@@ -17,7 +17,7 @@ public class SoundManager : MonoBehaviour
     [Header("Audio Source")]
     [SerializeField] public AudioSource bgmSource;
     [SerializeField] public AudioSource seSource;
-    [SerializeField] public AudioSource playerSource;
+    //[SerializeField] public AudioSource playerSource;
     [SerializeField] public AudioSource enemySource;   
 
     [Header("BGMs")]
