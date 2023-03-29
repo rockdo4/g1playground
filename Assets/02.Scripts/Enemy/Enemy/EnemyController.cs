@@ -413,6 +413,7 @@ public class EnemyController : Enemy
             case EnemyMeleeAttack:
                 {
                     attackBox.SetActive(true);
+                    //Play Attack Sound
                 }
                 break;
         }
