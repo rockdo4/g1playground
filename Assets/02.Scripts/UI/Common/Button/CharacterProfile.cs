@@ -18,6 +18,7 @@ public class CharacterProfile : ButtonUi
     private void OpenProfilePopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
         UI.Instance.popupPanel.profilePopUp.ActiveTrue();
     }
 }

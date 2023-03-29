@@ -17,6 +17,9 @@ public class DisassembleButton : ButtonUi
     private void OpenDisassemblePopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
+
         UI.Instance.popupPanel.disassemblePopUp.ActiveTrue();
+        UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
 }

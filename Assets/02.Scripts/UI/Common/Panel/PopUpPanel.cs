@@ -34,6 +34,7 @@ public class PopUpPanel : PanelUi
     public PopupUI gamblingResult10PopUp;
     public PopupUI profilePopUp;
     public PopupUI probabilityPopUp;
+    public MenuSlider menuSlider;
 
     private void Awake()
     {
@@ -67,6 +68,8 @@ public class PopUpPanel : PanelUi
         gamblingResult10PopUp = GetComponentInChildren<GamblingResult10PopUp>(true);
         profilePopUp = GetComponentInChildren<ProfilePopUp>(true);
         probabilityPopUp = GetComponentInChildren<ProbabilityPopUp>(true);
+
+        menuSlider =GetComponentInChildren<MenuSlider>(true);   
     }
 
     public void SetDefault()

@@ -17,6 +17,9 @@ public class ItemButton : ButtonUi
     private void OpenItemPopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
+
         UI.Instance.popupPanel.itemPopUp.ActiveTrue();
+        UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
 }

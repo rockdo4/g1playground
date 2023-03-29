@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DungeonSelect : MonoBehaviour
+public class DungeonSelect : PopupUI
 {
     private DayOfWeek tomorrow;
     private TextMeshProUGUI tomorrowtime;
@@ -16,7 +16,7 @@ public class DungeonSelect : MonoBehaviour
    
 
     // Start is called before the first frame update
-    private void OnEnable()
+    protected override void OnEnable()
     {
         if (DateTime.Now.DayOfWeek != DayOfWeek.Friday)
         {

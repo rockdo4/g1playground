@@ -17,6 +17,9 @@ public class BookButton : ButtonUi
     private void OpenBookPopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
+
         UI.Instance.popupPanel.bookPopUp.ActiveTrue();
+        UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
 }

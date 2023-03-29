@@ -17,6 +17,9 @@ public class SkillButton : ButtonUi
     private void OpenSkillPopUp()
     {
         MenuClose();
+        UI.Instance.popupPanel.AllClose();
+
         UI.Instance.popupPanel.skillPopUp.ActiveTrue();
+        UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
 }
