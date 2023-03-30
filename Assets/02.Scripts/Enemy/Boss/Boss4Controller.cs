@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 
 public class Boss4Controller : Enemy
 {
+    [SerializeField] private GreenPlantSound plantSound;
     public GameObject mask;
     public GameObject attackBox;
     public GameObject dashBox;
@@ -28,6 +29,9 @@ public class Boss4Controller : Enemy
     public float projectileTime;
     private float dashCoolTime;
     private float projectileCoolTime;
+
+    private bool isSpawned = true;
+    private bool isDied = true;
 
     public override EnemyState State
     {
@@ -129,6 +133,8 @@ public class Boss4Controller : Enemy
         dashBox.SetActive(false);
         indicatorBox.SetActive(false);
         State = EnemyState.None;
+        isSpawned = true;
+        isDied = true;
     }
 
     public void Update()
@@ -187,7 +193,14 @@ public class Boss4Controller : Enemy
     }
     protected override void Spawn()
     {
-        animator.SetTrigger("Spawn");
+        if (isSpawned)
+        {
+            isSpawned = false;            
+            var clip = plantSound.spawnClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
+            animator.SetTrigger("Spawn");
+        }
+        
     }
     protected override void Motion()
     {
@@ -222,12 +235,16 @@ public class Boss4Controller : Enemy
             {
                 if (dashCoolTime >= dashTime)
                 {
+                    var clip = plantSound.dashAttackClip;
+                    SoundManager.instance.PlayEnemyEffect(clip);
                     animator.SetTrigger("DashSkill");
                     isSkillType = false;
                     dashCoolTime = 0f;
                 }
                 else if (projectileCoolTime >= projectileTime)
                 {
+                    var clip = plantSound.projectileAttackClip;
+                    SoundManager.instance.PlayEnemyEffect(clip);
                     animator.SetTrigger("ProjectileSkill");
                     isSkillType = true;
                     projectileCoolTime = 0f;
@@ -264,7 +281,14 @@ public class Boss4Controller : Enemy
 
     protected override void DieUpdate()
     {
-        base.DieUpdate();
+        if (isDied)
+        {
+            isDied = false;
+            var clip = plantSound.dieClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
+            base.DieUpdate();
+        }
+        
     }
 
     private void SpawnDone()
@@ -313,6 +337,8 @@ public class Boss4Controller : Enemy
 
     private void Bite()
     {
+        var clip = plantSound.biteAttackClip;
+        SoundManager.instance.PlayEnemyEffect(clip);
         attackBox.SetActive(true);
         //attackBox.GetComponent<BoxCollider>().enabled = true;
 
