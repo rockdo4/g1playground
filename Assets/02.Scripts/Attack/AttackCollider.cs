@@ -94,9 +94,9 @@ public abstract class AttackCollider : MonoBehaviour
         if (!string.IsNullOrEmpty(hitSoundEffect))
         {
             //SoundManager.instance.PlaySoundEffect(hitSoundEffect);
-            soundEffect = SoundManager.instance.PlayerSoundPool.Get();
+            var se = SoundManager.instance.PlayerSoundPool.Get();
             var clip = SoundManager.instance.GetAudioClip(hitSoundEffect);
-            soundEffect.InitSound(clip);
+            se.InitSound(clip);
         }
         return true;
     }
