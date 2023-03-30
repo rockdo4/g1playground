@@ -17,6 +17,8 @@ public class MapManager : MonoBehaviour
     private GameObject currentChapterObject;
     private GameObject map;
 
+    public List<StageController> GetStageList() => maps;
+
     public GameObject GetCurrentStageObject() => currentStageObject;
     public GameObject GetCurrentChapterObject() => currentChapterObject;
 
@@ -31,28 +33,71 @@ public class MapManager : MonoBehaviour
     }
 
     private void Awake()
-    {
+    {                
+        if (instance != this)
+            Destroy(gameObject);
 
         Debug.Log("MapManagerAwake");
         map = GameObject.FindGameObjectWithTag("Map");
-        var chapterCount = map.transform.childCount;
+        var chapterCount = map.transform.childCount; 
         for (int i = 0; i < chapterCount; i++)
         {
-            var child = map.transform.GetChild(i).GetComponentsInChildren<StageController>();
-            for (int j = 0; j < child.Length; j++)
+            var chapter = map.transform.GetChild(i).gameObject;
+            var temp = chapter.GetComponentsInChildren<StageController>(true);
+            foreach (var t in temp)
             {
-                maps.Add(child[j]);
+                maps.Add(t);
             }
         }
-        foreach (var map in maps)
-        {
-           
-          //  map.gameObject.SetActive(false); 
-        }
-        if (instance != this)
-            Destroy(gameObject);
+
+        Debug.Log(maps.Count);
+
+        LoadProgress();
     }
 
+    public void LoadProgress()
+    {
+        var saveData = SaveLoadSystem.Load(SaveData.Types.Stage) as SaveStageDataVer1;
+
+        if (saveData == null)
+        {
+            return;
+        }
+           
+        foreach (var stage in saveData.unlock)
+        {
+            foreach (var map in maps)
+            {
+                if (map.name == stage.Key)
+                {
+                    map.IsClear = stage.Value;                    
+                }
+            }
+        }
+    }
+
+
+    public void SaveProgress()
+    {
+        var originData = SaveLoadSystem.Load(SaveData.Types.Stage) as SaveStageDataVer1;
+        if (originData == null)
+        {
+            var newsaveData = new SaveStageDataVer1();
+            newsaveData.unlock = new Dictionary<string, bool>();
+            foreach(var m in maps)
+            {
+                newsaveData.unlock.Add(m.name, false);
+            }
+
+            SaveLoadSystem.Save(newsaveData);
+
+            originData = SaveLoadSystem.Load(SaveData.Types.Stage) as SaveStageDataVer1;
+        }
+        originData.unlock[currentMapName] = true;
+
+
+        SaveLoadSystem.Save(originData);
+    }
 
     public void SetCurrentMapName(string name)
     {

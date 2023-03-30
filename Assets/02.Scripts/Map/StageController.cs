@@ -43,7 +43,7 @@ public class StageController : MonoBehaviour
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
-    public bool IsClear { get { return isClear; } }
+    public bool IsClear { get { return isClear; } set { isClear = value; } }
 
     private List<GameObject> enemies;
     private List<GameObject> objectTiles = new List<GameObject>();
@@ -376,6 +376,9 @@ public class StageController : MonoBehaviour
                     isClear = true;
                     canOpen = true;
                     greenwallopen = true;
+
+                    if (SceneManager.GetActiveScene().name == "Scene02")
+                        MapManager.instance.SaveProgress();
 
                 }
             }

@@ -86,8 +86,6 @@ public class PlayerDataManager : MonoBehaviour
     public void LoadFile()
     {
         Debug.Log("Load");
-        var playerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
-        var player= GameManager.instance.player;
 
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
         if (saveData == null)
@@ -105,11 +103,8 @@ public class PlayerDataManager : MonoBehaviour
         }
         playerName = saveData.playerName;
         lastSaveMapId = saveData.lastMapId;
-        MapManager.instance.SetCurrentMapName(lastSaveMapId);
         lastSaveChapterName = saveData.lastChapter;
-        MapManager.instance.SetcurrentChapterName(lastSaveChapterName);
         lastPlayerPos = saveData.lastPlayerPos;
-        player.transform.position = saveData.lastPlayerPos;
 
         weapons = saveData.weapons;
         armors = saveData.armors;
@@ -187,6 +182,13 @@ public class PlayerDataManager : MonoBehaviour
         consumables = playerInventory.Consumables;
         currWeapon = playerInventory.CurrWeapon;
         currArmor = playerInventory.CurrArmor;
+    }
+
+    public void SaveDungeonProgress()
+    {
+        List<StageController> maps = MapManager.instance.GetStageList();
+
+
     }
 
     public void LoadInventory() => GameManager.instance.player.GetComponent<PlayerInventory>().Load(weapons, armors, consumables, currWeapon, currArmor);
