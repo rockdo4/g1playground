@@ -112,6 +112,8 @@ public class PlayerSkills : MonoBehaviour
         {
             SetEmpty(i);
         }
+
+
     }
 
     public void SetEmpty(int index)
@@ -119,6 +121,7 @@ public class PlayerSkills : MonoBehaviour
         skillStates[index].index = -1;
         skillStates[index].skill = null;
         toggles[index].image.sprite = null;
+       
     }
 
     public void SetSkill(int index, int possessedIndex)
@@ -149,6 +152,9 @@ public class PlayerSkills : MonoBehaviour
         skillStates[index].Set(skill);
         //toggles[index].image.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillData.iconSpriteId).iconName);
         toggles[index].image.sprite = DataTableMgr.LoadIcon(skillData.iconSpriteId);
+
+        PlayerDataManager.instance.SaveSkills();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void UseSkill(int index)
@@ -221,6 +227,9 @@ public class PlayerSkills : MonoBehaviour
         if (PossessedSkills == null)
             PossessedSkills = new List<string>();
         PossessedSkills.Add(id);
+
+        PlayerDataManager.instance.SaveSkills();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void RemoveSkill(int index)
@@ -236,6 +245,9 @@ public class PlayerSkills : MonoBehaviour
             if (skillStates[i].index > index)
                 SetSkill(i, skillStates[i].index - 1);
         }
+
+        PlayerDataManager.instance.SaveSkills();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void Reinforce(int index, int materialIndex, string newId)
@@ -247,6 +259,8 @@ public class PlayerSkills : MonoBehaviour
                 SetSkill(i, index);
         }
         RemoveSkill(materialIndex);
+        PlayerDataManager.instance.SaveSkills();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void Disassemble(int index)
@@ -275,5 +289,7 @@ public class PlayerSkills : MonoBehaviour
             }
         }
         GetComponent<PlayerInventory>()?.AddConsumable(powderId, powderCount);
+        PlayerDataManager.instance.SaveSkills();
+        PlayerDataManager.instance.SaveFile();
     }
 }

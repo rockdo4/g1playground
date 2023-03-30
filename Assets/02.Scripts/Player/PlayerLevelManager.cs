@@ -56,6 +56,8 @@ public class PlayerLevelManager : MonoBehaviour
         GameObject effect = GameManager.instance.effectManager.GetEffect("Level_up");
         effect.transform.SetParent(player.transform,false);
         GameManager.instance.effectManager.ReturnEffectOnTime("Level_up", effect, 2);
+        PlayerDataManager.instance.SaveLevel();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void SetLevel(int level)

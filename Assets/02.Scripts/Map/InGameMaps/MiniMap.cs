@@ -5,6 +5,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static StageController;
 using static UnityEngine.UI.Image;

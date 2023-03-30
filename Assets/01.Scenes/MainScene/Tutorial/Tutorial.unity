@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.21535635, g: 0.30600128, b: 0.33173656, a: 1}
+  m_IndirectSpecularColor: {r: 0.21528155, g: 0.30525383, b: 0.3312603, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4233,6 +4233,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 651c2496d71e9b14d858a7b7268560d7, type: 3}
+--- !u!1 &292466367
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 292466369}
+  - component: {fileID: 292466368}
+  m_Layer: 0
+  m_Name: SavedataPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &292466368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292466367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025da6e37204d0d4a939a2ee4000b6c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerName: 
+  lastSaveMapId: 
+  lastSaveChapterName: 
+  lastPlayerPos: {x: 0, y: 0, z: 0}
+  playerCurrHp: 0
+  playerCurrMp: 0
+  weapons: []
+  armors: []
+  consumables: []
+  currWeapon: 
+  currArmor: 
+  possessedSkills: []
+  currskill1: 0
+  currskill2: 0
+  currLevel: 0
+  currExp: 0
+  endTutorial: 0
+--- !u!4 &292466369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292466367}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5938355, y: -2.86022, z: 10.743203}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &301784746 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2306042921252070842, guid: 97a4803aba7d48f49895509181650255,
@@ -15067,7 +15128,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.327553, y: 1.9132147, z: -10}
+  m_LocalPosition: {x: -27.312313, y: 1.9132147, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18447,6 +18508,11 @@ PrefabInstance:
     - target: {fileID: 4387344524525823767, guid: 97a4803aba7d48f49895509181650255,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4713529361394892137, guid: 97a4803aba7d48f49895509181650255,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5936612643073148897, guid: 97a4803aba7d48f49895509181650255,
@@ -24917,7 +24983,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0

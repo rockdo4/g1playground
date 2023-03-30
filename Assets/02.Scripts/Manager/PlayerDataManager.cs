@@ -53,6 +53,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SaveFile()
     {
+        var PlayerStatus= GameManager.instance.player.GetComponent<PlayerStatus>();
         var saveData = new SavePlayerDataVer1();
         saveData.playerName = playerName;
         saveData.lastMapId = lastSaveMapId;
@@ -60,15 +61,15 @@ public class PlayerDataManager : MonoBehaviour
         //saveData.lastPlayerPos = player.transform.position;
         saveData.lastPlayerPos = lastPlayerPos;
 
-        saveData.playerCurrHp = playerCurrHp;
-        saveData.playerCurrMp = playerCurrMp;
+        saveData.playerCurrHp = PlayerStatus.CurrHp;
+        saveData.playerCurrMp = PlayerStatus.CurrMp;
 
         saveData.weapons = weapons;
         saveData.armors = armors;
         saveData.consumables = consumables;
         saveData.currWeapon = currWeapon;
         saveData.currArmor = currArmor;
-        
+
         saveData.possessedSkills = possessedSkills;
         saveData.currskill1 = currskill1;
         saveData.currskill2 = currskill2;
@@ -81,8 +82,11 @@ public class PlayerDataManager : MonoBehaviour
 
     public void LoadFile()
     {
+        var playerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
+        var player= GameManager.instance.player;
+
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
-        if (saveData == null || !saveData.endTutorial)
+        if (saveData == null)
         {
             playerName = null;
             lastSaveMapId = null;
@@ -97,8 +101,11 @@ public class PlayerDataManager : MonoBehaviour
         }
         playerName = saveData.playerName;
         lastSaveMapId = saveData.lastMapId;
+        MapManager.instance.SetCurrentMapName(lastSaveMapId);
         lastSaveChapterName = saveData.lastChapter;
+        MapManager.instance.SetcurrentChapterName(lastSaveChapterName);
         lastPlayerPos = saveData.lastPlayerPos;
+        player.transform.position = saveData.lastPlayerPos;
 
         weapons = saveData.weapons;
         armors = saveData.armors;
@@ -140,9 +147,9 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SavePlayer()
     {
-        SaveLevel();
-        SaveInventory();
-        SaveSkills();
+        SaveLevel();   //
+        SaveInventory(); //
+        SaveSkills();//
         SavePlayerHpMp();
     }
 

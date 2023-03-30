@@ -131,6 +131,8 @@ public class PlayerInventory : MonoBehaviour
             }
         }
         Weapons.Add(id);
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void AddArmor(string id)
@@ -145,6 +147,8 @@ public class PlayerInventory : MonoBehaviour
             }
         }
         Armors.Add(id);
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void AddConsumable(string id, int count)
@@ -173,6 +177,8 @@ public class PlayerInventory : MonoBehaviour
                 }
             }
         }
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void RemoveWeapon(int index)
@@ -181,6 +187,8 @@ public class PlayerInventory : MonoBehaviour
             CurrWeapon = null;
         else
             Weapons.RemoveAt(index);
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void RemoveArmor(int index)
@@ -189,6 +197,8 @@ public class PlayerInventory : MonoBehaviour
             CurrArmor = null;
         else
             Armors.RemoveAt(index);
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void Reinforce(ItemTypes type, int index, string newId)
@@ -211,6 +221,8 @@ public class PlayerInventory : MonoBehaviour
                 break;
         }
         ApplyStatus();
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void Disassemble(ItemTypes type, int index)
@@ -285,6 +297,8 @@ public class PlayerInventory : MonoBehaviour
         }
         AddConsumable(powderId, powderCount);
         ApplyStatus();
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void Compose(ItemTypes type, ComposeData data, int[] indexs)
@@ -310,6 +324,8 @@ public class PlayerInventory : MonoBehaviour
                 break;
         }
         ApplyStatus();
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public int GetConsumableCount(string itemId)
@@ -352,6 +368,8 @@ public class PlayerInventory : MonoBehaviour
                 }
             }
         }
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void UsePotion(Potions potion)

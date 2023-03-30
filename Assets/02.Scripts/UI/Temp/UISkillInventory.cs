@@ -48,6 +48,7 @@ public class UISkillInventory : MonoBehaviour
             slot.SetEmpty();
         }
         currSlot = -1;
+
     }
 
     public void SetInventory()
@@ -67,6 +68,8 @@ public class UISkillInventory : MonoBehaviour
             currSlot = 0;
         }
         skillInfo.ShowCurrPlayerSkills();
+
+       
     }
 
     public void SlotInstantiate(int count)

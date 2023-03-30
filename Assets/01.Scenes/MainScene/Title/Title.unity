@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -238,6 +238,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &253921697 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1737670313071528079, guid: 43f9a4e8f810b6743ad19243709bc33d,
+    type: 3}
+  m_PrefabInstance: {fileID: 500997684}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &253921698 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1737670313071528074, guid: 43f9a4e8f810b6743ad19243709bc33d,
+    type: 3}
+  m_PrefabInstance: {fileID: 500997684}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61227e5a965373d4a9381c899f1848b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &379882742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -494,6 +518,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1737670313071528079, guid: 43f9a4e8f810b6743ad19243709bc33d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 253921698}
+    - target: {fileID: 1737670313071528079, guid: 43f9a4e8f810b6743ad19243709bc33d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1737670313071528079, guid: 43f9a4e8f810b6743ad19243709bc33d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ContinueButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1737670313071528079, guid: 43f9a4e8f810b6743ad19243709bc33d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1737670313196345115, guid: 43f9a4e8f810b6743ad19243709bc33d,
         type: 3}
       propertyPath: m_Name
@@ -626,6 +670,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43f9a4e8f810b6743ad19243709bc33d, type: 3}
+--- !u!1 &534295987 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1737670313196345115, guid: 43f9a4e8f810b6743ad19243709bc33d,
+    type: 3}
+  m_PrefabInstance: {fileID: 500997684}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &534295990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534295987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c744dcd1dfdd4ec45b42836ca335a4ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countiune: {fileID: 253921697}
 --- !u!1 &746017980
 GameObject:
   m_ObjectHideFlags: 0
