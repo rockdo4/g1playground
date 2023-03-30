@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AutoPanel : PanelUi
+public class Skill1Toggle : MonoBehaviour
 {
     private Toggle toggle;
     private void Awake()
@@ -12,12 +12,12 @@ public class AutoPanel : PanelUi
     }
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        
+
     }
     public void ActivateToggle(bool isinteractable)
     {

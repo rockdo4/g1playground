@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class MenuPanel : PanelUi
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public MenuButton menuButton;
+    public HomeButton homeButton;
+    public RestartButton restartButton;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        menuButton = GetComponentInChildren<MenuButton>(true);
+        homeButton = GetComponentInChildren<HomeButton>(true);
+        restartButton = GetComponentInChildren<RestartButton>(true);
     }
 }

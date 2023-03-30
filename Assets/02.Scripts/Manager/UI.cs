@@ -26,7 +26,7 @@ public class UI : MonoBehaviour
     public SkillPanel skillPanel;
     public AutoPanel autoPanel;
     //public SceneLoader loading;
-
+    public MenuPopUp menuPopUp;
     private LayoutState State;
     [SerializeField]
     private string sceneName;
@@ -54,25 +54,67 @@ public class UI : MonoBehaviour
         //minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
         skillPanel = GetComponentInChildren<SkillPanel>(true);
         autoPanel = GetComponentInChildren<AutoPanel>(true);
-
+        menuPopUp = GetComponentInChildren<MenuPopUp>(true);
     }
 
-    public void SetState(LayoutState state)
+    private void Start()
     {
-        switch (State)
+        InitUi(sceneName);
+    }
+    private void InitUi(string sceneName)
+    {
+        if(sceneName.Equals("Tutorial", StringComparison.OrdinalIgnoreCase))
         {
-            case LayoutState.Title:
-                title.ActiveFalse();
-                break;
+            SetTutorialUi();
         }
-
-        State = state;
-
-        switch (state)
+        else if(sceneName.Equals("Village", StringComparison.OrdinalIgnoreCase))
         {
-            case LayoutState.Title:
-                title.ActiveTrue();
-                break;
+            SetVillageUi();
         }
+        else if (sceneName.Equals("Dungeon", StringComparison.OrdinalIgnoreCase))
+        {
+            SetBattle();
+        }
+    }
+
+    public void SetTutorialUi()
+    {
+        charaterUIPanel.ActiveTrue();
+        controllerPanel.ActiveTrue();
+        menuPanel.ActiveTrue();
+        UI.Instance.menuPanel.homeButton.ActivateButton(false);
+        potionPanel.ActiveTrue();
+        skillPanel.ActiveTrue();
+        UI.Instance.skillPanel.SkillToggleOff();
+        autoPanel.ActiveTrue();
+        // 인터렉 펄스
+        UI.Instance.autoPanel.ActivateToggle(false);
+        // 강화, 분해, 합성, 뽑기, 던젼 안눌리게
+        popupPanel.ActiveTrue();
+        UI.Instance.popupPanel.menuPopUp.SetDefault();
+    }
+
+    public void SetVillageUi()
+    {
+        popupPanel.ActiveTrue();
+        charaterUIPanel.ActiveTrue();
+        controllerPanel.ActiveTrue();
+        menuPanel.ActiveTrue();
+        potionPanel.ActiveFalse();
+        skillPanel.ActiveFalse();
+        autoPanel.ActiveFalse();
+    }
+
+    public void SetBattle()
+    {
+        popupPanel.ActiveTrue();
+        // 강화, 분해, 합성, 뽑기, 던젼 안눌리게
+        UI.Instance.popupPanel.menuPopUp.SetDefault();
+        charaterUIPanel.ActiveTrue();
+        controllerPanel.ActiveTrue();
+        menuPanel.ActiveTrue();
+        potionPanel.ActiveTrue();
+        skillPanel.ActiveTrue();
+        autoPanel.ActiveTrue();
     }
 }
