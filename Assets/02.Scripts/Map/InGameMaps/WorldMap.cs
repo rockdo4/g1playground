@@ -17,6 +17,11 @@ public class WorldMap : MonoBehaviour
         }
     }
 
+    public void GoHome(GameObject stage)
+    {
+        SetStage(stage.GetComponent<StageController>());
+    }
+
     private void SetStage(StageController stage)
     {
         if (!GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).
@@ -47,19 +52,6 @@ public class WorldMap : MonoBehaviour
         Camera.main.transform.position = GameManager.instance.player.transform.position;
         MapManager.instance.SetCurrentMapName(checkpoint.transform.parent.name);
         MapManager.instance.SetcurrentChapterName(checkpoint.transform.parent.parent.name);
-
-        if (checkpoint.transform.parent.name == "Village")
-        {
-            GameManager.instance.uiManager.PotionOff();
-            GameManager.instance.uiManager.SkillToggleOff();
-            GameManager.instance.uiManager.AutoOff();
-        }
-        else
-        {
-            GameManager.instance.uiManager.PotionOn();
-            GameManager.instance.uiManager.SkillToggleOn();
-            GameManager.instance.uiManager.AutoOn();
-        }
 
         EventManager.instance.Resume();
     }
