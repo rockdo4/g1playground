@@ -111,7 +111,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
 
     private void KnockBack(Vector3 attackPos, float force)
     {
-        Debug.Log(kBCount);
+        //Debug.Log(kBCount);
         if (kBCount >= maxKBCount || Mathf.Approximately(force, 0f) || knockBackedOnThisFrame)
             return;
 

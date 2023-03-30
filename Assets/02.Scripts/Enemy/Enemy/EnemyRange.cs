@@ -86,7 +86,7 @@ public class EnemyRange : Enemy, IAttackable
                     break;
             }
 
-            Debug.Log(State);
+            //Debug.Log(State);
         }
     }
 
@@ -118,9 +118,24 @@ public class EnemyRange : Enemy, IAttackable
         base.OnEnable();
 
         State = EnemyState.None;
+
+        RemoveAgentLinkMover();
+        AddAgentLinkMover();
         ResetPattern();
     }
+    void RemoveAgentLinkMover()
+    {
+        AgentLinkMover agentLinkMover = GetComponent<AgentLinkMover>();
+        if (agentLinkMover != null)
+        {
+            Destroy(agentLinkMover);
+        }
+    }
 
+    void AddAgentLinkMover()
+    {
+        gameObject.AddComponent<AgentLinkMover>();
+    }
 
 
     protected void Update()

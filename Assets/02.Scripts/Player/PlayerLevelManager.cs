@@ -34,7 +34,7 @@ public class PlayerLevelManager : MonoBehaviour
 
     public void SetDefault()
     {
-        Level = 0;
+        Level = 1;
         CurrExp = 0;
     }
 
