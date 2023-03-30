@@ -67,8 +67,6 @@ public class MenuSlider : MonoBehaviour
     //            break;
     //        case SyntheticButton:
     //            break;
-    //        case BookButton:
-    //            break;
     //        case GambleButton:
     //            break;
     //        case SettingButton:

@@ -77,6 +77,6 @@ public class CharacterStatUI : MonoBehaviour
 
     public void SetUIPlayerLevel()
     {
-        level.text = levelManager.Level.ToString();
+        level.text = "Lv." + levelManager.Level.ToString();
     }
 }

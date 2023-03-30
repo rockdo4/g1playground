@@ -7,7 +7,6 @@ public class PopUpPanel : PanelUi
     public ButtonUi skill;
     public ButtonUi equip;
     public ButtonUi item;
-    public ButtonUi book;
     public ButtonUi map;
     public ButtonUi exit;
     public ButtonUi dungeon;
@@ -22,7 +21,6 @@ public class PopUpPanel : PanelUi
     public PopupUI skillPopUp;
     public PopupUI equipPopUp;
     public PopupUI itemPopUp;
-    public PopupUI bookPopUp;
     public PopupUI worldMapPopUp;
     public PopupUI reinforcePopUp;
     public PopupUI disassemblePopUp;
@@ -41,7 +39,6 @@ public class PopUpPanel : PanelUi
         skill = GetComponentInChildren<SkillButton>(true);
         equip = GetComponentInChildren<EquipButton>(true);
         item = GetComponentInChildren<ItemButton>(true);
-        book = GetComponentInChildren<BookButton>(true);
         map = GetComponentInChildren<MapButton>(true);
         exit = GetComponentInChildren<ExitButton>(true);
         dungeon = GetComponentInChildren<DungeonButton>(true);
@@ -56,7 +53,6 @@ public class PopUpPanel : PanelUi
         skillPopUp = GetComponentInChildren<SkillPopUp>(true);
         equipPopUp = GetComponentInChildren<EquipPopUp>(true);
         itemPopUp = GetComponentInChildren<ItemPopUp>(true);
-        bookPopUp = GetComponentInChildren<BookPopUp>(true);
         worldMapPopUp = GetComponentInChildren<WorldMapPopUp>(true);
         reinforcePopUp = GetComponentInChildren<ReinforcePopUp>(true);
         disassemblePopUp = GetComponentInChildren<DisassemblePopUp>(true);
@@ -77,7 +73,6 @@ public class PopUpPanel : PanelUi
         skill.ActivateButton(true);
         equip.ActivateButton(true);
         item.ActivateButton(true);
-        book.ActivateButton(true);
         map.ActivateButton(true);
         exit.ActivateButton(true);
         dungeon.ActivateButton(false);
@@ -93,7 +88,6 @@ public class PopUpPanel : PanelUi
         skill.ActivateButton(true);
         equip.ActivateButton(true);
         item.ActivateButton(true);
-        book.ActivateButton(true);
         map.ActivateButton(true);
         exit.ActivateButton(true);
         dungeon.ActivateButton(true);
@@ -111,7 +105,6 @@ public class PopUpPanel : PanelUi
         skillPopUp.ActiveFalse();
         equipPopUp.ActiveFalse();
         itemPopUp.ActiveFalse();
-        bookPopUp.ActiveFalse();
         worldMapPopUp.ActiveFalse();
         reinforcePopUp.ActiveFalse();
         disassemblePopUp.ActiveFalse();
