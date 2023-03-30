@@ -13,7 +13,10 @@ public class StageController : MonoBehaviour
         Fight,
         Puzzle,
         Heal,
+        Tutorial,
+        Village,
     }
+
     private struct BlocksOriginStatus
     {
         public GameObject blockObject;
@@ -154,6 +157,8 @@ public class StageController : MonoBehaviour
 
     }
 
+
+
     private void OnEnable()
     {
         //Set Skybox
@@ -172,7 +177,8 @@ public class StageController : MonoBehaviour
             MiniMap.instance.SetMiniMap(stageId);
         }
 
-
+        
+       
         if (MapManager.instance.currentMapCollider != null )
         {
             StopCoroutine(CSetStageCollider());
@@ -244,6 +250,26 @@ public class StageController : MonoBehaviour
         else
         {
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
+        }
+
+       StartCoroutine(CoSetUI());
+    }
+
+    IEnumerator CoSetUI()
+    {
+        yield return null;
+        //UI setting
+        switch (lockRequirement)
+        {
+            case UnLockRequirement.Fight:
+                UI.Instance.SetBattle();
+                break;
+            case UnLockRequirement.Puzzle:
+                UI.Instance.SetVillageUi();
+                break;
+            case UnLockRequirement.Heal:
+                UI.Instance.SetVillageUi();
+                break;
         }
     }
 

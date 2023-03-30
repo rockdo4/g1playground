@@ -22,4 +22,10 @@ public class SkillButton : ButtonUi
         UI.Instance.popupPanel.skillPopUp.ActiveTrue();
         UI.Instance.popupPanel.menuSlider.ActiveTrue();
     }
+
+    public override void ActivateButton(bool isinteractable)
+    {
+        base.ActivateButton(isinteractable);
+    }
+
 }
