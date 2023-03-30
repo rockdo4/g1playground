@@ -40,6 +40,21 @@ public class PlayerSkills : MonoBehaviour
     private SkillState[] skillStates;
     private int skillCount = 0;
 
+    public void Reset()
+    {
+        for (int i = 0; i < skillStates.Length; ++i)
+        {
+            if (!skillStates[i].skill.isOnOffSkill)
+            {
+                if (!skillStates[i].skillUsable)
+                {
+                    skillStates[i].skillTimer = 0f;
+                    skillStates[i].skillUsable = true;
+                }
+            }
+        }
+    }
+
     public void Load(List<string> possessedSkills, int currSkill1, int currSkill2)
     {
         PossessedSkills = possessedSkills;

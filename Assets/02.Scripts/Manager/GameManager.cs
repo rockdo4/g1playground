@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         MapManager.instance.GetCurrentStageObject().gameObject.GetComponent<StageController>().EnemiesReset();
         player.GetComponent<Status>().Restore();
         player.GetComponent<AttackedCC>().Reset();
+        player.GetComponent<PlayerSkills>().Reset();
         attackColliderManager.ReleaseAll();
         MapManager.instance.SetLastCheckpointMapTurnOn();
        
