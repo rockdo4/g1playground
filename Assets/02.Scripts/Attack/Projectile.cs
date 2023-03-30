@@ -99,7 +99,10 @@ public class Projectile : AttackCollider
         if (!isPenetrable || !isAttackable)
         {
             // In Use Sound ���� ��� �߰�
-            soundEffect.Release();
+            if (soundEffect != null)
+            {
+                soundEffect.Release();
+            }
             GameManager.instance.attackColliderManager.Release(this);
         }
         return true;
