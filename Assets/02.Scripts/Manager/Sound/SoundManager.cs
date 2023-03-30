@@ -27,7 +27,10 @@ public class SoundManager : MonoBehaviour
     [SerializeField] public List<AudioClip> seClips = new List<AudioClip>();
 
     [Header("Start BGM")]
-    [SerializeField] private string bgmName = "Playing";
+    [SerializeField] private string bgmName = "village_loop";
+    [SerializeField] private string villageBGM = "village_loop";
+    [SerializeField] private string ch1BGM = "playing_loop";
+    [SerializeField] private string ch2BGM = "Playful LOOP";
 
     public const string Master_KEY = "MasterKey";
     public const string BGM_KEY = "BGMKey";
@@ -140,6 +143,23 @@ public class SoundManager : MonoBehaviour
                 bgmSource.Play();
             }
         }
+    }
+
+    public void ChangeBgm(Chapter.ChapterNumber number)
+    {        
+        switch (number)
+        {
+            case Chapter.ChapterNumber.Village:
+                PlayBGM(villageBGM);
+                break;
+            case Chapter.ChapterNumber.Ch1:
+                PlayBGM(ch1BGM);
+                break;
+            case Chapter.ChapterNumber.Ch2:
+                PlayBGM(ch2BGM);
+                break;
+        }
+        
     }
 
     //stop Bgm
