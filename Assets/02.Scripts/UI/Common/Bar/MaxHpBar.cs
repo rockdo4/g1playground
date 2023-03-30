@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillPowerBar : BarUI
+public class MaxHpBar : BarUI
 {
     private int maxStat;
     protected void Awake()
@@ -10,4 +10,5 @@ public class SkillPowerBar : BarUI
         base.Awake();
         maxValue = maxStat;
     }
+
 }

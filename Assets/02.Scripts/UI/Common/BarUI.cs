@@ -15,8 +15,7 @@ public class BarUI : MonoBehaviour
 
     }
 
-
-    public virtual void SetImageFillAmount(int value)
+    public void SetImageFillAmount(int value)
     {
         StartCoroutine(StatBar(value));
         image.fillAmount = (float)value / maxValue;
@@ -33,7 +32,7 @@ public class BarUI : MonoBehaviour
 
         while (t < 1f)
         {
-            t += Time.deltaTime / duration; 
+            t += Time.deltaTime / duration;
 
             int newValue;
 
@@ -50,5 +49,4 @@ public class BarUI : MonoBehaviour
             yield return null;
         }
     }
-
 }

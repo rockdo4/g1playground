@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillPowerBar : BarUI
+public class MeleePowBar : BarUI
 {
     private int maxStat;
     protected void Awake()
