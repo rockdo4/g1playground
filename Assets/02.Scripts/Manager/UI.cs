@@ -22,7 +22,7 @@ public class UI : MonoBehaviour
     public ControllerPanel controllerPanel;
     public MenuPanel menuPanel;
     public PotionPanel potionPanel;
-    public MiniMapPanel minimapPanel;
+    //public MiniMapPanel minimapPanel;
     public SkillPanel skillPanel;
     public AutoPanel autoPanel;
     //public SceneLoader loading;
@@ -51,7 +51,7 @@ public class UI : MonoBehaviour
         controllerPanel = GetComponentInChildren<ControllerPanel>(true);
         menuPanel = GetComponentInChildren<MenuPanel>(true);
         potionPanel = GetComponentInChildren<PotionPanel>(true);
-        minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
+        //minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
         skillPanel = GetComponentInChildren<SkillPanel>(true);
         autoPanel = GetComponentInChildren<AutoPanel>(true);
 
