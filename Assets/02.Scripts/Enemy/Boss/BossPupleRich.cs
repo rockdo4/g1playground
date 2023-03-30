@@ -9,6 +9,8 @@ using UnityEngine.InputSystem.Android;
 
 public class BossPupleRich : Enemy
 {
+    [SerializeField] private PurpleRichSound purpleRichSound;
+
     private CapsuleCollider mainColl;
     public GameObject attackBox;
     public GameObject skillPivot;
@@ -113,6 +115,8 @@ public class BossPupleRich : Enemy
         player = GameManager.instance.player;
         GetComponent<DestructedEvent>().OnDestroyEvent = () =>
         {
+            var clip = purpleRichSound.dieClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             State = EnemyState.Die;
             animator.SetTrigger("Die");
             isLive = false;
@@ -142,6 +146,8 @@ public class BossPupleRich : Enemy
 
         if (!isGroggy1 && status.CurrHp <= status.FinalValue.maxHp * groggy1)
         {
+            var clip = purpleRichSound.groggyClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             isGroggy1 = true;
             animator.SetTrigger("Groggy");
             State = EnemyState.Groggy;
@@ -149,6 +155,8 @@ public class BossPupleRich : Enemy
         }
         else if (!isGroggy2 && status.CurrHp <= status.FinalValue.maxHp * groggy2)
         {
+            var clip = purpleRichSound.groggyClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             isGroggy2 = true;
             animator.SetTrigger("Groggy");
             State = EnemyState.Groggy;
@@ -156,6 +164,8 @@ public class BossPupleRich : Enemy
         }
         else if (!isGroggy3 && status.CurrHp <= status.FinalValue.maxHp * groggy3)
         {
+            var clip = purpleRichSound.groggyClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             isGroggy3 = true;
             animator.SetTrigger("Groggy");
             State = EnemyState.Groggy;
@@ -309,6 +319,8 @@ public class BossPupleRich : Enemy
 
         if (projectileCoolTime >= projectileTime && Vector3.Distance(transform.position, player.transform.position) >= attackRange)
         {
+            var clip = purpleRichSound.projectileAttackClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             projectileCoolTime = 0f;
             State = EnemyState.Skill;
             animator.SetTrigger("Projectile");
@@ -325,6 +337,8 @@ public class BossPupleRich : Enemy
 
     private void Attack()
     {
+        var clip = purpleRichSound.normalAttackClip;
+        SoundManager.instance.PlayEnemyEffect(clip);
         attackBox.SetActive(true);
         ++attackCount;
     }
@@ -355,6 +369,9 @@ public class BossPupleRich : Enemy
     public float summonDistance = 2f;
     private void SpawnEnemy()
     {
+        var clip = purpleRichSound.spawnEnemyClip;
+        SoundManager.instance.PlayEnemyEffect(clip);
+
         Vector3 leftSummonPosition = new Vector3(transform.position.x - summonDistance, transform.position.y, transform.position.z);
         Vector3 rightSummonPosition = new Vector3(transform.position.x + summonDistance, transform.position.y, transform.position.z);
 
@@ -473,6 +490,8 @@ public class BossPupleRich : Enemy
 
     private void Area()
     {
+        var clip = purpleRichSound.areaAttackClip;
+        SoundManager.instance.PlayEnemyEffect(clip);
         indicatorBox.SetActive(false);
         ((EnemyStraightSpell)projectileSkill).Fire(gameObject, indicatorBox.transform.position, Vector3.down);
     }
