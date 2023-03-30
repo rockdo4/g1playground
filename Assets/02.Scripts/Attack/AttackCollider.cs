@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class AttackCollider : MonoBehaviour
 {
-    protected PlayerSound soundEffect;
     protected GameObject attacker;
     public System.Action<GameObject, GameObject, Vector3> OnCollided;
     protected float lifeTime;
@@ -17,17 +16,35 @@ public abstract class AttackCollider : MonoBehaviour
     protected string fireSoundEffect;
     protected string inUseSoundEffect;
     protected string hitSoundEffect;
+    protected PlayerSound fireSound;
+    protected PlayerSound inUseSound;
+    protected PlayerSound hitSound;
     protected List<GameObject> attackedList = new List<GameObject>();
     protected bool onlyCollideLivings = false;
 
     public virtual void Reset()
     {
-        hitEffect = null;//temp
         OnCollided = null;
         gameObject.SetActive(true);
         timer = 0f;
         attackedList.Clear();
         effects.Clear();
+        //if (fireSound != null)
+        //{
+        //    fireSound.Release();
+        //    fireSound = null;
+        //}
+        //if (inUseSound != null)
+        //{
+        //    inUseSound.Release();
+        //    inUseSound = null;
+        //}
+        //if (hitSound != null)
+        //{
+        //    hitSound.Release();
+        //    hitSound = null;
+        //}
+        // ysh must fix this
     }
 
     protected virtual void Update()
@@ -36,9 +53,10 @@ public abstract class AttackCollider : MonoBehaviour
         if (timer > lifeTime)
         {
             // In Use Sound Effect ���ֱ�
-            if (soundEffect != null)
+            if (inUseSound != null)
             {
-                soundEffect.Release();
+                inUseSound.Release();
+                inUseSound = null;
             }
             GameManager.instance.attackColliderManager.Release(this);
         }
@@ -94,9 +112,9 @@ public abstract class AttackCollider : MonoBehaviour
         if (!string.IsNullOrEmpty(hitSoundEffect))
         {
             //SoundManager.instance.PlaySoundEffect(hitSoundEffect);
-            var se = SoundManager.instance.PlayerSoundPool.Get();
+            hitSound = SoundManager.instance.PlayerSoundPool.Get();
             var clip = SoundManager.instance.GetAudioClip(hitSoundEffect);
-            se.InitSound(clip);
+            hitSound.InitSound(clip);
         }
         return true;
     }

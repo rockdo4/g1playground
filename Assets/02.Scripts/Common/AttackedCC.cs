@@ -36,6 +36,26 @@ public class AttackedCC : MonoBehaviour, IAttackable
     private float reduceDefTime;
     private float reduceDefTimer = 0f;
 
+    private void OnEnable()
+    {
+        Reset();
+    }
+
+    public void Reset()
+    {
+        knockBackedOnThisFrame = false;
+        kBCount = 0;
+        kBResistTimer = 0f;
+
+        stunCount = 0;
+        stunResistTimer = 0f;
+
+        onSlowDown = false;
+        slowDownTimer = 0f;
+
+        EndReduceDef();
+    }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -84,11 +104,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
         {
             reduceDefTimer += Time.deltaTime;
             if (reduceDefTimer > reduceDefTime)
-            {
-                onReduceDef = false;
-                reduceDefTimer = 0f;
-                status.ReduceDef(0f);
-            }
+                EndReduceDef();
         }
     }
 
@@ -164,7 +180,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
         //GameObject effect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow(blue)");
         //effect.transform.position = transform.position;
         //GameManager.instance.effectManager.ReturnEffectOnTime("Fog_speedSlow(blue)", effect, newSlowTime);
-        //effect.transform.SetParent(transform);
+        //effect.transform.SetParent(transform);                                                                                                                                                                                                                                 
     }
 
     private void ReduceDef(float newReduceDef, float newReduceDefTime)
@@ -185,5 +201,14 @@ public class AttackedCC : MonoBehaviour, IAttackable
         //effect.transform.position = transform.position;
         //GameManager.instance.effectManager.ReturnEffectOnTime("Fog_speedSlow", effect, newReduceDefTime);
         //effect.transform.SetParent(transform);
+    }
+
+    public void EndReduceDef()
+    {
+        onReduceDef = false;
+        reduceDefTimer = 0f;
+        status.ReduceDef(0f);
+
+        // effect release
     }
 }

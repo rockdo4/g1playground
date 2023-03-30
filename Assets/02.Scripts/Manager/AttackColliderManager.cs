@@ -11,6 +11,7 @@ public class AttackColliderManager : MonoBehaviour
 
     private Dictionary<Type, AttackCollider[]> prefabList = new Dictionary<Type, AttackCollider[]>();
     private Dictionary<Type, Dictionary<string, Queue<AttackCollider>>> attackColliderPool = new Dictionary<Type, Dictionary<string, Queue<AttackCollider>>>();
+    private Dictionary<Type, Dictionary<string, LinkedList<AttackCollider>>> usingList = new();
 
     private void Start()
     {
@@ -18,6 +19,8 @@ public class AttackColliderManager : MonoBehaviour
         prefabList.Add(typeof(RangeCollider), rangeColliderPrefabs);
         attackColliderPool.Add(typeof(Projectile), new Dictionary<string, Queue<AttackCollider>>());
         attackColliderPool.Add(typeof(RangeCollider), new Dictionary<string, Queue<AttackCollider>>());
+        usingList.Add(typeof(Projectile), new Dictionary<string, LinkedList<AttackCollider>>());
+        usingList.Add(typeof(RangeCollider), new Dictionary<string, LinkedList<AttackCollider>>()); 
         foreach (var prefabs in prefabList)
         {
             AddPool(prefabs.Value);
@@ -29,7 +32,10 @@ public class AttackColliderManager : MonoBehaviour
         foreach (var prefab in prefabs)
         {
             if (prefab != null)
+            {
                 attackColliderPool[prefab.GetType()].Add(prefab.name, new Queue<AttackCollider>());
+                usingList[prefab.GetType()].Add(prefab.name, new LinkedList<AttackCollider>());
+            }
         }
     }
 
@@ -39,11 +45,14 @@ public class AttackColliderManager : MonoBehaviour
         if (pool[id].Count > 0)
         {
             var t = pool[id].Dequeue();
+            usingList[typeof(T)][id].AddLast(t);
             t.name = id;
             t.Reset();
             return t as T;
         }
-        return Instantiate<T>(id);
+        var collider = Instantiate<T>(id);
+        usingList[typeof(T)][id].AddLast(collider);
+        return collider;
     }
 
     private T Instantiate<T>(string id) where T : AttackCollider
@@ -62,11 +71,37 @@ public class AttackColliderManager : MonoBehaviour
 
     public void Release<T>(T t) where T : AttackCollider
     {
-        t.gameObject.SetActive(false);
         var id = t.name;
         var type = t.GetType();
-         if (!attackColliderPool[type].ContainsKey(id))
+        if (!usingList[type].ContainsKey(t.name) || !usingList[type][t.name].Contains(t))
             return;
+        if (!attackColliderPool[type].ContainsKey(id))
+            return;
+        t.Reset();
+        t.gameObject.SetActive(false);
+        usingList[type][t.name].Remove(t);
         attackColliderPool[type][id].Enqueue(t);
+    }
+
+    public void ReleaseAll()
+    {
+        foreach (var dict in usingList)
+        {
+            foreach (var list in dict.Value)
+            {
+                foreach(var collider in list.Value)
+                {
+                    switch (collider)
+                    {
+                        case Projectile:
+                            Release((Projectile)collider);
+                            break;
+                        case RangeCollider:
+                            Release((RangeCollider)collider);
+                            break;
+                    }
+                }
+            }
+        }
     }
 }
