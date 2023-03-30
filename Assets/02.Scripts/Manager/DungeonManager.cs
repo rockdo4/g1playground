@@ -388,9 +388,6 @@ public class DungeonManager : MonoBehaviour
         player.GetComponent<PlayerSkills>().SetSkill(1, PlayerDataManager.instance.currskill2);
         // Debug.Log("SetSkill1");
 
-        GameManager.instance.uiManager.PotionOn();
-        GameManager.instance.uiManager.SkillToggleOn();
-        GameManager.instance.uiManager.AutoOn();
         homeButton.gameObject.SetActive(true);
 
         GameManager.instance.player.transform.position = GameObject.FindGameObjectWithTag("StartPoint").transform.position;

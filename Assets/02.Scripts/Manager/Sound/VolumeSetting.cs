@@ -39,7 +39,20 @@ public class VolumeSetting : MonoBehaviour
         if (seSlider != null)
         {
             seSlider.onValueChanged.AddListener(SetSEVolume);
-        }  
+        }
+
+        if (muteToggle != null)
+        {
+            muteToggle.onValueChanged.AddListener(Mute);
+        }
+        if (bgmMuteToggle != null)
+        {
+            bgmMuteToggle.onValueChanged.AddListener(MuteBGM);
+        }
+        if (seMuteToggle != null)
+        {
+            seMuteToggle.onValueChanged.AddListener(MuteSE);
+        }
     }
 
     private void Start()
@@ -130,14 +143,14 @@ public class VolumeSetting : MonoBehaviour
     ///////////////////////
 
     //mute volume by toggle isOn
-    public void Mute()
+    public void Mute(bool isOn)
     {
         if (muteToggle == null)
         {
             return;
         }
 
-        if (!muteToggle.isOn)
+        if (isOn)
         {
             //Debug.Log("sound on");
             SetMasterVolume(PlayerPrefs.GetFloat(SoundManager.Master_KEY, 1f));
@@ -153,14 +166,14 @@ public class VolumeSetting : MonoBehaviour
     }
 
     //mute bgm volume by toggle isOn
-    public void MuteBGM()
+    public void MuteBGM(bool isOn)
     {
         if (bgmMuteToggle == null)
         {
             return;
         }
 
-        if (!bgmMuteToggle.isOn)
+        if (isOn)
         {
             //Debug.Log("sound on");
             SetBgmVolume(PlayerPrefs.GetFloat(SoundManager.BGM_KEY, 1f));
@@ -176,14 +189,14 @@ public class VolumeSetting : MonoBehaviour
     }
 
     //mute se volume by toggle isOn
-    public void MuteSE()
+    public void MuteSE(bool isOn)
     {
         if (seMuteToggle == null)
         {
             return;
         }
 
-        if (!seMuteToggle.isOn)
+        if (isOn)
         {
             //Debug.Log("sound on");
             SetSEVolume(PlayerPrefs.GetFloat(SoundManager.SE_KEY, 1f));
