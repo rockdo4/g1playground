@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -38,13 +39,16 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "Scene02")
             return;
 
+        var playerController = player.GetComponent<PlayerController>();
+        playerController.autoToggle.isOn = false;
+        playerController.AgentOnOff();
         player.GetComponent<PlayerInventory>().RefillPotions();
         player.transform.SetParent(null);
 
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();                          
                   
         //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().ResetObject();
-        GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.SetActive(false);
+     //   GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.SetActive(false);
 
         GameObject.FindWithTag("Map").transform.Find(PlayerDataManager.instance.lastSaveChapterName).Find(PlayerDataManager.instance.lastSaveMapId).gameObject.SetActive(true);
 
@@ -59,8 +63,7 @@ public class GameManager : MonoBehaviour
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().EnemiesReset();
         player.GetComponent<Status>().Restore();
         MapManager.instance.SetLastCheckpointMapTurnOn();
-       
-        //
+
         // StartCoroutine(CoRespawn());
     }
 

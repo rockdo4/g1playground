@@ -86,7 +86,7 @@ public class EnemyRange : Enemy, IAttackable
                     break;
             }
 
-            Debug.Log(State);
+            //Debug.Log(State);
         }
     }
 

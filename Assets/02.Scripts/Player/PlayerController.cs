@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
         autoToggle.onValueChanged.AddListener((isAuto) =>
         {
             IsAuto = isAuto;
+            
             for (int i = 0; i < playerSkills.toggles.Length; i++)
             {
                 playerSkills.toggles[i].isOn = IsAuto;
@@ -123,18 +124,18 @@ public class PlayerController : MonoBehaviour
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
     }
-    //public void RemoveAgentLinkMover()
-    //{
-    //    AgentLinkMover agentLinkMover = GetComponent<AgentLinkMover>();
-    //    if (agentLinkMover != null)
-    //    {
-    //        Destroy(agentLinkMover);
-    //    }
-    //}
-    //public void AddAgentLinkMover()
-    //{
-    //    gameObject.AddComponent<AgentLinkMover>();
-    //}
+    public void RemoveAgentLinkMover()
+    {
+        AgentLinkMover agentLinkMover = GetComponent<AgentLinkMover>();
+        if (agentLinkMover != null)
+        {
+            Destroy(agentLinkMover);
+        }
+    }
+    public void AddAgentLinkMover()
+    {
+        gameObject.AddComponent<AgentLinkMover>();
+    }
     public bool SkillOnOff(bool isOn , int index)
     {
         return playerSkills.toggles[index].isOn = isOn;
@@ -143,14 +144,27 @@ public class PlayerController : MonoBehaviour
     {
         playerRb.isKinematic = true;
         agent.enabled = true;
-        cor = StartCoroutine(SearchTarget());
+        if (enemies != null)
+        {
+            if (cor != null)
+            {
+                StopCoroutine(cor);
+                cor = null;
+                Debug.Log("끝");
+            }
+            cor = StartCoroutine(SearchTarget());
+        }
     }
     public void AgentOff()
     {
         playerRb.isKinematic = false;
         agent.enabled = false;
         if (cor != null)
+        {
             StopCoroutine(cor);
+            cor = null;
+            Debug.Log("끝");
+        }
     }
     public void AgentOnOff()
     {
@@ -171,14 +185,17 @@ public class PlayerController : MonoBehaviour
             }
             else if (SceneManager.GetActiveScene().name != "Scene02")
                 enemies = DungeonManager.instance.Enemies;
-            if (enemies != null)
-                cor = StartCoroutine(SearchTarget());
-            SetState<AutoMoveState>();
+
+           //SetState<AutoMoveState>();
         }
         else
         {
             if (cor != null)
+            {
                 StopCoroutine(cor);
+                cor = null;
+                Debug.Log("끝");
+            }
             SetState<IdleState>();
         }
     }
@@ -270,6 +287,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator SearchTarget()
     {
+        Debug.Log("시작");
         if (enemies == null)
             yield break;
 
@@ -299,8 +317,16 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 if (target != null && path != null && isGrounded)
+                {
                     agent.SetDestination(target.transform.position);
-
+                    agent.isStopped = false;
+                }
+                var dis = Vector3.Distance(target.position, transform.position);
+                if (dis <= 1f)
+                { 
+                    agent.isStopped = true;
+                    SetMoveX(target.position.x - transform.position.x);
+                }
                 if (count == 0 && enemies.Count != 0)
                 {
                     yield return new WaitForSeconds(3f);
