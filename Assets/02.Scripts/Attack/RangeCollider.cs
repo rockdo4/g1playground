@@ -88,8 +88,18 @@ public class RangeCollider : AttackCollider
             }
         }
         if (!string.IsNullOrEmpty(fireSoundEffect))
-            SoundManager.instance.PlaySoundEffect(fireSoundEffect);
+        {
+            //SoundManager.instance.PlaySoundEffect(fireSoundEffect);
+            var se = SoundManager.instance.PlayerSoundPool.Get();
+            var clip = SoundManager.instance.GetAudioClip(fireSoundEffect);
+            se.InitSound(clip);
+        }
         if (!string.IsNullOrEmpty(inUseSoundEffect))
-            SoundManager.instance.PlaySoundEffect(inUseSoundEffect);
+        {
+            //SoundManager.instance.PlaySoundEffect(inUseSoundEffect);
+            soundEffect = SoundManager.instance.PlayerSoundPool.Get();
+            var clip = SoundManager.instance.GetAudioClip(hitSoundEffect);
+            soundEffect.InitLoopSound(clip);
+        }
     }
 }

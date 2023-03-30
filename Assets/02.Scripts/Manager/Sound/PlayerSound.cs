@@ -14,24 +14,39 @@ public class PlayerSound : MonoBehaviour
 
     private bool isPause = false;
 
-
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
     public void InitSound(AudioClip clip)
-    {
+    {        
         isPause = false;
         timer = 0f;
         timeLeft = clip.length;
         
         audioSource.clip = clip;
+        audioSource.loop = false;
+        audioSource.Play();
+    }
+
+    public void InitLoopSound(AudioClip clip)
+    {
+        isPause = false;
+        timer = 0f;
+        timeLeft = clip.length;
+
+        audioSource.clip = clip;
+        audioSource.loop = true;
         audioSource.Play();
     }
 
     private void FixedUpdate()
     {
+        if (audioSource.loop) 
+        {
+            return;
+        }
         //Stop timer if clip is paused
         if (!isPause)
         {
@@ -63,5 +78,13 @@ public class PlayerSound : MonoBehaviour
     {
         isPause = true;
         audioSource.Stop();
+    }
+
+    public void Release()
+    {
+        timer = 0f;
+        audioSource.clip = null;
+        audioSource.Stop();
+        PlayerSoundPool.Release(this);
     }
 }

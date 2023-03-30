@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class AttackCollider : MonoBehaviour
 {
+    protected PlayerSound soundEffect;
     protected GameObject attacker;
     public System.Action<GameObject, GameObject, Vector3> OnCollided;
     protected float lifeTime;
@@ -34,7 +35,11 @@ public abstract class AttackCollider : MonoBehaviour
         timer += Time.deltaTime;
         if (timer > lifeTime)
         {
-            // In Use Sound Effect ²¨ÁÖ±â
+            // In Use Sound Effect ï¿½ï¿½ï¿½Ö±ï¿½
+            if (soundEffect != null)
+            {
+                soundEffect.Release();
+            }
             GameManager.instance.attackColliderManager.Release(this);
         }
     }
@@ -87,7 +92,12 @@ public abstract class AttackCollider : MonoBehaviour
             }
         }
         if (!string.IsNullOrEmpty(hitSoundEffect))
-            SoundManager.instance.PlaySoundEffect(hitSoundEffect);
+        {
+            //SoundManager.instance.PlaySoundEffect(hitSoundEffect);
+            soundEffect = SoundManager.instance.PlayerSoundPool.Get();
+            var clip = SoundManager.instance.GetAudioClip(hitSoundEffect);
+            soundEffect.InitSound(clip);
+        }
         return true;
     }
 }
