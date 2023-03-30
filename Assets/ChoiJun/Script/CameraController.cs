@@ -21,7 +21,5 @@ public class CameraController : MonoBehaviour
     public void CameraMove()
     {
         transform.position = Vector3.Lerp(transform.position, GameManager.instance.player.transform.position + cameraPosition, cameraSpeed * Time.fixedDeltaTime);
-
-
     }
 }

@@ -22,25 +22,62 @@ public class CircularScrollController : MonoBehaviour
             _elements.Add(content.GetChild(i).GetComponent<RectTransform>());
         }
         _elementCount = _elements.Count;
-        _elementSize = layoutGroup.preferredWidth / _elementCount;
+        float totalWidth = CalculateTotalWidth();
+        _elementSize = totalWidth / _elementCount;
     }
 
-    private void Update()
+    void Update()
     {
-        _currentPosition = scrollRect.horizontalNormalizedPosition * ((_elementCount - 1) * _elementSize);
-        UpdateElementsPosition();
-    }
+        float newPosition = content.anchoredPosition.x;
+        int direction = (newPosition - _currentPosition) > 0 ? -1 : 1;
+        float elementsToMove = Mathf.Abs(newPosition - _currentPosition) / _elementSize;
 
-    private void UpdateElementsPosition()
-    {
-        for (int i = 0; i < _elementCount; i++)
+        if (elementsToMove >= 1)
         {
-            float distance = Mathf.Abs(_currentPosition - _elements[i].anchoredPosition.x);
-            if (distance > _elementCount * _elementSize * 0.5f)
+            for (int i = 0; i < Mathf.FloorToInt(elementsToMove); i++)
             {
-                int sign = _currentPosition < _elements[i].anchoredPosition.x ? 1 : -1;
-                _elements[i].anchoredPosition += new Vector2(sign * _elementCount * _elementSize, 0);
+                if (direction > 0)
+                {
+                    MoveFirstToLast();
+                }
+                else
+                {
+                    MoveLastToFirst();
+                }
             }
+            _currentPosition = newPosition - (direction * Mathf.FloorToInt(elementsToMove) * _elementSize);
+            content.anchoredPosition = new Vector2(_currentPosition, content.anchoredPosition.y);
         }
+    }
+
+    private void MoveFirstToLast()
+    {
+        RectTransform firstChild = _elements[0];
+        firstChild.SetAsLastSibling();
+        firstChild.anchoredPosition += Vector2.right * (_elementSize * _elementCount);
+        _elements.RemoveAt(0);
+        _elements.Add(firstChild);
+    }
+
+    private void MoveLastToFirst()
+    {
+        RectTransform lastChild = _elements[_elementCount - 1];
+        lastChild.SetAsFirstSibling();
+        lastChild.anchoredPosition -= Vector2.right * (_elementSize * _elementCount);
+        _elements.RemoveAt(_elementCount - 1);
+        _elements.Insert(0, lastChild);
+    }
+    private float CalculateTotalWidth()
+    {
+        float totalWidth = 0f;
+
+        for (int i = 0; i < content.childCount; i++)
+        {
+            RectTransform child = content.GetChild(i).GetComponent<RectTransform>();
+            totalWidth += child.rect.width;
+        }
+
+        totalWidth += layoutGroup.spacing * (content.childCount - 1);
+        return totalWidth;
     }
 }
