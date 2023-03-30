@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class MenuPopUp : PopupUI
 {
+    public bool isOpen;
+
     protected override void OnEnable()
     {
-        //Dont Clear
+        isOpen = true;
     }
-
     protected override void OnDisable()
     {
-        //Dont Clear
+        isOpen = false;
     }
 }

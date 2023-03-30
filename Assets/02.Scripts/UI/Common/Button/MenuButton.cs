@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class MenuButton : ButtonUi
 {
+    public MenuPopUp menu;
+
     protected override void Awake()
     {
         base.Awake();
     }
 
-    public void OpenMenuPopUp()
+    public void OpenCloseMenuPopUp()
     {
-        UI.Instance.popupPanel.menuPopUp.ActiveTrue();
+        if(menu.isOpen)
+        {
+            UI.Instance.popupPanel.menuPopUp.GetComponent<UIPopupAnimator>().MenuPopUpExit();
+        }
+        else
+            UI.Instance.popupPanel.menuPopUp.ActiveTrue();
     }
 }

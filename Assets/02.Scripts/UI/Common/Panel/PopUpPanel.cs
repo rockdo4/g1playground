@@ -5,11 +5,9 @@ using UnityEngine;
 public class PopUpPanel : PanelUi
 {
     public ButtonUi skill;
-    public ButtonUi equip;
     public ButtonUi item;
     public ButtonUi map;
     public ButtonUi exit;
-    public ButtonUi dungeon;
     public ButtonUi reinforce;
     public ButtonUi synthetic;
     public ButtonUi disassemble;
@@ -19,7 +17,6 @@ public class PopUpPanel : PanelUi
     public PopupUI menuPopUp;
     public PopupUI exitPopUp;
     public PopupUI skillPopUp;
-    public PopupUI equipPopUp;
     public PopupUI itemPopUp;
     public PopupUI worldMapPopUp;
     public PopupUI reinforcePopUp;
@@ -37,11 +34,9 @@ public class PopUpPanel : PanelUi
     private void Awake()
     {
         skill = GetComponentInChildren<SkillButton>(true);
-        equip = GetComponentInChildren<EquipButton>(true);
         item = GetComponentInChildren<ItemButton>(true);
         map = GetComponentInChildren<MapButton>(true);
         exit = GetComponentInChildren<ExitButton>(true);
-        dungeon = GetComponentInChildren<DungeonButton>(true);
         reinforce = GetComponentInChildren<EnhanceButton>(true);
         synthetic = GetComponentInChildren<SyntheticButton>(true);
         disassemble = GetComponentInChildren<DisassembleButton>(true);
@@ -51,7 +46,6 @@ public class PopUpPanel : PanelUi
         menuPopUp = GetComponentInChildren<MenuPopUp>(true);
         exitPopUp = GetComponentInChildren<ExitPopUp>(true);
         skillPopUp = GetComponentInChildren<SkillPopUp>(true);
-        equipPopUp = GetComponentInChildren<EquipPopUp>(true);
         itemPopUp = GetComponentInChildren<ItemPopUp>(true);
         worldMapPopUp = GetComponentInChildren<WorldMapPopUp>(true);
         reinforcePopUp = GetComponentInChildren<ReinforcePopUp>(true);
@@ -71,11 +65,9 @@ public class PopUpPanel : PanelUi
     public void SetDefault()
     {
         skill.ActivateButton(true);
-        equip.ActivateButton(true);
         item.ActivateButton(true);
         map.ActivateButton(true);
         exit.ActivateButton(true);
-        dungeon.ActivateButton(false);
         reinforce.ActivateButton(false);
         synthetic.ActivateButton(false);
         disassemble.ActivateButton(false);
@@ -86,11 +78,9 @@ public class PopUpPanel : PanelUi
     public void SetVillage()
     {
         skill.ActivateButton(true);
-        equip.ActivateButton(true);
         item.ActivateButton(true);
         map.ActivateButton(true);
         exit.ActivateButton(true);
-        dungeon.ActivateButton(true);
         reinforce.ActivateButton(true);
         synthetic.ActivateButton(true);
         disassemble.ActivateButton(true);
@@ -103,7 +93,6 @@ public class PopUpPanel : PanelUi
         menuPopUp.ActiveFalse();
         exitPopUp.ActiveFalse();
         skillPopUp.ActiveFalse();
-        equipPopUp.ActiveFalse();
         itemPopUp.ActiveFalse();
         worldMapPopUp.ActiveFalse();
         reinforcePopUp.ActiveFalse();
