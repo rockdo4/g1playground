@@ -46,6 +46,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public bool endTutorial = false;
 
+
     public void Start()
     {
         LoadFile();
@@ -53,7 +54,9 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SaveFile()
     {
-        var PlayerStatus= GameManager.instance.player.GetComponent<PlayerStatus>();
+        Debug.Log("save");
+
+        var PlayerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
         var saveData = new SavePlayerDataVer1();
         saveData.playerName = playerName;
         saveData.lastMapId = lastSaveMapId;
@@ -82,6 +85,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public void LoadFile()
     {
+        Debug.Log("Load");
         var playerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
         var player= GameManager.instance.player;
 
