@@ -36,12 +36,10 @@ public abstract class AttackCollider : MonoBehaviour
         if (timer > lifeTime)
         {
             // In Use Sound Effect ���ֱ�
-            if (soundEffect.audioSource.name == inUseSoundEffect)
+            if (soundEffect != null)
             {
-                
-
+                soundEffect.Release();
             }
-            soundEffect.Release();
             GameManager.instance.attackColliderManager.Release(this);
         }
     }
