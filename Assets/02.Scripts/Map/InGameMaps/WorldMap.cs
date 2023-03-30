@@ -54,5 +54,6 @@ public class WorldMap : MonoBehaviour
         MapManager.instance.SetcurrentChapterName(checkpoint.transform.parent.parent.name);
 
         EventManager.instance.Resume();
+        UI.Instance.popupPanel.worldMapPopUp.ActiveFalse();
     }
 }
