@@ -64,6 +64,10 @@ public class GameManager : MonoBehaviour
         player.GetComponent<Status>().Restore();
         MapManager.instance.SetLastCheckpointMapTurnOn();
 
+        player.SetActive(false);
+        player.SetActive(true);
+        playerController.RemoveAgentLinkMover();
+        playerController.AddAgentLinkMover();
         // StartCoroutine(CoRespawn());
     }
 

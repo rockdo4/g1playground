@@ -141,8 +141,8 @@ public class EnemyController : Enemy
         base.OnEnable();
 
         State = EnemyState.None;
-        //RemoveAgentLinkMover();
-        //AddAgentLinkMover();
+        RemoveAgentLinkMover();
+        AddAgentLinkMover();
         ResetPattern();
         //agent.isOnOffMeshLink = true;
         //linkMover.YourLogicCoroutine();

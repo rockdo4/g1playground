@@ -318,8 +318,8 @@ public class PlayerController : MonoBehaviour
                 }
                 if (target != null && path != null && isGrounded)
                 {
-                    agent.SetDestination(target.transform.position);
                     agent.isStopped = false;
+                    agent.SetDestination(target.transform.position);
                 }
                 var dis = Vector3.Distance(target.position, transform.position);
                 if (dis <= 1f)
