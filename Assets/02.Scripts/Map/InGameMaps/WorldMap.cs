@@ -19,7 +19,7 @@ public class WorldMap : MonoBehaviour
 
     public void GoHome(GameObject stage)
     {
-        SetVillage(stage.GetComponent<StageController>());
+        SetStage(stage.GetComponent<StageController>());
     }
 
     private void SetStage(StageController stage)
@@ -30,6 +30,9 @@ public class WorldMap : MonoBehaviour
         }
         GameManager.instance.player.GetComponent<PlayerInventory>().RefillPotions();
         GameManager.instance.player.transform.SetParent(null);
+        var playerController = GameManager.instance.player.GetComponent<PlayerController>();
+        playerController.autoToggle.isOn = false;
+        playerController.AgentOnOff();
 
         MapManager.instance.GetCurrentStageObject().SetActive(false);
         //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).
