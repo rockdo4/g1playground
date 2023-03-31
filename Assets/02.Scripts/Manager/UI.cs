@@ -87,9 +87,9 @@ public class UI : MonoBehaviour
         skillPanel.ActiveTrue();
         UI.Instance.skillPanel.SkillToggleOff();
         autoPanel.ActiveTrue();
-        // 인터렉 펄스
+        // Interactable false
         UI.Instance.autoPanel.ActivateToggle(false);
-        // 강화, 분해, 합성, 뽑기, 던젼 안눌리게
+        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
         popupPanel.ActiveTrue();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
     }
@@ -110,11 +110,24 @@ public class UI : MonoBehaviour
     public void SetBattle()
     {
         popupPanel.ActiveTrue();
-        // 강화, 분해, 합성, 뽑기, 던젼 안눌리게
+        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
         UI.Instance.popupPanel.menuPopUp.SetDefault();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
         menuPanel.ActiveTrue();
+        potionPanel.ActiveTrue();
+        skillPanel.ActiveTrue();
+        autoPanel.ActiveTrue();
+    }
+
+    public void SetDungeon()
+    {
+        popupPanel.ActiveTrue();
+        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
+        UI.Instance.popupPanel.menuPopUp.SetDefault();
+        charaterUIPanel.ActiveTrue();
+        controllerPanel.ActiveTrue();
+        menuPanel.ActiveFalse();
         potionPanel.ActiveTrue();
         skillPanel.ActiveTrue();
         autoPanel.ActiveTrue();

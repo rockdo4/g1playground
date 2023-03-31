@@ -10,23 +10,9 @@ public class UIManager : MonoBehaviour
     public GameObject itemInventory;
     public GameObject skillInventory;
 
-    private GameObject potion;
-    private GameObject skillToggle;
-    private GameObject auto;
-
     public Button[] buttons;
 
     public Stack<GameObject> popupStack;
-
-    private void Awake()
-    {
-        potion = GameObject.Find("PotionPanel");
-        skillToggle = GameObject.Find("SkillPanel");
-        auto = GameObject.Find("AutoPanel");
-        potion.SetActive(false);
-        skillToggle.SetActive(false);
-        auto.SetActive(false);
-    }
 
     private void Start()
     {
@@ -70,36 +56,6 @@ public class UIManager : MonoBehaviour
         if (popupStack.Count <= 0)
             return;
         popupStack.Pop();
-    }
-
-    public void PotionOn()
-    {
-        potion.SetActive(true);
-    }
-
-    public void PotionOff()
-    {
-        potion.SetActive(false);
-    }
-
-    public  void SkillToggleOn()
-    {
-        skillToggle.SetActive(true);
-    }
-
-    public void SkillToggleOff()
-    {
-        skillToggle.SetActive(false);
-    }
-
-    public void AutoOn()
-    {
-        auto.SetActive(true);
-    }
-
-    public void AutoOff()
-    {
-        auto.SetActive(false);
     }
 
     public void ButtonOn()
