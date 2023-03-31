@@ -38,7 +38,6 @@ public class MapManager : MonoBehaviour
         if (instance != this)
             Destroy(gameObject);
 
-        Debug.Log("MapManagerAwake");
         map = GameObject.FindGameObjectWithTag("Map");
         var chapterCount = map.transform.childCount; 
         for (int i = 0; i < chapterCount; i++)
@@ -48,10 +47,10 @@ public class MapManager : MonoBehaviour
             foreach (var t in temp)
             {
                 maps.Add(t);
+                if (t.name == "Village")
+                    currentStageObject = t.gameObject;
             }
         }
-
-        Debug.Log(maps.Count);
 
         LoadProgress();
     }
@@ -109,8 +108,6 @@ public class MapManager : MonoBehaviour
             currentStageObject.SetActive(false);
         }
         currentMapName = name;
-        Debug.Log($"SetcurrentMapName={currentMapName}");
-
         foreach (var map in maps)
         {
             if (map.name == name)

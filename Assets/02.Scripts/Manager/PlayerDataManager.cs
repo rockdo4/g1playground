@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 using static PlayerInventory;
 
 public class PlayerDataManager : MonoBehaviour
@@ -54,8 +55,6 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SaveFile()
     {
-        Debug.Log("save");
-
         var PlayerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
         var saveData = new SavePlayerDataVer1();
         saveData.playerName = playerName;
@@ -77,16 +76,15 @@ public class PlayerDataManager : MonoBehaviour
         saveData.currskill1 = currskill1;
         saveData.currskill2 = currskill2;
 
-        saveData.currLevel = currLevel;
-        saveData.currExp = currExp;
+        saveData.currLevel = GameManager.instance.player.GetComponent<PlayerLevelManager>().Level;
+        GameManager.instance.uiManager.PlayerLevel(saveData.currLevel);
+        saveData.currExp = GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp;
 
         SaveLoadSystem.Save(saveData);
     }
 
     public void LoadFile()
     {
-        Debug.Log("Load");
-
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
         if (saveData == null)
         {
@@ -98,6 +96,7 @@ public class PlayerDataManager : MonoBehaviour
             GameManager.instance.player.GetComponent<PlayerInventory>().SetDefault();
             GameManager.instance.player.GetComponent<PlayerSkills>().SetDefault();
             GameManager.instance.player.GetComponent<PlayerLevelManager>().SetDefault();
+            GameManager.instance.uiManager.PlayerLevel(1);
 
             return;
         }
@@ -117,6 +116,7 @@ public class PlayerDataManager : MonoBehaviour
         currskill2 = saveData.currskill2;
 
         currLevel = saveData.currLevel;
+        GameManager.instance.uiManager.PlayerLevel(saveData.currLevel);
         currExp = saveData.currExp;
 
         playerCurrHp = saveData.playerCurrHp;
