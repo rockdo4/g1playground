@@ -8,6 +8,7 @@ public class LeverTile : ObjectTile
 
     [SerializeField] private GameObject triggerObject;
     [SerializeField] private bool isTrigger = false;
+    [SerializeField] private string leverClip = "lever";
 
     private bool originTrigger;
 
@@ -43,6 +44,7 @@ public class LeverTile : ObjectTile
         {
             isTrigger = !isTrigger;
             animator.SetBool("IsTrigger", isTrigger);
+            SoundManager.instance.PlaySoundEffect(leverClip);
             if (triggerObject.GetComponent<ITriggerObject>() != null)
             {
                 triggerObject.GetComponent<ITriggerObject>().SetObjectTrigger(isTrigger);

@@ -11,6 +11,7 @@ public class MapManager : MonoBehaviour
     private List<GameObject> maps;
     private string currentMapName;
     private string currentChapterName;
+    private string prevChaperName;
     private static MapManager m_instance;
     public List<GameObject> outlines;
     private GameObject currentStageObject;
@@ -77,9 +78,27 @@ public class MapManager : MonoBehaviour
 
     public void SetcurrentChapterName(string name)
     {
-        currentChapterName = name;
+        currentChapterName = name;        
         currentChapterObject = GameObject.Find(name);
+
+        if (prevChaperName != currentChapterName)
+        {
+            prevChaperName = currentChapterName;
+            var chapter = GameObject.FindGameObjectsWithTag("Chapter");
+            foreach (var chapt in chapter)
+            {
+                if (chapt.name == currentChapterName)
+                {
+                    var chapterNumber = chapt.GetComponent<Chapter>().chapterNumber;
+                    SoundManager.instance.ChangeBgm(chapterNumber);
+                }
+            }
+            
+            
+        }
     }
+
+
 
     public void SetLastCheckpointMapTurnOn()
     {

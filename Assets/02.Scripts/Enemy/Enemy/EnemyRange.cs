@@ -392,6 +392,7 @@ public class EnemyRange : Enemy, IAttackable
         {
             case SkillAttack:
                 {
+                    enemySound.PlayAttackSound();
                     ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);
                 }
                 break;

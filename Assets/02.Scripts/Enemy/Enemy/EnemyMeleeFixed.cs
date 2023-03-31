@@ -188,6 +188,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
             case EnemyMeleeAttack:
                 {
                     attackBox.SetActive(true);
+                    enemySound.PlayAttackSound();
                 }
                 break;
         }

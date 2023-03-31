@@ -22,6 +22,8 @@ public class BlockSwitchTile : ObjectTile
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     [SerializeField] private BSwitchType type;
+    [SerializeField] private string switchClipUp = "button_up";
+    [SerializeField] private string switchClipDown = "button_down";
 
     private bool isTriggered;
     public bool IsTriggered { get { return isTriggered; } set { isTriggered = this; } }
@@ -108,6 +110,7 @@ public class BlockSwitchTile : ObjectTile
         //Triggers Switch when pushed by ObjectMass objects
         if (!animator.GetBool("Trigger") && (other.GetComponent<ObjectMass>() != null))
         {
+            SoundManager.instance.PlaySoundEffect(switchClipDown);
             objects.Add(other.gameObject);
             IsTriggered = true;
             animator.SetBool("Trigger", true);
@@ -120,6 +123,7 @@ public class BlockSwitchTile : ObjectTile
     {
         if (animator.GetBool("Trigger") && type == BSwitchType.Temporary)
         {
+            SoundManager.instance.PlaySoundEffect(switchClipUp);
             if (objects.Contains(other.gameObject))
             {
                 objects.Remove(other.gameObject);
