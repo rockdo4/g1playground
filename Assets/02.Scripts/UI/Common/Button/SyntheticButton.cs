@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,10 @@ public class SyntheticButton : ButtonUi
     private void Start()
     {
         button.onClick.AddListener(OpenSyntheticPopUp);
+        if (UI.Instance.sceneName.Equals("Tutorial", StringComparison.OrdinalIgnoreCase) || UI.Instance.sceneName.Equals("Dungeon", StringComparison.OrdinalIgnoreCase))
+        {
+            ActivateButton(false);
+        }
     }
 
     private void OpenSyntheticPopUp()

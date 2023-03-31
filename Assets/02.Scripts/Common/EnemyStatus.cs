@@ -25,7 +25,7 @@ public class EnemyStatus : Status
         value.meleeDef = (int)(value.str / 10f);
         value.skillPower = (int)(value.intel / 5f * damageFigure);
         value.skillCriChance = value.intel / 200f / 100f;
-        value.skillDef = (int)(value.intel / 10f);
+        value.skillDef = (int)(value.intel / 20f);
         return value;
     }
 

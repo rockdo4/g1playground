@@ -57,6 +57,7 @@ public class PlayerInventory : MonoBehaviour
         Consumables = consumables;
         CurrWeapon = currWeapon;
         CurrArmor = currArmor;
+        ApplyStatus();
     }
 
     public void SetWeapon(int index)

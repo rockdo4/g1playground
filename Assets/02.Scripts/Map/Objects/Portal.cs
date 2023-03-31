@@ -50,6 +50,8 @@ public class Portal : MonoBehaviour
         if (other.CompareTag("Player") && other.GetComponent<ObjectMass>() != null)
         {
             var player = other.GetComponent<PlayerController>();
+            bool prevAuto = player.IsAuto;
+            player.autoToggle.isOn = false;
             player.AgentOnOff();
             init = true;
             nextStage.gameObject.SetActive(true);
@@ -71,7 +73,13 @@ public class Portal : MonoBehaviour
                     Camera.main.transform.position = portal.gameObject.transform.position;
                     MapManager.instance.SetCurrentMapName(portal.transform.parent.name);
                     MapManager.instance.SetcurrentChapterName(portal.transform.parent.parent.name);
-                    player.AgentOnOff();
+                    if (prevAuto)
+                    {
+                        player.autoToggle.isOn = true;
+                        player.AgentOnOff();
+                    }
+
+                    
 
                     transform.parent.gameObject.SetActive(false);
                   
@@ -100,6 +108,7 @@ public class Portal : MonoBehaviour
         if (GameManager.instance.player.GetComponent<PlayerController>().IsAuto)
         {
             StopCoroutine(CClosePortalInaWhile());
+            CanUse = true;
 
             return;
         }

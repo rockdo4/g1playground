@@ -58,4 +58,9 @@ public class PlayerStatus : Status
         value.skillDef *= (int)(1f - reduceDef);
         FinalValue = value;
     }
+
+    public void InitSetFinalValue()
+    {
+        SetFinalValue();
+    }
 }

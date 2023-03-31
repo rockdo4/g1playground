@@ -304,10 +304,10 @@ public class PlayerController : MonoBehaviour
             {
                 foreach (var enemy in enemies)
                 {
-                    if (enemy.GetComponent<Enemy>().GetIsLive() &&
-                        agent.CalculatePath(enemy.transform.position, path))
+                    if (enemy.GetComponent<Enemy>().GetIsLive())
                     {
                         count++;
+                        agent.CalculatePath(enemy.transform.position, path);
                         enemyPathLength = GetLength(path);
                         if (temp >= enemyPathLength)
                         {
@@ -327,21 +327,25 @@ public class PlayerController : MonoBehaviour
                     agent.isStopped = true;
                     SetMoveX(target.position.x - transform.position.x);
                 }
+                //Debug.Log(enemies.Count);
+                Debug.Log(count);
                 if (count == 0 && enemies.Count != 0)
                 {
-                    yield return new WaitForSeconds(3f);
-                    //문 따라가게
-                    var portals = MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().Portals;
-                    foreach (var portal in portals)
-                    {
-                        if (portal.GetNextStageName().CompareTo(MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().PrevStageName) != 0)
-                        {
-                            target = portal.transform;
-                            agent.SetDestination(target.position);
-                        }
-                    }
-                    yield break;
-                }
+                    SearchPortal();
+                } 
+            }
+        }
+    }
+    public void SearchPortal()
+    {
+        //문 따라가게
+        var portals = MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().Portals;
+        foreach (var portal in portals)
+        {
+            if (portal.GetNextStageName().CompareTo(MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().PrevStageName) != 0)
+            {
+                target = portal.transform;
+                agent.SetDestination(target.position);
             }
         }
     }
