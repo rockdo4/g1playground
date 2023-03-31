@@ -68,6 +68,7 @@ public class SceneLoader : MonoBehaviour
     {
         progressBar.value = 0f;
         yield return StartCoroutine(Fade(true));
+        
 
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
@@ -93,6 +94,7 @@ public class SceneLoader : MonoBehaviour
                 if (progressBar.value == 1.0f)
                 {
                     op.allowSceneActivation = true;
+                    GameManager.instance.player.GetComponent<PlayerStatus>().InitSetFinalValue();                    
                     yield break;
                 }
             }
