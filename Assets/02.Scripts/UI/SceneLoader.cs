@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -45,6 +46,7 @@ public class SceneLoader : MonoBehaviour
         return Instantiate(SceneLoaderPrefab);
     }
 
+    public TextMeshProUGUI text;
     private void Awake()
     {
         if (Instance != this)
@@ -67,6 +69,8 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator Load(string sceneName)
     {
         progressBar.value = 0f;
+        text.text = "loading...";
+
         yield return StartCoroutine(Fade(true));
         
 
@@ -82,6 +86,7 @@ public class SceneLoader : MonoBehaviour
             if (op.progress < 0.9f)
             {
                 progressBar.value = Mathf.Lerp(progressBar.value, op.progress, timer);
+
                 if (progressBar.value >= op.progress)
                 {
                     timer = 0f;
@@ -94,7 +99,8 @@ public class SceneLoader : MonoBehaviour
                 if (progressBar.value == 1.0f)
                 {
                     op.allowSceneActivation = true;
-                    GameManager.instance.player.GetComponent<PlayerStatus>().InitSetFinalValue();                    
+
+                    text.text = "Complelate!";
                     yield break;
                 }
             }
