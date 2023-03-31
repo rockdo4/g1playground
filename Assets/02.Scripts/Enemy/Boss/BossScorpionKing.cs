@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BossScorpionKing : Enemy
 {
+    [SerializeField] private ScorpionSound scorpionSound;
+
     private CapsuleCollider mainColl;
     public GameObject attackBox;
     public GameObject skillPivot;
@@ -105,6 +107,8 @@ public class BossScorpionKing : Enemy
         player = GameManager.instance.player;
         GetComponent<DestructedEvent>().OnDestroyEvent = () =>
         {
+            var clip = scorpionSound.dieClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             State = EnemyState.Die;
             animator.SetTrigger("Die");
             isLive = false;
@@ -133,8 +137,12 @@ public class BossScorpionKing : Enemy
         if (isGroggy1 && isGroggy2 && isGroggy3)
             return;
 
+        
+
         if (!isGroggy1 && status.CurrHp <= status.FinalValue.maxHp * groggy1)
         {
+            var clip = scorpionSound.groggyClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             isGroggy1 = true;
             animator.SetTrigger("Groggy");
             State = EnemyState.Groggy;
@@ -142,6 +150,8 @@ public class BossScorpionKing : Enemy
         }
         else if (!isGroggy2 && status.CurrHp <= status.FinalValue.maxHp * groggy2)
         {
+            var clip = scorpionSound.groggyClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             isGroggy2 = true;
             animator.SetTrigger("Groggy");
             State = EnemyState.Groggy;
@@ -149,6 +159,8 @@ public class BossScorpionKing : Enemy
         }
         else if (!isGroggy3 && status.CurrHp <= status.FinalValue.maxHp * groggy3)
         {
+            var clip = scorpionSound.groggyClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             isGroggy3 = true;
             animator.SetTrigger("Groggy");
             State = EnemyState.Groggy;
@@ -289,6 +301,8 @@ public class BossScorpionKing : Enemy
 
         if (projectileCoolTime >= projectileTime && Vector3.Distance(transform.position, player.transform.position) >= attackRange)
         {
+            var clip = scorpionSound.projectileAttackClip;
+            SoundManager.instance.PlayEnemyEffect(clip);
             projectileCoolTime = 0f;
             State = EnemyState.Attack;
             animator.SetTrigger("Projectile");
@@ -307,6 +321,8 @@ public class BossScorpionKing : Enemy
 
     private void Attack()
     {
+        var clip = scorpionSound.normalAttackClip;
+        SoundManager.instance.PlayEnemyEffect(clip);
         attackBox.SetActive(true);
         isHit = false;
     }
@@ -359,6 +375,9 @@ public class BossScorpionKing : Enemy
 
     private void Area()
     {
+        var clip = scorpionSound.areaAttackClip;
+        SoundManager.instance.PlayEnemyEffect(clip);
+
         ((EnemyStraightSpell)FallingAreaSkill).Fire(gameObject, new Vector3(player.transform.position.x, player.transform.position.y + 8f, player.transform.position.z), Vector3.down);
     }
     private void AreaDone()
@@ -370,7 +389,7 @@ public class BossScorpionKing : Enemy
         State = EnemyState.Chase;
     }
     private void DieDone()
-    {
+    {        
         gameObject.SetActive(false);
     }
 }

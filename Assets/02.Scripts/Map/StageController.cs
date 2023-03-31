@@ -13,7 +13,10 @@ public class StageController : MonoBehaviour
         Fight,
         Puzzle,
         Heal,
+        Tutorial,
+        Village,
     }
+
     private struct BlocksOriginStatus
     {
         public GameObject blockObject;
@@ -43,7 +46,7 @@ public class StageController : MonoBehaviour
     private List<BlocksOriginStatus> originBlockStatus = new List<BlocksOriginStatus>();
 
     private bool isClear = false;
-    public bool IsClear { get { return isClear; } }
+    public bool IsClear { get { return isClear; } set { isClear = value; } }
 
     private List<GameObject> enemies;
     private List<GameObject> objectTiles = new List<GameObject>();
@@ -154,6 +157,8 @@ public class StageController : MonoBehaviour
 
     }
 
+
+
     private void OnEnable()
     {
         //Set Skybox
@@ -172,7 +177,8 @@ public class StageController : MonoBehaviour
             MiniMap.instance.SetMiniMap(stageId);
         }
 
-
+        
+       
         if (MapManager.instance.currentMapCollider != null )
         {
             StopCoroutine(CSetStageCollider());
@@ -244,6 +250,26 @@ public class StageController : MonoBehaviour
         else
         {
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
+        }
+
+       StartCoroutine(CoSetUI());
+    }
+
+    IEnumerator CoSetUI()
+    {
+        yield return null;
+        //UI setting
+        switch (lockRequirement)
+        {
+            case UnLockRequirement.Fight:
+                UI.Instance.SetBattle();
+                break;
+            case UnLockRequirement.Puzzle:
+                UI.Instance.SetVillageUi();
+                break;
+            case UnLockRequirement.Heal:
+                UI.Instance.SetVillageUi();
+                break;
         }
     }
 
@@ -376,6 +402,9 @@ public class StageController : MonoBehaviour
                     isClear = true;
                     canOpen = true;
                     greenwallopen = true;
+
+                    if (SceneManager.GetActiveScene().name == "Scene02")
+                        MapManager.instance.SaveProgress();
 
                 }
             }

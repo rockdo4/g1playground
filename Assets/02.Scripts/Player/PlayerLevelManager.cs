@@ -7,6 +7,7 @@ public class PlayerLevelManager : MonoBehaviour
     private Status status;
     private PlayerInventory inventory;
     [field: SerializeField] public int Level { get; private set; }
+    [SerializeField] private string levelUpClip = "Energy buff";
     public int maxLevel = 20;
     public int MaxExp { get; private set; }
     private int currExp;
@@ -34,7 +35,7 @@ public class PlayerLevelManager : MonoBehaviour
 
     public void SetDefault()
     {
-        Level = 0;
+        Level = 1;
         CurrExp = 0;
     }
 
@@ -56,6 +57,12 @@ public class PlayerLevelManager : MonoBehaviour
         GameObject effect = GameManager.instance.effectManager.GetEffect("Level_up");
         effect.transform.SetParent(player.transform,false);
         GameManager.instance.effectManager.ReturnEffectOnTime("Level_up", effect, 2);
+
+        SoundManager.instance.PlaySoundEffect(levelUpClip);
+
+        PlayerDataManager.instance.SaveLevel();
+        PlayerDataManager.instance.SaveFile();
+
     }
 
     public void SetLevel(int level)

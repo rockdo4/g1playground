@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
 
     private NavMeshAgent agent;
     private NavMeshPath path;
+    private AgentLinkMover linkMover;
     private Vector3 prevPosition;
 
     private Coroutine cor;
@@ -80,17 +81,20 @@ public class PlayerController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.enabled = false;
         agent.updateRotation = false;
-
+        linkMover = GetComponent<AgentLinkMover>();
         prevPosition = agent.transform.position;
         transform.forward = new Vector3(1f, 0f, 0f);
         path = new NavMeshPath();
-        autoToggle.onValueChanged.AddListener((isAuto) => IsAuto = isAuto);
-        autoToggle.onValueChanged.AddListener(IsAuto => AgentOnOff());
-        for (int i = 0; i < playerSkills.toggles.Length; i++)
+        autoToggle.onValueChanged.AddListener((isAuto) =>
         {
-            var index = i;
-            autoToggle.onValueChanged.AddListener((isAuto)=>playerSkills.toggles[index].isOn = SkillOnOff(IsAuto , index));
-        }
+            IsAuto = isAuto;
+            
+            for (int i = 0; i < playerSkills.toggles.Length; i++)
+            {
+                playerSkills.toggles[i].isOn = IsAuto;
+            }
+            AgentOnOff();
+        });
     }
 
     private void Start()
@@ -120,6 +124,18 @@ public class PlayerController : MonoBehaviour
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
     }
+    public void RemoveAgentLinkMover()
+    {
+        AgentLinkMover agentLinkMover = GetComponent<AgentLinkMover>();
+        if (agentLinkMover != null)
+        {
+            Destroy(agentLinkMover);
+        }
+    }
+    public void AddAgentLinkMover()
+    {
+        gameObject.AddComponent<AgentLinkMover>();
+    }
     public bool SkillOnOff(bool isOn , int index)
     {
         return playerSkills.toggles[index].isOn = isOn;
@@ -128,13 +144,27 @@ public class PlayerController : MonoBehaviour
     {
         playerRb.isKinematic = true;
         agent.enabled = true;
-        cor = StartCoroutine(SearchTarget());
+        if (enemies != null)
+        {
+            if (cor != null)
+            {
+                StopCoroutine(cor);
+                cor = null;
+                Debug.Log("끝");
+            }
+            cor = StartCoroutine(SearchTarget());
+        }
     }
     public void AgentOff()
     {
         playerRb.isKinematic = false;
         agent.enabled = false;
-        StopCoroutine(cor);
+        if (cor != null)
+        {
+            StopCoroutine(cor);
+            cor = null;
+            Debug.Log("끝");
+        }
     }
     public void AgentOnOff()
     {
@@ -148,7 +178,6 @@ public class PlayerController : MonoBehaviour
                 else if(stageController.lockRequirement == StageController.UnLockRequirement.Puzzle ||
                     stageController.lockRequirement == StageController.UnLockRequirement.Heal)
                 {
-                    IsAuto = false;
                     autoToggle.isOn = false;
                     SetState<IdleState>();
                     return;
@@ -156,14 +185,17 @@ public class PlayerController : MonoBehaviour
             }
             else if (SceneManager.GetActiveScene().name != "Scene02")
                 enemies = DungeonManager.instance.Enemies;
-            if (enemies != null)
-                cor = StartCoroutine(SearchTarget());
-            SetState<AutoMoveState>();
+
+           //SetState<AutoMoveState>();
         }
         else
         {
             if (cor != null)
+            {
                 StopCoroutine(cor);
+                cor = null;
+                Debug.Log("끝");
+            }
             SetState<IdleState>();
         }
     }
@@ -255,6 +287,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator SearchTarget()
     {
+        Debug.Log("시작");
         if (enemies == null)
             yield break;
 
@@ -284,8 +317,16 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 if (target != null && path != null && isGrounded)
+                {
+                    agent.isStopped = false;
                     agent.SetDestination(target.transform.position);
-
+                }
+                var dis = Vector3.Distance(target.position, transform.position);
+                if (dis <= 1f)
+                { 
+                    agent.isStopped = true;
+                    SetMoveX(target.position.x - transform.position.x);
+                }
                 if (count == 0 && enemies.Count != 0)
                 {
                     yield return new WaitForSeconds(3f);

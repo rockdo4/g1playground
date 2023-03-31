@@ -86,7 +86,7 @@ public class EnemyRange : Enemy, IAttackable
                     break;
             }
 
-            Debug.Log(State);
+            //Debug.Log(State);
         }
     }
 
@@ -118,9 +118,24 @@ public class EnemyRange : Enemy, IAttackable
         base.OnEnable();
 
         State = EnemyState.None;
+
+        RemoveAgentLinkMover();
+        AddAgentLinkMover();
         ResetPattern();
     }
+    void RemoveAgentLinkMover()
+    {
+        AgentLinkMover agentLinkMover = GetComponent<AgentLinkMover>();
+        if (agentLinkMover != null)
+        {
+            Destroy(agentLinkMover);
+        }
+    }
 
+    void AddAgentLinkMover()
+    {
+        gameObject.AddComponent<AgentLinkMover>();
+    }
 
 
     protected void Update()
@@ -377,6 +392,7 @@ public class EnemyRange : Enemy, IAttackable
         {
             case SkillAttack:
                 {
+                    enemySound.PlayAttackSound();
                     ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);
                 }
                 break;

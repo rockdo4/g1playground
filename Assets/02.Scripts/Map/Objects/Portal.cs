@@ -53,6 +53,7 @@ public class Portal : MonoBehaviour
             player.AgentOnOff();
             init = true;
             nextStage.gameObject.SetActive(true);
+            //player.RemoveAgentLinkMover();
             nextStage.GetComponent<StageController>().PrevStageName = MapManager.instance.GetCurrentMapName();
             var nextstageportals = nextStage.GetComponentsInChildren<Portal>();
             foreach (var portal in nextstageportals)
@@ -73,13 +74,14 @@ public class Portal : MonoBehaviour
                     player.AgentOnOff();
 
                     transform.parent.gameObject.SetActive(false);
+                  
 
                     SoundManager.instance.PlaySoundEffect(enterPortalClip);
 
                     break;
                 }
             }
-
+            //player.AddAgentLinkMover();
         }
     }
 

@@ -26,7 +26,7 @@ public class UI : MonoBehaviour
     public SkillPanel skillPanel;
     public AutoPanel autoPanel;
     //public SceneLoader loading;
-
+    public MenuPopUp menuPopUp;
     private LayoutState State;
     [SerializeField]
     private string sceneName;
@@ -54,25 +54,83 @@ public class UI : MonoBehaviour
         //minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
         skillPanel = GetComponentInChildren<SkillPanel>(true);
         autoPanel = GetComponentInChildren<AutoPanel>(true);
+        menuPopUp = GetComponentInChildren<MenuPopUp>(true);
+    }
+
+    private void Start()
+    {
+        InitUi(sceneName);
+    }
+    private void InitUi(string sceneName)
+    {
+        if(sceneName.Equals("Tutorial", StringComparison.OrdinalIgnoreCase))
+        {
+            SetTutorialUi();
+        }
+        else if(sceneName.Equals("Village", StringComparison.OrdinalIgnoreCase))
+        {
+            SetVillageUi();
+        }
+        else if (sceneName.Equals("Dungeon", StringComparison.OrdinalIgnoreCase))
+        {
+            SetBattle();
+        }
+    }
+
+    public void SetTutorialUi()
+    {
+        charaterUIPanel.ActiveTrue();
+        controllerPanel.ActiveTrue();
+        menuPanel.ActiveTrue();
+        UI.Instance.menuPanel.restartButton.ActivateButton(false);
+        UI.Instance.menuPanel.homeButton.ActivateButton(false);
+        potionPanel.ActiveTrue();
+        skillPanel.ActiveTrue();
+        UI.Instance.skillPanel.SkillToggleOff();
+        autoPanel.ActiveTrue();
+        // Interactable false
+        UI.Instance.autoPanel.ActivateToggle(false);
+        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
+        popupPanel.ActiveTrue();
+        UI.Instance.popupPanel.menuPopUp.SetDefault();
+    }
+
+    public void SetVillageUi()
+    {
+        popupPanel.ActiveTrue();
+        charaterUIPanel.ActiveTrue();
+        controllerPanel.ActiveTrue();
+        menuPanel.ActiveTrue();
+        potionPanel.ActiveFalse();
+        skillPanel.ActiveFalse();
+        autoPanel.ActiveFalse();
+        UI.Instance.popupPanel.menuPopUp.SetVillage();
 
     }
 
-    public void SetState(LayoutState state)
+    public void SetBattle()
     {
-        switch (State)
-        {
-            case LayoutState.Title:
-                title.ActiveFalse();
-                break;
-        }
+        popupPanel.ActiveTrue();
+        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
+        UI.Instance.popupPanel.menuPopUp.SetDefault();
+        charaterUIPanel.ActiveTrue();
+        controllerPanel.ActiveTrue();
+        menuPanel.ActiveTrue();
+        potionPanel.ActiveTrue();
+        skillPanel.ActiveTrue();
+        autoPanel.ActiveTrue();
+    }
 
-        State = state;
-
-        switch (state)
-        {
-            case LayoutState.Title:
-                title.ActiveTrue();
-                break;
-        }
+    public void SetDungeon()
+    {
+        popupPanel.ActiveTrue();
+        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
+        UI.Instance.popupPanel.menuPopUp.SetDefault();
+        charaterUIPanel.ActiveTrue();
+        controllerPanel.ActiveTrue();
+        menuPanel.ActiveFalse();
+        potionPanel.ActiveTrue();
+        skillPanel.ActiveTrue();
+        autoPanel.ActiveTrue();
     }
 }

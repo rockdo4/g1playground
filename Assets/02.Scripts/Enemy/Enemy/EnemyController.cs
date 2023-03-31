@@ -141,8 +141,8 @@ public class EnemyController : Enemy
         base.OnEnable();
 
         State = EnemyState.None;
-        //RemoveAgentLinkMover();
-        //AddAgentLinkMover();
+        RemoveAgentLinkMover();
+        AddAgentLinkMover();
         ResetPattern();
         //agent.isOnOffMeshLink = true;
         //linkMover.YourLogicCoroutine();
@@ -446,7 +446,7 @@ public class EnemyController : Enemy
         if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
         {
 #if UNITY_EDITOR
-            Debug.Log(State);
+            //Debug.Log(State);
 #endif
             meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
             attackBox.SetActive(false);

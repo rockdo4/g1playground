@@ -46,6 +46,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public bool endTutorial = false;
 
+
     public void Start()
     {
         LoadFile();
@@ -53,6 +54,9 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SaveFile()
     {
+        Debug.Log("save");
+
+        var PlayerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
         var saveData = new SavePlayerDataVer1();
         saveData.playerName = playerName;
         saveData.lastMapId = lastSaveMapId;
@@ -60,15 +64,15 @@ public class PlayerDataManager : MonoBehaviour
         //saveData.lastPlayerPos = player.transform.position;
         saveData.lastPlayerPos = lastPlayerPos;
 
-        saveData.playerCurrHp = playerCurrHp;
-        saveData.playerCurrMp = playerCurrMp;
+        saveData.playerCurrHp = PlayerStatus.CurrHp;
+        saveData.playerCurrMp = PlayerStatus.CurrMp;
 
         saveData.weapons = weapons;
         saveData.armors = armors;
         saveData.consumables = consumables;
         saveData.currWeapon = currWeapon;
         saveData.currArmor = currArmor;
-        
+
         saveData.possessedSkills = possessedSkills;
         saveData.currskill1 = currskill1;
         saveData.currskill2 = currskill2;
@@ -81,8 +85,10 @@ public class PlayerDataManager : MonoBehaviour
 
     public void LoadFile()
     {
+        Debug.Log("Load");
+
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
-        if (saveData == null || !saveData.endTutorial)
+        if (saveData == null)
         {
             playerName = null;
             lastSaveMapId = null;
@@ -140,9 +146,9 @@ public class PlayerDataManager : MonoBehaviour
 
     public void SavePlayer()
     {
-        SaveLevel();
-        SaveInventory();
-        SaveSkills();
+        SaveLevel();   //
+        SaveInventory(); //
+        SaveSkills();//
         SavePlayerHpMp();
     }
 
@@ -176,6 +182,13 @@ public class PlayerDataManager : MonoBehaviour
         consumables = playerInventory.Consumables;
         currWeapon = playerInventory.CurrWeapon;
         currArmor = playerInventory.CurrArmor;
+    }
+
+    public void SaveDungeonProgress()
+    {
+        List<StageController> maps = MapManager.instance.GetStageList();
+
+
     }
 
     public void LoadInventory() => GameManager.instance.player.GetComponent<PlayerInventory>().Load(weapons, armors, consumables, currWeapon, currArmor);

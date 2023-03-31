@@ -82,6 +82,10 @@ public class PlayerSound : MonoBehaviour
 
     public void Release()
     {
+        if (gameObject == null || !gameObject.activeSelf)
+        {
+            return;
+        }
         timer = 0f;
         audioSource.clip = null;
         audioSource.Stop();
