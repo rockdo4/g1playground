@@ -82,6 +82,7 @@ public class UI : MonoBehaviour
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
         menuPanel.ActiveTrue();
+        UI.Instance.menuPanel.restartButton.ActivateButton(false);
         UI.Instance.menuPanel.homeButton.ActivateButton(false);
         potionPanel.ActiveTrue();
         skillPanel.ActiveTrue();
