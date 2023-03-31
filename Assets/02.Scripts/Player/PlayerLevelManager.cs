@@ -7,7 +7,7 @@ public class PlayerLevelManager : MonoBehaviour
     private Status status;
     private PlayerInventory inventory;
     [field: SerializeField] public int Level { get; private set; }
-    [SerializeField] private string levelUpClip = "Energy buff";
+    [SerializeField] private string levelUpClip = "UI_Level_Up";
     public int maxLevel = 20;
     public int MaxExp { get; private set; }
     private int currExp;
