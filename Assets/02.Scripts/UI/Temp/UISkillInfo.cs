@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class UISkillInfo : MonoBehaviour
 {
     public Image equipImage;
-    public Image useImage;
     public Image firstEquipIcon;
     public Image secondEquipIcon;
     public TextMeshProUGUI skillName;
@@ -17,12 +16,10 @@ public class UISkillInfo : MonoBehaviour
     public void SetEmpty()
     {
         //currSkillData = null;
-        equipImage.sprite = null;
-        useImage.sprite = null;
+        equipImage.sprite = null;      
         firstEquipIcon.sprite = null;
         secondEquipIcon.sprite = null;
         equipImage.color = Color.clear;
-        useImage.color = Color.clear;
         firstEquipIcon.color = Color.clear;
         secondEquipIcon.color = Color.clear;
         skillName.text = string.Empty;

@@ -41,17 +41,20 @@ public class PlayerLevelManager : MonoBehaviour
 
     private void Awake()
     {
+        Level = 1;
+        MaxExp = 100;
         status = GetComponent<Status>();
         inventory = GetComponent<PlayerInventory>();
     }
 
     private void Start()
     {
-        SetLevel(1);
+        Level = 1;
     }
 
     public void LevelUp()
     {
+        Debug.Log($"dkdfj {Level}");
         SetLevel(Level + 1);
         GameObject player=GameManager.instance.player;
         GameObject effect = GameManager.instance.effectManager.GetEffect("Level_up");
@@ -73,7 +76,7 @@ public class PlayerLevelManager : MonoBehaviour
         else
             MaxExp = level * 110;
         CurrExp = 0;
-        status.id = level.ToString();
+        status.id = Level.ToString();
         status.LoadFromTable();
         inventory.ApplyStatus();
         status.Restore();
