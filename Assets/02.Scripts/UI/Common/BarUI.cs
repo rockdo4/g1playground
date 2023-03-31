@@ -5,48 +5,46 @@ using UnityEngine.UI;
 
 public class BarUI : MonoBehaviour
 {
-    public Image image;
-    public int curValue;
+    private Image image;
+    private float curValue;
     public int maxValue;
+    private float duration = 0.5f;
 
     protected virtual void Awake()
     {
-        image = GetComponent<Image>();
-
+        SetImage();
     }
-
+    private void SetImage()
+    {
+        if (image == null)
+            image = GetComponent<Image>();
+    }
     public void SetImageFillAmount(int value)
     {
-        //StartCoroutine(StatBar(value));
-        image.fillAmount = (float)value / maxValue;
+        SetImage();
+        StopAllCoroutines();
+        targetValue = (float)value / maxValue;
+        StartCoroutine(UpdateBar());
 
-        //curValue = value;
     }
-    public float duration = 0.5f;
-    private IEnumerator StatBar(int value)
+    private float targetValue;
+    private IEnumerator UpdateBar()
     {
+        float startTime = Time.realtimeSinceStartup;
+        float elapsedTime = 0f;
+        float initialCurValue = curValue;
 
-        int startValue = curValue;
-        int endValue = Mathf.Clamp(value, 0, maxValue);
-        float t = 0f;
-
-        while (t < 1f)
+        while (elapsedTime < duration)
         {
-            t += Time.deltaTime / duration;
+            elapsedTime = Time.realtimeSinceStartup - startTime;
+            curValue = Mathf.Lerp(initialCurValue, targetValue, elapsedTime / duration);
+            image.fillAmount = curValue;
 
-            int newValue;
+            yield return new WaitForSecondsRealtime(0.01f);
 
-            if (value < curValue)
-                newValue = Mathf.RoundToInt(Mathf.Lerp(startValue, endValue, t));
-            else
-                newValue = Mathf.RoundToInt(Mathf.LerpUnclamped(startValue, endValue, t));
+            curValue = targetValue;
+            image.fillAmount = curValue;
 
-            if (curValue == value)
-            {
-                curValue = newValue;
-                StopAllCoroutines();
-            }
-            yield return null;
         }
     }
 }

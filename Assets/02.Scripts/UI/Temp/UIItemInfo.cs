@@ -23,13 +23,14 @@ public class UIItemInfo : MonoBehaviour
 
     private void Awake()
     {
-        hpBar = GetComponentInChildren<MaxHpBar>(true);
-        mpBar = GetComponentInChildren<MaxMp>(true);
-        skillPowBar = GetComponentInChildren<SkillPowerBar>(true);
-        skillDefBar = GetComponentInChildren<SkillDefBar>(true);
-        attPowBar = GetComponentInChildren<MeleePowBar>(true);
-        attDefBar = GetComponentInChildren<MeleeDefBar>(true);
+        //hpBar = GetComponentInChildren<HpBar>(true);
+        //mpBar = GetComponentInChildren<MpBar>(true);
+        //skillPowBar = GetComponentInChildren<SkillPowerBar>(true);
+        //skillDefBar = GetComponentInChildren<SkillDefBar>(true);
+        //attPowBar = GetComponentInChildren<MeleePowBar>(true);
+        //attDefBar = GetComponentInChildren<MeleeDefBar>(true);
     }
+
     public void SetEmpty()
     {
         weaponImage.sprite = null;
@@ -81,6 +82,7 @@ public class UIItemInfo : MonoBehaviour
 
     public void ShowSlider(Status.Value value)
     {
+        SetBar();
         hpBar.SetImageFillAmount(value.maxHp);
         mpBar.SetImageFillAmount(value.maxMp);
         skillPowBar.SetImageFillAmount(value.skillPower);
@@ -88,4 +90,18 @@ public class UIItemInfo : MonoBehaviour
         attPowBar.SetImageFillAmount(value.meleePower);
         attDefBar.SetImageFillAmount(value.meleeDef);
     }
+
+    private void SetBar()
+    {
+        if (hpBar == null)
+        {
+            hpBar = GetComponentInChildren<HpBar>(true);
+            mpBar = GetComponentInChildren<MpBar>(true);
+            skillPowBar = GetComponentInChildren<SkillPowerBar>(true);
+            skillDefBar = GetComponentInChildren<SkillDefBar>(true);
+            attPowBar = GetComponentInChildren<MeleePowBar>(true);
+            attDefBar = GetComponentInChildren<MeleeDefBar>(true);
+        }
+    }
+
 }
