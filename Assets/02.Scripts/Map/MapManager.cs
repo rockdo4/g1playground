@@ -177,6 +177,8 @@ public class MapManager : MonoBehaviour
 
     public string GetCurrentMapName()
     {
+        if (currentChapterName == null)
+            currentMapName = "Village";
         return currentMapName;
     }
 

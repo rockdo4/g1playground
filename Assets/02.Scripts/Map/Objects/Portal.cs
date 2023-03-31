@@ -100,6 +100,7 @@ public class Portal : MonoBehaviour
         if (GameManager.instance.player.GetComponent<PlayerController>().IsAuto)
         {
             StopCoroutine(CClosePortalInaWhile());
+            CanUse = true;
 
             return;
         }
