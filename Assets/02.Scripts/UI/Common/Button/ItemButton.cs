@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class ItemButton : ButtonUi
     private void Start()
     {
         button.onClick.AddListener(OpenItemPopUp);
+        ActivateButton(false);
     }
 
     private void OpenItemPopUp()
