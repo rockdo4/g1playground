@@ -106,7 +106,16 @@ public class SceneLoader : MonoBehaviour
             StartCoroutine(Fade(false));
             SceneManager.sceneLoaded -= LoadSceneEnd;
         }
+        StartCoroutine(CGetPlayerStatus());
     }
+
+    private IEnumerator CGetPlayerStatus()
+    {
+        yield return null;
+        PlayerDataManager.instance.LoadFile();
+
+    }
+
 
     private IEnumerator Fade(bool isFadeIn)
     {

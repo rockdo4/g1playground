@@ -23,7 +23,8 @@ public static class SaveLoadSystem
     {
         { SaveData.Types.Player, 1 },
         { SaveData.Types.Option, 0 },
-        { SaveData.Types.Dungeon, 1 }
+        { SaveData.Types.Dungeon, 1 },
+        {SaveData.Types.Stage,1 },
     };
     public static string FilePath = string.Empty;
     public static readonly string DirectoryName = "Save";
@@ -55,6 +56,9 @@ public static class SaveLoadSystem
             case SaveData.Types.Dungeon:
                 mode = Modes.Binary;
                 break;
+            case SaveData.Types.Stage:
+                mode = Modes.Binary;
+                break;
         }
         FilePath = GetSaveFileName(type, mode);
 
@@ -82,6 +86,9 @@ public static class SaveLoadSystem
                 break;
             case SaveData.Types.Option:
                 mode = Modes.Json;
+                break;
+            case SaveData.Types.Stage:
+                mode = Modes.Binary;
                 break;
         }
         FilePath = GetSaveFileName(type, mode);
@@ -165,6 +172,15 @@ public static class SaveLoadSystem
                             break;
                     }
                     break;
+                case SaveData.Types.Stage:
+                    switch(fileVersion)
+                    {
+                        case 1:
+                            t = typeof(SaveStageDataVer1);
+                            break;
+                    }
+                    break;
+                    
                 default:
                     return null;
             }

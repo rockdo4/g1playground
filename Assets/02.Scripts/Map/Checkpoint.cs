@@ -41,9 +41,11 @@ public class Checkpoint : MonoBehaviour
             {
                 return;
             }
+           
             effect = GameManager.instance.effectManager.GetEffect(effectName);
             effect.transform.position = transform.position;
             SoundManager.instance.PlaySoundEffect(soundClip);
+            PlayerDataManager.instance.SaveFile();
             //float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
             
         }

@@ -84,6 +84,14 @@ public class DungeonManager : MonoBehaviour
 
     void OnEnable()
     {
+       
+
+        StartCoroutine(COnEnable());   
+    }
+
+    private IEnumerator COnEnable()
+    {
+        yield return null;
         if (m_instance == null)
         {
             SelectedLevel = new StringBuilder();
@@ -101,10 +109,7 @@ public class DungeonManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-
     }
-
     private void SaveFile()
     {
         var saveData = new SaveDugeonDataVer1();
@@ -144,8 +149,10 @@ public class DungeonManager : MonoBehaviour
 
         if (scene.name == "Scene02")
         {
+            Debug.Log("yos");
             remaningtime.gameObject.SetActive(false);
-            PlayerDataManager.instance.LoadPlayerHpMp();
+            // PlayerDataManager.instance.LoadPlayerHpMp();
+            PlayerDataManager.instance.LoadFile();
             PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
         }
 

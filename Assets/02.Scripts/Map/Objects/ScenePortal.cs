@@ -11,6 +11,7 @@ public class ScenePortal : MonoBehaviour
     {
         if (other.CompareTag("Player")) 
         {
+            
             SceneManager.LoadScene(scene);
 
         }
