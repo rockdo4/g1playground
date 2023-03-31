@@ -29,7 +29,7 @@ public class UI : MonoBehaviour
     public MenuPopUp menuPopUp;
     private LayoutState State;
     [SerializeField]
-    private string sceneName;
+    public string sceneName;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -73,7 +73,7 @@ public class UI : MonoBehaviour
         }
         else if (sceneName.Equals("Dungeon", StringComparison.OrdinalIgnoreCase))
         {
-            SetBattle();
+            SetDungeon();
         }
     }
 
@@ -105,6 +105,7 @@ public class UI : MonoBehaviour
         skillPanel.ActiveFalse();
         autoPanel.ActiveFalse();
         UI.Instance.popupPanel.menuPopUp.SetVillage();
+        sceneName= "Village";
 
     }
 
@@ -132,5 +133,6 @@ public class UI : MonoBehaviour
         potionPanel.ActiveTrue();
         skillPanel.ActiveTrue();
         autoPanel.ActiveTrue();
+        sceneName = "Dungeon";
     }
 }
