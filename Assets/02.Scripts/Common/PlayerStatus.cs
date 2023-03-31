@@ -12,7 +12,7 @@ public class PlayerStatus : Status
         type = Types.Player;
     }
 
-    public override void AddValue(List<Value> addValue)
+    public Value AddValue(List<Value> addValue)
     {
         Value value = new Value();
         for (int i = 0; i < addValue.Count; ++i)
@@ -20,7 +20,12 @@ public class PlayerStatus : Status
             addValue[i] = ItemValue(addValue[i]);
             value += addValue[i];
         }
-        equipValue = value;
+        return value;
+    }
+
+    public void Equip(List<Value> addValue)
+    {
+        equipValue = AddValue(addValue);
         SetFinalValue();
         SetHpUi();
         SetMpUi();
@@ -53,7 +58,7 @@ public class PlayerStatus : Status
 
     protected override void SetFinalValue()
     {
-        var value = defaultValue + equipValue;
+        var value = DefaultValue + equipValue;
         value.meleeDef *= (int)(1f - reduceDef);
         value.skillDef *= (int)(1f - reduceDef);
         FinalValue = value;

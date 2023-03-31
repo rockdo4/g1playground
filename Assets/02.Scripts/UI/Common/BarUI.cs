@@ -17,10 +17,10 @@ public class BarUI : MonoBehaviour
 
     public void SetImageFillAmount(int value)
     {
-        StartCoroutine(StatBar(value));
+        //StartCoroutine(StatBar(value));
         image.fillAmount = (float)value / maxValue;
 
-        curValue = value;
+        //curValue = value;
     }
     public float duration = 0.5f;
     private IEnumerator StatBar(int value)
