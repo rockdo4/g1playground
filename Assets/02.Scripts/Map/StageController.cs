@@ -432,7 +432,7 @@ public class StageController : MonoBehaviour
         return enemies;
     }
 
-    private void SetWorldMapButton()
+    public void SetWorldMapButton()
     {
         wMapButton.interactable = true;
         wMapButton.GetComponent<Image>().sprite = TileColorManager.instance.GetImageSprite(imageColor);

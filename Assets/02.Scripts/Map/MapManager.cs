@@ -71,7 +71,9 @@ public class MapManager : MonoBehaviour
             {
                 if (map.name == stage.Key)
                 {
-                    map.IsClear = stage.Value;                    
+                    map.IsClear = stage.Value;
+                    if (map.IsClear)
+                        map.SetWorldMapButton();
                 }
             }
         }
