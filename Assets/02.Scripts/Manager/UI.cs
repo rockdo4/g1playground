@@ -103,6 +103,7 @@ public class UI : MonoBehaviour
         menuPanel.ActiveTrue();
         potionPanel.ActiveFalse();
         skillPanel.ActiveFalse();
+        UI.Instance.skillPanel.ToggleOff();
         autoPanel.ActiveFalse();
         UI.Instance.popupPanel.menuPopUp.SetVillage();
         sceneName= "Village";

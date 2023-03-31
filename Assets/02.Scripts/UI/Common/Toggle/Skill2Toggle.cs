@@ -23,4 +23,9 @@ public class Skill2Toggle : MonoBehaviour
     {
         toggle.interactable = isinteractable;
     }
+
+    public void ToggleIsOff(bool isOn)
+    {
+        toggle.isOn = isOn;
+    }
 }

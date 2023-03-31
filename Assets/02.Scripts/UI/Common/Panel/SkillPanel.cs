@@ -21,6 +21,13 @@ public class SkillPanel : PanelUi
         skill1Toggle.ActivateToggle(false);
         skill2Toggle.ActivateToggle(false);
     }
+
+    public void ToggleOff()
+    {
+        skill1Toggle.ToggleIsOff(false);
+        skill2Toggle.ToggleIsOff(false);
+    }
+
     // Update is called once per frame
     void Update()
     {
