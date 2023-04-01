@@ -93,5 +93,5 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RestartGame() => SceneManager.LoadScene("Scene01");
+    public void RestartGame() => SceneManager.LoadScene("Scene02");
 }
