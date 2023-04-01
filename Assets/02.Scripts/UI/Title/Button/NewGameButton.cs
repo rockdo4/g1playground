@@ -13,8 +13,8 @@ public class NewGameButton : ButtonUi
     public void ChangeScene()
     {
         string savepath = Application.persistentDataPath + "/Save/Save_Player.bin";
-        string savepath2= Application.persistentDataPath + "/Save/Save_Stage.bin";
-        string savepath3= Application.persistentDataPath + "/Save/Save_Dungeon.bin";
+        string savepath2 = Application.persistentDataPath + "/Save/Save_Stage.bin";
+        string savepath3 = Application.persistentDataPath + "/Save/Save_Dungeon.bin";
         if (File.Exists(savepath))
         {
             File.Delete(savepath);

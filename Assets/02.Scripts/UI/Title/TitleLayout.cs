@@ -7,8 +7,6 @@ public class TitleLayout : Layout
     public PanelUi titlePanel;
     public PanelUi crewPanel;
 
-
-
     private void Awake()
     {
         titlePanel = GetComponentInChildren<TitlePanel>(true);
