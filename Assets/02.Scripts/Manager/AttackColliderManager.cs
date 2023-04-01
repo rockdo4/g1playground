@@ -85,22 +85,30 @@ public class AttackColliderManager : MonoBehaviour
 
     public void ReleaseAll()
     {
+        List<AttackCollider> collidersToRelease = new List<AttackCollider>();
+
         foreach (var dict in usingList)
         {
             foreach (var list in dict.Value)
             {
-                foreach(var collider in list.Value)
+                foreach (var collider in list.Value)
                 {
-                    switch (collider)
-                    {
-                        case Projectile:
-                            Release((Projectile)collider);
-                            break;
-                        case RangeCollider:
-                            Release((RangeCollider)collider);
-                            break;
-                    }
+                    collidersToRelease.Add(collider);
                 }
+            }
+        }
+
+        // Release the colliders outside of the loop
+        foreach (var collider in collidersToRelease)
+        {
+            switch (collider)
+            {
+                case Projectile:
+                    Release((Projectile)collider);
+                    break;
+                case RangeCollider:
+                    Release((RangeCollider)collider);
+                    break;
             }
         }
     }

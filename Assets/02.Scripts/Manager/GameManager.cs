@@ -36,19 +36,31 @@ public class GameManager : MonoBehaviour
 
     public void Respawn()
     {
-        if (SceneManager.GetActiveScene().name != "Scene02"|| PlayerDataManager.instance.lastSaveChapterName==null)
+        if (SceneManager.GetActiveScene().name != "Scene02" || PlayerDataManager.instance.lastSaveChapterName == null)
             return;
 
         var playerController = player.GetComponent<PlayerController>();
+        NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
+        var linkMover = player.GetComponent<AgentLinkMover>();
         playerController.autoToggle.isOn = false;
+        playerController.AgentOff();
         playerController.AgentOnOff();
         player.GetComponent<PlayerInventory>().RefillPotions();
         player.transform.SetParent(null);
-        player.GetComponent<PlayerController>().autoToggle.isOn = false;
+
+        if (agent.isOnOffMeshLink)
+        {
+            agent.ResetPath();
+            linkMover.enabled = false;
+            linkMover.enabled = true;
+        }
+        else if (agent.isOnNavMesh && !agent.currentOffMeshLinkData.valid)
+        {
+            agent.ResetPath();
+        }
 
         GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().PortalOpen();
 
-        //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).Find(MapManager.instance.GetCurrentMapName()).gameObject.GetComponent<StageController>().ResetObject();
         MapManager.instance.GetCurrentStageObject().gameObject.SetActive(false);
         GameObject.FindWithTag("Map").transform.Find(PlayerDataManager.instance.lastSaveChapterName).Find(PlayerDataManager.instance.lastSaveMapId).gameObject.SetActive(true);
 
@@ -69,9 +81,6 @@ public class GameManager : MonoBehaviour
 
         player.SetActive(false);
         player.SetActive(true);
-        playerController.RemoveAgentLinkMover();
-        playerController.AddAgentLinkMover();
-        // StartCoroutine(CoRespawn());
     }
 
     private void Update()

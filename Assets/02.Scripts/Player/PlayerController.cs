@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
     private NavMeshPath path;
     private AgentLinkMover linkMover;
     private Vector3 prevPosition;
+    private bool inDistance;
 
     private Coroutine cor;
     private float enemyPathLength;
@@ -119,10 +120,23 @@ public class PlayerController : MonoBehaviour
         else
             SetMoveX(0f);
     }
+    private void OnEnable()
+    {
+        RemoveAgentLinkMover();
+        AddAgentLinkMover();
+    }
     private void FixedUpdate()
     {
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
+    }
+    public void ResetAgent()
+    {
+        agent.ResetPath();
+        agent.velocity = Vector3.zero;
+        agent.isStopped = true;
+        agent.enabled = false;
+        agent.enabled = true;
     }
     public void RemoveAgentLinkMover()
     {
@@ -319,19 +333,21 @@ public class PlayerController : MonoBehaviour
                 if (target != null && path != null && isGrounded)
                 {
                     agent.isStopped = false;
+                    inDistance = false;
                     agent.SetDestination(target.transform.position);
                 }
                 var dis = Vector3.Distance(target.position, transform.position);
-                if (dis <= 1f)
+                if (dis <= 1.5f && count != 0 && isGrounded && target.position != transform.position)  
                 { 
                     agent.isStopped = true;
+                    inDistance = true;
                     SetMoveX(target.position.x - transform.position.x);
                 }
                 //Debug.Log(enemies.Count);
-                Debug.Log(count);
                 if (count == 0 && enemies.Count != 0)
                 {
                     SearchPortal();
+                    yield break;
                 } 
             }
         }
@@ -476,10 +492,10 @@ public class PlayerController : MonoBehaviour
                 playerController.inventory.UseMpPotion();
             }
 
-            var agentVec = (playerController.agent.transform.position - playerController.prevPosition).normalized;
-            if (!Mathf.Approximately(agentVec.x, 0f))
+            var agentPos = (playerController.agent.transform.position - playerController.prevPosition).normalized;
+            if (!playerController.inDistance&&!Mathf.Approximately(agentPos.x, 0f) && playerController.currState.GetType() != typeof(KnockBackState)) 
             {
-                playerController.SetMoveX(agentVec.x);
+                playerController.SetMoveX(agentPos.x);
             }
             playerController.prevPosition = playerController.agent.transform.position;
             if (playerController.input.Jump)
@@ -494,7 +510,11 @@ public class PlayerController : MonoBehaviour
                 playerController.SetState<MoveState>();
                 return;
             }
-
+            if(Input.GetKeyDown(KeyCode.M))
+            {
+                var cc = playerController.GetComponent<AttackedCC>();
+                cc.Reset();
+            }
         }
 
         public override void Exit()
