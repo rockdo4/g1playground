@@ -32,6 +32,7 @@ public class GamblingManager : MonoBehaviour
         skillDrawDatas = DataTableMgr.GetTable<SkillDrawData>().GetTable();
         itemInventory = GameManager.instance.uiManager.itemInventory.GetComponent<UIInventory>();
         skillInventory = GameManager.instance.uiManager.skillInventory.GetComponent<UISkillInventory>();
+        SetPowderCount();
     }
 
     private void OnEnable()
