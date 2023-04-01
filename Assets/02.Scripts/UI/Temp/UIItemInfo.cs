@@ -119,6 +119,7 @@ public class UIItemInfo : MonoBehaviour
             weaponData = DataTableMgr.GetTable<WeaponData>().Get(inven.CurrWeapon);
         if (weaponData != null)
         {
+            equipmentImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(weaponData.iconSpriteId).iconName);
             itemName.text = DataTableMgr.GetTable<NameData>().Get(weaponData.name).name;
             itemInfo.text = DataTableMgr.GetTable<DescData>().Get(weaponData.desc).text;
         }
@@ -132,6 +133,7 @@ public class UIItemInfo : MonoBehaviour
             armorData = DataTableMgr.GetTable<ArmorData>().Get(inven.CurrArmor);
         if (armorData != null)
         {
+            equipmentImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(armorData.iconSpriteId).iconName);
             itemName.text = DataTableMgr.GetTable<NameData>().Get(armorData.name).name;
             itemInfo.text = DataTableMgr.GetTable<DescData>().Get(armorData.desc).text;
         }
