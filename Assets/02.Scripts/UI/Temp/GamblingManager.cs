@@ -35,11 +35,6 @@ public class GamblingManager : MonoBehaviour
         SetPowderCount();
     }
 
-    private void OnEnable()
-    {
-        SetPowderCount();
-    }
-
     private void Update()
     {
         skillPowderCount.text = powderCount.ToString();
