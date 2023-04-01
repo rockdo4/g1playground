@@ -11,9 +11,10 @@ public class UiDisassemble : MonoBehaviour
     private int currSlot;
     public UIItemSlot uiItemSlotPrefab;
     public UISkillSlot uiSkillSlotPrefab;
+    public GameObject ItemInventory;
+    public GameObject skillInventory;
     public RectTransform itemContent;
     public RectTransform skillContent;
-
     private List<UIItemSlot> itemSlotList = new List<UIItemSlot>();
     private List<UISkillSlot> skillSlotList = new List<UISkillSlot>();
     private PlayerInventory playerInventory;
@@ -88,6 +89,7 @@ public class UiDisassemble : MonoBehaviour
     {
         this.type = (ReinforceSystem.Types)type;
         ClearInventory();
+        ShowInventory(this.type);
         currSlot = -1;
         List<string> ids = null;
         int len = 0;
@@ -133,6 +135,22 @@ public class UiDisassemble : MonoBehaviour
                             skillSlotList[i].Set(i, table.Get(ids[i]));
                     }
                 }
+                break;
+        }
+    }
+
+    private void ShowInventory(ReinforceSystem.Types type)
+    {
+        switch (type)
+        {
+            case ReinforceSystem.Types.Weapon:
+            case ReinforceSystem.Types.Armor:
+                ItemInventory.SetActive(true);
+                skillInventory.SetActive(false);
+                break;
+            case ReinforceSystem.Types.Skill:
+                ItemInventory.SetActive(false);
+                skillInventory.SetActive(true);
                 break;
         }
     }
