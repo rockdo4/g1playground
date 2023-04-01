@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerStatus : Status
 {
-    private Value equipValue;
+    public Value EquipValue { get; private set; }
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class PlayerStatus : Status
 
     public void Equip(List<Value> addValue)
     {
-        equipValue = AddValue(addValue);
+        EquipValue = AddValue(addValue);
         SetFinalValue();
         SetHpUi();
         SetMpUi();
@@ -58,7 +58,7 @@ public class PlayerStatus : Status
 
     protected override void SetFinalValue()
     {
-        var value = DefaultValue + equipValue;
+        var value = DefaultValue + EquipValue;
         value.meleeDef *= (int)(1f - reduceDef);
         value.skillDef *= (int)(1f - reduceDef);
         FinalValue = value;

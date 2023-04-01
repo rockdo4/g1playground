@@ -57,7 +57,8 @@ public class UIInventory : MonoBehaviour
 
     public void SetInventory(int itemType)
     {
-        itemInfo.ShowSlider(GameManager.instance.player.GetComponent<PlayerStatus>().FinalValue);
+        var playerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
+        itemInfo.ShowSlider(playerStatus.DefaultValue + playerStatus.EquipValue);
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
         currSlot = -1;

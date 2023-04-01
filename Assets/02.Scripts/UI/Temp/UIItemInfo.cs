@@ -53,7 +53,8 @@ public class UIItemInfo : MonoBehaviour
         itemInfo.text = string.Empty;
         currWeaponImage.sprite = null;
         currArmorImage.sprite = null;
-        ShowSlider(GameManager.instance.player.GetComponent<PlayerStatus>().FinalValue);
+        var playerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
+        ShowSlider(playerStatus.DefaultValue + playerStatus.EquipValue);
     }
 
     public void Set(ItemData data)
@@ -68,7 +69,6 @@ public class UIItemInfo : MonoBehaviour
         var playerInventory = GameManager.instance.player.GetComponent<PlayerInventory>();
         var resultValue = Status.Value.Zero;
         List<Status.Value> list = new List<Status.Value>();
-        list.Add(playerStatus.DefaultValue);
         switch (data)
         {
             case WeaponData:
@@ -80,7 +80,7 @@ public class UIItemInfo : MonoBehaviour
                 list.Add(playerInventory.GetArmorStat(data.id));
                 break;
         }
-        resultValue = playerStatus.AddValue(list);
+        resultValue = playerStatus.DefaultValue + playerStatus.AddValue(list);
         ShowSlider(resultValue);
 
         equipmentImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
