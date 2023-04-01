@@ -62,15 +62,14 @@ MonoBehaviour:
   damagedDelay: 1.5
   damage: 10
   player:
-    renderer: {fileID: 4651226339540711423}
+    renderers: []
     normalRendering: {fileID: 2100000, guid: c304053b6bece6f45b435d0a1222d0b1, type: 2}
     invisibleRendering: {fileID: 2100000, guid: 6bb5ce45e7294464fbe138e2410f7926,
       type: 2}
-  weapon:
-    renderer: {fileID: 5878623952790130513}
-    normalRendering: {fileID: 2100000, guid: 242d2be7381eb4d4d8dca792b4d071ab, type: 2}
-    invisibleRendering: {fileID: 2100000, guid: f216008a3d7551449b5a1163438f4dea,
-      type: 2}
+  weapons:
+    renderers: []
+    normalRendering: {fileID: 0}
+    invisibleRendering: {fileID: 0}
 --- !u!1 &1225491547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1234,6 +1233,7 @@ GameObject:
   - component: {fileID: 5067821677569076322}
   - component: {fileID: 1674795210733244912}
   - component: {fileID: 1674795210733244915}
+  - component: {fileID: 7542359822476787998}
   - component: {fileID: 1674795210733244914}
   - component: {fileID: 1674795210733244911}
   - component: {fileID: 7285551766588145763}
@@ -1388,14 +1388,41 @@ MonoBehaviour:
   attackBox: {fileID: 5067821677309001165}
   currWeaponType: 1
   slowModeSpeed: 0.05
-  weaponAnims:
+  weaponSets:
   - weaponType: 1
+    weaponGameObject: {fileID: 5374462480158764676}
+    overrideController: {fileID: 22100000, guid: 2134f581532f2e94ebb31f97f68b5e3a,
+      type: 2}
     clip: {fileID: -203655887218126122, guid: f025b122118174e48afd6a45fbc220bb, type: 3}
     attackSound: Sword_Whoosh_01
     hitSound: Weapon_Damage_To_Body
+    attackRange: 1
     attackSpeed: 3
     damageTime: 0.35
     slowModeDuration: 0
+  - weaponType: 3
+    weaponGameObject: {fileID: 0}
+    overrideController: {fileID: 22100000, guid: 61f6b98fdb970404594330651154d3dd,
+      type: 2}
+    clip: {fileID: -203655887218126122, guid: f025b122118174e48afd6a45fbc220bb, type: 3}
+    attackSound: Sword_Whoosh_01
+    hitSound: Weapon_Damage_To_Body
+    attackRange: 2
+    attackSpeed: 1.5
+    damageTime: 0.35
+    slowModeDuration: 0
+--- !u!114 &7542359822476787998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374462481970909493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857c06a4704819942b30d1107e4ea50f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1674795210733244914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1594,7 +1621,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68b54b53168e2b4ab1356426404ae2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Level>k__BackingField: 0
+  <Level>k__BackingField: 1
+  levelUpClip: UI_Level_Up
   maxLevel: 20
 --- !u!114 &441504632
 MonoBehaviour:
@@ -2554,6 +2582,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 69a7ffa31fc3de547a8a2f0e85943a76,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69a7ffa31fc3de547a8a2f0e85943a76, type: 3}
 --- !u!4 &4746298720582595646 stripped
@@ -2562,9 +2595,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5067821678844318677}
   m_PrefabAsset: {fileID: 0}
---- !u!23 &5878623952790130513 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 69a7ffa31fc3de547a8a2f0e85943a76,
+--- !u!1 &5374462480158764676 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 69a7ffa31fc3de547a8a2f0e85943a76,
     type: 3}
   m_PrefabInstance: {fileID: 5067821678844318677}
   m_PrefabAsset: {fileID: 0}

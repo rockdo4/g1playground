@@ -9,12 +9,15 @@ using static PlayerAttack;
 public class PlayerAttack : MonoBehaviour
 {
     [Serializable]
-    public struct WeaponAnim
+    public struct WeaponSet
     {
         public WeaponTypes weaponType;
+        public GameObject weaponGameObject;
+        public AnimatorOverrideController overrideController;
         public AnimationClip clip;
         public string attackSound;
         public string hitSound;
+        public float attackRange;
         public float attackSpeed;
         public float damageTime;
         public float slowModeDuration;
@@ -22,80 +25,109 @@ public class PlayerAttack : MonoBehaviour
         [NonSerialized] public float lastSlowModeDuration;
     }
     private Animator playerAnimator;
+    private AnimatorOverrider playerAnimatorOverrider;
     public BasicAttack basicAttack;
     public PlayerAttackBox attackBox;
     public WeaponTypes currWeaponType;
     public float slowModeSpeed;
-    [SerializeField] public WeaponAnim[] weaponAnims;
-    private Dictionary<WeaponTypes, WeaponAnim> weaponAnimDict = new Dictionary<WeaponTypes, WeaponAnim>();
-    private List<WeaponTypes> weaponAnimDictKeys;
+    [SerializeField] public WeaponSet[] weaponSets;
+    private Dictionary<WeaponTypes, WeaponSet> weaponSetDict = new Dictionary<WeaponTypes, WeaponSet>();
+    private List<WeaponTypes> weaponSetDictKeys;
 
     private void Awake()
     {
         playerAnimator = GetComponent<Animator>();
-        foreach (var weaponAnim in weaponAnims)
+        playerAnimatorOverrider = GetComponent<AnimatorOverrider>();
+        foreach (var weaponAnim in weaponSets)
         {
-            weaponAnimDict[weaponAnim.weaponType] = weaponAnim;
-        }
-        var allClips = playerAnimator.runtimeAnimatorController.animationClips;
-        int len = weaponAnimDict.Count;
-        foreach (var weaponAnimPair in weaponAnimDict)
-        {
-            var weaponAnim = weaponAnimPair.Value;
+            var newWeaponAnim = weaponAnim;
+            var allClips = newWeaponAnim.overrideController.animationClips;
             foreach (var clip in allClips)
             {
-                if (string.Equals(clip.name, weaponAnim.clip.name))
-                    weaponAnim.clip = clip;
+                if (string.Equals(clip.name, newWeaponAnim.clip.name))
+                    newWeaponAnim.clip = clip;
             }
+            weaponSetDict[newWeaponAnim.weaponType] = newWeaponAnim;
         }
-        weaponAnimDictKeys = weaponAnimDict.Keys.ToList();
-        foreach (var key in weaponAnimDictKeys)
-        {
-            SetDamageTime(key);
-        }
+        weaponSetDictKeys = weaponSetDict.Keys.ToList();
+        SetAll();
     }
 
-    private void Update()
+    public void SetAll()
     {
-        playerAnimator.SetFloat("AttackSpeed", weaponAnimDict[currWeaponType].attackSpeed); // set weapon temporarily, need to set current weapon's attackSpeed
-#if UNITY_EDITOR
-        foreach (var key in weaponAnimDictKeys)
+        foreach (var key in weaponSetDictKeys)
         {
             SetDamageTime(key);
         }
-#endif
+        SetWeapon(currWeaponType);
+    }
+
+    public void SetWeapon(WeaponTypes weaponType)
+    {
+        foreach (var weaponSet in weaponSetDict)
+        {
+            if (weaponSet.Value.weaponGameObject != null)
+            {
+                if (weaponSet.Value.weaponType != currWeaponType)
+                    weaponSet.Value.weaponGameObject.SetActive(false);
+                else
+                    weaponSet.Value.weaponGameObject.SetActive(true);
+            }
+        }
+        SetDamageTime(weaponType);
+        attackBox.ResizeAttackBox(weaponSetDict[currWeaponType].attackRange);
+        playerAnimatorOverrider.SetAnimations(weaponSetDict[weaponType].overrideController);
+        var speed = weaponSetDict[currWeaponType].attackSpeed * weaponSetDict[currWeaponType].clip.length;
+        playerAnimator.SetFloat("AttackSpeed", speed);
     }
 
     public void SetDamageTime(WeaponTypes type)
     {
-        WeaponAnim temp = weaponAnimDict[type];
-        if (!(Mathf.Approximately(temp.lastDamageTime, temp.damageTime) &&
-            Mathf.Approximately(temp.lastSlowModeDuration, temp.slowModeDuration)))
+        WeaponSet temp = weaponSetDict[type];
+
+        AnimationEvent attackSound = new AnimationEvent();
+        attackSound.time = temp.clip.length * 0.05f;
+        attackSound.functionName = "AttackSound";
+        attackSound.objectReferenceParameter = this;
+
+        AnimationEvent executeAttack = new AnimationEvent();
+        executeAttack.time = temp.clip.length * temp.damageTime;
+        executeAttack.functionName = "ExecuteAttack";
+        executeAttack.objectReferenceParameter = this;
+
+        AnimationEvent endAttack = new AnimationEvent();
+        endAttack.time = temp.clip.length;
+        endAttack.functionName = "EndAttack";
+        endAttack.objectReferenceParameter = this;
+
+        temp.clip.events = null;
+        temp.clip.AddEvent(attackSound);
+        temp.clip.AddEvent(executeAttack);
+        temp.clip.AddEvent(endAttack);
+
+        temp.lastDamageTime = temp.damageTime;
+        temp.lastSlowModeDuration = temp.slowModeDuration;
+
+        weaponSetDict[type] = temp;
+    }
+
+    public void ApplyInspectorValues()
+    {
+        weaponSetDict.Clear();
+        weaponSetDictKeys.Clear();
+        foreach (var weaponAnim in weaponSets)
         {
-            AnimationEvent attackSound = new AnimationEvent();
-            attackSound.time = temp.clip.length * 0.05f;
-            attackSound.functionName = "AttackSound";
-            attackSound.objectReferenceParameter = this;
-
-            AnimationEvent executeAttack = new AnimationEvent();
-            executeAttack.time = temp.clip.length * temp.damageTime;
-            executeAttack.functionName = "ExecuteAttack";
-            executeAttack.objectReferenceParameter = this;
-
-            AnimationEvent endAttack = new AnimationEvent();
-            endAttack.time = temp.clip.length;
-            endAttack.functionName = "EndAttack";
-            endAttack.objectReferenceParameter = this;
-
-            temp.clip.events = null;
-            temp.clip.AddEvent(attackSound);
-            temp.clip.AddEvent(executeAttack);
-            temp.clip.AddEvent(endAttack);
-
-            temp.lastDamageTime = temp.damageTime;
-            temp.lastSlowModeDuration = temp.slowModeDuration;
+            var newWeaponAnim = weaponAnim;
+            var allClips = newWeaponAnim.overrideController.animationClips;
+            foreach (var clip in allClips)
+            {
+                if (string.Equals(clip.name, newWeaponAnim.clip.name))
+                    newWeaponAnim.clip = clip;
+            }
+            weaponSetDict[newWeaponAnim.weaponType] = newWeaponAnim;
         }
-        weaponAnimDict[type] = temp;
+        weaponSetDictKeys = weaponSetDict.Keys.ToList();
+        SetAll();
     }
 
     public void StartAttack() => playerAnimator.SetBool("IsAttacking", true);
@@ -118,12 +150,12 @@ public class PlayerAttack : MonoBehaviour
 
     private IEnumerator CoEndSlowMode()
     {
-        yield return new WaitForSeconds(weaponAnimDict[currWeaponType].slowModeDuration * slowModeSpeed);
+        yield return new WaitForSeconds(weaponSetDict[currWeaponType].slowModeDuration * slowModeSpeed);
         Time.timeScale = 1f;
     }
 
     public void AttackTarget(GameObject target, Vector3 attackPos) => basicAttack.ExecuteAttack(gameObject, target, attackPos);
 
-    public void AttackSound() => SoundManager.instance.PlaySoundEffect(weaponAnimDict[currWeaponType].attackSound);
-    public void HitSound() => SoundManager.instance.PlaySoundEffect(weaponAnimDict[currWeaponType].hitSound);
+    public void AttackSound() => SoundManager.instance.PlaySoundEffect(weaponSetDict[currWeaponType].attackSound);
+    public void HitSound() => SoundManager.instance.PlaySoundEffect(weaponSetDict[currWeaponType].hitSound);
 }

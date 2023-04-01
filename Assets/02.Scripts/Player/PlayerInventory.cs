@@ -16,6 +16,7 @@ public class PlayerInventory : MonoBehaviour
     }
 
     private Status status;
+    private PlayerAttack playerAttack;
     public string[] defaultWeapons;    // for test
     public string[] defaultArmors;     // for test
     [SerializeField] public Consumable[] defaultConsumables;   // for test
@@ -38,6 +39,7 @@ public class PlayerInventory : MonoBehaviour
     private void Awake()
     {
         status = GetComponent<Status>();
+        playerAttack = GetComponent<PlayerAttack>();
         SetDefault();
     }
 
@@ -62,10 +64,11 @@ public class PlayerInventory : MonoBehaviour
 
     public void SetWeapon(int index)
     {
-        if (Weapons[index] == null)
+        if (string.IsNullOrEmpty(Weapons[index]))
             return;
         var temp = CurrWeapon;
         CurrWeapon = Weapons[index];
+        playerAttack.SetWeapon(DataTableMgr.GetTable<WeaponData>().Get(CurrWeapon).weaponType);
         if (string.IsNullOrEmpty(temp))
             RemoveWeapon(index);
         else
@@ -75,7 +78,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void SetArmor(int index)
     {
-        if (Armors[index] == null)
+        if (string.IsNullOrEmpty(Armors[index]))
             return;
         var temp = CurrArmor;
         CurrArmor = Armors[index];
