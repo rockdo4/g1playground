@@ -57,8 +57,8 @@ public class GamblingManager : MonoBehaviour
                 break;
             }
         }
-        powderCount = playerInventory.GetConsumableCount(powderId);
-        Debug.Log(playerInventory.GetConsumableCount(powderId));
+        //powderCount = playerInventory.GetConsumableCount(powderId);
+        powderCount = 9000;
     }
 
     public void TryOne()
