@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,8 @@ public class UiComposeInfo : MonoBehaviour
 {
     public Image result;
     public Image[] materials = new Image[2];
+    public TextMeshProUGUI itemName;
+    public TextMeshProUGUI itemDesc;
 
     public void SetEmptyAll()
     {
@@ -47,6 +50,8 @@ public class UiComposeInfo : MonoBehaviour
                     {
                         result.color = Color.white;
                         result.sprite = Resources.Load<Sprite>(resultIcon.iconName);
+                        itemName.text = DataTableMgr.GetTable<NameData>().Get(weapon.name).name;
+                        itemDesc.text = DataTableMgr.GetTable<DescData>().Get(weapon.desc).text;
                     }
                 }
             }
@@ -72,6 +77,8 @@ public class UiComposeInfo : MonoBehaviour
                     {
                         result.color = Color.white;
                         result.sprite = Resources.Load<Sprite>(resultIcon.iconName);
+                        itemName.text = DataTableMgr.GetTable<NameData>().Get(armor.name).name;
+                        itemDesc.text = DataTableMgr.GetTable<DescData>().Get(armor.desc).text;
                     }
                 }
             }
