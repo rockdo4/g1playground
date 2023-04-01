@@ -65,6 +65,11 @@ public class StageController : MonoBehaviour
 
     public static RectTransform minimapPlayerpos;
 
+    [SerializeField]
+    private int firstRewardId;
+    [SerializeField]
+    private int secondRewardId;
+
     // private EachCorner eachCorner;
     private void Awake()
     {
