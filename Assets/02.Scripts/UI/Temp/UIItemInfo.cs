@@ -19,13 +19,13 @@ public class UIItemInfo : MonoBehaviour
     public BarUI mpBar;
     List<BarUI> barUis = new List<BarUI>();
 
-    public Image currWeaponImage;
-    public Image currArmorImage;
+    //public Image currWeaponImage;
+    //public Image currArmorImage;
 
     private PlayerInventory inven;
 
-    public Button currWeaponView;
-    public Button currArmorView;
+    //public Button currWeaponView;
+    //public Button currArmorView;
 
     private int incdecValue;
 
@@ -38,12 +38,12 @@ public class UIItemInfo : MonoBehaviour
         //attPowBar = GetComponentInChildren<MeleePowBar>(true);
         //attDefBar = GetComponentInChildren<MeleeDefBar>(true);
         inven = GameManager.instance.player.GetComponent<PlayerInventory>();
-        CurrEquipView();
+        //CurrEquipView();
     }
 
     private void Update()
     {
-        CurrEquipView();
+        //CurrEquipView();
     }
 
     public void SetEmpty()
@@ -51,8 +51,8 @@ public class UIItemInfo : MonoBehaviour
         equipmentImage.sprite = null;
         itemName.text = string.Empty;
         itemInfo.text = string.Empty;
-        currWeaponImage.sprite = null;
-        currArmorImage.sprite = null;
+        //currWeaponImage.sprite = null;
+        //currArmorImage.sprite = null;
         var playerStatus = GameManager.instance.player.GetComponent<PlayerStatus>();
         ShowSlider(playerStatus.DefaultValue + playerStatus.EquipValue);
     }
@@ -112,49 +112,48 @@ public class UIItemInfo : MonoBehaviour
         attDefBar.SetImageFillAmount(value.meleeDef);
     }
 
-    public void CurrWeaponSet()
-    {
-        WeaponData weaponData = null;        
-        if (inven.CurrWeapon != null)
-            weaponData = DataTableMgr.GetTable<WeaponData>().Get(inven.CurrWeapon);
-        if (weaponData != null)
-        {
-            equipmentImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(weaponData.iconSpriteId).iconName);
-            itemName.text = DataTableMgr.GetTable<NameData>().Get(weaponData.name).name;
-            itemInfo.text = DataTableMgr.GetTable<DescData>().Get(weaponData.desc).text;
-        }
-           
-    }
+    //public void CurrWeaponSet()
+    //{
+    //    WeaponData weaponData = null;        
+    //    if (inven.CurrWeapon != null)
+    //        weaponData = DataTableMgr.GetTable<WeaponData>().Get(inven.CurrWeapon);
+    //    if (weaponData != null)
+    //    {
+    //        equipmentImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(weaponData.iconSpriteId).iconName);
+    //        itemName.text = DataTableMgr.GetTable<NameData>().Get(weaponData.name).name;
+    //        itemInfo.text = DataTableMgr.GetTable<DescData>().Get(weaponData.desc).text;
+    //    }
+    //}
 
-    public void CurrArmorSet()
-    {
-        ArmorData armorData = null;
-        if (inven.CurrArmor != null)
-            armorData = DataTableMgr.GetTable<ArmorData>().Get(inven.CurrArmor);
-        if (armorData != null)
-        {
-            equipmentImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(armorData.iconSpriteId).iconName);
-            itemName.text = DataTableMgr.GetTable<NameData>().Get(armorData.name).name;
-            itemInfo.text = DataTableMgr.GetTable<DescData>().Get(armorData.desc).text;
-        }
-    }
+    //public void CurrArmorSet()
+    //{
+    //    ArmorData armorData = null;
+    //    if (inven.CurrArmor != null)
+    //        armorData = DataTableMgr.GetTable<ArmorData>().Get(inven.CurrArmor);
+    //    if (armorData != null)
+    //    {
+    //        equipmentImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(armorData.iconSpriteId).iconName);
+    //        itemName.text = DataTableMgr.GetTable<NameData>().Get(armorData.name).name;
+    //        itemInfo.text = DataTableMgr.GetTable<DescData>().Get(armorData.desc).text;
+    //    }
+    //}
 
-    public void CurrEquipView()
-    {
-        WeaponData weaponData = null;
-        ArmorData armorData = null;
-        if (inven.CurrWeapon != null)
-            weaponData = DataTableMgr.GetTable<WeaponData>().Get(inven.CurrWeapon);
-        if (inven.CurrArmor != null)
-            armorData = DataTableMgr.GetTable<ArmorData>().Get(inven.CurrArmor);
+    //public void CurrEquipView()
+    //{
+    //    WeaponData weaponData = null;
+    //    ArmorData armorData = null;
+    //    if (inven.CurrWeapon != null)
+    //        weaponData = DataTableMgr.GetTable<WeaponData>().Get(inven.CurrWeapon);
+    //    if (inven.CurrArmor != null)
+    //        armorData = DataTableMgr.GetTable<ArmorData>().Get(inven.CurrArmor);
 
-        if(weaponData != null)
-        {
-            currWeaponImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(weaponData.iconSpriteId).iconName);
-        }
-        if(armorData != null)
-        {
-            currArmorImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(armorData.iconSpriteId).iconName);
-        }
-    }
+    //    if(weaponData != null)
+    //    {
+    //        currWeaponImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(weaponData.iconSpriteId).iconName);
+    //    }
+    //    if(armorData != null)
+    //    {
+    //        currArmorImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(armorData.iconSpriteId).iconName);
+    //    }
+    //}
 }

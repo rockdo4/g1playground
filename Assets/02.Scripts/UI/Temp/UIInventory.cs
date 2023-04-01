@@ -15,6 +15,9 @@ public class UIInventory : MonoBehaviour
     private PlayerInventory playerInventory;
     public ItemTypes itemType;
 
+    public Button currWeapon;
+    public Button currArmor;
+
     public UIItemInfo itemInfo;
     public Button equipButton;
 
@@ -43,6 +46,8 @@ public class UIInventory : MonoBehaviour
             int slotIndex = i;
             button.onClick.AddListener(() => currSlot = slotIndex);
         }
+        currWeapon.onClick.AddListener(() => SetCurrEquipInfo(ItemTypes.Weapon));
+        currArmor.onClick.AddListener(() => SetCurrEquipInfo(ItemTypes.Armor));
         SetInventory((int)itemType);
         equipButton.onClick.AddListener(() => Equip());
     }
@@ -62,6 +67,7 @@ public class UIInventory : MonoBehaviour
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
         currSlot = -1;
+        itemInfo.SetEmpty();
         this.itemType = (ItemTypes)itemType;
         List<string> ids = null;
         int len = 0;
@@ -109,6 +115,36 @@ public class UIInventory : MonoBehaviour
                 }
                 break;
         }
+        if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
+            currWeapon.image.sprite = DataTableMgr.LoadIcon(DataTableMgr.GetTable<WeaponData>().Get(playerInventory.CurrWeapon).iconSpriteId);
+        else
+            currWeapon.image.sprite = null;
+
+        if (!string.IsNullOrEmpty(playerInventory.CurrArmor))
+            currArmor.image.sprite = DataTableMgr.LoadIcon(DataTableMgr.GetTable<ArmorData>().Get(playerInventory.CurrArmor).iconSpriteId);
+        else
+            currArmor.image.sprite = null;
+    }
+
+    public void SetCurrEquipInfo(ItemTypes type)
+    {
+        ItemData data = null;
+        switch (type)
+        {
+            case ItemTypes.Weapon:
+                if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
+                    data = DataTableMgr.GetTable<WeaponData>().Get(playerInventory.CurrWeapon);
+                break;
+            case ItemTypes.Armor:
+                if (!string.IsNullOrEmpty(playerInventory.CurrArmor))
+                    data = DataTableMgr.GetTable<ArmorData>().Get(playerInventory.CurrArmor);
+                break;
+            default:
+                return;
+        }
+        currSlot = -1;
+        if (itemInfo != null)
+            itemInfo.Set(data);
     }
 
     public void Equip()
@@ -120,9 +156,7 @@ public class UIInventory : MonoBehaviour
         {
             case ItemTypes.Weapon:
                 if (slotList[currSlot] != null && slotList[currSlot].Data != null)
-                {
                     playerInventory.SetWeapon(currSlot);
-                }
                 
                 break;
             case ItemTypes.Armor:
