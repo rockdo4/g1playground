@@ -118,11 +118,14 @@ public class UIReinforce : MonoBehaviour
                     }
                     if (itemSlotList.Count > 0)
                     {
-                        currSlot = 0;
-                        CheckReinforcable(itemSlotList[currSlot].Data.id);
+                        if (itemSlotList[0] != null && itemSlotList[0].Data != null)
+                        {
+                            currSlot = 0;
+                            CheckReinforcable(itemSlotList[currSlot].Data.id);
+                            return;
+                        }
                     }
-                    else
-                        reinforceButton.interactable = false;
+                    reinforceButton.interactable = false;
                 }
                 break;
             case ReinforceSystem.Types.Armor:
@@ -147,11 +150,14 @@ public class UIReinforce : MonoBehaviour
                     }
                     if (itemSlotList.Count > 0)
                     {
-                        currSlot = 0;
-                        CheckReinforcable(itemSlotList[currSlot].Data.id);
+                        if (itemSlotList[0] != null && itemSlotList[0].Data != null)
+                        {
+                            currSlot = 0;
+                            CheckReinforcable(itemSlotList[currSlot].Data.id);
+                            return;
+                        }
                     }
-                    else
-                        reinforceButton.interactable = false;
+                    reinforceButton.interactable = false;
                 }
                 break;
             case ReinforceSystem.Types.Skill:
@@ -166,11 +172,14 @@ public class UIReinforce : MonoBehaviour
                     }
                     if (skillSlotList.Count > 0)
                     {
-                        currSlot = 0;
-                        CheckReinforcable(skillSlotList[currSlot].Data.id);
+                        if (skillSlotList[0] != null && skillSlotList[0].Data != null)
+                        {
+                            currSlot = 0;
+                            CheckReinforcable(skillSlotList[currSlot].Data.id);
+                            return;
+                        }
                     }
-                    else
-                        reinforceButton.interactable = false;
+                    reinforceButton.interactable = false;
                 }
                 break;
         }
