@@ -8,12 +8,24 @@ public class PlayerBodyTrigger : MonoBehaviour
     [Serializable]
     public struct InvisibleRendering
     {
-        public Renderer renderer;
+        public Renderer[] renderers;
         public Material normalRendering;
         public Material invisibleRendering;
 
-        public void Opaque() => renderer.material = normalRendering;
-        public void Transparent() => renderer.material = invisibleRendering;
+        public void Opaque()
+        {
+            foreach (var renderer in renderers)
+            {
+                renderer.material = normalRendering;
+            }
+        }
+        public void Transparent()
+        {
+            foreach (var renderer in renderers)
+            {
+                renderer.material = invisibleRendering;
+            }
+        }
     }
 
     public float damagedDelay;
@@ -24,7 +36,7 @@ public class PlayerBodyTrigger : MonoBehaviour
     public int damage;
     private Vector3 bodyCenter = new Vector3(0f, 0.5f, 0f);
     [SerializeField] public InvisibleRendering player;
-    [SerializeField] public InvisibleRendering weapon;
+    [SerializeField] public InvisibleRendering weapons;
 
     private void Start()
     {
@@ -74,12 +86,12 @@ public class PlayerBodyTrigger : MonoBehaviour
         if (transparent)
         {
             player.Transparent();
-            weapon.Transparent();
+            weapons.Transparent();
         }
         else
         {
             player.Opaque();
-            weapon.Opaque();
+            weapons.Opaque();
         }
     }
 
