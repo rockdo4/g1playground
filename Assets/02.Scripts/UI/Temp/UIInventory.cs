@@ -28,7 +28,6 @@ public class UIInventory : MonoBehaviour
     {
         itemType = ItemTypes.Weapon;
         SetInventory((int)itemType);
-        itemInfo.ShowSlider(GameManager.instance.player.GetComponent<PlayerStatus>().FinalValue);
     }
 
     public void Init()

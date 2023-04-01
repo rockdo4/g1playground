@@ -10,5 +10,4 @@ public class CrewButton : ButtonUi
         UI.Instance.title.titlePanel.ActiveFalse();
         UI.Instance.title.crewPanel.ActiveTrue();
     }
-    
 }

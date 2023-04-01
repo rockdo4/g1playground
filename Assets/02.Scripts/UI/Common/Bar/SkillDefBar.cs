@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class SkillDefBar : BarUI
 {
-
+    private int maxStat;
+    protected void Awake()
+    {
+        base.Awake();
+        maxValue = maxStat;
+    }
 }

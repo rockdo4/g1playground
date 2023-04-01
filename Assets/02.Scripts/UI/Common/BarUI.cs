@@ -5,46 +5,48 @@ using UnityEngine.UI;
 
 public class BarUI : MonoBehaviour
 {
-    private Image image;
-    private float curValue;
+    public Image image;
+    public int curValue;
     public int maxValue;
-    private float duration = 0.5f;
 
     protected virtual void Awake()
     {
-        SetImage();
+        image = GetComponent<Image>();
+
     }
-    private void SetImage()
-    {
-        if (image == null)
-            image = GetComponent<Image>();
-    }
+
     public void SetImageFillAmount(int value)
     {
-        SetImage();
-        StopAllCoroutines();
-        targetValue = (float)value / maxValue;
-        StartCoroutine(UpdateBar());
+        StartCoroutine(StatBar(value));
+        image.fillAmount = (float)value / maxValue;
 
+        curValue = value;
     }
-    private float targetValue;
-    private IEnumerator UpdateBar()
+    public float duration = 0.5f;
+    private IEnumerator StatBar(int value)
     {
-        float startTime = Time.realtimeSinceStartup;
-        float elapsedTime = 0f;
-        float initialCurValue = curValue;
 
-        while (elapsedTime < duration)
+        int startValue = curValue;
+        int endValue = Mathf.Clamp(value, 0, maxValue);
+        float t = 0f;
+
+        while (t < 1f)
         {
-            elapsedTime = Time.realtimeSinceStartup - startTime;
-            curValue = Mathf.Lerp(initialCurValue, targetValue, elapsedTime / duration);
-            image.fillAmount = curValue;
+            t += Time.deltaTime / duration;
 
-            yield return new WaitForSecondsRealtime(0.01f);
+            int newValue;
 
-            curValue = targetValue;
-            image.fillAmount = curValue;
+            if (value < curValue)
+                newValue = Mathf.RoundToInt(Mathf.Lerp(startValue, endValue, t));
+            else
+                newValue = Mathf.RoundToInt(Mathf.LerpUnclamped(startValue, endValue, t));
 
+            if (curValue == value)
+            {
+                curValue = newValue;
+                StopAllCoroutines();
+            }
+            yield return null;
         }
     }
 }

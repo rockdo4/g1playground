@@ -76,7 +76,7 @@ public abstract class Status : MonoBehaviour
     protected Types type;
     public string id;
     protected bool isLoaded = false;
-    public Value DefaultValue { get; protected set; }
+    protected Value defaultValue;
     protected float reduceDef; 
     [field: SerializeField] public Value FinalValue { get; protected set; }
     protected int currHp;
@@ -121,7 +121,6 @@ public abstract class Status : MonoBehaviour
                 data = DataTableMgr.GetTable<MonsterData>().Get(id);
                 break;
         }
-        var defaultValue = Value.Zero;
         defaultValue.str = data.str;
         defaultValue.dex = data.dex;
         defaultValue.intel = data.intel;
@@ -136,11 +135,12 @@ public abstract class Status : MonoBehaviour
         defaultValue.maxHp = data.maxHp;
         defaultValue.maxMp = data.maxMp;
         isLoaded = true;
-        DefaultValue = CalculateValue(defaultValue);
+        defaultValue = CalculateValue(defaultValue);
         SetFinalValue();
     }
 
     protected abstract Value CalculateValue(Value value);
+    public virtual void AddValue(List<Value> addValue) { }
     public void ReduceDef(float reduceDef)
     {
         this.reduceDef = reduceDef;
