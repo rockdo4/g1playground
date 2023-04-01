@@ -16,10 +16,11 @@ public class PlayerLevelManager : MonoBehaviour
         get => currExp;
         set
         {
-            currExp = value;
+            currExp = value;          
             while (currExp >= MaxExp)
             {
                 var leftExp = currExp - MaxExp;
+               
                 LevelUp();
                 currExp = leftExp;
             }
@@ -29,7 +30,7 @@ public class PlayerLevelManager : MonoBehaviour
 
     public void Load(int currLevel, int currExp)
     {
-        Level = currLevel;
+        SetLevel(currLevel);
         CurrExp = currExp;
     }
 
@@ -49,12 +50,11 @@ public class PlayerLevelManager : MonoBehaviour
 
     private void Start()
     {
-        Level = 1;
+       
     }
 
     public void LevelUp()
     {
-        Debug.Log($"dkdfj {Level}");
         SetLevel(Level + 1);
         GameObject player=GameManager.instance.player;
         GameObject effect = GameManager.instance.effectManager.GetEffect("Level_up");
@@ -84,5 +84,5 @@ public class PlayerLevelManager : MonoBehaviour
     }
 
     public void SetExpUi() => GameManager.instance.uiManager.PlayerExpBar(MaxExp, currExp);
-    public void SetLevelUi() => GameManager.instance.uiManager.PlayerLevel(Level);
+    public void SetLevelUi() =>GameManager.instance.uiManager.PlayerLevel(Level); 
 }

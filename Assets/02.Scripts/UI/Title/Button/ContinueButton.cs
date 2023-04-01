@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using System.IO;
 using UnityEngine;
 
 public class ContinueButton : ButtonUi
@@ -16,9 +17,7 @@ public class ContinueButton : ButtonUi
     }
     public void ClickButton()
     {
-
-        //SceneLoader.Instance.LoadScene("Scene02");
-
+        SceneLoader.Instance.LoadScene("Scene02");
     }
 
     private void OnEnable()
@@ -33,14 +32,14 @@ public class ContinueButton : ButtonUi
     {
         while (true)
         {
-            // ¾ËÆÄ°ªÀ» Áï½Ã ¿Ã¸³´Ï´Ù.
+            // ï¿½ï¿½ï¿½Ä°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½Ï´ï¿½.
             Color textColor = text.color;
             textColor.a = 1f;
             text.color = textColor;
 
             yield return new WaitForSeconds(fadeInDuration);
 
-            // ¾ËÆÄ°ªÀ» ÃµÃµÈ÷ ¶³¾î¶ß¸³´Ï´Ù.
+            // ï¿½ï¿½ï¿½Ä°ï¿½ï¿½ï¿½ ÃµÃµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ß¸ï¿½ï¿½Ï´ï¿½.
             float startTime = Time.time;
             float elapsedTime = 0f;
 
@@ -54,7 +53,7 @@ public class ContinueButton : ButtonUi
                 yield return null;
             }
 
-            // ±ÛÀÚ¸¦ ¿ÏÀüÈ÷ ¼û±é´Ï´Ù (¾ËÆÄ°ªÀ» 0À¸·Î ¼³Á¤).
+            // ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ (ï¿½ï¿½ï¿½Ä°ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½).
             textColor = text.color;
             textColor.a = 0f;
             text.color = textColor;

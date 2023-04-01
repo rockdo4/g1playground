@@ -9,6 +9,9 @@ public class AttackedCC : MonoBehaviour, IAttackable
     private Status status;
     private MonoBehaviour controller;
 
+    private GameObject slowDownEffect;
+    private GameObject reduceEffect;
+    private GameObject stunEffect;
     public bool canKnockBack;
     public bool canStun;
     public bool canSlowDown;
@@ -43,6 +46,21 @@ public class AttackedCC : MonoBehaviour, IAttackable
 
     public void Reset()
     {
+        if (slowDownEffect != null)
+        {
+            GameManager.instance.effectManager.ReturnEffect("Fog_speedSlow(blue)", slowDownEffect);
+        }
+
+        if (reduceEffect != null)
+        {
+            GameManager.instance.effectManager.ReturnEffect("Fog_speedSlow", reduceEffect);
+        }
+
+        if (stunEffect != null)
+        {
+            GameManager.instance.effectManager.ReturnEffect("Stun", stunEffect);
+        }
+
         knockBackedOnThisFrame = false;
         kBCount = 0;
         kBResistTimer = 0f;
@@ -85,6 +103,8 @@ public class AttackedCC : MonoBehaviour, IAttackable
             {
                 stunResistTimer = 0f;
                 stunCount = 0;
+                GameManager.instance.effectManager.ReturnEffect("Stun", stunEffect);
+                stunEffect = null;
             }
         }
 
@@ -95,6 +115,9 @@ public class AttackedCC : MonoBehaviour, IAttackable
             {
                 onSlowDown = false;
                 slowDownTimer = 0f;
+
+                GameManager.instance.effectManager.ReturnEffect("Fog_speedSlow(blue)", slowDownEffect);
+                slowDownEffect = null;
                 //if (CompareTag("Enemy"))
                 //    ((Enemy)controller).EndSlowDown();
             }
@@ -104,7 +127,9 @@ public class AttackedCC : MonoBehaviour, IAttackable
         {
             reduceDefTimer += Time.deltaTime;
             if (reduceDefTimer > reduceDefTime)
-                EndReduceDef();
+            {                
+                EndReduceDef();                
+            }
         }
     }
 
@@ -165,6 +190,13 @@ public class AttackedCC : MonoBehaviour, IAttackable
             ((Enemy)controller).Stun(stunTime);
         ++stunCount;
         stunResistTimer = 0f;
+
+        if (stunEffect == null)
+        {
+            stunEffect = GameManager.instance.effectManager.GetEffect("Stun");
+            stunEffect.transform.position = transform.position;
+            stunEffect.transform.SetParent(transform);
+        }
     }
 
     private void SlowDown(float newSlowDown, float newSlowTime)
@@ -178,21 +210,25 @@ public class AttackedCC : MonoBehaviour, IAttackable
         }
         else
             return;
-     
+
         //if (CompareTag("Player"))
         //    ((PlayerController)controller).;
         //if (CompareTag("Enemy"))
         //    ((Enemy)controller).SlowDown(1 - slowDown, slowDownTime);
         onSlowDown = true;
 
-        //GameObject effect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow(blue)");
-        //effect.transform.position = transform.position;
-        //GameManager.instance.effectManager.ReturnEffectOnTime("Fog_speedSlow(blue)", effect, newSlowTime);
-        //effect.transform.SetParent(transform);                                                                                                                                                                                                                                 
+        if (slowDownEffect == null)
+        {
+            slowDownEffect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow(blue)");
+            slowDownEffect.transform.position = transform.position;
+            slowDownEffect.transform.SetParent(transform);
+
+        }
     }
 
     private void ReduceDef(float newReduceDef, float newReduceDefTime)
     {
+
         if (Mathf.Approximately(reduceDef, newReduceDef))
             reduceDefTime = reduceDefTime > newReduceDefTime ? reduceDefTime : newReduceDefTime;
         else if (newReduceDef > reduceDef)
@@ -205,10 +241,14 @@ public class AttackedCC : MonoBehaviour, IAttackable
         status.ReduceDef(reduceDef);
         onReduceDef = true;
 
-        //GameObject effect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow");
-        //effect.transform.position = transform.position;
-        //GameManager.instance.effectManager.ReturnEffectOnTime("Fog_speedSlow", effect, newReduceDefTime);
-        //effect.transform.SetParent(transform);
+        if (reduceEffect == null)
+        {
+            reduceEffect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow");
+            reduceEffect.transform.position = transform.position;
+            reduceEffect.transform.SetParent(transform);
+
+        }
+
     }
 
     public void EndReduceDef()
@@ -216,7 +256,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
         onReduceDef = false;
         reduceDefTimer = 0f;
         status.ReduceDef(0f);
-
-        // effect release
+        GameManager.instance.effectManager.ReturnEffect("Fog_speedSlow", reduceEffect);
+        reduceEffect = null;
     }
 }

@@ -77,7 +77,6 @@ public class PlayerDataManager : MonoBehaviour
         saveData.currskill2 = currskill2;
 
         saveData.currLevel = GameManager.instance.player.GetComponent<PlayerLevelManager>().Level;
-        GameManager.instance.uiManager.PlayerLevel(saveData.currLevel);
         saveData.currExp = GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp;
 
         SaveLoadSystem.Save(saveData);
@@ -116,9 +115,13 @@ public class PlayerDataManager : MonoBehaviour
         currskill2 = saveData.currskill2;
 
         currLevel = saveData.currLevel;
-        GameManager.instance.uiManager.PlayerLevel(saveData.currLevel);
         currExp = saveData.currExp;
+        GameManager.instance.player.GetComponent<PlayerStatus>().id = currLevel.ToString();
+        GameManager.instance.player.GetComponent<PlayerLevelManager>().Load(currLevel, currExp);
+      //  GameManager.instance.uiManager.PlayerLevel(saveData.currLevel);
 
+        MapManager.instance.SetCurrentMapName("Village");
+        MapManager.instance.SetcurrentChapterName("Village");
         playerCurrHp = saveData.playerCurrHp;
         playerCurrMp = saveData.playerCurrMp;
 

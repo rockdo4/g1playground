@@ -36,7 +36,7 @@ public class DataTableMgr
         tables.Add(typeof(StageNameData), new DataTable<StageNameData>("DataTables/StageNameTable"));
         tables.Add(typeof(ItemdisassembleData), new DataTable<ItemdisassembleData>("DataTables/Itemdisassemble_Table"));
         tables.Add(typeof(SkilldisassembleData), new DataTable<SkilldisassembleData>("DataTables/Skilldisassemble_Table"));
-
+        tables.Add(typeof(RewardData), new DataTable<RewardData>("DataTables/Reward_Table"));
         isLoaded = true;
     }
 

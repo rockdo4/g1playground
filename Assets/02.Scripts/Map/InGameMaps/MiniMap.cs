@@ -140,7 +140,7 @@ public class MiniMap : MonoBehaviour
 
     private void Update()
     {
-        if (MapManager.instance.outlines == null || MapManager.instance.GetCurrentChapterObject()==null)
+        if (MapManager.instance.outlines == null || MapManager.instance.GetCurrentChapterObject()==null|| MapManager.instance.GetCurrentChapterObject().name=="Village")
         {
             minimapObject.SetActive(false);
             return;
