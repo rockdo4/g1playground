@@ -15,7 +15,7 @@ public class PlayerInventory : MonoBehaviour
         public int count;
     }
 
-    private Status status;
+    private PlayerStatus status;
     private PlayerAttack playerAttack;
     public string[] defaultWeapons;    // for test
     public string[] defaultArmors;     // for test
@@ -38,7 +38,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
-        status = GetComponent<Status>();
+        status = GetComponent<PlayerStatus>();
         playerAttack = GetComponent<PlayerAttack>();
         SetDefault();
     }
@@ -91,36 +91,50 @@ public class PlayerInventory : MonoBehaviour
 
     public void ApplyStatus()
     {
-        WeaponData weaponData = null;
-        ArmorData armorData = null;
-        Status.Value weaponValue = new Status.Value();
-        Status.Value armorValue = new Status.Value();
-        if (CurrWeapon != null)
-            weaponData = DataTableMgr.GetTable<WeaponData>().Get(CurrWeapon);
-        if (CurrArmor != null)
-            armorData = DataTableMgr.GetTable<ArmorData>().Get(CurrArmor);
-        if (weaponData != null)
-        {
-            weaponValue.str += weaponData.addStr;
-            weaponValue.dex += weaponData.addDex;
-            weaponValue.intel += weaponData.addInt;
-            weaponValue.meleePower += weaponData.addMeleePower;
-            weaponValue.skillPower += weaponData.addSkillPower;
-            //add.meleeCriChance += weaponData.addMeleeCriChance;
-            //add.meleeCriDamage += weaponData.addMeleeCriDamage;
-        }
-        if (armorData != null)
-        {
-            armorValue.str += armorData.addStr;
-            armorValue.dex += armorData.addDex;
-            armorValue.intel += armorData.addInt;
-            armorValue.meleeDef += armorData.addMeleeDef;
-            armorValue.skillDef += armorData.addSkillDef;
-        }
         List<Status.Value> values = new List<Status.Value>();
-        values.Add(weaponValue);
-        values.Add(armorValue);
-        status.AddValue(values);
+        values.Add(GetWeaponStat(CurrWeapon));
+        values.Add(GetArmorStat(CurrArmor));
+        status.Equip(values);
+    }
+
+    public Status.Value GetWeaponStat(string weaponId)
+    {
+        var weaponValue = Status.Value.Zero;
+        WeaponData weaponData = null;
+        if (!string.IsNullOrEmpty(weaponId))
+        {
+            weaponData = DataTableMgr.GetTable<WeaponData>().Get(weaponId);
+            if (weaponData != null)
+            {
+                weaponValue.str += weaponData.addStr;
+                weaponValue.dex += weaponData.addDex;
+                weaponValue.intel += weaponData.addInt;
+                weaponValue.meleePower += weaponData.addMeleePower;
+                weaponValue.skillPower += weaponData.addSkillPower;
+                //add.meleeCriChance += weaponData.addMeleeCriChance;
+                //add.meleeCriDamage += weaponData.addMeleeCriDamage;
+            }
+        }
+        return weaponValue;
+    }
+
+    public Status.Value GetArmorStat(string armorId)
+    {
+        var armorValue = Status.Value.Zero;
+        ArmorData armorData = null;
+        if (!string.IsNullOrEmpty(armorId))
+        {
+            armorData = DataTableMgr.GetTable<ArmorData>().Get(armorId);
+            if (armorData != null)
+            {
+                armorValue.str += armorData.addStr;
+                armorValue.dex += armorData.addDex;
+                armorValue.intel += armorData.addInt;
+                armorValue.meleeDef += armorData.addMeleeDef;
+                armorValue.skillDef += armorData.addSkillDef;
+            }
+        }
+        return armorValue;
     }
 
     public void AddWeapon(string id)
