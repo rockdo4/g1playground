@@ -128,9 +128,18 @@ public class AttackedCC : MonoBehaviour, IAttackable
     private void KnockBack(Vector3 attackPos, float force)
     {
         //Debug.Log(kBCount);
-        if (kBCount >= maxKBCount || Mathf.Approximately(force, 0f) || knockBackedOnThisFrame)
+        if (kBCount >= maxKBCount || Mathf.Approximately(force, 0f))
             return;
+        if (!ExeKnockBack(attackPos, force))
+            return;
+        ++kBCount;
+        kBResistTimer = 0f;
+    }
 
+    public bool ExeKnockBack(Vector3 attackPos, float force)
+    {
+        if (knockBackedOnThisFrame)
+            return false;
         force *= Mathf.Pow(0.5f, kBCount);
         if (CompareTag("Player"))
             ((PlayerController)controller).SetState<KnockBackState>();
@@ -142,8 +151,7 @@ public class AttackedCC : MonoBehaviour, IAttackable
         rb.velocity = Vector3.zero;
         rb.AddForce(dir * force, ForceMode.Impulse);
         knockBackedOnThisFrame = true;
-        ++kBCount;
-        kBResistTimer = 0f;
+        return true;
     }
 
     private void Stun(float stunTime)

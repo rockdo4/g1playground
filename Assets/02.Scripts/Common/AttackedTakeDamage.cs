@@ -15,13 +15,6 @@ public class AttackedTakeDamage : MonoBehaviour, IAttackable
     {
         stat.CurrHp -= attack.Damage;
         if (stat.CurrHp <= 0)
-        {
             stat.CurrHp = 0;
-            var destructibles = GetComponents<IDestructible>();
-            foreach (var destructible in destructibles)
-            {
-                destructible.OnDestroyObj();
-            }
-        }
     }
 }

@@ -87,6 +87,11 @@ public abstract class Status : MonoBehaviour
         {
             currHp = value;
             SetHpUi();
+            var destructibles = GetComponents<IDestructible>();
+            foreach (var destructible in destructibles)
+            {
+                destructible.OnDestroyObj();
+            }
         }
     }
     protected int currMp;
