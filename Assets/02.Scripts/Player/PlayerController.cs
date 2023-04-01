@@ -337,7 +337,7 @@ public class PlayerController : MonoBehaviour
                     agent.SetDestination(target.transform.position);
                 }
                 var dis = Vector3.Distance(target.position, transform.position);
-                if (dis <= 1f && count != 0 && isGrounded && target.position != transform.position)  
+                if (dis <= 1.5f && count != 0 && isGrounded && target.position != transform.position)  
                 { 
                     agent.isStopped = true;
                     inDistance = true;
