@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpikeTile : MonoBehaviour
 {
     public bool Istriggered { get; set; }
-    [SerializeField] private float damagePercentage = 20f;
+    private float damagePercentage = 0.2f;
     [SerializeField] private float delay = 2f;
     private float timer = 0f;
 

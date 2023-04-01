@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     {
         if (instance != this)
             Destroy(gameObject);
-        player.GetComponent<DestructedEvent>().OnDestroyEvent = RestartGame;
     }
 
     public void Respawn()
