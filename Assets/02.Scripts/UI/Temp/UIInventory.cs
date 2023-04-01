@@ -118,7 +118,10 @@ public class UIInventory : MonoBehaviour
         {
             case ItemTypes.Weapon:
                 if (slotList[currSlot] != null && slotList[currSlot].Data != null)
+                {
                     playerInventory.SetWeapon(currSlot);
+                }
+                
                 break;
             case ItemTypes.Armor:
                 if (slotList[currSlot] != null && slotList[currSlot].Data != null)
@@ -148,7 +151,3 @@ public class UIInventory : MonoBehaviour
         SetInventory((int)itemType);
     }
 }
-//slotcount = 10
-//new + 10
-// 0 1 2 3 4 5 6 7 8 9 = 기존 슬롯 인덱스
-// 10 11 12 13 14 15 16 17 18 19 = 추가 슬롯 인덱스

@@ -5,10 +5,13 @@ using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Rendering.FilterWindow;
 
 public class UiReinforceInfo : MonoBehaviour
 {
-    public Image result;
+    public Image resultImage;
+    public TextMeshProUGUI resultName;
+    public TextMeshProUGUI resultDesc;
     public Image material1;
     public Image material2;
     public Image material3;
@@ -37,14 +40,16 @@ public class UiReinforceInfo : MonoBehaviour
 
     public void SetEmpty()
     {
-        result.sprite = null;
+        resultImage.sprite = null;
         material1.sprite = null;
         material2.sprite = null;
         material3.sprite = null;
-        result.color = Color.clear;
+        resultImage.color = Color.clear;
         material1.color = Color.clear;
         material2.color = Color.clear;
         material3.color = Color.clear;
+        resultName.text = string.Empty;
+        resultDesc.text = string.Empty;
     }
 
     public bool Set(ReinforceSystem.Types type, string id)
@@ -62,51 +67,65 @@ public class UiReinforceInfo : MonoBehaviour
         var skillTable = DataTableMgr.GetTable<SkillData>();
         var consumeTable = DataTableMgr.GetTable<ConsumeData>();
         var iconTable = DataTableMgr.GetTable<IconData>();
+        var nameTable = DataTableMgr.GetTable<NameData>();
+        var descTable = DataTableMgr.GetTable<DescData>();
 
         if (!ReinforceSystem.CheckMaterials(type, id))
         {
             ShowPopUp("재료가 부족합니다");
             SetEmpty();
-            result.color = Color.white;
+            resultImage.color = Color.white;
             material1.color = Color.white;
             switch (type)
             {
                 case ReinforceSystem.Types.Weapon:
-                    result.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.result).iconSpriteId).iconName);
+                    resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.result).iconSpriteId).iconName);
+                    resultName.text = nameTable.Get(weaponTable.Get(data.result).name).name;
+                    resultDesc.text = descTable.Get(weaponTable.Get(data.result).desc).text;
                     material1.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.material1).iconSpriteId).iconName);
                     break;
                 case ReinforceSystem.Types.Armor:
-                    result.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
+                    resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
+                    resultName.text = nameTable.Get(armorTable.Get(data.result).name).name;
+                    resultDesc.text = descTable.Get(armorTable.Get(data.result).desc).text;
                     material1.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.material1).iconSpriteId).iconName);
                     break;
                 case ReinforceSystem.Types.Skill:
-                    result.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
+                    resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
+                    resultName.text = nameTable.Get(skillTable.Get(data.result).name).name;
+                    resultDesc.text = descTable.Get(skillTable.Get(data.result).desc).text;
                     material1.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.material1.ToString()).iconSpriteId).iconName);
                     break;
             }
             return false;
         }
 
-        result.color = Color.white;
+        resultImage.color = Color.white;
         material1.color = Color.white;
         material2.color = Color.white;
         material3.color = Color.white;
         switch (type)
         {
             case ReinforceSystem.Types.Weapon:
-                result.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.result).iconSpriteId).iconName);
+                resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.result).iconSpriteId).iconName);
+                resultName.text = nameTable.Get(weaponTable.Get(data.result).name).name;
+                resultDesc.text = descTable.Get(weaponTable.Get(data.result).desc).text;
                 material1.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.material1).iconSpriteId).iconName);
                 material2.sprite = powderSprite;
                 material3.sprite = essenceSprite;
                 break;
             case ReinforceSystem.Types.Armor:
-                result.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
+                resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
+                resultName.text = nameTable.Get(armorTable.Get(data.result).name).name;
+                resultDesc.text = descTable.Get(armorTable.Get(data.result).desc).text;
                 material1.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.material1).iconSpriteId).iconName);
                 material2.sprite = powderSprite;
                 material3.sprite = essenceSprite;
                 break;
             case ReinforceSystem.Types.Skill:
-                result.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
+                resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
+                resultName.text = nameTable.Get(skillTable.Get(data.result).name).name;
+                resultDesc.text = descTable.Get(skillTable.Get(data.result).desc).text;
                 material1.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.material1.ToString()).iconSpriteId).iconName);
                 material2.sprite = Resources.Load<Sprite>(iconTable.Get(ReinforceSystem.GetSkillMaterial(data.material1).iconSpriteId).iconName);
                 material3.sprite = powderSprite;
