@@ -5,7 +5,6 @@ using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Rendering.FilterWindow;
 
 public class UiReinforceInfo : MonoBehaviour
 {
@@ -18,8 +17,15 @@ public class UiReinforceInfo : MonoBehaviour
     private Sprite powderSprite;
     private Sprite essenceSprite;
     public GameObject resultPopup;
+    private bool isLoaded = false;
 
-    private void Awake()
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        resultPopup.SetActive(false);
+    }
+
+    private void Load()
     {
         var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
         var iconTable = DataTableMgr.GetTable<IconData>();
@@ -35,7 +41,6 @@ public class UiReinforceInfo : MonoBehaviour
                     break;
             }
         }
-        SetEmpty();
     }
 
     public void SetEmpty()
@@ -54,6 +59,12 @@ public class UiReinforceInfo : MonoBehaviour
 
     public bool Set(ReinforceSystem.Types type, string id)
     {
+        if (!isLoaded)
+        {
+            isLoaded = true;
+            Load();
+        }
+
         if (!ReinforceSystem.CheckReinforcable(id))
         {
             ShowPopUp("이 아이템은 더 이상 강화할 수 없습니다");
@@ -70,35 +81,35 @@ public class UiReinforceInfo : MonoBehaviour
         var nameTable = DataTableMgr.GetTable<NameData>();
         var descTable = DataTableMgr.GetTable<DescData>();
 
-        if (!ReinforceSystem.CheckMaterials(type, id))
-        {
-            ShowPopUp("재료가 부족합니다");
-            SetEmpty();
-            resultImage.color = Color.white;
-            material1.color = Color.white;
-            switch (type)
-            {
-                case ReinforceSystem.Types.Weapon:
-                    resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.result).iconSpriteId).iconName);
-                    resultName.text = nameTable.Get(weaponTable.Get(data.result).name).name;
-                    resultDesc.text = descTable.Get(weaponTable.Get(data.result).desc).text;
-                    material1.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.material1).iconSpriteId).iconName);
-                    break;
-                case ReinforceSystem.Types.Armor:
-                    resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
-                    resultName.text = nameTable.Get(armorTable.Get(data.result).name).name;
-                    resultDesc.text = descTable.Get(armorTable.Get(data.result).desc).text;
-                    material1.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.material1).iconSpriteId).iconName);
-                    break;
-                case ReinforceSystem.Types.Skill:
-                    resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
-                    resultName.text = nameTable.Get(skillTable.Get(data.result).name).name;
-                    resultDesc.text = descTable.Get(skillTable.Get(data.result).desc).text;
-                    material1.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.material1.ToString()).iconSpriteId).iconName);
-                    break;
-            }
-            return false;
-        }
+        //if (!ReinforceSystem.CheckMaterials(type, id))
+        //{
+        //    ShowPopUp("재료가 부족합니다");
+        //    SetEmpty();
+        //    resultImage.color = Color.white;
+        //    material1.color = Color.white;
+        //    switch (type)
+        //    {
+        //        case ReinforceSystem.Types.Weapon:
+        //            resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.result).iconSpriteId).iconName);
+        //            resultName.text = nameTable.Get(weaponTable.Get(data.result).name).name;
+        //            resultDesc.text = descTable.Get(weaponTable.Get(data.result).desc).text;
+        //            material1.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.material1).iconSpriteId).iconName);
+        //            break;
+        //        case ReinforceSystem.Types.Armor:
+        //            resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
+        //            resultName.text = nameTable.Get(armorTable.Get(data.result).name).name;
+        //            resultDesc.text = descTable.Get(armorTable.Get(data.result).desc).text;
+        //            material1.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.material1).iconSpriteId).iconName);
+        //            break;
+        //        case ReinforceSystem.Types.Skill:
+        //            resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
+        //            resultName.text = nameTable.Get(skillTable.Get(data.result).name).name;
+        //            resultDesc.text = descTable.Get(skillTable.Get(data.result).desc).text;
+        //            material1.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.material1.ToString()).iconSpriteId).iconName);
+        //            break;
+        //    }
+        //    return false;
+        //}
 
         resultImage.color = Color.white;
         material1.color = Color.white;

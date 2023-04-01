@@ -256,15 +256,10 @@ public class PlayerInventory : MonoBehaviour
                 {
                     string id;
                     if (index < 0)
-                    {
                         id = CurrWeapon;
-                        CurrWeapon = null;
-                    }
                     else
-                    {
                         id = Weapons[index];
-                        Weapons[index] = null;
-                    }
+                    RemoveWeapon(index);
                     var weaponData = DataTableMgr.GetTable<WeaponData>().Get(id);
                     foreach (var data in table)
                     {
@@ -280,15 +275,10 @@ public class PlayerInventory : MonoBehaviour
                 {
                     string id;
                     if (index < 0)
-                    {
                         id = CurrArmor;
-                        CurrArmor = null;
-                    }
                     else
-                    {
                         id = Armors[index];
-                        Armors[index] = null;
-                    }
+                    RemoveArmor(index);
                     var armorData = DataTableMgr.GetTable<ArmorData>().Get(id);
                     foreach (var data in table)
                     {

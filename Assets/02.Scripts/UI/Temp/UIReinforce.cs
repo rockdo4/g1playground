@@ -108,6 +108,13 @@ public class UIReinforce : MonoBehaviour
                         if (!string.IsNullOrEmpty(ids[i]))
                             itemSlotList[count++].Set(i, table.Get(ids[i]));
                     }
+                    if (itemSlotList.Count > 0)
+                    {
+                        currSlot = 0;
+                        CheckReinforcable(itemSlotList[currSlot].Data.id);
+                    }
+                    else
+                        reinforceButton.interactable = false;
                 }
                 break;
             case ReinforceSystem.Types.Armor:
@@ -122,6 +129,13 @@ public class UIReinforce : MonoBehaviour
                         if (!string.IsNullOrEmpty(ids[i]))
                             itemSlotList[count++].Set(i, table.Get(ids[i]));
                     }
+                    if (itemSlotList.Count > 0)
+                    {
+                        currSlot = 0;
+                        CheckReinforcable(itemSlotList[currSlot].Data.id);
+                    }
+                    else
+                        reinforceButton.interactable = false;
                 }
                 break;
             case ReinforceSystem.Types.Skill:
@@ -134,10 +148,16 @@ public class UIReinforce : MonoBehaviour
                         if (!string.IsNullOrEmpty(ids[i]))
                             skillSlotList[i].Set(i, table.Get(ids[i]));
                     }
+                    if (skillSlotList.Count > 0)
+                    {
+                        currSlot = 0;
+                        CheckReinforcable(skillSlotList[currSlot].Data.id);
+                    }
+                    else
+                        reinforceButton.interactable = false;
                 }
                 break;
         }
-        reinforceButton.interactable = false;
     }
 
     private void ShowInventory(ReinforceSystem.Types type)
@@ -178,6 +198,11 @@ public class UIReinforce : MonoBehaviour
     {
         if (currSlot < 0)
             return;
+        if (!ReinforceSystem.CheckMaterials(type, itemSlotList[currSlot].Data.id))
+        {
+            info.ShowPopUp("재료가 부족합니다");
+            return;
+        }
         int index = 0;
         switch (type)
         {
