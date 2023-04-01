@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
 using UnityEngine.EventSystems;
+using System.IO;
 using UnityEngine.SceneManagement;
 
 public class TitlePanel : PanelUi, IPointerDownHandler
@@ -17,7 +17,17 @@ public class TitlePanel : PanelUi, IPointerDownHandler
     {
         if (!IsPointerOverUIObject(eventData))
         {
-            SceneLoader.Instance.LoadScene("Tutorial");
+            string savepath = Application.persistentDataPath + "/Save/Save_Player.bin";
+
+            if (File.Exists(savepath))
+            {
+                SceneLoader.Instance.LoadScene("Scene02");
+            }
+            else
+            {
+                SceneLoader.Instance.LoadScene("Tutorial");
+
+            }
         }
     }
 
