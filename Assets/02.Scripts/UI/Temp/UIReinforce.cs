@@ -216,7 +216,7 @@ public class UIReinforce : MonoBehaviour
             return;
         if (!ReinforceSystem.CheckMaterials(type, itemSlotList[currSlot].Data.id))
         {
-            info.ShowPopUp("Àç·á°¡ ºÎÁ·ÇÕ´Ï´Ù");
+            info.ShowPopUp("ìž¬ë£Œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤");
             return;
         }
         int index = 0;
