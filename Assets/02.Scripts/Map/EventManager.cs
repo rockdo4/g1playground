@@ -79,7 +79,13 @@ public class EventManager : MonoBehaviour
     private IEnumerator CoSetStageTitleFalse()
     {
         //wait for second
-        yield return new WaitForSeconds(fadeDelay);
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        while (stopwatch.Elapsed.TotalSeconds < fadeDelay)
+        {
+            yield return null;
+        }
+        stopwatch.Stop();
 
         //decrease alpha by every fixedupdate
         while (stageTitlePanel.alpha > 0f)
