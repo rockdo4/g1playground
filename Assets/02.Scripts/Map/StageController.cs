@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class StageController : MonoBehaviour
 {
@@ -69,7 +70,7 @@ public class StageController : MonoBehaviour
     private int firstRewardId;
     [SerializeField]
     private int secondRewardId;
-
+    private bool rewarded = false;
     // private EachCorner eachCorner;
     private void Awake()
     {
@@ -182,9 +183,9 @@ public class StageController : MonoBehaviour
             MiniMap.instance.SetMiniMap(stageId);
         }
 
-        
-       
-        if (MapManager.instance.currentMapCollider != null )
+
+
+        if (MapManager.instance.currentMapCollider != null)
         {
             StopCoroutine(CSetStageCollider());
 
@@ -257,7 +258,8 @@ public class StageController : MonoBehaviour
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
         }
 
-       StartCoroutine(CoSetUI());
+        StartCoroutine(CoSetUI());
+        rewarded = false;
     }
 
     IEnumerator CoSetUI()
@@ -324,7 +326,7 @@ public class StageController : MonoBehaviour
     }
 
     private void Update()
-    {        
+    {
         foreach (var swit in switches)
         {
             if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
@@ -342,22 +344,26 @@ public class StageController : MonoBehaviour
             CheckEnemies();
             CheckWalls();
         }
-
-        if (isClear && isStoryStage) 
-        {            
-            isStoryStage = false;
-            EventManager.instance.SetStoryList(storyIdList);
-            EventManager.instance.ChangeColorEffect(transform.name);           
+        if (isClear&&!rewarded)
+        {
+            rewardCheck();
         }
 
-        if (canOpen || isClear) 
+        if (isClear && isStoryStage)
+        {
+            isStoryStage = false;
+            EventManager.instance.SetStoryList(storyIdList);
+            EventManager.instance.ChangeColorEffect(transform.name);
+        }
+
+        if (canOpen || isClear)
         {
 
             if (portals != null)
             {
                 foreach (var portal in portals)
                 {
-                   
+
                     portal.gameObject.SetActive(true);
                 }
             }
@@ -377,10 +383,93 @@ public class StageController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             foreach (var kill in enemies)
-            {                
+            {
                 kill.SetActive(false);
             }
         }
+
+    }
+
+    void rewardCheck()
+    {
+        foreach (var enemy in enemies)
+        {
+            if (enemy.gameObject.activeSelf)
+            {
+                
+                break;
+            }
+            else if (enemy == enemies.Last())
+            {
+                SetReward();                
+            }
+        }
+    }
+
+    private void SetReward()
+    {
+        if (SceneManager.GetActiveScene().name != "Scene02")
+            return;
+        //  GameManager.instance.ui.popupPanel.gameObject.SetActive(false);
+        GameManager.instance.ui.popupPanel.gameObject.GetComponentInChildren<StageRewardPopUp>(true).gameObject.SetActive(true);
+        var rewardUi = GameManager.instance.ui.popupPanel.GetComponentInChildren<StageRewardPopUp>(true).transform.Find("StageReward").Find("RewardItems").gameObject;
+
+
+        List<GameObject> rewardUiList = new List<GameObject>();
+        var rewardTable = DataTableMgr.GetTable<RewardData>();
+        var powder = rewardTable.Get(firstRewardId.ToString()).powder;
+        var essnece = rewardTable.Get(firstRewardId.ToString()).essence;
+        var skillpiece= rewardTable.Get(firstRewardId.ToString()).skill_piece;
+        var equipePiece= rewardTable.Get(firstRewardId.ToString()).equipe_piece;
+        var exp = rewardTable.Get(firstRewardId.ToString()).exp;
+
+        var powderSec = rewardTable.Get(secondRewardId.ToString()).powder;
+        var essneceSec = rewardTable.Get(secondRewardId.ToString()).essence;
+        var skillpieceSec = rewardTable.Get(secondRewardId.ToString()).skill_piece;
+        var equipePieceSec = rewardTable.Get(secondRewardId.ToString()).equipe_piece;
+        var expSec = rewardTable.Get(secondRewardId.ToString()).exp;
+
+
+        for (int i = 0; i < rewardUi.transform.childCount; i++)
+        {
+            rewardUiList.Add(rewardUi.transform.GetChild(i).gameObject);
+        }
+
+        if (!isClear)
+        {
+            //poweder set
+            rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powder.ToString();
+            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powder);
+
+            rewardUiList[1].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = essnece.ToString();
+            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40004", essnece);
+
+            rewardUiList[2].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = skillpiece.ToString();
+
+            rewardUiList[3].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = equipePiece.ToString();
+
+            rewardUiList[4].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = exp.ToString();
+            GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += exp;
+        }
+        else
+        {
+            //poweder set
+            rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powderSec.ToString();
+            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powderSec);
+
+            rewardUiList[1].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = essneceSec.ToString();
+            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40004", essneceSec);
+
+            rewardUiList[2].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = skillpieceSec.ToString();
+
+            rewardUiList[3].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = equipePieceSec.ToString();
+
+            rewardUiList[4].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = expSec.ToString();
+            GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += expSec;
+
+        }
+
+        rewarded = true;
     }
 
     private void CheckEnemies()
@@ -404,10 +493,10 @@ public class StageController : MonoBehaviour
                     }
                     //Clear Sound
                     SoundManager.instance.PlaySoundEffect(stageClearClip);
+                    SetReward();
                     isClear = true;
                     canOpen = true;
                     greenwallopen = true;
-
                     if (SceneManager.GetActiveScene().name == "Scene02")
                         MapManager.instance.SaveProgress();
 
@@ -457,7 +546,7 @@ public class StageController : MonoBehaviour
 
     public void EnemiesReset()
     {
-        foreach(var enemy in enemies)
+        foreach (var enemy in enemies)
         {
             enemy.SetActive(false);
             enemy.SetActive(true);

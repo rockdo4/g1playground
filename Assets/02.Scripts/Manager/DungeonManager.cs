@@ -149,11 +149,10 @@ public class DungeonManager : MonoBehaviour
 
         if (scene.name == "Scene02")
         {
-            Debug.Log("yos");
             remaningtime.gameObject.SetActive(false);
             // PlayerDataManager.instance.LoadPlayerHpMp();
             PlayerDataManager.instance.LoadFile();
-            PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
+           // PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
         }
 
     }
@@ -361,7 +360,7 @@ public class DungeonManager : MonoBehaviour
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
         scenename.Append("_");
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
-        PlayerDataManager.instance.SavePlayer();
+        PlayerDataManager.instance.SaveFile();
 
         SceneManager.LoadScene("Game", LoadSceneMode.Single);
         SceneManager.LoadScene(scenename.ToString(), LoadSceneMode.Additive);
@@ -399,6 +398,9 @@ public class DungeonManager : MonoBehaviour
 
         GameManager.instance.player.transform.position = GameObject.FindGameObjectWithTag("StartPoint").transform.position;
         //   Debug.Log("startpoint");
+        PlayerDataManager.instance.LoadPlayer();
+        PlayerDataManager.instance.LoadInventory();
+        PlayerDataManager.instance.LoadSkills();
 
     }
 
