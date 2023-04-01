@@ -44,6 +44,9 @@ public class PlayerSkills : MonoBehaviour
     {
         for (int i = 0; i < skillStates.Length; ++i)
         {
+            if (skillStates[i].skill == null)
+                continue;
+
             if (!skillStates[i].skill.isOnOffSkill)
             {
                 if (!skillStates[i].skillUsable)

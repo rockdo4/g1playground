@@ -4,9 +4,21 @@ using UnityEngine;
 
 public class PlayerAttackBox : MonoBehaviour
 {
+    private BoxCollider attackBox;
     public PlayerAttack playerAttack;
     private bool isAttacking = false;
     private List<GameObject> attackedList = new List<GameObject>();
+
+    private void Awake()
+    {
+        attackBox = GetComponent<BoxCollider>();
+    }
+
+    public void ResizeAttackBox(float range)
+    {
+        attackBox.center = new Vector3(0f, 0.95f, range * 0.5f);
+        attackBox.size = new Vector3(1f, 1f, range);
+    }
 
     private void OnTriggerStay(Collider other)
     {
