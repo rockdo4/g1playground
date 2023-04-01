@@ -102,11 +102,19 @@ public class UIReinforce : MonoBehaviour
                     ids = playerInventory.Weapons;
                     len = ids.Count;
                     if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
-                        itemSlotList[count++].Set(-1, table.Get(playerInventory.CurrWeapon));
+                    {
+                        itemSlotList[count].IsEquiped(true);
+                        itemSlotList[count].Set(-1, table.Get(playerInventory.CurrWeapon));
+                        ++count;
+                    }
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
-                            itemSlotList[count++].Set(i, table.Get(ids[i]));
+                        {
+                            itemSlotList[count].IsEquiped(false);
+                            itemSlotList[count].Set(i, table.Get(ids[i]));
+                            ++count;
+                        }
                     }
                     if (itemSlotList.Count > 0)
                     {
@@ -123,11 +131,19 @@ public class UIReinforce : MonoBehaviour
                     ids = playerInventory.Armors;
                     len = ids.Count;
                     if (!string.IsNullOrEmpty(playerInventory.CurrArmor))
-                        itemSlotList[count++].Set(-1, table.Get(playerInventory.CurrArmor));
+                    {
+                        itemSlotList[count].IsEquiped(true);
+                        itemSlotList[count].Set(-1, table.Get(playerInventory.CurrArmor));
+                        ++count;
+                    }
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
-                            itemSlotList[count++].Set(i, table.Get(ids[i]));
+                        {
+                            itemSlotList[count].IsEquiped(false);
+                            itemSlotList[count].Set(i, table.Get(ids[i]));
+                            ++count;
+                        }
                     }
                     if (itemSlotList.Count > 0)
                     {

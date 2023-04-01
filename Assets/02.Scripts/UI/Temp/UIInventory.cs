@@ -62,6 +62,7 @@ public class UIInventory : MonoBehaviour
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
         currSlot = -1;
+        itemInfo.SetEmpty();
         this.itemType = (ItemTypes)itemType;
         List<string> ids = null;
         int len = 0;
@@ -120,9 +121,7 @@ public class UIInventory : MonoBehaviour
         {
             case ItemTypes.Weapon:
                 if (slotList[currSlot] != null && slotList[currSlot].Data != null)
-                {
                     playerInventory.SetWeapon(currSlot);
-                }
                 
                 break;
             case ItemTypes.Armor:

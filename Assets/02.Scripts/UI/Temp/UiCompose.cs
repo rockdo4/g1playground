@@ -78,12 +78,20 @@ public class UiCompose : MonoBehaviour
                     if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
                     {
                         if (ComposeSystem.CheckComposable(playerInventory.CurrWeapon))
-                            itemSlotList[count++].Set(-1, table.Get(playerInventory.CurrWeapon));
+                        {
+                            itemSlotList[count].IsEquiped(true);
+                            itemSlotList[count].Set(-1, table.Get(playerInventory.CurrWeapon));
+                            ++count;
+                        }
                     }
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]) && ComposeSystem.CheckComposable(ids[i]))
-                            itemSlotList[count++].Set(i, table.Get(ids[i]));
+                        {
+                            itemSlotList[count].IsEquiped(false);
+                            itemSlotList[count].Set(i, table.Get(ids[i]));
+                            ++count;
+                        }
                     }
                 }
                 break;
@@ -95,12 +103,20 @@ public class UiCompose : MonoBehaviour
                     if (!string.IsNullOrEmpty(playerInventory.CurrArmor))
                     {
                         if (ComposeSystem.CheckComposable(playerInventory.CurrArmor))
-                            itemSlotList[count++].Set(-1, table.Get(playerInventory.CurrArmor));
+                        {
+                            itemSlotList[count].IsEquiped(true);
+                            itemSlotList[count].Set(-1, table.Get(playerInventory.CurrArmor));
+                            ++count;
+                        }
                     }
                     for (int i = 0; i < len; ++i)
                     {
                         if (!string.IsNullOrEmpty(ids[i]) && ComposeSystem.CheckComposable(ids[i]))
-                            itemSlotList[count++].Set(i, table.Get(ids[i]));
+                        {
+                            itemSlotList[count].IsEquiped(false);
+                            itemSlotList[count].Set(i, table.Get(ids[i]));
+                            ++count;
+                        }
                     }
                 }
                 break;

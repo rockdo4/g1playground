@@ -6,6 +6,7 @@ public class UIItemSlot : MonoBehaviour
     public int index;
     public Image icon;
     public Button button;
+    public Image currFrame;
 
     private ItemData data;
 
@@ -29,5 +30,13 @@ public class UIItemSlot : MonoBehaviour
         this.data = data;
         button.interactable = true;
         icon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
+    }
+
+    public void IsEquiped(bool equiped)
+    {
+        if (equiped)
+            currFrame.gameObject.SetActive(true);
+        else
+            currFrame.gameObject.SetActive(false);
     }
 }
