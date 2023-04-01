@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -13,9 +14,15 @@ public class GamblingManager : MonoBehaviour
     public Dictionary<string, SkillDrawData> skillDrawDatas = new Dictionary<string, SkillDrawData>();
     public GameObject reward;
     public GameObject rewardTen;
+    public GameObject materialPopUp;
+
+    public TextMeshProUGUI skillPowderCount;
+    public TextMeshProUGUI equipPowderCount;
 
     private UIInventory itemInventory;
     private UISkillInventory skillInventory;
+
+    private int powderCount;
 
     private void Awake()
     {
@@ -27,28 +34,79 @@ public class GamblingManager : MonoBehaviour
         skillInventory = GameManager.instance.uiManager.skillInventory.GetComponent<UISkillInventory>();
     }
 
+    private void OnEnable()
+    {
+        SetPowderCount();
+    }
+
+    private void Update()
+    {
+        skillPowderCount.text = powderCount.ToString();
+        equipPowderCount.text = powderCount.ToString();
+    }
+
+    public void SetPowderCount()
+    {
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
+        {
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
+        powderCount = playerInventory.GetConsumableCount(powderId);
+        Debug.Log(playerInventory.GetConsumableCount(powderId));
+    }
+
     public void TryOne()
     {
-        reward.SetActive(true);
-        GetEquipments(1);
+        if (powderCount >= 300)
+        {
+            powderCount -= 300;
+            reward.SetActive(true);
+            GetEquipments(1);
+        }
+        else
+            materialPopUp.SetActive(true);
     }
 
     public void TryTen()
     {
-        rewardTen.SetActive(true);
-        GetEquipments(10);
+        if(powderCount >= 2700)
+        {
+            powderCount -= 2700;
+            rewardTen.SetActive(true);
+            GetEquipments(10);
+        }
+        else
+            materialPopUp.SetActive(true);
     }
 
     public void TryOneSkill()
     {
-        reward.SetActive(true);
-        GetSkills(1);
+        if(powderCount >= 300)
+        {
+            powderCount -= 300;
+            reward.SetActive(true);
+            GetSkills(1);
+        }        
+        else
+            materialPopUp.SetActive(true);
     }
 
     public void TryTenSkills()
     {
-        rewardTen.SetActive(true);
-        GetSkills(10);
+        if (powderCount >= 300)
+        {
+            powderCount -= 2700;
+            rewardTen.SetActive(true);
+            GetSkills(10);
+        }                
+        else
+            materialPopUp.SetActive(true);
     }
 
     public void GetEquipments(int count)

@@ -61,6 +61,15 @@ public class UI : MonoBehaviour
     {
         InitUi(sceneName);
     }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            popupPanel.exitPopUp.gameObject.SetActive(true);
+        }
+    }
+
     private void InitUi(string sceneName)
     {
         if(sceneName.Equals("Tutorial", StringComparison.OrdinalIgnoreCase))
