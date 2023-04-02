@@ -8,6 +8,6 @@ public class ResetButton : ButtonUi
 {
     public void ClickButton()
     {
-        Debug.Log("Test");
+        SaveLoadSystem.RemoveAllData();
     }
 }
