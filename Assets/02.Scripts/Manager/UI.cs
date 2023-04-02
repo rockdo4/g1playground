@@ -22,7 +22,7 @@ public class UI : MonoBehaviour
     public ControllerPanel controllerPanel;
     public MenuPanel menuPanel;
     public PotionPanel potionPanel;
-    //public MiniMapPanel minimapPanel;
+    public MiniMapPanel minimapPanel;
     public SkillPanel skillPanel;
     public AutoPanel autoPanel;
     //public SceneLoader loading;
@@ -51,7 +51,7 @@ public class UI : MonoBehaviour
         controllerPanel = GetComponentInChildren<ControllerPanel>(true);
         menuPanel = GetComponentInChildren<MenuPanel>(true);
         potionPanel = GetComponentInChildren<PotionPanel>(true);
-        //minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
+        minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
         skillPanel = GetComponentInChildren<SkillPanel>(true);
         autoPanel = GetComponentInChildren<AutoPanel>(true);
         menuPopUp = GetComponentInChildren<MenuPopUp>(true);
@@ -115,6 +115,7 @@ public class UI : MonoBehaviour
         UI.Instance.skillPanel.ToggleOff();
         autoPanel.ActiveFalse();
         UI.Instance.popupPanel.menuPopUp.SetVillage();
+        minimapPanel.ActiveFalse();
         sceneName= "Village";
 
     }
@@ -130,6 +131,7 @@ public class UI : MonoBehaviour
         potionPanel.ActiveTrue();
         skillPanel.ActiveTrue();
         autoPanel.ActiveTrue();
+        minimapPanel.ActiveTrue();
     }
 
     public void SetDungeon()
@@ -143,6 +145,7 @@ public class UI : MonoBehaviour
         potionPanel.ActiveTrue();
         skillPanel.ActiveTrue();
         autoPanel.ActiveTrue();
+        minimapPanel.ActiveFalse();
         sceneName = "Dungeon";
     }
 }
