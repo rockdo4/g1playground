@@ -34502,9 +34502,12 @@ MonoBehaviour:
   imageColor: 0
   isStoryStage: 0
   storyIdList: 
+  stageClearClip: Success 1
   lockRequirement: 0
   switches: []
   greenWall: []
+  firstRewardId: 0
+  secondRewardId: 0
 --- !u!483693784 &1497731937
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -40406,6 +40409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d1869f5a5635e48ba2e2613ab1184e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purpleRichSound: {fileID: 0}
   attackBox: {fileID: 0}
   skillPivot: {fileID: 0}
   indicatorBox: {fileID: 0}
@@ -42841,11 +42845,13 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 63249c73d329e4157aaca859dec94791, type: 2}
   bgmSource: {fileID: 1417974422}
   seSource: {fileID: 1199988293}
-  playerSource: {fileID: 0}
   enemySource: {fileID: 0}
   bgmClips: []
   seClips: []
   bgmName: village_loop
+  villageBGM: village_loop
+  ch1BGM: playing_loop
+  ch2BGM: Playful LOOP
   BgmFolderPath: Sounds/BGM
   EffectFolderPath: Sounds/Effect
   playerSound: {fileID: 0}
@@ -43653,18 +43659,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4507409972791977426, guid: 55d5f949e919b6544b7bc1747cc72870,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4507409972791977426, guid: 55d5f949e919b6544b7bc1747cc72870,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4507409972791977426, guid: 55d5f949e919b6544b7bc1747cc72870,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4507409972791977426, guid: 55d5f949e919b6544b7bc1747cc72870,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.74
+      value: -12.82
       objectReference: {fileID: 0}
     - target: {fileID: 4507409972791977426, guid: 55d5f949e919b6544b7bc1747cc72870,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -19.8
+      value: -23.75
       objectReference: {fileID: 0}
     - target: {fileID: 4507409972791977426, guid: 55d5f949e919b6544b7bc1747cc72870,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4507409972791977426, guid: 55d5f949e919b6544b7bc1747cc72870,
         type: 3}
@@ -43709,7 +43730,17 @@ PrefabInstance:
     - target: {fileID: 4507409972792277490, guid: 55d5f949e919b6544b7bc1747cc72870,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5803840062401799613, guid: 55d5f949e919b6544b7bc1747cc72870,
+        type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5803858982755797089, guid: 55d5f949e919b6544b7bc1747cc72870,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55d5f949e919b6544b7bc1747cc72870, type: 3}
@@ -48578,7 +48609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f066d284ca884f344a8aca57218a1129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btManager: {fileID: 653586899}
+  ui: {fileID: 0}
   charStatUI: {fileID: 408039544}
   itemInventory: {fileID: 0}
   skillInventory: {fileID: 0}
@@ -51205,6 +51236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6974864ff59cc6d489f7540547ca6af0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scorpionSound: {fileID: 0}
   attackBox: {fileID: 0}
   skillPivot: {fileID: 0}
   meleeAttack: {fileID: 11400000, guid: b0c8654fe07888e419ba2222c970f330, type: 2}
