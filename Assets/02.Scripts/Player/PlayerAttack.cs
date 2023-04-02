@@ -36,6 +36,11 @@ public class PlayerAttack : MonoBehaviour
 
     public Action OnSetWeapon;
 
+    private void OnEnable()
+    {
+        SetWeapon(currWeaponType);
+    }
+
     private void Awake()
     {
         playerAnimator = GetComponent<Animator>();
