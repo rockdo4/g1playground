@@ -6,8 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class ResetButton : ButtonUi
 {
+    public ResetPopUp resetPopUp;
+
     public void ClickButton()
     {
-        SaveLoadSystem.RemoveAllData();
+        resetPopUp.ActiveTrue();
+        //SaveLoadSystem.RemoveAllData();
     }
 }
