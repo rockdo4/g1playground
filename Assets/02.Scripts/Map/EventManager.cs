@@ -37,7 +37,7 @@ public class EventManager : MonoBehaviour
     private int currStoryIndex = 0;
     private int clickCount = 0;
     private bool isClickable = true;
-    private bool isPlayingStory = false;
+    public bool IsPlayingStory { get; set; }
 
     private int effectCount = 0;
 
@@ -65,6 +65,7 @@ public class EventManager : MonoBehaviour
         }
 
         originTextDelay = textDelay;
+        IsPlayingStory = true;
     }
 
     ////////////////////////Stage Title///////////////////////////////
@@ -105,7 +106,7 @@ public class EventManager : MonoBehaviour
         storyList.Clear();
         storyList = stories;
         storyCount = storyList.Count;
-        isPlayingStory = true;
+        IsPlayingStory = true;
         currStoryIndex = 0;
         isClickable = true;
     }
@@ -194,7 +195,7 @@ public class EventManager : MonoBehaviour
         storyBoard.SetActive(false);
         imageBoard.SetActive(false);
         TextBoard.SetActive(false);
-        isPlayingStory = false;
+        IsPlayingStory = false;
         isClickable = true;
         ResetCount();
         Resume();
@@ -252,6 +253,7 @@ public class EventManager : MonoBehaviour
         effect.transform.position = GameManager.instance.player.transform.position;
         float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
         GameManager.instance.effectManager.ReturnEffectOnTime("Poof_electric", effect, destroyTime);
+
     }
 
     public void ChangeColorEffect(string stageName)
@@ -279,7 +281,6 @@ public class EventManager : MonoBehaviour
         }
         stopwatch.Stop();
 
-        isPlayingStory = false;
         Pause();
         PlayStory();
     }
