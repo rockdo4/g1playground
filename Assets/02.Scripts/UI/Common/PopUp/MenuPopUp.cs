@@ -19,17 +19,18 @@ public class MenuPopUp : PopupUI
     public bool isOpen;
     private void Awake()
     {
-        skill = GetComponentInChildren<SkillButton>(true);
-        //equip = GetComponentInChildren<EquipButton>(true);
-        item = GetComponentInChildren<ItemButton>(true);
-        //map = GetComponentInChildren<MapButton>(true);
-        exit = GetComponentInChildren<ExitButton>(true);
-        //dungeon = GetComponentInChildren<DungeonButton>(true);
-        reinforce = GetComponentInChildren<EnhanceButton>(true);
-        synthetic = GetComponentInChildren<SyntheticButton>(true);
-        disassemble = GetComponentInChildren<DisassembleButton>(true);
-        gambling = GetComponentInChildren<GambleButton>(true);
-        setting = GetComponentInChildren<SettingButton>(true);
+        Init();
+        //skill = GetComponentInChildren<SkillButton>(true);
+        ////equip = GetComponentInChildren<EquipButton>(true);
+        //item = GetComponentInChildren<ItemButton>(true);
+        ////map = GetComponentInChildren<MapButton>(true);
+        //exit = GetComponentInChildren<ExitButton>(true);
+        ////dungeon = GetComponentInChildren<DungeonButton>(true);
+        //reinforce = GetComponentInChildren<EnhanceButton>(true);
+        //synthetic = GetComponentInChildren<SyntheticButton>(true);
+        //disassemble = GetComponentInChildren<DisassembleButton>(true);
+        //gambling = GetComponentInChildren<GambleButton>(true);
+        //setting = GetComponentInChildren<SettingButton>(true);
     }
 
     private void Init()

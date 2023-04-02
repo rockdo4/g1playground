@@ -99,8 +99,8 @@ public class UI : MonoBehaviour
         autoPanel.ActiveTrue();
         // Interactable false
         UI.Instance.autoPanel.ActivateToggle(false);
-        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
         popupPanel.ActiveTrue();
+        UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
     }
 
@@ -114,6 +114,7 @@ public class UI : MonoBehaviour
         skillPanel.ActiveFalse();
         UI.Instance.skillPanel.ToggleOff();
         autoPanel.ActiveFalse();
+        UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetVillage();
         minimapPanel.ActiveFalse();
         sceneName= "Village";
@@ -123,7 +124,7 @@ public class UI : MonoBehaviour
     public void SetBattle()
     {
         popupPanel.ActiveTrue();
-        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
+        UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
@@ -137,7 +138,7 @@ public class UI : MonoBehaviour
     public void SetDungeon()
     {
         popupPanel.ActiveTrue();
-        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
+        UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
