@@ -11,9 +11,11 @@ public class StoryPopEvent : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            //EventManager.instance.Pause();
             EventManager.instance.SetStoryList(storyIdList);
-            EventManager.instance.PlayStory();
             EventManager.instance.Pause();
+            EventManager.instance.PlayStory();
+
             Destroy(gameObject);
         }
     }

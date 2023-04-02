@@ -50,7 +50,8 @@ public class PlayerAttack : MonoBehaviour
             weaponSetDict[newWeaponAnim.weaponType] = newWeaponAnim;
         }
         weaponSetDictKeys = weaponSetDict.Keys.ToList();
-        SetAll();
+        //SetAll();
+        currWeaponType = WeaponTypes.None;
     }
 
     public void SetAll()
@@ -131,7 +132,12 @@ public class PlayerAttack : MonoBehaviour
         SetAll();
     }
 
-    public void StartAttack() => playerAnimator.SetBool("IsAttacking", true);
+    public void StartAttack()
+    {
+        if (currWeaponType == WeaponTypes.None)
+            return;
+        playerAnimator.SetBool("IsAttacking", true);
+    } 
     public void EndAttack() => playerAnimator.SetBool("IsAttacking", false);
 
     public void ExecuteAttack()

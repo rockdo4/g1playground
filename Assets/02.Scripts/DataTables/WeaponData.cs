@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum WeaponTypes
 {
+    None = -1,
     Knuckle,
     Sword,
     Blunt,
