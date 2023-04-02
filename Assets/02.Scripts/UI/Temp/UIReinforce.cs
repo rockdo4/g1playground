@@ -34,6 +34,7 @@ public class UIReinforce : MonoBehaviour
     public void OnEnable()
     {
         SetInventory((int)ReinforceSystem.Types.Weapon);
+        SetFirstOnInfo();
     }
 
     public void Init()
@@ -116,15 +117,6 @@ public class UIReinforce : MonoBehaviour
                             ++count;
                         }
                     }
-                    if (itemSlotList.Count > 0)
-                    {
-                        if (itemSlotList[0] != null && itemSlotList[0].Data != null)
-                        {
-                            currSlot = 0;
-                            CheckReinforcable(itemSlotList[currSlot].Data.id);
-                            return;
-                        }
-                    }
                     reinforceButton.interactable = false;
                 }
                 break;
@@ -148,15 +140,6 @@ public class UIReinforce : MonoBehaviour
                             ++count;
                         }
                     }
-                    if (itemSlotList.Count > 0)
-                    {
-                        if (itemSlotList[0] != null && itemSlotList[0].Data != null)
-                        {
-                            currSlot = 0;
-                            CheckReinforcable(itemSlotList[currSlot].Data.id);
-                            return;
-                        }
-                    }
                     reinforceButton.interactable = false;
                 }
                 break;
@@ -170,16 +153,35 @@ public class UIReinforce : MonoBehaviour
                         if (!string.IsNullOrEmpty(ids[i]))
                             skillSlotList[i].Set(i, table.Get(ids[i]));
                     }
-                    if (skillSlotList.Count > 0)
-                    {
-                        if (skillSlotList[0] != null && skillSlotList[0].Data != null)
-                        {
-                            currSlot = 0;
-                            CheckReinforcable(skillSlotList[currSlot].Data.id);
-                            return;
-                        }
-                    }
                     reinforceButton.interactable = false;
+                }
+                break;
+        }
+    }
+
+    public void SetFirstOnInfo()
+    {
+        switch (type)
+        {
+            case ReinforceSystem.Types.Weapon:
+            case ReinforceSystem.Types.Armor:
+                if (itemSlotList.Count > 0)
+                {
+                    if (itemSlotList[0] != null && itemSlotList[0].Data != null)
+                    {
+                        currSlot = 0;
+                        CheckReinforcable(itemSlotList[currSlot].Data.id);
+                    }
+                }
+                break;
+            case ReinforceSystem.Types.Skill:
+                if (skillSlotList.Count > 0)
+                {
+                    if (skillSlotList[0] != null && skillSlotList[0].Data != null)
+                    {
+                        currSlot = 0;
+                        CheckReinforcable(skillSlotList[currSlot].Data.id);
+                    }
                 }
                 break;
         }
@@ -223,23 +225,31 @@ public class UIReinforce : MonoBehaviour
     {
         if (currSlot < 0)
             return;
-        if (!ReinforceSystem.CheckMaterials(type, itemSlotList[currSlot].Data.id))
-        {
-            info.ShowPopUp("재료가 부족합니다");
-            return;
-        }
         int index = 0;
         switch (type)
         {
             case ReinforceSystem.Types.Weapon:
             case ReinforceSystem.Types.Armor:
+                if (!ReinforceSystem.CheckMaterials(type, itemSlotList[currSlot].Data.id))
+                {
+                    info.ShowPopUp("재료가 부족합니다");
+                    return;
+                }
                 index = itemSlotList[currSlot].index;
                 break;
             case ReinforceSystem.Types.Skill:
+                if (!ReinforceSystem.CheckMaterials(type, skillSlotList[currSlot].Data.id))
+                {
+                    info.ShowPopUp("재료가 부족합니다");
+                    return;
+                }
                 index = skillSlotList[currSlot].index;
                 break;
         }
-        ReinforceSystem.Reinforce(type, index);
+        if (ReinforceSystem.Reinforce(type, index))
+            info.ShowPopUp("강화에 성공하였습니다");
+        else
+            info.ShowPopUp("강화에 실패하였습니다");
         info.SetEmpty();
         SetInventory((int)type);
     }

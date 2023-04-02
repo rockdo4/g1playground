@@ -276,7 +276,6 @@ public class PlayerSkills : MonoBehaviour
             if (skillStates[i].index == index)
                 SetSkill(i, index);
         }
-        RemoveSkill(materialIndex);
         PlayerDataManager.instance.SaveSkills();
         PlayerDataManager.instance.SaveFile();
     }

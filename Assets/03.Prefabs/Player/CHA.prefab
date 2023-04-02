@@ -1396,7 +1396,7 @@ MonoBehaviour:
     clip: {fileID: -203655887218126122, guid: f025b122118174e48afd6a45fbc220bb, type: 3}
     attackSound: Sword_Whoosh_01
     hitSound: Weapon_Damage_To_Body
-    attackRange: 1
+    attackRange: 1.5
     attackSpeed: 3
     damageTime: 0.35
     slowModeDuration: 0
@@ -1488,7 +1488,11 @@ MonoBehaviour:
   - 20015
   defaultArmors:
   - 30001
-  defaultConsumables: []
+  defaultConsumables:
+  - id: 40003
+    count: 3000
+  - id: 40004
+    count: 3000
   <CurrWeapon>k__BackingField: 
   <CurrArmor>k__BackingField: 
   potionRate:
@@ -1620,7 +1624,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

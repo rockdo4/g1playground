@@ -1,3 +1,6 @@
+using System;
+using UnityEngine;
+
 public class ReinforceSystem
 {
     public enum Types
@@ -72,6 +75,9 @@ public class ReinforceSystem
         if (!CheckMaterials(type, data))
             return false;
 
+        var random = UnityEngine.Random.Range(0f, 1f);
+        var successed = Mathf.Approximately(random, data.rate) || random < data.rate;
+        
         switch (type)
         {
             case Types.Skill:
@@ -87,19 +93,40 @@ public class ReinforceSystem
                             break;
                         }
                     }
-                    skills.Reinforce(indexOfInventory, materialIndex, data.result);
+                    skills.RemoveSkill(materialIndex);
+                    if (materialIndex < indexOfInventory)
+                        --indexOfInventory;
+                    inventory.UseConsumable(powder, data.powder);
+                    inventory.UseConsumable(essence, data.essence);
+                    if (successed)
+                    {
+                        skills.Reinforce(indexOfInventory, materialIndex, data.result);
+                        return true;
+                    }
                 }
                 break;
             case Types.Weapon:
-                inventory.Reinforce(ItemTypes.Weapon, indexOfInventory, data.result);
+                inventory.UseConsumable(powder, data.powder);
+                inventory.UseConsumable(essence, data.essence);
+                if (successed)
+                {
+                    inventory.Reinforce(ItemTypes.Weapon, indexOfInventory, data.result);
+                    return true;
+                }
                 break;
             case Types.Armor:
-                inventory.Reinforce(ItemTypes.Armor, indexOfInventory, data.result);
+                inventory.UseConsumable(powder, data.powder);
+                inventory.UseConsumable(essence, data.essence);
+                if (successed)
+                {
+                    inventory.Reinforce(ItemTypes.Armor, indexOfInventory, data.result);
+                    return true;
+                }
                 break;
             default:
-                return false;
+                break;
         }
-        return true;
+        return false;
     }
 
     public static bool CheckReinforcable(string materialId)
