@@ -118,9 +118,22 @@ public class Boss4Controller : Enemy
 
     protected override void Start()
     {
-        base.Start();
+        //base.Start();
 
         agent.speed = moveSpeed;
+
+        player = GameManager.instance.player;
+        GetComponent<DestructedEvent>().OnDestroyEvent = () =>
+        {
+            State = EnemyState.Die;
+            animator.ResetTrigger("TakeDamage");
+            animator.SetTrigger("Die");
+            isLive = false;
+
+            enemyBody.SetActive(false);
+
+            player.GetComponent<PlayerLevelManager>().CurrExp += DataTableMgr.GetTable<MonsterData>().Get(status.id).exp;
+        };
 
     }
 
