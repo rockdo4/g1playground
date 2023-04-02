@@ -174,7 +174,6 @@ public class EnemyController : Enemy
             yield break;
         }
 
-        // NavMeshAgent�� �ʱ�ȭ �� ����� ���Ŀ� AgentLinkMover�� Ȱ��ȭ
         linkMover.enabled = true;
     }
 
@@ -475,6 +474,19 @@ public class EnemyController : Enemy
         gameObject.SetActive(false);
     }
 
+    private void BompDieDone()
+    {
+        enemySound.PlayDeathSound();
+        State = EnemyState.Die;
+        animator.ResetTrigger("TakeDamage");
+        animator.SetTrigger("Die");
+        isLive = false;
+        enemyBody.SetActive(false);
+
+        player.GetComponent<PlayerLevelManager>().CurrExp += DataTableMgr.GetTable<MonsterData>().Get(status.id).exp;
+
+        gameObject.SetActive(false);
+    }
     public override void KnockBack()
     {
         if (State == EnemyState.Die)
