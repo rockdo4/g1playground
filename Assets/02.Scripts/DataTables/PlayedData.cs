@@ -5,20 +5,19 @@ using System.ComponentModel;
 using UnityEngine;
 
 
-public class SaveStageData : SaveData
+public class SavePlayedData : SaveData
 {
-    public SaveStageData()
+    public SavePlayedData()
     {
-        type = Types.Stage;
+        type = Types.Story;
     }
 }
 
-public class SaveStageDataVer1 : SaveStageData
+public class SavePlayedDataVer1 : SavePlayedData
 {
-    public Dictionary<string, bool> unlock;
-    public Dictionary<string, bool> isStoryStage;
-   
-    public SaveStageDataVer1()
+    public List<int> playedId=new List<int>();
+
+    public SavePlayedDataVer1()
     {
         version = 1;
     }

@@ -25,6 +25,7 @@ public static class SaveLoadSystem
         { SaveData.Types.Option, 0 },
         { SaveData.Types.Dungeon, 1 },
         {SaveData.Types.Stage,1 },
+        {SaveData.Types.Story,1 },
     };
     public static string FilePath = string.Empty;
     public static readonly string DirectoryName = "Save";
@@ -72,6 +73,9 @@ public static class SaveLoadSystem
             case SaveData.Types.Stage:
                 mode = Modes.Binary;
                 break;
+            case SaveData.Types.Story:
+                mode = Modes.Binary;
+                break;
         }
         FilePath = GetSaveFileName(type, mode);
 
@@ -101,6 +105,9 @@ public static class SaveLoadSystem
                 mode = Modes.Json;
                 break;
             case SaveData.Types.Stage:
+                mode = Modes.Binary;
+                break;
+            case SaveData.Types.Story:
                 mode = Modes.Binary;
                 break;
         }
@@ -193,7 +200,15 @@ public static class SaveLoadSystem
                             break;
                     }
                     break;
-                    
+                case SaveData.Types.Story:
+                    switch (fileVersion)
+                    {
+                        case 1:
+                            t = typeof(SavePlayedDataVer1);
+                            break;
+                    }
+                    break;
+
                 default:
                     return null;
             }
