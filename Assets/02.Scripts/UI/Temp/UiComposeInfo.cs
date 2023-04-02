@@ -52,6 +52,7 @@ public class UiComposeInfo : MonoBehaviour
                         result.sprite = Resources.Load<Sprite>(resultIcon.iconName);
                         itemName.text = DataTableMgr.GetTable<NameData>().Get(weapon.name).name;
                         itemDesc.text = DataTableMgr.GetTable<DescData>().Get(weapon.desc).text;
+                        result.transform.localScale = new Vector3(1, 1, 1);
                     }
                 }
             }
@@ -60,6 +61,7 @@ public class UiComposeInfo : MonoBehaviour
             {
                 materials[index].color = Color.white;
                 materials[index].sprite = Resources.Load<Sprite>(iconData.iconName);
+                materials[index].transform.localScale = new Vector3(1, 1, 1);
                 return;
             }
         }
@@ -79,6 +81,7 @@ public class UiComposeInfo : MonoBehaviour
                         result.sprite = Resources.Load<Sprite>(resultIcon.iconName);
                         itemName.text = DataTableMgr.GetTable<NameData>().Get(armor.name).name;
                         itemDesc.text = DataTableMgr.GetTable<DescData>().Get(armor.desc).text;
+                        result.transform.localScale = new Vector3(1, 1, 1);
                     }
                 }
             }
@@ -87,6 +90,7 @@ public class UiComposeInfo : MonoBehaviour
             {
                 materials[index].color = Color.white;
                 materials[index].sprite = Resources.Load<Sprite>(iconData.iconName);
+                materials[index].transform.localScale = new Vector3(1, 1, 1);
                 return;
 
             }
