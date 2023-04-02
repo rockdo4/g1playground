@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -248,7 +248,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 396686195}
   m_Father: {fileID: 720779004}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -532,6 +533,87 @@ PrefabInstance:
       objectReference: {fileID: 1358104321}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 106270535cdf5674ebebe59ba6b9e02e, type: 3}
+--- !u!1001 &396686193
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 37930930}
+    m_Modifications:
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6653467386893373514, guid: 4c707da15b2d645cfb33daadb8fbe260,
+        type: 3}
+      propertyPath: m_Name
+      value: Enemy
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4c707da15b2d645cfb33daadb8fbe260, type: 3}
+--- !u!82 &396686194 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5699024715132745248, guid: 4c707da15b2d645cfb33daadb8fbe260,
+    type: 3}
+  m_PrefabInstance: {fileID: 396686193}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &396686195 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2206125002185168216, guid: 4c707da15b2d645cfb33daadb8fbe260,
+    type: 3}
+  m_PrefabInstance: {fileID: 396686193}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &500997684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -634,7 +716,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 63249c73d329e4157aaca859dec94791, type: 2}
   bgmSource: {fileID: 1939177115}
   seSource: {fileID: 37930929}
-  enemySource: {fileID: 0}
+  enemySource: {fileID: 396686194}
   bgmClips: []
   seClips: []
   bgmName: village_loop
@@ -25084,6 +25166,7 @@ MonoBehaviour:
   controllerPanel: {fileID: 3825439097931070568}
   menuPanel: {fileID: 3825439096106286816}
   potionPanel: {fileID: 6314339176589114178}
+  minimapPanel: {fileID: 0}
   skillPanel: {fileID: 6560560800971576536}
   autoPanel: {fileID: 1141668592284245613}
   menuPopUp: {fileID: 0}
@@ -37651,6 +37734,7 @@ MonoBehaviour:
   info: {fileID: 3825439096142834139}
   reinforceButton: {fileID: 3825439096551431029}
   resultPopup: {fileID: 3825439096500165338}
+  resultCount: {fileID: 0}
 --- !u!222 &3825439097543429452
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -66279,6 +66363,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15165e734b8975b4f90666e71ee54221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enhanceButton: {fileID: 0}
+  disassembleButton: {fileID: 0}
+  syntheticButton: {fileID: 0}
+  gambleButton: {fileID: 0}
 --- !u!222 &6704394588788209500
 CanvasRenderer:
   m_ObjectHideFlags: 0
