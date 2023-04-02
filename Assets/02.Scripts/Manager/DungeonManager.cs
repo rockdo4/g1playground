@@ -253,7 +253,7 @@ public class DungeonManager : MonoBehaviour
                 GameManager.instance.player.gameObject.SetActive(false);
                 Result.gameObject.SetActive(true);
                 Result.transform.Find("Lose").gameObject.SetActive(true);
-                Result.transform.Find("Lose").transform.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - time))).ToString();
+                //Result.transform.Find("Lose").transform.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - time))).ToString();
 
                 isDungeon = false;
 
