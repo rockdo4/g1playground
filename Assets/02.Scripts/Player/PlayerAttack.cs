@@ -72,6 +72,9 @@ public class PlayerAttack : MonoBehaviour
 
     public void SetWeapon(WeaponTypes weaponType)
     {
+        if (weaponType == WeaponTypes.None)
+            return;
+
         currWeaponType = weaponType;
         foreach (var weaponSet in weaponSetDict)
         {
@@ -93,6 +96,9 @@ public class PlayerAttack : MonoBehaviour
 
     public void SetDamageTime(WeaponTypes type)
     {
+        if (type == WeaponTypes.None)
+            return;
+
         WeaponSet temp = weaponSetDict[type];
 
         AnimationEvent attackSound = new AnimationEvent();
