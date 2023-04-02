@@ -122,6 +122,7 @@ public class BossScorpionKing : Enemy
     {
         base.OnEnable();
         State = EnemyState.None;
+        mainColl.enabled = true;
         projectileCoolTime = 0f;
         areaCoolTime = 0f;
     }
