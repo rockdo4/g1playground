@@ -49,6 +49,7 @@ public class UIItemInfo : MonoBehaviour
     public void SetEmpty()
     {
         equipmentImage.sprite = null;
+        equipmentImage.color = Color.clear;
         itemName.text = string.Empty;
         itemInfo.text = string.Empty;
         //currWeaponImage.sprite = null;
@@ -84,6 +85,7 @@ public class UIItemInfo : MonoBehaviour
         ShowSlider(resultValue);
 
         equipmentImage.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
+        equipmentImage.color = Color.white;
         itemName.text = DataTableMgr.GetTable<NameData>().Get(data.name).name;
         itemInfo.text = DataTableMgr.GetTable<DescData>().Get(data.desc).text;
     }
