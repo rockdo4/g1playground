@@ -64,6 +64,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void SetWeapon(WeaponTypes weaponType)
     {
+        currWeaponType = weaponType;
         foreach (var weaponSet in weaponSetDict)
         {
             if (weaponSet.Value.weaponGameObject != null)

@@ -58,6 +58,7 @@ public class PlayerInventory : MonoBehaviour
         Armors = armors;
         Consumables = consumables;
         CurrWeapon = currWeapon;
+        playerAttack.SetWeapon(DataTableMgr.GetTable<WeaponData>().Get(CurrWeapon).weaponType);
         CurrArmor = currArmor;
         ApplyStatus();
     }
