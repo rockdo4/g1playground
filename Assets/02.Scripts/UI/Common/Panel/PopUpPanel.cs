@@ -27,6 +27,7 @@ public class PopUpPanel : PanelUi
     public PopupUI syntheticPopUp;
     public PopupUI settingPopUp;
     public PopupUI stageRewardPopUp;
+    public PopupUI stageDeathPopUp;
     public PopupUI gamblingPopUp;
     public PopupUI gamblingResult1PopUp;
     public PopupUI gamblingResult10PopUp;
@@ -60,6 +61,7 @@ public class PopUpPanel : PanelUi
         syntheticPopUp = GetComponentInChildren<SyntheticPopUp>(true);
         settingPopUp = GetComponentInChildren<SettingPopUp>(true);
         stageRewardPopUp = GetComponentInChildren<StageRewardPopUp>(true);
+        stageDeathPopUp = GetComponentInChildren<StageDeathPopUp>(true);
         gamblingPopUp = GetComponentInChildren<GamblingPopUp>(true);
         gamblingResult1PopUp = GetComponentInChildren<GamblingResult1PopUp>(true);
         gamblingResult10PopUp = GetComponentInChildren<GamblingResult10PopUp>(true);

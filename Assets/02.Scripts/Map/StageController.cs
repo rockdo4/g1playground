@@ -42,7 +42,7 @@ public class StageController : MonoBehaviour
     public bool IsStoryStage { get { return isStoryStage; } set { isStoryStage = value; } }
     [SerializeField] List<int> storyIdList = new List<int>();
 
-    
+
 
     [Header("Clear Sound Effect")]
     [SerializeField] private string stageClearClip = "Success 1";
@@ -198,7 +198,7 @@ public class StageController : MonoBehaviour
 
         EventManager.instance.ResetCount();
 
-        
+
         //Set enemies
         enemies = new List<GameObject>();
         var childCount = gameObject.transform.childCount;
@@ -262,6 +262,13 @@ public class StageController : MonoBehaviour
         }
 
         StartCoroutine(CoSetUI());
+
+        var playerdeath = GameManager.instance.player.GetComponent<DestructedEvent>();
+
+        if (playerdeath != null) {  
+            playerdeath.OnDestroyEvent = (() => UI.Instance.popupPanel.stageDeathPopUp.ActiveTrue());
+        }
+
         rewarded = false;
     }
 
@@ -347,7 +354,7 @@ public class StageController : MonoBehaviour
             CheckEnemies();
             CheckWalls();
         }
-        if (isClear&&!rewarded)
+        if (isClear && !rewarded)
         {
             rewardCheck();
         }
@@ -391,6 +398,7 @@ public class StageController : MonoBehaviour
             }
         }
 
+
     }
 
     void rewardCheck()
@@ -399,12 +407,12 @@ public class StageController : MonoBehaviour
         {
             if (enemy.gameObject.activeSelf)
             {
-                
+
                 break;
             }
             else if (enemy == enemies.Last())
             {
-                SetReward();                
+                SetReward();
             }
         }
     }
@@ -425,8 +433,8 @@ public class StageController : MonoBehaviour
         var rewardTable = DataTableMgr.GetTable<RewardData>();
         var powder = rewardTable.Get(firstRewardId.ToString()).powder;
         var essnece = rewardTable.Get(firstRewardId.ToString()).essence;
-        var skillpiece= rewardTable.Get(firstRewardId.ToString()).skill_piece;
-        var equipePiece= rewardTable.Get(firstRewardId.ToString()).equipe_piece;
+        var skillpiece = rewardTable.Get(firstRewardId.ToString()).skill_piece;
+        var equipePiece = rewardTable.Get(firstRewardId.ToString()).equipe_piece;
         var exp = rewardTable.Get(firstRewardId.ToString()).exp;
 
         var powderSec = rewardTable.Get(secondRewardId.ToString()).powder;

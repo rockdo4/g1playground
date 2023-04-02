@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
         states.Add(typeof(KnockBackState), new KnockBackState(this));
         states.Add(typeof(AutoMoveState), new AutoMoveState(this));
         SetState<IdleState>();
-        GetComponent<DestructedEvent>().OnDestroyEvent = GameManager.instance.Respawn;
+       // GetComponent<DestructedEvent>().OnDestroyEvent = GameManager.instance.Respawn;
     }
 
     private void Update()
