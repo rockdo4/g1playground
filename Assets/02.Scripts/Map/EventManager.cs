@@ -102,7 +102,6 @@ public class EventManager : MonoBehaviour
     /////////////////////////Story//////////////////////////////////
     public void SetStoryList(List<int> stories)
     {
-        UnityEngine.Debug.Log(stories.Count) ;
         storyList.Clear();
         storyList = stories;
         storyCount = storyList.Count;
@@ -122,15 +121,14 @@ public class EventManager : MonoBehaviour
 
         //Get story and display them
         if (currStoryIndex < storyCount) 
-        {
-            UnityEngine.Debug.Log("Current "+ currStoryIndex);
+        {            
             textDelay = originTextDelay;
             isClickable = false;
             StoryData data = DataTableMgr.GetTable<StoryData>().Get(storyList[currStoryIndex].ToString());
             currStoryIndex++;
 
             var icon = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconId).iconName);
-            Pause();
+            
             switch (int.Parse(data.type))
             {
                 case 0:
@@ -186,15 +184,20 @@ public class EventManager : MonoBehaviour
 
     public void RestStory()
     {
-        UnityEngine.Debug.Log("Reset");
         textDelay = originTextDelay;
         currStoryIndex = 0;
-        Resume();
-        //StopCoroutine("TextAnimationEffect");
+        StopCoroutine("TextAnimationEffect");
+        StopCoroutine("CoPlayStoryDelay");
+        storyText.text = string.Empty;
+        imageText.text = string.Empty;
+        textBoardText.text = string.Empty;
         storyBoard.SetActive(false);
         imageBoard.SetActive(false);
         TextBoard.SetActive(false);
         isPlayingStory = false;
+        isClickable = true;
+        ResetCount();
+        Resume();
     }
 
     //////////////////////Story Board/////////////////////////////////
