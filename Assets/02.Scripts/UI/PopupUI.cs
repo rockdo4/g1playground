@@ -16,10 +16,12 @@ public class PopupUI : MonoBehaviour
     protected virtual void OnEnable()
     {
         Time.timeScale = 0.0f;
+        SoundManager.instance.PauseAll();
     }
 
     protected virtual void OnDisable()
     {
         Time.timeScale = 1.0f;
+        SoundManager.instance.ResumeAll();
     }
 }
