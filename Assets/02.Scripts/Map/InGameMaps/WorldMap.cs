@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WorldMap : MonoBehaviour
 {  
     public void GotoStage(GameObject stage)
     {
         if (stage.GetComponent<StageController>().IsClear)
-        {            
+        {
             SetStage(stage.GetComponent<StageController>());            
         }
         else
@@ -19,6 +20,26 @@ public class WorldMap : MonoBehaviour
 
     public void GoHome(GameObject stage)
     {
+        var player = GameManager.instance.player;
+        var playerController = player.GetComponent<PlayerController>();
+        NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
+        var linkMover = player.GetComponent<AgentLinkMover>();
+
+        playerController.autoToggle.isOn = false;
+        playerController.AgentOff();
+        playerController.AgentOnOff();
+        if (agent.isOnOffMeshLink)
+        {
+            agent.ResetPath();
+            linkMover.enabled = false;
+            linkMover.enabled = true;
+        }
+        else if (agent.isOnNavMesh && !agent.currentOffMeshLinkData.valid)
+        {
+            agent.ResetPath();
+        }
+        player.SetActive(false);
+        player.SetActive(true);
         SetStage(stage.GetComponent<StageController>());
     }
 
@@ -28,16 +49,32 @@ public class WorldMap : MonoBehaviour
         {
             return;
         }
+        var player = GameManager.instance.player;
+        var playerController = player.GetComponent<PlayerController>();
+        NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
+        var linkMover = player.GetComponent<AgentLinkMover>();
+
+        playerController.autoToggle.isOn = false;
+        playerController.AgentOff();
+        playerController.AgentOnOff();
+        if (agent.isOnOffMeshLink)
+        {
+            agent.ResetPath();
+            linkMover.enabled = false;
+            linkMover.enabled = true;
+        }
+        else if (agent.isOnNavMesh && !agent.currentOffMeshLinkData.valid)
+        {
+            agent.ResetPath();
+        }
+        player.SetActive(false);
+        player.SetActive(true);
         GameManager.instance.player.GetComponent<PlayerInventory>().RefillPotions();
         GameManager.instance.player.transform.SetParent(null);
-        var playerController = GameManager.instance.player.GetComponent<PlayerController>();
-        playerController.autoToggle.isOn = false;
-        playerController.AgentOnOff();
 
         MapManager.instance.GetCurrentStageObject().SetActive(false);
         //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).
         //    Find(MapManager.instance.GetCurrentMapName()).gameObject.SetActive(false);
-
 
         stage.gameObject.SetActive(true);
         stage.PrevStageName = MapManager.instance.GetCurrentMapName();

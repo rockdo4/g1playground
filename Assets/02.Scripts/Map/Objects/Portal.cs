@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem.XR;
 
 public class Portal : MonoBehaviour
@@ -51,8 +52,27 @@ public class Portal : MonoBehaviour
         {
             var player = other.GetComponent<PlayerController>();
             bool prevAuto = player.IsAuto;
-            player.autoToggle.isOn = false;
-            player.AgentOnOff();
+            var playerController = player.GetComponent<PlayerController>();
+            NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
+            var linkMover = player.GetComponent<AgentLinkMover>();
+            playerController.autoToggle.isOn = false;
+            playerController.AgentOff();
+            playerController.AgentOnOff();
+            player.GetComponent<PlayerInventory>().RefillPotions();
+            player.transform.SetParent(null);
+
+            if (agent.isOnOffMeshLink)
+            {
+                agent.ResetPath();
+                linkMover.enabled = false;
+                linkMover.enabled = true;
+            }
+            else if (agent.isOnNavMesh && !agent.currentOffMeshLinkData.valid)
+            {
+                agent.ResetPath();
+            }
+            player.gameObject.SetActive(false);
+            player.gameObject.SetActive(true);
             init = true;
             nextStage.gameObject.SetActive(true);
             //player.RemoveAgentLinkMover();
