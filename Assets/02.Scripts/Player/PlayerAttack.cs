@@ -34,6 +34,8 @@ public class PlayerAttack : MonoBehaviour
     private Dictionary<WeaponTypes, WeaponSet> weaponSetDict = new Dictionary<WeaponTypes, WeaponSet>();
     private List<WeaponTypes> weaponSetDictKeys;
 
+    public Action OnSetWeapon;
+
     private void Awake()
     {
         playerAnimator = GetComponent<Animator>();
@@ -81,6 +83,7 @@ public class PlayerAttack : MonoBehaviour
         playerAnimatorOverrider.SetAnimations(weaponSetDict[weaponType].overrideController);
         var speed = weaponSetDict[currWeaponType].attackSpeed * weaponSetDict[currWeaponType].clip.length;
         playerAnimator.SetFloat("AttackSpeed", speed);
+        OnSetWeapon?.Invoke();
     }
 
     public void SetDamageTime(WeaponTypes type)
