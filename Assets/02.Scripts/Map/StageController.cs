@@ -39,7 +39,10 @@ public class StageController : MonoBehaviour
 
     [Header("Stage Story Event")]
     [SerializeField] private bool isStoryStage = false;
+    public bool IsStoryStage { get { return isStoryStage; } set { isStoryStage = value; } }
     [SerializeField] List<int> storyIdList = new List<int>();
+
+    
 
     [Header("Clear Sound Effect")]
     [SerializeField] private string stageClearClip = "Success 1";

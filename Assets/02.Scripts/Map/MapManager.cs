@@ -35,12 +35,12 @@ public class MapManager : MonoBehaviour
     }
 
     private void Awake()
-    {                
+    {
         if (instance != this)
             Destroy(gameObject);
 
         map = GameObject.FindGameObjectWithTag("Map");
-        var chapterCount = map.transform.childCount; 
+        var chapterCount = map.transform.childCount;
         for (int i = 0; i < chapterCount; i++)
         {
             var chapter = map.transform.GetChild(i).gameObject;
@@ -74,9 +74,20 @@ public class MapManager : MonoBehaviour
                     map.IsClear = stage.Value;
                     if (map.name == "Village")
                         map.IsClear = true;
-                 
+
                     if (map.IsClear)
                         map.SetWorldMapButton();
+                }
+            }
+        }
+
+        foreach (var stage in saveData.isStoryStage)
+        {
+            foreach (var map in maps)
+            {
+                if (map.name == stage.Key)
+                {
+                    map.IsStoryStage = stage.Value;
                 }
             }
         }
@@ -90,9 +101,11 @@ public class MapManager : MonoBehaviour
         {
             var newsaveData = new SaveStageDataVer1();
             newsaveData.unlock = new Dictionary<string, bool>();
-            foreach(var m in maps)
+            newsaveData.isStoryStage = new Dictionary<string, bool>();
+            foreach (var m in maps)
             {
                 newsaveData.unlock.Add(m.name, false);
+                newsaveData.isStoryStage.Add(m.name, false);
             }
 
             SaveLoadSystem.Save(newsaveData);
@@ -100,8 +113,10 @@ public class MapManager : MonoBehaviour
             originData = SaveLoadSystem.Load(SaveData.Types.Stage) as SaveStageDataVer1;
         }
         originData.unlock[currentMapName] = true;
-
-
+        if (currentStageObject != null)
+        {
+            originData.isStoryStage[currentMapName] = currentStageObject.GetComponent<StageController>().IsStoryStage;
+        }
         SaveLoadSystem.Save(originData);
     }
 
@@ -142,7 +157,7 @@ public class MapManager : MonoBehaviour
 
     public void SetcurrentChapterName(string name)
     {
-        currentChapterName = name;        
+        currentChapterName = name;
         currentChapterObject = GameObject.Find(name);
 
         if (prevChaperName != currentChapterName)
@@ -157,8 +172,8 @@ public class MapManager : MonoBehaviour
                     SoundManager.instance.ChangeBgm(chapterNumber);
                 }
             }
-            
-            
+
+
         }
     }
 

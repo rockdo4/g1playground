@@ -13,6 +13,7 @@ public class SaveData
         CheckPoint,
         Stage,
         Count,
+        Story,
     }
     public Types type = Types.None;
     public int version;
