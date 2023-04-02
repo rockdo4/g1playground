@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.Rendering;
 
 public class Portal : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Portal : MonoBehaviour
     private GameObject nextStage;
     [SerializeField]
     private GameObject pos;
+    private float staytime = 0;
     public bool CanUse { get; set; }
 
     [SerializeField] private string enterPortalClip = "Stone Debris 3_5";
@@ -35,18 +37,8 @@ public class Portal : MonoBehaviour
 
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    private void MoveToSomewhere(Collider other)
     {
-        if (!CanUse && other.GetComponent<ObjectMass>() != null)
-        {
-            CanUse = false;
-            return;
-        }
-
-        if (!CanUse)
-            return;
-
         if (other.CompareTag("Player") && other.GetComponent<ObjectMass>() != null)
         {
             var player = other.GetComponent<PlayerController>();
@@ -79,10 +71,10 @@ public class Portal : MonoBehaviour
                         player.AgentOnOff();
                     }
 
-                    
+
 
                     transform.parent.gameObject.SetActive(false);
-                  
+
 
                     SoundManager.instance.PlaySoundEffect(enterPortalClip);
 
@@ -93,12 +85,33 @@ public class Portal : MonoBehaviour
         }
     }
 
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!CanUse && other.GetComponent<ObjectMass>() != null)
+        {
+            CanUse = false;
+            return;
+        }
+
+        if (!CanUse)
+            return;
+
+        staytime += Time.deltaTime;
+        if (staytime >= 0.4f)
+        {
+            MoveToSomewhere(other);
+            staytime = 0;
+        }
+    }
+
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             CanUse = true;
-
+            staytime = 0;
         }
 
     }
