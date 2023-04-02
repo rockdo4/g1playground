@@ -18,7 +18,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] public AudioSource bgmSource;
     [SerializeField] public AudioSource seSource;
     //[SerializeField] public AudioSource playerSource;
-    [SerializeField] public AudioSource enemySource;   
+    [SerializeField] public AudioSource enemySource;
 
     [Header("BGMs")]
     [SerializeField] public List<AudioClip> bgmClips = new List<AudioClip>();
@@ -106,7 +106,7 @@ public class SoundManager : MonoBehaviour
         //singleton
         if (instance != this)
         {
-            
+
             Destroy(gameObject);
         }
 
@@ -146,7 +146,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public void ChangeBgm(Chapter.ChapterNumber number)
-    {        
+    {
         switch (number)
         {
             case Chapter.ChapterNumber.Village:
@@ -159,7 +159,7 @@ public class SoundManager : MonoBehaviour
                 PlayBGM(ch2BGM);
                 break;
         }
-        
+
     }
 
     //stop Bgm
@@ -197,12 +197,12 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-   
+
     //play SE by audio clip
     public void PlaySoundEffect(AudioClip clip)
     {
         //seSource.Stop();
-        seSource.PlayOneShot(clip);   
+        seSource.PlayOneShot(clip);
     }
 
     //Play Player SoundEffect by searching sound clip
@@ -261,7 +261,7 @@ public class SoundManager : MonoBehaviour
             {
                 pSource.PauseAudio();
             }
-            
+
         }
     }
 
@@ -346,7 +346,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip GetAudioClip(string name)
     {
         AudioClip audioClip = null;
-        foreach (var clip in  seClips)
+        foreach (var clip in seClips)
         {
             if (clip.name == name)
             {
