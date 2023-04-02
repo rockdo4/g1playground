@@ -81,6 +81,7 @@ public class DungeonManager : MonoBehaviour
     private Status playerStatus;
 
     private PlayerInventory inven;
+    StringBuilder scenename = new StringBuilder();
 
     void OnEnable()
     {
@@ -152,7 +153,10 @@ public class DungeonManager : MonoBehaviour
             remaningtime.gameObject.SetActive(false);
             // PlayerDataManager.instance.LoadPlayerHpMp();
             PlayerDataManager.instance.LoadFile();
-           // PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
+            GameManager.instance.player.GetComponent<Status>().Restore();         
+
+
+            // PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
         }
 
     }
@@ -263,23 +267,94 @@ public class DungeonManager : MonoBehaviour
                 }
                 if (enemy.Equals(enemies.Last()))
                 {
+                    SaveFile();
+                    SetReward();
+
                     Result.transform.Find("Win").transform.Find("Retry").gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"({attempt}/3 retry)";
 
                     //  Time.timeScale = 0;
                     Result.gameObject.SetActive(true);
                     Result.transform.Find("Win").gameObject.SetActive(true);
-                    Result.transform.Find("Win").transform.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - time))).ToString();
-                    Result.transform.Find("Win").transform.Find("Reward").transform.Find("RewardCount").GetComponentInChildren<TextMeshProUGUI>().text = dungeonTable.Get(SelectedLevel.ToString()).itemcount.ToString();
+                    //Result.transform.Find("Win").transform.Find("PlayedTime").GetComponentInChildren<TextMeshProUGUI>().text = ((int)((dungeonTable.Get(SelectedLevel.ToString()).countdown - time))).ToString();
+                    //Result.transform.Find("Win").transform.Find("Reward").transform.Find("RewardCount").GetComponentInChildren<TextMeshProUGUI>().text = dungeonTable.Get(SelectedLevel.ToString()).itemcount.ToString();
                     // Result.transform.Find("Win").transform.Find("Reward").GetComponentInChildren<UnityEngine.UI.Image>().sprite=
                     if (lv == instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level)
                         ++lv;
-                    SaveFile();
+                    
+                   
+                    PlayerDataManager.instance.SaveInventory();
+                    PlayerDataManager.instance.SaveLevel();
+                    PlayerDataManager.instance.SaveSkills();
                     isDungeon = false;
                 }
 
             }
         }
 
+
+    }
+
+    private void SetReward()
+    {
+       
+        var rewardUi = Result.transform.Find("Win").Find("Reward").Find("RewardImages");
+                
+
+        List<GameObject> rewardUiList = new List<GameObject>();
+        string rewardId = scenename.ToString();
+        var rewardTable = DataTableMgr.GetTable<RewardData>();
+        var powder = rewardTable.Get(rewardId.ToString()).powder;
+        var essnece = rewardTable.Get(rewardId.ToString()).essence;
+        var skillpiece = rewardTable.Get(rewardId.ToString()).skill_piece;
+        var equipePiece = rewardTable.Get(rewardId.ToString()).equipe_piece;
+        var exp = rewardTable.Get(rewardId.ToString()).exp;
+
+        var secRewardID =rewardId+"S";
+        var powderSec = rewardTable.Get(secRewardID.ToString()).powder;
+        var essneceSec = rewardTable.Get(secRewardID.ToString()).essence;
+        var skillpieceSec = rewardTable.Get(secRewardID.ToString()).skill_piece;
+        var equipePieceSec = rewardTable.Get(secRewardID.ToString()).equipe_piece;
+        var expSec = rewardTable.Get(secRewardID.ToString()).exp;
+
+
+        for (int i = 0; i < rewardUi.transform.childCount; i++)
+        {
+            rewardUiList.Add(rewardUi.transform.GetChild(i).gameObject);
+        }
+
+        if (lv== instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level)
+        {
+            //poweder set
+            rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powder.ToString();
+            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powder);
+
+            rewardUiList[1].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = essnece.ToString();
+            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40004", essnece);
+
+            rewardUiList[2].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = skillpiece.ToString();
+
+            rewardUiList[3].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = equipePiece.ToString();
+
+            rewardUiList[4].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = exp.ToString();
+            GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += exp;
+        }
+        else
+        {
+            //poweder set
+            rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powderSec.ToString();
+            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powderSec);
+
+            rewardUiList[1].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = essneceSec.ToString();
+            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40004", essneceSec);
+
+            rewardUiList[2].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = skillpieceSec.ToString();
+
+            rewardUiList[3].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = equipePieceSec.ToString();
+
+            rewardUiList[4].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = expSec.ToString();
+            GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += expSec;
+
+        }
 
     }
 
@@ -339,6 +414,7 @@ public class DungeonManager : MonoBehaviour
 
     public void JoinDungeon()
     {
+        scenename.Clear();
         int temp = Int32.Parse(attempt);
 
         if (temp >= 3)
@@ -355,7 +431,6 @@ public class DungeonManager : MonoBehaviour
         Result.gameObject.SetActive(false);
         Result.transform.Find("Win").gameObject.SetActive(false);
         Result.transform.Find("Lose").gameObject.SetActive(false);
-        StringBuilder scenename = new StringBuilder();
         dungeonLevel.gameObject.SetActive(false);
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
         scenename.Append("_");
@@ -363,6 +438,7 @@ public class DungeonManager : MonoBehaviour
         PlayerDataManager.instance.SaveFile();
 
         SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        Debug.Log(scenename);
         SceneManager.LoadScene(scenename.ToString(), LoadSceneMode.Additive);
 
 
@@ -401,7 +477,7 @@ public class DungeonManager : MonoBehaviour
         PlayerDataManager.instance.LoadPlayer();
         PlayerDataManager.instance.LoadInventory();
         PlayerDataManager.instance.LoadSkills();
-
+        player.GetComponent<Status>().Restore();
     }
 
     public void RefillAttempt()

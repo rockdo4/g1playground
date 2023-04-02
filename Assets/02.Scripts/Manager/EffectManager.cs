@@ -70,8 +70,11 @@ public class EffectManager : MonoBehaviour
 
         ResetParent();
 
-        effect.SetActive(false);
-        effectPool[effectName].Enqueue(effect);
+        if (effect != null)
+        {
+            effect.SetActive(false);
+            effectPool[effectName].Enqueue(effect);
+        }
     }
 
     private void ResetParent()

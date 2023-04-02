@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
@@ -106,6 +107,8 @@ public class MapManager : MonoBehaviour
 
     public void SetCurrentMapName(string name)
     {
+        if (SceneManager.GetActiveScene().name != "Scene02")
+            return;
         if (currentStageObject != null)
         {
             currentStageObject.SetActive(false);
