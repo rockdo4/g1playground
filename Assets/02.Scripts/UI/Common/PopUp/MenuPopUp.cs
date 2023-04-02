@@ -32,8 +32,24 @@ public class MenuPopUp : PopupUI
         setting = GetComponentInChildren<SettingButton>(true);
     }
 
+    private void Init()
+    {
+        if (skill == null)
+        {
+            skill = GetComponentInChildren<SkillButton>(true);
+            item = GetComponentInChildren<ItemButton>(true);
+            exit = GetComponentInChildren<ExitButton>(true);
+            reinforce = GetComponentInChildren<EnhanceButton>(true);
+            synthetic = GetComponentInChildren<SyntheticButton>(true);
+            disassemble = GetComponentInChildren<DisassembleButton>(true);
+            gambling = GetComponentInChildren<GambleButton>(true);
+            setting = GetComponentInChildren<SettingButton>(true);
+        }
+    }
+
     public void SetTutorial()
     {
+        Init();
         skill.ActivateButton(true);
         //equip.ActivateButton(true);
         item.ActivateButton(false);
@@ -49,6 +65,7 @@ public class MenuPopUp : PopupUI
     }
     public void SetDefault()
     {
+        Init();
         skill.ActivateButton(true);
         //equip.ActivateButton(true);
         item.ActivateButton(false);
@@ -63,6 +80,7 @@ public class MenuPopUp : PopupUI
 
     public void SetVillage()
     {
+        Init();
         skill.ActivateButton(true);
         //equip.ActivateButton(true);
         item.ActivateButton(false);
