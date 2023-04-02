@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,7 @@ public class UiDisassemble : MonoBehaviour
     public UiDisassembleInfo info;
     public Button reinforceButton;
     public GameObject resultPopup;
+    public TextMeshProUGUI resultCount;
 
     private void Awake()
     {
@@ -185,6 +187,18 @@ public class UiDisassemble : MonoBehaviour
         if (currSlot == -1)
             return;
 
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
+        {
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
+        var lastPowderCount = playerInventory.GetConsumableCount(powderId);
+
         int index = 0;
         switch (type)
         {
@@ -199,6 +213,7 @@ public class UiDisassemble : MonoBehaviour
         ReinforceSystem.Disassemble(type, index);
         currSlot = -1;
         info.SetEmpty();
+        resultCount.text = (playerInventory.GetConsumableCount(powderId) - lastPowderCount).ToString();
         StartCoroutine(CoShowResult());
         SetInventory((int)type);
     }
