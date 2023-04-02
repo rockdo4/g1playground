@@ -100,7 +100,7 @@ public class SceneLoader : MonoBehaviour
                 {
                     op.allowSceneActivation = true;
 
-                    text.text = "Complelate!";
+                    text.text = "Complete!";
                     yield break;
                 }
             }

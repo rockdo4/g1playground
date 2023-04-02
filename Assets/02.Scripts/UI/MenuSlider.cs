@@ -9,13 +9,13 @@ public class MenuSlider : MonoBehaviour
     //public CharacterProfile characterProfile;
     //public SkillButton skillButton;
     //public EquipButton equipButton;
-    //public EnhanceButton enhanceButton;
+    public EnhanceButton enhanceButton;
     //public MapButton mapButton;
     //public ItemButton itemButton;
-    //public DisassembleButton disassembleButton;
-    //public SyntheticButton syntheticButton;
+    public DisassembleButton disassembleButton;
+    public SyntheticButton syntheticButton;
     //public BookButton bookButton;
-    //public GambleButton gambleButton;
+    public GambleButton gambleButton;
     //public SettingButton settingButton;
 
     //ButtonUi nowState;
@@ -25,13 +25,13 @@ public class MenuSlider : MonoBehaviour
         //characterProfile = GetComponentInChildren<CharacterProfile>(true);
         //skillButton = GetComponentInChildren<SkillButton>(true);
         //equipButton = GetComponentInChildren<EquipButton>(true);
-        //enhanceButton = GetComponentInChildren<EnhanceButton>(true);
+        enhanceButton = GetComponentInChildren<EnhanceButton>(true);
         //mapButton = GetComponentInChildren<MapButton>(true);
         //itemButton = GetComponentInChildren<ItemButton>(true);
-        //disassembleButton = GetComponentInChildren<DisassembleButton>(true);
-        //syntheticButton = GetComponentInChildren<SyntheticButton>(true);
+        disassembleButton = GetComponentInChildren<DisassembleButton>(true);
+        syntheticButton = GetComponentInChildren<SyntheticButton>(true);
         //bookButton = GetComponentInChildren<BookButton>(true);
-        //gambleButton = GetComponentInChildren<GambleButton>(true);
+        gambleButton = GetComponentInChildren<GambleButton>(true);
         //settingButton = GetComponentInChildren<SettingButton>(true);
     }
     // Start is called before the first frame update
