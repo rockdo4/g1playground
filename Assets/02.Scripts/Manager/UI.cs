@@ -44,7 +44,10 @@ public class UI : MonoBehaviour
         bool isEqual = sceneName.Equals("Title", StringComparison.OrdinalIgnoreCase);
 
         if (isEqual)
+        { 
             title = GetComponentInChildren<TitleLayout>(true);
+            return;
+        }
 
         InitGetComponent();
         //popupPanel = GetComponentInChildren<PopUpPanel>(true);

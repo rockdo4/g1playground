@@ -35,6 +35,12 @@ public class PopUpPanel : PanelUi
     public PopupUI probabilityPopUp;
     public MenuSlider menuSlider;
 
+    public override void ActiveTrue()
+    {
+        base.ActiveTrue();
+        Init();
+    }
+
     private void Awake()
     {
         Init();
@@ -163,6 +169,6 @@ public class PopUpPanel : PanelUi
 
     void Update()
     {
-        
+
     }
 }
