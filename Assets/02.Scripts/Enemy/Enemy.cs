@@ -106,6 +106,7 @@ public class Enemy : MonoBehaviour
     {
         Vector3 dir = player.transform.position - transform.position;
         dir.y = 0;
+
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
 
         if (dir.x == 0f)
@@ -114,7 +115,33 @@ public class Enemy : MonoBehaviour
         if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
             return true;
 
-        return false;
+        return true;
+        //// 방향 벡터의 크기가 0이 아닌지 확인
+        //if (dir.sqrMagnitude > 0.0f)
+        //{
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+
+        //    if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
+        //        return true;
+        //}
+        //else if (dir.sqrMagnitude < 0.0f)
+        //{
+        //    // 방향 벡터의 크기가 0인 경우, 예외 처리를 추가합니다.
+        //    // 여기서는 false를 반환하거나 필요한 처리를 수행할 수 있습니다.
+        //    return false;
+        //}
+
+        //return false;
+
+        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+
+        //if (dir.x == 0f)
+        //    return true;
+
+        //if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
+        //    return true;
+
+        //return false;
     }
     protected bool LookAtPos(Vector3 targetPos)
     {
@@ -195,12 +222,27 @@ public class Enemy : MonoBehaviour
 
     protected bool AngleIgnoringHeight(float angle)
     {
-        return Quaternion.Angle(
-            transform.rotation,
-            Quaternion.LookRotation(
-                new Vector3(player.transform.position.x, 0, player.transform.position.z) -
-                new Vector3(transform.position.x, 0, transform.position.z)).normalized)
-            <= angle;
+        Vector3 playerDirection = new Vector3(player.transform.position.x, 0, player.transform.position.z) -
+                              new Vector3(transform.position.x, 0, transform.position.z);
+
+        if (playerDirection.sqrMagnitude > 0.0f)
+        {
+            return Quaternion.Angle(
+                transform.rotation,
+                Quaternion.LookRotation(playerDirection.normalized))
+                <= angle;
+        }
+        else
+        {
+
+            return true;
+        }
+        //return Quaternion.Angle(
+        //    transform.rotation,
+        //    Quaternion.LookRotation(
+        //        new Vector3(player.transform.position.x, 0, player.transform.position.z) -
+        //        new Vector3(transform.position.x, 0, transform.position.z)).normalized)
+        //    <= angle;
     }
 
 
