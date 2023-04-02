@@ -55,6 +55,8 @@ public class PlayerLevelManager : MonoBehaviour
 
     public void LevelUp()
     {
+        if (Level >= maxLevel)
+            return;
         SetLevel(Level + 1);
         GameObject player=GameManager.instance.player;
         GameObject effect = GameManager.instance.effectManager.GetEffect("Level_up");
