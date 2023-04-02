@@ -76,6 +76,23 @@ public class MenuSlider : MonoBehaviour
     //}
 
     // Update is called once per frame
+
+    public void SetNotDefaultMenu()
+    {
+        enhanceButton.ActivateButton(false);
+        disassembleButton.ActivateButton(false);
+        syntheticButton.ActivateButton(false);
+        gambleButton.ActivateButton(false);
+    }
+
+    public void SetDefaultMenu()
+    {
+        enhanceButton.ActivateButton(true);
+        disassembleButton.ActivateButton(true);
+        syntheticButton.ActivateButton(true);
+        gambleButton.ActivateButton(true);
+    }
+
     void Update()
     {
 
