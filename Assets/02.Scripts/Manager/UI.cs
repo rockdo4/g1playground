@@ -126,11 +126,7 @@ public class UI : MonoBehaviour
 
     public void SetVillageUi()
     {
-
-        Debug.Log("Uibefor");
         InitGetComponent();
-        Debug.Log("UiMid");
-
         popupPanel.ActiveTrue();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
@@ -143,7 +139,6 @@ public class UI : MonoBehaviour
         UI.Instance.popupPanel.menuPopUp.SetVillage();
         minimapPanel.ActiveFalse();
         sceneName= "Village";
-        Debug.Log("Uiafter");
 
     }
 

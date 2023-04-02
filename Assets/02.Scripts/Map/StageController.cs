@@ -306,13 +306,10 @@ public class StageController : MonoBehaviour
                 UI.Instance.SetBattle();
                 break;
             case UnLockRequirement.Puzzle:
-                Debug.Log("Stagecontroller");
                 UI.Instance.SetVillageUi();
                 break;
             case UnLockRequirement.Heal:
                 UI.Instance.SetVillageUi();
-                Debug.Log("Stagecontroller");
-
                 break;
         }
     }
