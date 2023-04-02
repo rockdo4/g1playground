@@ -287,7 +287,7 @@ public class MiniMap : MonoBehaviour
             }
         }
 
-        var currentEnemies = MapManager.instance.GetCurrentStageObject().GetComponentsInChildren<EnemyController>();
+        var currentEnemies = MapManager.instance.GetCurrentStageObject().GetComponentsInChildren<Enemy>();
         for (int i = 0; i < currentEnemies.Length; i++)
         {
             float x = (currentEnemies[i].transform.position.x - LB.x) / rect.width;
