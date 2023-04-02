@@ -75,6 +75,8 @@ public class PlayerInventory : MonoBehaviour
         else
             Weapons[index] = temp;
         ApplyStatus();
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void SetArmor(int index)
@@ -88,6 +90,8 @@ public class PlayerInventory : MonoBehaviour
         else
             Armors[index] = temp;
         ApplyStatus();
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void ApplyStatus()
