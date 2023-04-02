@@ -65,15 +65,18 @@ public class StageController : MonoBehaviour
     private List<GameObject> greenWall;
     private bool greenwallopen = true;
 
+    [SerializeField]
+    private GameObject RewardBox;
+
     public string PrevStageName { get; set; }
 
     public static RectTransform minimapPlayerpos;
 
+    private bool rewarded = false;
     [SerializeField]
     private int firstRewardId;
     [SerializeField]
     private int secondRewardId;
-    private bool rewarded = false;
     // private EachCorner eachCorner;
     private void Awake()
     {
@@ -265,10 +268,13 @@ public class StageController : MonoBehaviour
 
         var playerdeath = GameManager.instance.player.GetComponent<DestructedEvent>();
 
-        if (playerdeath != null) {  
+        if (playerdeath != null)
+        {
             playerdeath.OnDestroyEvent = (() => UI.Instance.popupPanel.stageDeathPopUp.ActiveTrue());
         }
 
+        if (RewardBox != null)
+            RewardBox.SetActive(false);
         rewarded = false;
     }
 
@@ -337,6 +343,8 @@ public class StageController : MonoBehaviour
 
     private void Update()
     {
+        //Debug.Log(IsClear);
+
         foreach (var swit in switches)
         {
             if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
@@ -354,16 +362,18 @@ public class StageController : MonoBehaviour
             CheckEnemies();
             CheckWalls();
         }
-        if (isClear && !rewarded)
-        {
-            rewardCheck();
-        }
+
 
         if (isClear && isStoryStage)
         {
             isStoryStage = false;
             EventManager.instance.SetStoryList(storyIdList);
             EventManager.instance.ChangeColorEffect(transform.name);
+        }
+
+        if (isClear && !rewarded)
+        {
+            rewardCheck();
         }
 
         if (canOpen || isClear)
@@ -412,16 +422,21 @@ public class StageController : MonoBehaviour
             }
             else if (enemy == enemies.Last())
             {
-                SetReward();
+                if (RewardBox != null)
+                {
+                    RewardBox.SetActive(true);
+                    RewardBox.GetComponent<GoldBox>().isFirst = IsClear;
+                    rewarded = true;
+
+                }
             }
         }
     }
 
-    private void SetReward()
+    public void SetReward(bool isSecond)
     {
         if (SceneManager.GetActiveScene().name != "Scene02")
         {
-            rewarded = true;
             return;
         }
         //  GameManager.instance.ui.popupPanel.gameObject.SetActive(false);
@@ -449,8 +464,9 @@ public class StageController : MonoBehaviour
             rewardUiList.Add(rewardUi.transform.GetChild(i).gameObject);
         }
 
-        if (!isClear)
+        if (!isSecond)
         {
+            Debug.Log("firstreward");
             //poweder set
             rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powder.ToString();
             GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powder);
@@ -467,6 +483,7 @@ public class StageController : MonoBehaviour
         }
         else
         {
+
             //poweder set
             rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powderSec.ToString();
             GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powderSec);
@@ -482,8 +499,6 @@ public class StageController : MonoBehaviour
             GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += expSec;
 
         }
-
-        rewarded = true;
     }
 
     private void CheckEnemies()
@@ -507,10 +522,19 @@ public class StageController : MonoBehaviour
                     }
                     //Clear Sound
                     SoundManager.instance.PlaySoundEffect(stageClearClip);
-                    SetReward();
+                    if (RewardBox != null)
+                    {
+                        RewardBox.GetComponent<GoldBox>().isFirst = IsClear;
+                    }
                     isClear = true;
                     canOpen = true;
                     greenwallopen = true;
+                    rewarded = true;
+                    if (RewardBox != null)
+                    {
+                        RewardBox.SetActive(true);
+                    }
+
                     if (SceneManager.GetActiveScene().name == "Scene02")
                         MapManager.instance.SaveProgress();
 
