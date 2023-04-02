@@ -193,9 +193,10 @@ public class AttackedCC : MonoBehaviour, IAttackable
 
         if (stunEffect == null)
         {
-            stunEffect = GameManager.instance.effectManager.GetEffect("Stun");
-            stunEffect.transform.position = transform.position;
-            stunEffect.transform.SetParent(transform);
+            //stunEffect = GameManager.instance.effectManager.GetEffect("Stun");
+            //var y = GetComponent<CapsuleCollider>().bounds.max.y + 1.5f;
+            //stunEffect.transform.SetParent(transform);
+            //stunEffect.transform.localPosition = new Vector3(0, y,0);
         }
     }
 
@@ -219,9 +220,9 @@ public class AttackedCC : MonoBehaviour, IAttackable
 
         if (slowDownEffect == null)
         {
-            slowDownEffect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow(blue)");
-            slowDownEffect.transform.position = transform.position;
-            slowDownEffect.transform.SetParent(transform);
+            //slowDownEffect = GameManager.instance.effectManager.GetEffect("Fog_speedSlow(blue)");
+            //slowDownEffect.transform.position = transform.position;
+            //slowDownEffect.transform.SetParent(transform);
 
         }
     }
