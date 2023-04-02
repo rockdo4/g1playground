@@ -20,6 +20,7 @@ public class UIItemSlot : MonoBehaviour
         data = null;
         button.interactable = false;
         icon.sprite = null;
+        icon.color = Color.clear;
     }
 
     public void Set(int index, ItemData data)
@@ -30,6 +31,7 @@ public class UIItemSlot : MonoBehaviour
         this.data = data;
         button.interactable = true;
         icon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
+        icon.color = Color.white;
     }
 
     public void IsEquiped(bool equiped)
