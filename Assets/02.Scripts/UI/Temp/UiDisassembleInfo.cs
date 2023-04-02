@@ -31,6 +31,7 @@ public class UiDisassembleInfo : MonoBehaviour
                     image.sprite = Resources.Load<Sprite>(iconTable.Get(data.iconSpriteId).iconName);
                     itemname.text = DataTableMgr.GetTable<NameData>().Get(data.name).name;
                     itemdesc.text = DataTableMgr.GetTable<DescData>().Get(data.desc).text;
+                    image.transform.localScale = new Vector3(1, 1, 1);
                 }
                 break;
             case ReinforceSystem.Types.Armor:
@@ -39,6 +40,7 @@ public class UiDisassembleInfo : MonoBehaviour
                     image.sprite = Resources.Load<Sprite>(iconTable.Get(data.iconSpriteId).iconName);
                     itemname.text = DataTableMgr.GetTable<NameData>().Get(data.name).name;
                     itemdesc.text = DataTableMgr.GetTable<DescData>().Get(data.desc).text;
+                    image.transform.localScale = new Vector3(1, 1, 1);
                 }
                 break;
             case ReinforceSystem.Types.Skill:
@@ -47,6 +49,7 @@ public class UiDisassembleInfo : MonoBehaviour
                     image.sprite = Resources.Load<Sprite>(iconTable.Get(data.iconSpriteId).iconName);
                     itemname.text = DataTableMgr.GetTable<NameData>().Get(data.name).name;
                     itemdesc.text = DataTableMgr.GetTable<DescData>().Get(data.desc).text;
+                    image.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 }
                 break;
         }

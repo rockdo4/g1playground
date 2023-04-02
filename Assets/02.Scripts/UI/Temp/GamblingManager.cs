@@ -22,8 +22,6 @@ public class GamblingManager : MonoBehaviour
     private UIInventory itemInventory;
     private UISkillInventory skillInventory;
 
-    private int powderCount;
-
     private void Awake()
     {
         playerInventory = GameManager.instance.player.GetComponent<PlayerInventory>();
@@ -32,16 +30,21 @@ public class GamblingManager : MonoBehaviour
         skillDrawDatas = DataTableMgr.GetTable<SkillDrawData>().GetTable();
         itemInventory = GameManager.instance.uiManager.itemInventory.GetComponent<UIInventory>();
         skillInventory = GameManager.instance.uiManager.skillInventory.GetComponent<UISkillInventory>();
-        SetPowderCount();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        skillPowderCount.text = powderCount.ToString();
-        equipPowderCount.text = powderCount.ToString();
+        ShowPowderCount();
     }
 
-    public void SetPowderCount()
+    private void ShowPowderCount()
+    {
+        var count = GetPowderCount();
+        skillPowderCount.text = count.ToString();
+        equipPowderCount.text = count.ToString();
+    }
+
+    public int GetPowderCount()
     {
         var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
         string powderId = null;
@@ -53,7 +56,7 @@ public class GamblingManager : MonoBehaviour
                 break;
             }
         }
-        powderCount = playerInventory.GetConsumableCount(powderId);
+        return playerInventory.GetConsumableCount(powderId);
     }
 
     public void TryOne()
@@ -68,12 +71,12 @@ public class GamblingManager : MonoBehaviour
                 break;
             }
         }
-        if (powderCount >= 300)
+        if (GetPowderCount() >= 300)
         {
             playerInventory.UseConsumable(powderId, 300);
-            powderCount = playerInventory.GetConsumableCount(powderId);
             reward.SetActive(true);
             GetEquipments(1);
+            ShowPowderCount();
         }
         else
             materialPopUp.SetActive(true);
@@ -91,12 +94,12 @@ public class GamblingManager : MonoBehaviour
                 break;
             }
         }
-        if (powderCount >= 2700)
+        if (GetPowderCount() >= 2700)
         {
             playerInventory.UseConsumable(powderId, 2700);
-            powderCount = playerInventory.GetConsumableCount(powderId);
             rewardTen.SetActive(true);
             GetEquipments(10);
+            ShowPowderCount();
         }
         else
             materialPopUp.SetActive(true);
@@ -114,12 +117,12 @@ public class GamblingManager : MonoBehaviour
                 break;
             }
         }
-        if (powderCount >= 300)
+        if (GetPowderCount() >= 300)
         {
             playerInventory.UseConsumable(powderId, 300);
-            powderCount = playerInventory.GetConsumableCount(powderId);
             reward.SetActive(true);
             GetSkills(1);
+            ShowPowderCount();
         }        
         else
             materialPopUp.SetActive(true);
@@ -137,12 +140,12 @@ public class GamblingManager : MonoBehaviour
                 break;
             }
         }
-        if (powderCount >= 300)
+        if (GetPowderCount() >= 300)
         {
             playerInventory.UseConsumable(powderId, 2700);
-            powderCount = playerInventory.GetConsumableCount(powderId);
             rewardTen.SetActive(true);
             GetSkills(10);
+            ShowPowderCount();
         }                
         else
             materialPopUp.SetActive(true);
@@ -161,13 +164,13 @@ public class GamblingManager : MonoBehaviour
             var tempId = list[0];
             if (int.Parse(tempId[0].ToString()) == 2)
             {
-                playerInventory.Weapons.Add(tempId);
+                playerInventory.AddWeapon(tempId);
                 reward.GetComponent<RewardPanel>().OpenRewardPopUp(tempId);
                 // 무기 갯수
             }
             else
             {
-                playerInventory.Armors.Add(tempId);
+                playerInventory.AddArmor(tempId);
                 reward.GetComponent<RewardPanel>().OpenRewardPopUp(tempId);
                 // 방어구 갯수
             }
@@ -179,11 +182,11 @@ public class GamblingManager : MonoBehaviour
                 var tempId = list[i];
                 if (int.Parse(tempId[0].ToString()) == 2)
                 {
-                    playerInventory.Weapons.Add(tempId);
+                    playerInventory.AddWeapon(tempId);
                 }
                 else
                 {
-                    playerInventory.Armors.Add(tempId);
+                    playerInventory.AddArmor(tempId);
                 }
             }
             rewardTen.GetComponent<RewardPanel>().OpenTenRewardPopUp(list.ToArray());
@@ -238,7 +241,7 @@ public class GamblingManager : MonoBehaviour
         if (count == 1)
         {
             var tempId = list[0];
-            playerSkills.PossessedSkills.Add(tempId);
+            playerSkills.AddSkill(tempId);
             reward.GetComponent<RewardPanel>().OpenRewardPopUp(tempId);
         }
         else
@@ -246,7 +249,7 @@ public class GamblingManager : MonoBehaviour
             for (var i = 0; i < count; ++i)
             {
                 var tempId = list[i];
-                playerSkills.PossessedSkills.Add(tempId);
+                playerSkills.AddSkill(tempId);
             }
             rewardTen.GetComponent<RewardPanel>().OpenTenRewardPopUp(list.ToArray());
         }

@@ -124,6 +124,9 @@ public class UiReinforceInfo : MonoBehaviour
                 material1.sprite = Resources.Load<Sprite>(iconTable.Get(weaponTable.Get(data.material1).iconSpriteId).iconName);
                 material2.sprite = powderSprite;
                 material3.sprite = essenceSprite;
+                resultImage.transform.localScale = new Vector3(1, 1, 1);
+                material1.transform.localScale = new Vector3(1, 1, 1);
+                material2.transform.localScale = new Vector3(1, 1, 1);
                 break;
             case ReinforceSystem.Types.Armor:
                 resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
@@ -132,6 +135,10 @@ public class UiReinforceInfo : MonoBehaviour
                 material1.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.material1).iconSpriteId).iconName);
                 material2.sprite = powderSprite;
                 material3.sprite = essenceSprite;
+                resultImage.transform.localScale = new Vector3(1, 1, 1);
+                material1.transform.localScale = new Vector3(1, 1, 1);
+                material2.transform.localScale = new Vector3(1, 1, 1);
+
                 break;
             case ReinforceSystem.Types.Skill:
                 resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
@@ -140,6 +147,9 @@ public class UiReinforceInfo : MonoBehaviour
                 material1.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.material1.ToString()).iconSpriteId).iconName);
                 material2.sprite = Resources.Load<Sprite>(iconTable.Get(ReinforceSystem.GetSkillMaterial(data.material1).iconSpriteId).iconName);
                 material3.sprite = powderSprite;
+                resultImage.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+                material1.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+                material2.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 break;
         }
         return true;
