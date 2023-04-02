@@ -9,10 +9,13 @@ using UnityEngine.SceneManagement;
 public class TitlePanel : PanelUi, IPointerDownHandler
 {
     public CrewButton crewButton;
+    public ResetButton resetButton;
 
     public TextMeshProUGUI text;
     public float fadeInDuration = 0.2f;
     public float fadeOutDuration = 0.5f;
+
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (!IsPointerOverUIObject(eventData))
@@ -35,6 +38,7 @@ public class TitlePanel : PanelUi, IPointerDownHandler
     private void Awake()
     {
         crewButton = GetComponentInChildren<CrewButton>(true);
+        resetButton = GetComponentInChildren<ResetButton>(true);
         //text = GetComponentInChildren<TextMeshProUGUI>();
     }
     private void OnEnable()
