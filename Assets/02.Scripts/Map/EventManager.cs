@@ -102,9 +102,11 @@ public class EventManager : MonoBehaviour
     /////////////////////////Story//////////////////////////////////
     public void SetStoryList(List<int> stories)
     {
+        storyList.Clear();
         storyList = stories;
         storyCount = storyList.Count;
         isPlayingStory = true;
+        currStoryIndex = 0;
     }
 
     public void PlayStory()
@@ -186,7 +188,7 @@ public class EventManager : MonoBehaviour
         textDelay = originTextDelay;
         currStoryIndex = 0;
         Resume();
-        StopCoroutine("TextAnimationEffect");
+        //StopCoroutine("TextAnimationEffect");
         storyBoard.SetActive(false);
         imageBoard.SetActive(false);
         TextBoard.SetActive(false);
@@ -207,9 +209,10 @@ public class EventManager : MonoBehaviour
     {
         if (storyBoard.activeSelf)
         {
-            currStoryIndex = 0;
-            Resume();
-            storyBoard.SetActive(false);
+            RestStory();
+            //currStoryIndex = 0;
+            //Resume();
+            //storyBoard.SetActive(false);
         }
     }
 

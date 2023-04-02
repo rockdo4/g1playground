@@ -409,7 +409,10 @@ public class StageController : MonoBehaviour
     private void SetReward()
     {
         if (SceneManager.GetActiveScene().name != "Scene02")
+        {
+            rewarded = true;
             return;
+        }
         //  GameManager.instance.ui.popupPanel.gameObject.SetActive(false);
         GameManager.instance.ui.popupPanel.gameObject.GetComponentInChildren<StageRewardPopUp>(true).gameObject.SetActive(true);
         var rewardUi = GameManager.instance.ui.popupPanel.GetComponentInChildren<StageRewardPopUp>(true).transform.Find("StageReward").Find("RewardItems").gameObject;
