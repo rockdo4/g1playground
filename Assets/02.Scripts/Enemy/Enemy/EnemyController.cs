@@ -295,42 +295,45 @@ public class EnemyController : Enemy
             Vector3 targetDirection = player.transform.position - transform.position;
             targetDirection.y = 0;
             targetDirection.Normalize();
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), Time.deltaTime * 10f);
-            findingpathtime = 0;
-
-            if (player.transform.position.x - transform.position.x > 0)
-                isGoingRight = true;
-            else
-                isGoingRight = false;
-
-            if (currGoingRight != isGoingRight)
+            if (player.transform.position.x - transform.position.x != 0f)
             {
-                agent.velocity = Vector3.zero;
-                currGoingRight = isGoingRight;
-            }
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), Time.deltaTime * 10f);
+                findingpathtime = 0;
 
-            if (AngleIgnoringHeight(10f))
-            {
-                agent.isStopped = false;
-                agent.SetDestination(player.transform.position);
-            }
-            else
-            {
-                agent.isStopped = true;
-            }
+                if (player.transform.position.x - transform.position.x > 0)
+                    isGoingRight = true;
+                else
+                    isGoingRight = false;
 
-            if (RayShooter(attackRange, isGoingRight))
-            {
-                if (attackTime >= attackCool)
-                    State = EnemyState.Attack;
+                if (currGoingRight != isGoingRight)
+                {
+                    agent.velocity = Vector3.zero;
+                    currGoingRight = isGoingRight;
+                }
+
+                if (AngleIgnoringHeight(10f))
+                {
+                    agent.isStopped = false;
+                    agent.SetDestination(player.transform.position);
+                }
                 else
                 {
                     agent.isStopped = true;
-                    agent.velocity = Vector3.zero;
                 }
+
+                if (RayShooter(attackRange, isGoingRight))
+                {
+                    if (attackTime >= attackCool)
+                        State = EnemyState.Attack;
+                    else
+                    {
+                        agent.isStopped = true;
+                        agent.velocity = Vector3.zero;
+                    }
+                }
+                else
+                    agent.isStopped = false;
             }
-            else
-                agent.isStopped = false;
 
         }
         else

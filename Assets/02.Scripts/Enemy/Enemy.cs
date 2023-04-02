@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     protected Status status;
 
     protected EnemySoundPlayer enemySound;
+    //protected EnemyBody enemyBody;
     protected GameObject player;
     protected Vector3 mySpawnPos;
     protected Quaternion mySpawnDir;
@@ -99,11 +100,16 @@ public class Enemy : MonoBehaviour
     protected virtual void DieUpdate() { }
 
     protected Vector3 GetSpawnPos() { return mySpawnPos; }
+
+
     protected bool LookAtTarget()
     {
         Vector3 dir = player.transform.position - transform.position;
         dir.y = 0;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+
+        if (dir.x == 0f)
+            return true;
 
         if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
             return true;
@@ -115,6 +121,9 @@ public class Enemy : MonoBehaviour
         Vector3 dir = targetPos - transform.position;
         dir.y = 0;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+
+        if (dir.x == 0f)
+            return true;
 
         if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
             return true;
