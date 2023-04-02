@@ -115,15 +115,28 @@ public class UIInventory : MonoBehaviour
                 }
                 break;
         }
+
         if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
+        {
             currWeapon.image.sprite = DataTableMgr.LoadIcon(DataTableMgr.GetTable<WeaponData>().Get(playerInventory.CurrWeapon).iconSpriteId);
+            currWeapon.image.color = Color.white;
+        }
         else
+        {
             currWeapon.image.sprite = null;
+            currWeapon.image.color = Color.clear;
+        }
 
         if (!string.IsNullOrEmpty(playerInventory.CurrArmor))
+        {
             currArmor.image.sprite = DataTableMgr.LoadIcon(DataTableMgr.GetTable<ArmorData>().Get(playerInventory.CurrArmor).iconSpriteId);
+            currArmor.image.color = Color.white;
+        }
         else
+        {
             currArmor.image.sprite = null;
+            currArmor.image.color = Color.clear;
+        }
     }
 
     public void SetCurrEquipInfo(ItemTypes type)
