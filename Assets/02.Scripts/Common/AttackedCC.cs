@@ -20,12 +20,12 @@ public class AttackedCC : MonoBehaviour, IAttackable
     private float up = 1f;
     private bool knockBackedOnThisFrame;
     public int maxKBCount = 3;
-    private int kBCount = 0;
+    [SerializeField] private int kBCount = 0;
     public float kBResistTime = 12f;
     private float kBResistTimer = 0f;
 
     public int maxStunCount = 3;
-    private int stunCount = 0;
+    [SerializeField] private int stunCount = 0;
     public float stunResistTime = 12f;
     private float stunResistTimer = 0f;
 
