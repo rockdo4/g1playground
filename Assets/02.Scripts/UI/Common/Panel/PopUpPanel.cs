@@ -37,8 +37,13 @@ public class PopUpPanel : PanelUi
 
     public override void ActiveTrue()
     {
+        Debug.Log("PopUpFirst");
         base.ActiveTrue();
+        Debug.Log("PopUpMid");
         Init();
+        Debug.Log("PopUpLast");
+
+
     }
 
     private void Awake()
