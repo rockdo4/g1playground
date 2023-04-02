@@ -29,22 +29,21 @@ public abstract class AttackCollider : MonoBehaviour
         timer = 0f;
         attackedList.Clear();
         effects.Clear();
-        //if (fireSound != null)
-        //{
-        //    fireSound.Release();
-        //    fireSound = null;
-        //}
-        //if (inUseSound != null)
-        //{
-        //    inUseSound.Release();
-        //    inUseSound = null;
-        //}
-        //if (hitSound != null)
-        //{
-        //    hitSound.Release();
-        //    hitSound = null;
-        //}
-        // ysh must fix this
+        if (fireSound != null)
+        {
+            fireSound.Release();
+            fireSound = null;
+        }
+        if (inUseSound != null)
+        {
+            inUseSound.Release();
+            inUseSound = null;
+        }
+        if (hitSound != null)
+        {
+            hitSound.Release();
+            hitSound = null;
+        }       
     }
 
     protected virtual void Update()
