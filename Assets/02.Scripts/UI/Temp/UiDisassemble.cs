@@ -34,6 +34,7 @@ public class UiDisassemble : MonoBehaviour
     public void OnEnable()
     {
         SetInventory((int)ReinforceSystem.Types.Weapon);
+        resultPopup.SetActive(false);
     }
 
     public void Init()

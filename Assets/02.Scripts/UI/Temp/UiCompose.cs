@@ -30,6 +30,7 @@ public class UiCompose : MonoBehaviour
     public void OnEnable()
     {
         SetInventory((int)ReinforceSystem.Types.Weapon);
+        resultPopup.SetActive(false);
     }
 
     public void Init()
