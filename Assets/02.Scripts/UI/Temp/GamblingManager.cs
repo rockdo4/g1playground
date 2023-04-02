@@ -53,15 +53,25 @@ public class GamblingManager : MonoBehaviour
                 break;
             }
         }
-        //powderCount = playerInventory.GetConsumableCount(powderId);
-        powderCount = 9000;
+        powderCount = playerInventory.GetConsumableCount(powderId);
     }
 
     public void TryOne()
     {
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
+        {
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
         if (powderCount >= 300)
         {
-            powderCount -= 300;
+            playerInventory.UseConsumable(powderId, 300);
+            powderCount = playerInventory.GetConsumableCount(powderId);
             reward.SetActive(true);
             GetEquipments(1);
         }
@@ -71,9 +81,20 @@ public class GamblingManager : MonoBehaviour
 
     public void TryTen()
     {
-        if(powderCount >= 2700)
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
         {
-            powderCount -= 2700;
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
+        if (powderCount >= 2700)
+        {
+            playerInventory.UseConsumable(powderId, 2700);
+            powderCount = playerInventory.GetConsumableCount(powderId);
             rewardTen.SetActive(true);
             GetEquipments(10);
         }
@@ -83,9 +104,20 @@ public class GamblingManager : MonoBehaviour
 
     public void TryOneSkill()
     {
-        if(powderCount >= 300)
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
         {
-            powderCount -= 300;
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
+        if (powderCount >= 300)
+        {
+            playerInventory.UseConsumable(powderId, 300);
+            powderCount = playerInventory.GetConsumableCount(powderId);
             reward.SetActive(true);
             GetSkills(1);
         }        
@@ -95,9 +127,20 @@ public class GamblingManager : MonoBehaviour
 
     public void TryTenSkills()
     {
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
+        {
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
         if (powderCount >= 300)
         {
-            powderCount -= 2700;
+            playerInventory.UseConsumable(powderId, 2700);
+            powderCount = playerInventory.GetConsumableCount(powderId);
             rewardTen.SetActive(true);
             GetSkills(10);
         }                
