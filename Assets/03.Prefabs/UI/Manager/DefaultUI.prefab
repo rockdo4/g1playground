@@ -30029,6 +30029,7 @@ MonoBehaviour:
   controllerPanel: {fileID: 2306042920887607633}
   menuPanel: {fileID: 2306042922745947097}
   potionPanel: {fileID: 4807327895962789499}
+  minimapPanel: {fileID: 0}
   skillPanel: {fileID: 5628881664430983649}
   autoPanel: {fileID: 1931482182737429332}
   menuPopUp: {fileID: 0}
@@ -57237,8 +57238,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7026190373907468157}
   - component: {fileID: 7026190373907468034}
+  - component: {fileID: 9157206743274018625}
   m_Layer: 5
-  m_Name: Maps
+  m_Name: MiniMapPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57321,6 +57323,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &9157206743274018625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7026190373907468156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de49c121dd1aa244a9e912b9be4adf75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7045546284151329210
 GameObject:
   m_ObjectHideFlags: 0
