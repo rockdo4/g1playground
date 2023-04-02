@@ -261,8 +261,8 @@ public class StageController : MonoBehaviour
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
         }
 
-        SetUi();
-        //StartCoroutine(CoSetUI());
+        //SetUi();
+        StartCoroutine(CoSetUI());
 
 
 

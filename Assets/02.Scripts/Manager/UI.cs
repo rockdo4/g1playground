@@ -46,6 +46,22 @@ public class UI : MonoBehaviour
         if (isEqual)
             title = GetComponentInChildren<TitleLayout>(true);
 
+        InitGetComponent();
+        //popupPanel = GetComponentInChildren<PopUpPanel>(true);
+        //charaterUIPanel = GetComponentInChildren<CharacterUIPanel>(true);
+        //controllerPanel = GetComponentInChildren<ControllerPanel>(true);
+        //menuPanel = GetComponentInChildren<MenuPanel>(true);
+        //potionPanel = GetComponentInChildren<PotionPanel>(true);
+        //minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
+        //skillPanel = GetComponentInChildren<SkillPanel>(true);
+        //autoPanel = GetComponentInChildren<AutoPanel>(true);
+        //menuPopUp = GetComponentInChildren<MenuPopUp>(true);
+    }
+    private void InitGetComponent()
+    {
+        if (popupPanel != null)
+            return;
+
         popupPanel = GetComponentInChildren<PopUpPanel>(true);
         charaterUIPanel = GetComponentInChildren<CharacterUIPanel>(true);
         controllerPanel = GetComponentInChildren<ControllerPanel>(true);
@@ -88,6 +104,7 @@ public class UI : MonoBehaviour
 
     public void SetTutorialUi()
     {
+        InitGetComponent();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
         menuPanel.ActiveTrue();
@@ -106,6 +123,7 @@ public class UI : MonoBehaviour
 
     public void SetVillageUi()
     {
+        InitGetComponent();
         popupPanel.ActiveTrue();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
@@ -123,6 +141,7 @@ public class UI : MonoBehaviour
 
     public void SetBattle()
     {
+        InitGetComponent();
         popupPanel.ActiveTrue();
         UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
@@ -137,6 +156,7 @@ public class UI : MonoBehaviour
 
     public void SetDungeon()
     {
+        InitGetComponent();
         popupPanel.ActiveTrue();
         UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
