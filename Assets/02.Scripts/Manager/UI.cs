@@ -44,7 +44,26 @@ public class UI : MonoBehaviour
         bool isEqual = sceneName.Equals("Title", StringComparison.OrdinalIgnoreCase);
 
         if (isEqual)
+        { 
             title = GetComponentInChildren<TitleLayout>(true);
+            return;
+        }
+
+        InitGetComponent();
+        //popupPanel = GetComponentInChildren<PopUpPanel>(true);
+        //charaterUIPanel = GetComponentInChildren<CharacterUIPanel>(true);
+        //controllerPanel = GetComponentInChildren<ControllerPanel>(true);
+        //menuPanel = GetComponentInChildren<MenuPanel>(true);
+        //potionPanel = GetComponentInChildren<PotionPanel>(true);
+        //minimapPanel = GetComponentInChildren<MiniMapPanel>(true);
+        //skillPanel = GetComponentInChildren<SkillPanel>(true);
+        //autoPanel = GetComponentInChildren<AutoPanel>(true);
+        //menuPopUp = GetComponentInChildren<MenuPopUp>(true);
+    }
+    private void InitGetComponent()
+    {
+        if (popupPanel != null)
+            return;
 
         popupPanel = GetComponentInChildren<PopUpPanel>(true);
         charaterUIPanel = GetComponentInChildren<CharacterUIPanel>(true);
@@ -88,6 +107,7 @@ public class UI : MonoBehaviour
 
     public void SetTutorialUi()
     {
+        InitGetComponent();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
         menuPanel.ActiveTrue();
@@ -99,13 +119,18 @@ public class UI : MonoBehaviour
         autoPanel.ActiveTrue();
         // Interactable false
         UI.Instance.autoPanel.ActivateToggle(false);
-        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
         popupPanel.ActiveTrue();
+        UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
     }
 
     public void SetVillageUi()
     {
+
+        Debug.Log("Uibefor");
+        InitGetComponent();
+        Debug.Log("UiMid");
+
         popupPanel.ActiveTrue();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
@@ -114,16 +139,19 @@ public class UI : MonoBehaviour
         skillPanel.ActiveFalse();
         UI.Instance.skillPanel.ToggleOff();
         autoPanel.ActiveFalse();
+        UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetVillage();
         minimapPanel.ActiveFalse();
         sceneName= "Village";
+        Debug.Log("Uiafter");
 
     }
 
     public void SetBattle()
     {
+        InitGetComponent();
         popupPanel.ActiveTrue();
-        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
+        UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
@@ -136,8 +164,9 @@ public class UI : MonoBehaviour
 
     public void SetDungeon()
     {
+        InitGetComponent();
         popupPanel.ActiveTrue();
-        // reinforce, disassemble, synthetic, gambling, dungeon interactabls false
+        UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();

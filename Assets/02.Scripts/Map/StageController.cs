@@ -264,7 +264,10 @@ public class StageController : MonoBehaviour
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
         }
 
+        //SetUi();
         StartCoroutine(CoSetUI());
+
+
 
         var playerdeath = GameManager.instance.player.GetComponent<DestructedEvent>();
 
@@ -278,10 +281,8 @@ public class StageController : MonoBehaviour
         rewarded = false;
     }
 
-    IEnumerator CoSetUI()
+    void SetUi()
     {
-        yield return null;
-        //UI setting
         switch (lockRequirement)
         {
             case UnLockRequirement.Fight:
@@ -292,6 +293,26 @@ public class StageController : MonoBehaviour
                 break;
             case UnLockRequirement.Heal:
                 UI.Instance.SetVillageUi();
+                break;
+        }
+    }
+    IEnumerator CoSetUI()
+    {
+        yield return null;
+        //UI setting
+        switch (lockRequirement)
+        {
+            case UnLockRequirement.Fight:
+                UI.Instance.SetBattle();
+                break;
+            case UnLockRequirement.Puzzle:
+                Debug.Log("Stagecontroller");
+                UI.Instance.SetVillageUi();
+                break;
+            case UnLockRequirement.Heal:
+                UI.Instance.SetVillageUi();
+                Debug.Log("Stagecontroller");
+
                 break;
         }
     }

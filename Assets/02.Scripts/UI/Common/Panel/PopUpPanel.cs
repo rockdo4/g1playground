@@ -35,8 +35,20 @@ public class PopUpPanel : PanelUi
     public PopupUI probabilityPopUp;
     public MenuSlider menuSlider;
 
+    public override void ActiveTrue()
+    {
+        Debug.Log("PopUpFirst");
+        base.ActiveTrue();
+        Debug.Log("PopUpMid");
+        Init();
+        Debug.Log("PopUpLast");
+
+
+    }
+
     private void Awake()
     {
+        Init();
         //skill = GetComponentInChildren<SkillButton>(true);
         //equip = GetComponentInChildren<EquipButton>(true);
         //item = GetComponentInChildren<ItemButton>(true);
@@ -49,6 +61,31 @@ public class PopUpPanel : PanelUi
         //gambling = GetComponentInChildren<GambleButton>(true);
         //setting = GetComponentInChildren<SettingButton>(true);
 
+        //menuPopUp = GetComponentInChildren<MenuPopUp>(true);
+        //menuPopUp.ActiveFalse();
+        //exitPopUp = GetComponentInChildren<ExitPopUp>(true);
+        //skillPopUp = GetComponentInChildren<SkillPopUp>(true);
+        //itemPopUp = GetComponentInChildren<ItemPopUp>(true);
+        //worldMapPopUp = GetComponentInChildren<WorldMapPopUp>(true);
+        //reinforcePopUp = GetComponentInChildren<ReinforcePopUp>(true);
+        //disassemblePopUp = GetComponentInChildren<DisassemblePopUp>(true);
+        //syntheticPopUp = GetComponentInChildren<SyntheticPopUp>(true);
+        //settingPopUp = GetComponentInChildren<SettingPopUp>(true);
+        //stageRewardPopUp = GetComponentInChildren<StageRewardPopUp>(true);
+        //stageDeathPopUp = GetComponentInChildren<StageDeathPopUp>(true);
+        //gamblingPopUp = GetComponentInChildren<GamblingPopUp>(true);
+        //gamblingResult1PopUp = GetComponentInChildren<GamblingResult1PopUp>(true);
+        //gamblingResult10PopUp = GetComponentInChildren<GamblingResult10PopUp>(true);
+        //profilePopUp = GetComponentInChildren<ProfilePopUp>(true);
+        //probabilityPopUp = GetComponentInChildren<ProbabilityPopUp>(true);
+
+        //menuSlider =GetComponentInChildren<MenuSlider>(true);   
+    }
+
+    public void Init()
+    {
+        if (menuPopUp != null)
+            return;
         menuPopUp = GetComponentInChildren<MenuPopUp>(true);
         menuPopUp.ActiveFalse();
         exitPopUp = GetComponentInChildren<ExitPopUp>(true);
@@ -67,11 +104,8 @@ public class PopUpPanel : PanelUi
         gamblingResult10PopUp = GetComponentInChildren<GamblingResult10PopUp>(true);
         profilePopUp = GetComponentInChildren<ProfilePopUp>(true);
         probabilityPopUp = GetComponentInChildren<ProbabilityPopUp>(true);
-
-        menuSlider =GetComponentInChildren<MenuSlider>(true);   
+        menuSlider = GetComponentInChildren<MenuSlider>(true);
     }
-
-
 
     //public void SetTutorial()
     //{
@@ -119,6 +153,7 @@ public class PopUpPanel : PanelUi
 
     public void AllClose()
     {
+        Init();
         menuPopUp.ActiveFalse();
         exitPopUp.ActiveFalse();
         skillPopUp.ActiveFalse();
@@ -139,6 +174,6 @@ public class PopUpPanel : PanelUi
 
     void Update()
     {
-        
+
     }
 }
