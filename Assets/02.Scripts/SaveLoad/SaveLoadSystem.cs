@@ -38,6 +38,19 @@ public static class SaveLoadSystem
 
     public static string GetSaveFileName(SaveData.Types type, Modes mode) => string.Format(FileNameFormat, SaveDirectory, type.ToString(), Extension[(int)mode]);
 
+    public static void RemoveAllData()
+    {
+        for (int i = 0; i < (int)SaveData.Types.Count; ++i)
+        {
+            var json = GetSaveFileName((SaveData.Types)i, Modes.Json);
+            var bin = GetSaveFileName((SaveData.Types)i, Modes.Binary);
+            if (File.Exists(json))
+                File.Delete(json);
+            if (File.Exists(bin))
+                File.Delete(bin);
+        }
+    }
+
     public static void Save(SaveData data)
     {
         if (!Directory.Exists(SaveDirectory))

@@ -12,6 +12,7 @@ public class SaveData
         Dungeon,
         CheckPoint,
         Stage,
+        Count,
     }
     public Types type = Types.None;
     public int version;
