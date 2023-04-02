@@ -9,7 +9,10 @@ public class ButtonUi : MonoBehaviour
 
     protected virtual void Awake()
     {
-        button = gameObject.GetComponent<Button>();
+        if (button == null)
+        {
+            button = gameObject.GetComponent<Button>();
+        }
     }
 
     public void MenuClose()
@@ -23,6 +26,10 @@ public class ButtonUi : MonoBehaviour
 
     public virtual void ActivateButton(bool isinteractable)
     {
+        if (button == null)
+        {
+            button = gameObject.GetComponent<Button>();
+        }
         button.interactable = isinteractable;
     }
 }
