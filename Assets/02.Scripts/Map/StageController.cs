@@ -242,9 +242,13 @@ public class StageController : MonoBehaviour
         //If there is no enemies in the stage
         if (enemies.Count <= 0)
         {
-            isClear = true;
-            greenwallopen = true;
+            if (lockRequirement != UnLockRequirement.Puzzle)
+            {
+                isClear = true;
+                greenwallopen = true;
 
+            }
+          
             //Set worldmap stage button on
             if (wMapButton != null && isChanged)
             {
@@ -263,19 +267,23 @@ public class StageController : MonoBehaviour
         {
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
         }
-
+        if (lockRequirement == UnLockRequirement.Puzzle)
+        {
+            TileColorManager.instance.ChangeTileMaterial(transform.name, true);
+        }
         //SetUi();
         StartCoroutine(CoSetUI());
 
 
-
-        var playerdeath = GameManager.instance.player.GetComponent<DestructedEvent>();
-
-        if (playerdeath != null)
+        if (SceneManager.GetActiveScene().name == "Scene02")
         {
-            playerdeath.OnDestroyEvent = (() => UI.Instance.popupPanel.stageDeathPopUp.ActiveTrue());
-        }
+            var playerdeath = GameManager.instance.player.GetComponent<DestructedEvent>();
 
+            if (playerdeath != null)
+            {
+                playerdeath.OnDestroyEvent = (() => UI.Instance.popupPanel.stageDeathPopUp.ActiveTrue());
+            }
+        }
         if (RewardBox != null)
             RewardBox.SetActive(false);
         rewarded = false;
@@ -361,8 +369,13 @@ public class StageController : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(IsClear);
-
+        if (!isClear && UnLockRequirement.Puzzle == lockRequirement)
+        {
+            if (RewardBox != null)
+            {
+                RewardBox.SetActive(true);
+            }
+        }
         foreach (var swit in switches)
         {
             if (!swit.GetComponent<BlockSwitchTile>().IsTriggered)
@@ -386,7 +399,7 @@ public class StageController : MonoBehaviour
         {
             isStoryStage = false;
             EventManager.instance.SetStoryList(storyIdList);
-            EventManager.instance.ChangeColorEffect(transform.name);
+            EventManager.instance.ChangeColorEffectStory(transform.name);
         }
 
         if (isClear && !rewarded)
@@ -440,6 +453,14 @@ public class StageController : MonoBehaviour
             }
             else if (enemy == enemies.Last())
             {
+
+                if (lockRequirement == UnLockRequirement.Fight)
+                {
+                    SetReward(true);
+                    rewarded = true;
+
+                }
+
                 if (RewardBox != null)
                 {
                     RewardBox.SetActive(true);
@@ -453,6 +474,7 @@ public class StageController : MonoBehaviour
 
     public void SetReward(bool isSecond)
     {
+        Debug.Log("leb");
         if (SceneManager.GetActiveScene().name != "Scene02")
         {
             return;
@@ -461,6 +483,10 @@ public class StageController : MonoBehaviour
         GameManager.instance.ui.popupPanel.gameObject.GetComponentInChildren<StageRewardPopUp>(true).gameObject.SetActive(true);
         var rewardUi = GameManager.instance.ui.popupPanel.GetComponentInChildren<StageRewardPopUp>(true).transform.Find("StageReward").Find("RewardItems").gameObject;
 
+        if (UnLockRequirement.Puzzle == lockRequirement)
+        {
+            isClear = true;
+        }
 
         List<GameObject> rewardUiList = new List<GameObject>();
         var rewardTable = DataTableMgr.GetTable<RewardData>();
@@ -535,8 +561,8 @@ public class StageController : MonoBehaviour
                 {
                     if (!isStoryStage)
                     {
-                        EventManager.instance.ChangeColorEffect();
-                        TileColorManager.instance.ChangeTileMaterial(transform.name, true);
+                        EventManager.instance.ChangeColorEffect(transform.name);
+                        //TileColorManager.instance.ChangeTileMaterial(transform.name, true);
                     }
                     //Clear Sound
                     SoundManager.instance.PlaySoundEffect(stageClearClip);
@@ -544,7 +570,14 @@ public class StageController : MonoBehaviour
                     {
                         RewardBox.GetComponent<GoldBox>().isFirst = IsClear;
                     }
-                    isClear = true;
+                    if (lockRequirement == UnLockRequirement.Fight)
+                    {
+                        SetReward(false);
+
+                    }
+                    if (lockRequirement == UnLockRequirement.Fight || lockRequirement == UnLockRequirement.Tutorial)
+                        isClear = true;
+
                     canOpen = true;
                     greenwallopen = true;
                     rewarded = true;

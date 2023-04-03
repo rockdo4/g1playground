@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
+using UnityEngine.Rendering;
 
 public class EventManager : MonoBehaviour
 {
@@ -32,6 +34,7 @@ public class EventManager : MonoBehaviour
     private List<int> storyList = new List<int>();
 
     private float originTextDelay;
+    private float timer = 0f;
 
     private int storyCount = 0;
     private int currStoryIndex = 0;
@@ -242,20 +245,6 @@ public class EventManager : MonoBehaviour
     }
 
     /////////////////Color Effect/////////////////////////////
-    public void ChangeColorEffect()
-    {
-        if (effectCount > 0)
-        {
-            return;
-        }
-        effectCount++;
-        var effect = GameManager.instance.effectManager.GetEffect("Poof_electric");
-        effect.transform.position = GameManager.instance.player.transform.position;
-        float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
-        GameManager.instance.effectManager.ReturnEffectOnTime("Poof_electric", effect, destroyTime);
-
-    }
-
     public void ChangeColorEffect(string stageName)
     {
         if (effectCount > 0)
@@ -267,19 +256,55 @@ public class EventManager : MonoBehaviour
         effect.transform.position = GameManager.instance.player.transform.position;
         float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
         GameManager.instance.effectManager.ReturnEffectOnTime("Poof_electric", effect, destroyTime);
-        TileColorManager.instance.ChangeTileMaterial(stageName, true);
+
+        StartCoroutine(CoChangeColorDelay(stageName, destroyTime)); 
+    }
+
+    public void ChangeColorEffectStory(string stageName)
+    {
+        if (effectCount > 0)
+        {
+            return;
+        }
+        effectCount++;
+        var effect = GameManager.instance.effectManager.GetEffect("Poof_electric");
+        effect.transform.position = GameManager.instance.player.transform.position;
+        float destroyTime = effect.GetComponent<ParticleSystem>().main.duration;
+        GameManager.instance.effectManager.ReturnEffectOnTime("Poof_electric", effect, destroyTime);
+
+        StartCoroutine(CoChangeColorDelay(stageName, destroyTime));
         StartCoroutine(CoPlayStoryDelay(stageName, destroyTime));
+    }
+
+    IEnumerator CoChangeColorDelay(string stageName, float delay)
+    {
+
+        while (timer <= delay - 1f) 
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        timer = 0f;
+
+        TileColorManager.instance.ChangeTileMaterial(stageName, true);
     }
 
     IEnumerator CoPlayStoryDelay(string stageName, float delay)
     {
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
-        while (stopwatch.Elapsed.TotalSeconds < delay)
+        //Stopwatch stopwatch = new Stopwatch();
+        //stopwatch.Start();
+        //while (stopwatch.Elapsed.TotalSeconds < delay)
+        //{
+        //    yield return null;
+        //}
+        //stopwatch.Stop();
+        while (timer <= delay - 1f)
         {
+            timer += Time.deltaTime;
             yield return null;
         }
-        stopwatch.Stop();
+        //TileColorManager.instance.ChangeTileMaterial(stageName, true);
 
         Pause();
         PlayStory();
