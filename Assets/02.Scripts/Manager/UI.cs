@@ -122,6 +122,7 @@ public class UI : MonoBehaviour
         popupPanel.ActiveTrue();
         UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
+        UI.Instance.popupPanel.menuSlider.SetNotDefaultMenu();
     }
 
     public void SetVillageUi()
@@ -138,7 +139,8 @@ public class UI : MonoBehaviour
         UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetVillage();
         minimapPanel.ActiveFalse();
-        sceneName= "Village";
+        UI.Instance.popupPanel.menuSlider.SetDefaultMenu();
+        sceneName = "Village";
 
     }
 
@@ -148,6 +150,7 @@ public class UI : MonoBehaviour
         popupPanel.ActiveTrue();
         UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
+        UI.Instance.popupPanel.menuSlider.SetNotDefaultMenu();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
         menuPanel.ActiveTrue();
@@ -163,6 +166,7 @@ public class UI : MonoBehaviour
         popupPanel.ActiveTrue();
         UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
+        UI.Instance.popupPanel.menuSlider.SetNotDefaultMenu();
         charaterUIPanel.ActiveTrue();
         controllerPanel.ActiveTrue();
         menuPanel.ActiveFalse();
