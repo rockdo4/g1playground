@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "Scene02" || PlayerDataManager.instance.lastSaveChapterName == null)
             return;
 
+        if (PlayerDataManager.instance.lastSaveChapterName == null || PlayerDataManager.instance.lastSaveMapId == null)
+            return;
+
         var playerController = player.GetComponent<PlayerController>();
         NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
         var linkMover = player.GetComponent<AgentLinkMover>();
