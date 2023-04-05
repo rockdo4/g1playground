@@ -330,7 +330,7 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-                if (target != null && path != null && isGrounded && target.GetComponent<EnemyController>().onGround.isGround) 
+                if (target != null && path != null && isGrounded && target.GetComponentInChildren<OnGround>().isGround) 
                 {
                     agent.isStopped = false;
                     inDistance = false;

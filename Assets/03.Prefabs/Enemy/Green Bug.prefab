@@ -1326,6 +1326,7 @@ GameObject:
   - component: {fileID: 2382564141760440804}
   - component: {fileID: 7888488867762414450}
   - component: {fileID: -4256789565098699494}
+  - component: {fileID: 5989071734116854836}
   m_Layer: 9
   m_Name: Green Bug
   m_TagString: Enemy
@@ -1438,6 +1439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeAttack: {fileID: 11400000, guid: a9d2ef6b09eb0934a9afed736a9a0ca1, type: 2}
+  onGround: {fileID: 0}
   EnemyStatePattern:
   - state: 4
     second: 1
@@ -1574,8 +1576,10 @@ MonoBehaviour:
   canSlowDown: 1
   canReduceDef: 1
   maxKBCount: 3
+  kBCount: 0
   kBResistTime: 12
   maxStunCount: 3
+  stunCount: 0
   stunResistTime: 12
 --- !u!114 &7888488867762414450
 MonoBehaviour:
@@ -1603,6 +1607,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSound: {fileID: 11400000, guid: c70d6c4affc264270b45d7cc3d424aa2, type: 2}
+--- !u!114 &5989071734116854836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526077231205297495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bfce2cb69e0ab4d96b1c2e1632e1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGround: 0
 --- !u!1 &1784987224119609548
 GameObject:
   m_ObjectHideFlags: 0

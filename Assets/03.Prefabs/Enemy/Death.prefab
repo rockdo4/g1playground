@@ -10064,6 +10064,7 @@ GameObject:
   - component: {fileID: 1681152412132260099}
   - component: {fileID: 4580450974690873483}
   - component: {fileID: -7603196737371954400}
+  - component: {fileID: 8494553983815556313}
   m_Layer: 9
   m_Name: Death
   m_TagString: Enemy
@@ -10177,6 +10178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeAttack: {fileID: 11400000, guid: ce9a528c46b70ec4ea31256e7df76c9f, type: 2}
+  onGround: {fileID: 0}
   EnemyStatePattern:
   - state: 4
     second: 2
@@ -10313,8 +10315,10 @@ MonoBehaviour:
   canSlowDown: 1
   canReduceDef: 1
   maxKBCount: 3
+  kBCount: 0
   kBResistTime: 12
   maxStunCount: 3
+  stunCount: 0
   stunResistTime: 12
 --- !u!114 &4580450974690873483
 MonoBehaviour:
@@ -10342,6 +10346,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSound: {fileID: 11400000, guid: 3de8a56f515394252bde6d287fbab04a, type: 2}
+--- !u!114 &8494553983815556313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001571977726293593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bfce2cb69e0ab4d96b1c2e1632e1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGround: 0
 --- !u!1 &8719114185845319817
 GameObject:
   m_ObjectHideFlags: 0

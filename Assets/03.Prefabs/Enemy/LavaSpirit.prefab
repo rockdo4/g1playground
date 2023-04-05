@@ -519,6 +519,7 @@ GameObject:
   - component: {fileID: 914765104476129714}
   - component: {fileID: 6283819752160929502}
   - component: {fileID: 4975310124007684441}
+  - component: {fileID: -3979528355401695211}
   m_Layer: 9
   m_Name: LavaSpirit
   m_TagString: Enemy
@@ -630,6 +631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeAttack: {fileID: 11400000, guid: 796e76704903d2944bcb349fe80b206c, type: 2}
+  onGround: {fileID: 0}
   EnemyStatePattern: []
   isGoingRight: 0
   defaultPatrolSpeed: 5
@@ -762,8 +764,10 @@ MonoBehaviour:
   canSlowDown: 1
   canReduceDef: 1
   maxKBCount: 3
+  kBCount: 0
   kBResistTime: 12
   maxStunCount: 3
+  stunCount: 0
   stunResistTime: 12
 --- !u!114 &6283819752160929502
 MonoBehaviour:
@@ -791,3 +795,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSound: {fileID: 11400000, guid: 1263d75f9604940f28349cdd1e748e2d, type: 2}
+--- !u!114 &-3979528355401695211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3289195890036032096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bfce2cb69e0ab4d96b1c2e1632e1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGround: 0

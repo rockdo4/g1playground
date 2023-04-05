@@ -722,6 +722,7 @@ GameObject:
   - component: {fileID: 9101810489145720614}
   - component: {fileID: 8661925047667770237}
   - component: {fileID: 958073843915509885}
+  - component: {fileID: 5547723795273092267}
   m_Layer: 9
   m_Name: Earthworm
   m_TagString: Enemy
@@ -909,8 +910,10 @@ MonoBehaviour:
   canSlowDown: 0
   canReduceDef: 1
   maxKBCount: 3
+  kBCount: 0
   kBResistTime: 12
   maxStunCount: 3
+  stunCount: 0
   stunResistTime: 12
 --- !u!114 &8661925047667770237
 MonoBehaviour:
@@ -938,6 +941,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSound: {fileID: 11400000, guid: eff920a7adc5e4af09ed395de4c8afd4, type: 2}
+--- !u!114 &5547723795273092267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7767177234732730292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bfce2cb69e0ab4d96b1c2e1632e1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGround: 0
 --- !u!1 &7940226786359535736
 GameObject:
   m_ObjectHideFlags: 0

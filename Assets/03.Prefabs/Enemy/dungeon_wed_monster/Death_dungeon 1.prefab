@@ -10004,6 +10004,7 @@ GameObject:
   - component: {fileID: 3648117088361772694}
   - component: {fileID: 1681152412132260099}
   - component: {fileID: 4580450974690873483}
+  - component: {fileID: -1688145230705058429}
   m_Layer: 9
   m_Name: Death_dungeon 1
   m_TagString: Enemy
@@ -10116,6 +10117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeAttack: {fileID: 11400000, guid: ce9a528c46b70ec4ea31256e7df76c9f, type: 2}
+  onGround: {fileID: 0}
   EnemyStatePattern:
   - state: 4
     second: 2
@@ -10128,6 +10130,7 @@ MonoBehaviour:
   attackRange: 1
   attackCool: 2
   preGoingRight: 0
+  isKbAnimation: 0
 --- !u!114 &7223945314500619495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10251,8 +10254,10 @@ MonoBehaviour:
   canSlowDown: 1
   canReduceDef: 1
   maxKBCount: 3
+  kBCount: 0
   kBResistTime: 30
   maxStunCount: 3
+  stunCount: 0
   stunResistTime: 30
 --- !u!114 &4580450974690873483
 MonoBehaviour:
@@ -10267,6 +10272,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effect: {fileID: 11400000, guid: c582d6a9c85332344ad8b191ab61fb2c, type: 2}
+--- !u!114 &-1688145230705058429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8001571977726293593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bfce2cb69e0ab4d96b1c2e1632e1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGround: 0
 --- !u!1 &8719114185845319817
 GameObject:
   m_ObjectHideFlags: 0
