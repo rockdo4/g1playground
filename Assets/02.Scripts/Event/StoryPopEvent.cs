@@ -6,11 +6,11 @@ using UnityEngine;
 public class StoryPopEvent : MonoBehaviour
 {
     [SerializeField] private List<int> storyIdList = new List<int>();
-
     private List<int> playedStory = new List<int>();
+
     private void Awake()
     {
-        Load();       
+        Load();
     }
     //when player enters gives EventManager story Id list and play story
     private void OnTriggerEnter(Collider other)
@@ -33,18 +33,18 @@ public class StoryPopEvent : MonoBehaviour
         }
     }
 
-    void Save()
+    public void Save()
     {
         var saveData = new SavePlayedDataVer1();
         foreach (var played in playedStory)
         {
-            
+
             saveData.playedId.Add(played);
         }
         SaveLoadSystem.Save(saveData);
     }
 
-    private void Load()
+    public void Load()
     {
         var saveData = SaveLoadSystem.Load(SaveData.Types.Story) as SavePlayedDataVer1;
         if (saveData == null)

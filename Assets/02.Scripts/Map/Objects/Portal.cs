@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Portal : MonoBehaviour
 {
@@ -14,7 +15,9 @@ public class Portal : MonoBehaviour
     private GameObject pos;
     private float staytime = 0;
     public bool CanUse { get; set; }
-
+    private Canvas loading;
+    private Slider slider;
+    [SerializeField] public GameObject door;
     [SerializeField] private string enterPortalClip = "Stone Debris 3_5";
 
     public string GetNextStageName()
@@ -28,6 +31,9 @@ public class Portal : MonoBehaviour
     }
     private void OnEnable()
     {
+        door.transform.rotation = Quaternion.Euler(0, 0, 0);
+        loading.enabled = false; 
+        slider.value = 0;
         CanUse = true;
         if (!init)
         {
@@ -36,6 +42,13 @@ public class Portal : MonoBehaviour
         }
         ClosePortalInaWhile();
 
+    }
+
+    private void Awake()
+    {
+        loading = transform.GetComponentInChildren<Canvas>();
+        slider = loading.GetComponentInChildren<Slider>();
+        loading.enabled = false;
     }
 
     private void MoveToSomewhere(Collider other)
@@ -118,10 +131,23 @@ public class Portal : MonoBehaviour
             return;
 
         staytime += Time.deltaTime;
-        if (staytime >= 0.4f)
+        float slidervalue = staytime / 1.5f;
+        float doorangel = slidervalue * 120;
+        door.transform.rotation = Quaternion.Euler(0, doorangel, 0);
+        slider.value = slidervalue;
+        if (staytime >= 1.5f)
         {
             MoveToSomewhere(other);
             staytime = 0;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            loading.enabled = true;
+
         }
     }
 
@@ -132,6 +158,9 @@ public class Portal : MonoBehaviour
         {
             CanUse = true;
             staytime = 0;
+            loading.enabled = false;
+            slider.value = 0;
+            door.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
     }
