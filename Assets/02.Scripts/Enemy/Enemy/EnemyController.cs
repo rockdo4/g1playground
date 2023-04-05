@@ -10,7 +10,7 @@ public class EnemyController : Enemy
     GameObject attackBox;
     private CapsuleCollider mainColl;
     public BasicAttack meleeAttack;
-    private OnGround onGround;
+    public OnGround onGround;
     [System.Serializable]
     public class EnemyStateData
     {
@@ -287,8 +287,8 @@ public class EnemyController : Enemy
     protected override void ChaseUpdate()
     {
         NavMeshPath navMeshPath = new NavMeshPath();
-
-        if (NavMesh.CalculatePath(transform.position, player.transform.position, NavMesh.AllAreas, navMeshPath)
+        var areaMask = NavMesh.GetAreaFromName("Walkable") | NavMesh.GetAreaFromName("Not Walkable");
+        if (NavMesh.CalculatePath(transform.position, player.transform.position, areaMask, navMeshPath)
             && navMeshPath.status == NavMeshPathStatus.PathComplete)
         {
             Vector3 targetDirection = player.transform.position - transform.position;
@@ -465,6 +465,7 @@ public class EnemyController : Enemy
     {
         if (State == EnemyState.Die)
             return;
+        
         isKbAnimation = false;
         //State = EnemyState.Chase;
     }

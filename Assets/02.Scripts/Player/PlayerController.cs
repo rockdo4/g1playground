@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
 
     private List<GameObject> enemies;
 
-    private Transform target;
+    private GameObject target;
     public bool IsAuto { get; set; }
 
     private NavMeshAgent agent;
@@ -318,7 +318,7 @@ public class PlayerController : MonoBehaviour
             {
                 foreach (var enemy in enemies)
                 {
-                    if (enemy.GetComponent<Enemy>().GetIsLive())
+                    if (enemy.GetComponent<Enemy>().GetIsLive()) 
                     {
                         count++;
                         agent.CalculatePath(enemy.transform.position, path);
@@ -326,22 +326,22 @@ public class PlayerController : MonoBehaviour
                         if (temp >= enemyPathLength)
                         {
                             temp = enemyPathLength;
-                            target = enemy.transform;
+                            target = enemy;
                         }
                     }
                 }
-                if (target != null && path != null && isGrounded)
+                if (target != null && path != null && isGrounded && target.GetComponent<EnemyController>().onGround.isGround) 
                 {
                     agent.isStopped = false;
                     inDistance = false;
                     agent.SetDestination(target.transform.position);
                 }
-                var dis = Vector3.Distance(target.position, transform.position);
-                if (dis <= 1.5f && count != 0 && isGrounded && target.position != transform.position)  
+                var dis = Vector3.Distance(target.transform.position, transform.position);
+                if (dis <= 1.5f && count != 0 && isGrounded && target.transform.position != transform.position)  
                 { 
                     agent.isStopped = true;
                     inDistance = true;
-                    SetMoveX(target.position.x - transform.position.x);
+                    SetMoveX(target.transform.position.x - transform.position.x);
                 }
                 //Debug.Log(enemies.Count);
                 if (count == 0 && enemies.Count != 0)
@@ -360,8 +360,8 @@ public class PlayerController : MonoBehaviour
         {
             if (portal.GetNextStageName().CompareTo(MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().PrevStageName) != 0)
             {
-                target = portal.transform;
-                agent.SetDestination(target.position);
+                target = portal.gameObject;
+                agent.SetDestination(target.transform.position);
             }
         }
     }
