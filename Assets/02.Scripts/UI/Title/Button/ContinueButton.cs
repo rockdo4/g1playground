@@ -32,14 +32,12 @@ public class ContinueButton : ButtonUi
     {
         while (true)
         {
-            // ���İ��� ��� �ø��ϴ�.
             Color textColor = text.color;
             textColor.a = 1f;
             text.color = textColor;
 
             yield return new WaitForSeconds(fadeInDuration);
 
-            // ���İ��� õõ�� ����߸��ϴ�.
             float startTime = Time.time;
             float elapsedTime = 0f;
 
@@ -53,7 +51,6 @@ public class ContinueButton : ButtonUi
                 yield return null;
             }
 
-            // ���ڸ� ������ ����ϴ� (���İ��� 0���� ����).
             textColor = text.color;
             textColor.a = 0f;
             text.color = textColor;

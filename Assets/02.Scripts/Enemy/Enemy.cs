@@ -87,17 +87,13 @@ public class Enemy : MonoBehaviour
         enemyBody.SetActive(true);
         isLive = true;
     }
-    protected virtual void Spawn() { }
-    protected virtual void IdleUpdate() { }
-    protected virtual void Motion() { }
-    protected virtual void PatrolUpdate() { }
-    protected virtual void ChaseUpdate() { }
-    protected virtual void AttackUpdate() { }
-    protected virtual void SkillUpdate() { }
-    protected virtual void TakeDamageUpdate() { }
-    protected virtual void KnockBackUpdate() { }
-    protected virtual void Groggy() { }
-    protected virtual void DieUpdate() { }
+
+    public virtual void KnockBack()
+    {
+    }
+    public virtual void Stun(float stunCool)
+    {
+    }
 
     protected Vector3 GetSpawnPos() { return mySpawnPos; }
 
@@ -237,19 +233,8 @@ public class Enemy : MonoBehaviour
 
             return true;
         }
-        //return Quaternion.Angle(
-        //    transform.rotation,
-        //    Quaternion.LookRotation(
-        //        new Vector3(player.transform.position.x, 0, player.transform.position.z) -
-        //        new Vector3(transform.position.x, 0, transform.position.z)).normalized)
-        //    <= angle;
     }
 
-
-    public virtual void KnockBack() { }
-
-
-    public virtual void Stun(float stunCool) { }
     protected float SetStunTime(float stunCool, int count)
     {
         if (count == 0)

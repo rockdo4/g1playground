@@ -223,7 +223,7 @@ public class BossPupleRich : Enemy
         SaveFloorLength(ref startPos, ref endPos);
     }
 
-    protected override void PatrolUpdate()
+    protected void PatrolUpdate()
     {
         returnCoolTime += Time.deltaTime;
         if (returnTime < returnCoolTime)
@@ -277,7 +277,7 @@ public class BossPupleRich : Enemy
         }
     }
 
-    protected override void ChaseUpdate()
+    protected void ChaseUpdate()
     {
         if (LookAtTarget())
             agent.SetDestination(player.transform.position);
@@ -285,7 +285,7 @@ public class BossPupleRich : Enemy
         BattleProcess();
     }
 
-    protected override void AttackUpdate()
+    protected void AttackUpdate()
     {
         LookAtTarget();
     }
@@ -382,8 +382,7 @@ public class BossPupleRich : Enemy
             var agent = leftEnemy.GetOrAddComponent<NavMeshAgent>();
             agent.enabled = false;
             leftEnemy.GetComponent<Enemy>().SetStartPos(leftSummonPosition);
-            //leftEnemy.transform.position = leftPos;
-            //leftEnemy.transform.rotation = Quaternion.identity;
+
             leftEnemy.SetActive(true);
             agent.enabled = true;
         }
@@ -394,88 +393,12 @@ public class BossPupleRich : Enemy
             agent = rightEnemy.GetOrAddComponent<NavMeshAgent>();
             agent.enabled = false;
             rightEnemy.GetComponent<Enemy>().SetStartPos(rightSummonPosition);
-            //rightEnemy.transform.position = leftPos;
-            //rightEnemy.transform.rotation = Quaternion.identity;
+
             rightEnemy.SetActive(true);
             agent.enabled = true;
         }
-
-        //NavMeshHit leftNavMeshHit, rightNavMeshHit;
-
-        ////bool leftNavMeshAvailable = NavMesh.SamplePosition(leftSummonPosition, out leftNavMeshHit, summonDistance, NavMesh.AllAreas);
-        ////bool rightNavMeshAvailable = NavMesh.SamplePosition(rightSummonPosition, out rightNavMeshHit, summonDistance, NavMesh.AllAreas);
-
-
-
-        ////if (!leftNavMeshAvailable)
-        ////{
-        ////    leftSummonPosition = transform.position;
-        ////    Debug.Log("lf");
-        ////}
-        ////else
-        ////{
-        ////    leftSummonPosition = leftNavMeshHit.position;
-        ////    Debug.Log("lt");
-
-        ////}
-
-        ////if (!rightNavMeshAvailable)
-        ////{
-        ////    rightSummonPosition = transform.position;
-        ////    Debug.Log("rf");
-
-        ////}
-        ////else
-        ////{
-        ////    rightSummonPosition = rightNavMeshHit.position;
-        ////    Debug.Log("rt");
-        ////}
-
-        //NavMeshHit hit;
-        ////if (!NavMesh.SamplePosition(leftSummonPosition, out hit, 0.1f, NavMesh.AllAreas))
-        ////{
-        ////    leftSummonPosition = transform.position;
-        ////}
-        ////if (!NavMesh.SamplePosition(rightSummonPosition, out hit, 0.1f, NavMesh.AllAreas))
-        ////{
-        ////    rightSummonPosition = transform.position;
-        ////}
-
-
-
-
-        //StartCoroutine(CoSpawnDelay(leftSummonPosition, rightSummonPosition));
-
     }
 
-    //IEnumerator CoSpawnDelay(Vector3 leftPos, Vector3 rightPos)
-    //{
-    //    GameObject leftEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
-    //    if (leftEnemy != null)
-    //    {
-    //        //var agent = leftEnemy.GetOrAddComponent<NavMeshAgent>();
-    //        leftEnemy.GetComponent<Enemy>().SetStartPos(leftPos);
-    //        //agent.enabled = false;
-    //        //leftEnemy.transform.position = leftPos;
-    //        //leftEnemy.transform.rotation = Quaternion.identity;
-    //        leftEnemy.SetActive(true);
-    //        //agent.enabled = true;
-    //    }
-
-    //    GameObject rightEnemy = GameManager.instance.enemyManager.GetPooledEnemy(0);
-    //    if (rightEnemy != null)
-    //    {
-    //        //agent = rightEnemy.GetOrAddComponent<NavMeshAgent>();
-    //        rightEnemy.GetComponent<Enemy>().SetStartPos(leftPos);
-    //        //agent.enabled = false;
-    //        //rightEnemy.transform.position = leftPos;
-    //        //rightEnemy.transform.rotation = Quaternion.identity;
-    //        rightEnemy.SetActive(true);
-    //        //agent.enabled = true;
-    //    }
-
-    //    yield return null;
-    //}
     private void Projectile()
     {
         ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);

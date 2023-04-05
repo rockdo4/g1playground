@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class EnemyController : Enemy
 {
     GameObject attackBox;
-    private CapsuleCollider mainColl;
+    protected CapsuleCollider mainColl;
     public BasicAttack meleeAttack;
     public OnGround onGround;
     [System.Serializable]
@@ -81,9 +81,6 @@ public class EnemyController : Enemy
                     agent.enabled = true;
                     agent.isStopped = false;
                     rb.isKinematic = true;
-                    //agent.isStopped = true;
-                    //agent.enabled = false;
-                    //rb.isKinematic = false;
                     break;
                 case EnemyState.KnockBack:
                     agent.isStopped = true;
@@ -103,8 +100,6 @@ public class EnemyController : Enemy
                     mainColl.enabled = false;
                     break;
             }
-
-            //Debug.Log(State);
         }
     }
 
@@ -147,7 +142,7 @@ public class EnemyController : Enemy
         //agent.isOnOffMeshLink = true;
         //linkMover.YourLogicCoroutine();
     }
-    void RemoveAgentLinkMover()
+    protected virtual void RemoveAgentLinkMover()
     {
         AgentLinkMover agentLinkMover = GetComponent<AgentLinkMover>();
         if (agentLinkMover != null)
@@ -156,7 +151,7 @@ public class EnemyController : Enemy
         }
     }
 
-    void AddAgentLinkMover()
+    protected virtual void AddAgentLinkMover()
     {
         gameObject.AddComponent<AgentLinkMover>();
     }
@@ -177,7 +172,7 @@ public class EnemyController : Enemy
         linkMover.enabled = true;
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         attackTime += Time.deltaTime;
 
@@ -234,17 +229,17 @@ public class EnemyController : Enemy
 
         animator.SetFloat("Move", agent.velocity.magnitude / chaseSpeed);
     }
-    protected void None()
+    protected virtual void None()
     {
         SaveFloorLength(ref startPos, ref endPos);
         State = EnemyStatePattern[0].state;
     }
-    protected override void IdleUpdate()
+    protected virtual void IdleUpdate()
     {
         ChangePattern();
         RayShooter(searchRange, isGoingRight);
     }
-    protected override void PatrolUpdate()
+    protected virtual void PatrolUpdate()
     {
         ChangePattern();
         RayShooter(searchRange, isGoingRight);
@@ -284,7 +279,7 @@ public class EnemyController : Enemy
     private bool currGoingRight;
     private float findingpathtime;
 
-    protected override void ChaseUpdate()
+    protected virtual void ChaseUpdate()
     {
         NavMeshPath navMeshPath = new NavMeshPath();
         var areaMask = NavMesh.GetAreaFromName("Walkable") | NavMesh.GetAreaFromName("Not Walkable");
@@ -333,7 +328,6 @@ public class EnemyController : Enemy
                 else
                     agent.isStopped = false;
             }
-
         }
         else
         {
@@ -349,7 +343,7 @@ public class EnemyController : Enemy
 
     }
 
-    protected override void AttackUpdate()
+    protected virtual void AttackUpdate()
     {
         if (attackTime >= attackCool)
         {
@@ -359,19 +353,19 @@ public class EnemyController : Enemy
         }
     }
 
-    protected override void TakeDamageUpdate()
+    protected virtual void TakeDamageUpdate()
     {
 
     }
-    protected override void KnockBackUpdate()
+    protected virtual void KnockBackUpdate()
     {
-        if (onGround.isGround && !isKbAnimation) 
+        if (onGround.isGround && !isKbAnimation)
         {
             State = EnemyState.Chase;
         }
     }
 
-    private void StunUpdate()
+    protected virtual void StunUpdate()
     {
         if (stunCoolTime >= stunCool)
         {
@@ -390,7 +384,7 @@ public class EnemyController : Enemy
     //    State = EnemyState.TakeDamage;
     //    animator.SetTrigger("TakeDamage");
     //}
-    protected override void DieUpdate()
+    protected virtual void DieUpdate()
     {
     }
 
@@ -398,7 +392,7 @@ public class EnemyController : Enemy
     protected Vector3 startPos;
     protected Vector3 endPos;
 
-    private void ChangePattern()
+    protected virtual void ChangePattern()
     {
         patternTime += Time.deltaTime;
 
@@ -419,7 +413,7 @@ public class EnemyController : Enemy
         State = EnemyStatePattern[curCountPattern].state;
     }
 
-    private void Attack()
+    protected virtual void Attack()
     {
         switch (meleeAttack)
         {
@@ -433,14 +427,14 @@ public class EnemyController : Enemy
         }
     }
 
-    protected void ResetPattern()
+    protected virtual void ResetPattern()
     {
         patternTime = 0f;
         curCountPattern = 0;
         isGoingRight = preGoingRight;
     }
 
-    private void OnTriggerEnter(Collider collider)
+    protected virtual void OnTriggerEnter(Collider collider)
     {
         if (!attackBox.activeSelf)
             return;
@@ -455,22 +449,22 @@ public class EnemyController : Enemy
         }
     }
 
-    private void AttackDone()
+    protected virtual void AttackDone()
     {
         State = EnemyState.Chase;
         attackBox.SetActive(false);
     }
     public bool isKbAnimation;
-    private void TakeDamageDone()
+    protected virtual void TakeDamageDone()
     {
         if (State == EnemyState.Die)
             return;
-        
+
         isKbAnimation = false;
         //State = EnemyState.Chase;
     }
 
-    private void DieDone()
+    protected virtual void DieDone()
     {
         gameObject.SetActive(false);
     }
@@ -515,19 +509,19 @@ public class EnemyController : Enemy
 
         isStun = true;
 
-        var effect=GameManager.instance.effectManager.GetEffect("Stun");
+        var effect = GameManager.instance.effectManager.GetEffect("Stun");
         Bounds bounds = transform.GetComponent<Collider>().bounds;
         effect.transform.position = new Vector3(transform.position.x, bounds.center.y + bounds.max.y + 5, transform.position.z);
         GameManager.instance.effectManager.ReturnEffectOnTime("Stun", effect, stunCool);
         effect.transform.SetParent(transform);
-       
+
     }
 
     private bool onSlowDown;
     private float slowDownTime = 0;
     private float slowDownTimer;
 
-    public void SlowDown(float newSlowDown, float newSlowTime)
+    protected virtual void SlowDown(float newSlowDown, float newSlowTime)
     {
         onSlowDown = true;
         slowDownTime = newSlowTime;
@@ -542,7 +536,7 @@ public class EnemyController : Enemy
 
     }
 
-    private void SetSpeed()
+    protected virtual void SetSpeed()
     {
         switch (State)
         {
@@ -555,7 +549,7 @@ public class EnemyController : Enemy
         }
     }
 
-    public void EndSlowDown()
+    protected virtual void EndSlowDown()
     {
         slowDownTimer = 0f;
         patrolSpeed = defaultPatrolSpeed;

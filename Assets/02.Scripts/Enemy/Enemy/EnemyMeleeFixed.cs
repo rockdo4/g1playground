@@ -108,12 +108,6 @@ public class EnemyMeleeFixed : Enemy, IAttackable
             case EnemyState.Idle:
                 IdleUpdate();
                 break;
-            case EnemyState.Patrol:
-                PatrolUpdate();
-                break;
-            case EnemyState.Chase:
-                ChaseUpdate();
-                break;
             case EnemyState.Attack:
                 AttackUpdate();
                 break;
@@ -121,7 +115,6 @@ public class EnemyMeleeFixed : Enemy, IAttackable
                 TakeDamageUpdate();
                 break;
             case EnemyState.Die:
-                DieUpdate();
                 break;
         }
     }
@@ -146,7 +139,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
     {
 
     }
-    protected override void IdleUpdate()
+    protected void IdleUpdate()
     {
         if (Vector3.Distance(transform.position, player.transform.position) >= searchRange * 5f)
         {
@@ -171,7 +164,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
         }
     }
 
-    protected override void AttackUpdate()
+    protected  void AttackUpdate()
     {
 
     }

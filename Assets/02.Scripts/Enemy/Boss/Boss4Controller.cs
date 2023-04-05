@@ -175,9 +175,6 @@ public class Boss4Controller : Enemy
             case EnemyState.Motion:
                 Motion();
                 break;
-            case EnemyState.Patrol:
-                PatrolUpdate();
-                break;
             case EnemyState.Chase:
                 ChaseUpdate();
                 break;
@@ -204,7 +201,7 @@ public class Boss4Controller : Enemy
         }
         //Debug.Log(State);
     }
-    protected override void Spawn()
+    protected void Spawn()
     {
         if (isSpawned)
         {
@@ -215,12 +212,12 @@ public class Boss4Controller : Enemy
         }
         
     }
-    protected override void Motion()
+    protected  void Motion()
     {
         LookAtFront();
     }
     private float idleCool = 0f;
-    protected override void IdleUpdate()
+    protected  void IdleUpdate()
     {
         idleCool += Time.deltaTime;
 
@@ -234,7 +231,7 @@ public class Boss4Controller : Enemy
     }
 
     private bool isSkillType = false;
-    protected override void ChaseUpdate()
+    protected  void ChaseUpdate()
     {
         if (LookAtTarget())
             agent.SetDestination(player.transform.position);
@@ -272,12 +269,12 @@ public class Boss4Controller : Enemy
         }
     }
 
-    protected override void AttackUpdate()
+    protected void AttackUpdate()
     {
         LookAtTarget();
     }
 
-    protected override void SkillUpdate()
+    protected void SkillUpdate()
     {
         if (isSkillType)
         {
@@ -287,21 +284,19 @@ public class Boss4Controller : Enemy
         }
     }
 
-    protected override void TakeDamageUpdate()
+    protected void TakeDamageUpdate()
     {
 
     }
 
-    protected override void DieUpdate()
+    protected void DieUpdate()
     {
         if (isDied)
         {
             isDied = false;
             var clip = plantSound.dieClip;
             SoundManager.instance.PlayEnemyEffect(clip);
-            base.DieUpdate();
         }
-        
     }
 
     private void SpawnDone()

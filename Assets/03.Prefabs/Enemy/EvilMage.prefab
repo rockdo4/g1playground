@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 245519922938350208}
   - component: {fileID: 245519922938350215}
   - component: {fileID: 245519922938350209}
-  - component: {fileID: 3389830800870338551}
+  - component: {fileID: -6760031742468184200}
   - component: {fileID: 108855180307782291}
   - component: {fileID: 3389830800870338537}
   - component: {fileID: 3389830800870338536}
@@ -198,7 +198,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 3
   m_ObstacleAvoidanceType: 0
---- !u!114 &3389830800870338551
+--- !u!114 &-6760031742468184200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -207,23 +207,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 3389830800862911530}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7fd6b2f1e520084facc3f2478cd306f, type: 3}
+  m_Script: {fileID: 11500000, guid: 60d7765d0e3d60b4b923360f10966c3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSkill: {fileID: 11400000, guid: 38bb32e31c583cf498f0897d44b0c96c, type: 2}
-  skillPivot: {fileID: 0}
+  meleeAttack: {fileID: 0}
+  onGround: {fileID: 0}
   EnemyStatePattern:
   - state: 4
     second: 2
   - state: 5
     second: 4
   isGoingRight: 0
-  patrolSpeed: 3
-  chaseSpeed: 4
+  defaultPatrolSpeed: 3
+  defaultChaseSpeed: 4
   searchRange: 7
   attackRange: 5
   attackCool: 2
   preGoingRight: 0
+  isKbAnimation: 0
+  projectileSkill: {fileID: 11400000, guid: 38bb32e31c583cf498f0897d44b0c96c, type: 2}
+  skillPivot: {fileID: 0}
 --- !u!114 &108855180307782291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,8 +350,10 @@ MonoBehaviour:
   canSlowDown: 1
   canReduceDef: 1
   maxKBCount: 3
+  kBCount: 0
   kBResistTime: 12
   maxStunCount: 3
+  stunCount: 0
   stunResistTime: 12
 --- !u!114 &5517941203272872524
 MonoBehaviour:

@@ -215,7 +215,7 @@ public class BossScorpionKing : Enemy
         SaveFloorLength(ref startPos, ref endPos);
     }
 
-    protected override void PatrolUpdate()
+    protected void PatrolUpdate()
     {
         returnCoolTime += Time.deltaTime;
         if (returnTime < returnCoolTime)
@@ -269,7 +269,7 @@ public class BossScorpionKing : Enemy
         }
     }
 
-    protected override void ChaseUpdate()
+    protected void ChaseUpdate()
     {
         if (LookAtTarget())
             agent.SetDestination(player.transform.position);
@@ -277,12 +277,12 @@ public class BossScorpionKing : Enemy
         BattleProcess();
     }
 
-    protected override void AttackUpdate()
+    protected void AttackUpdate()
     {
         LookAtTarget();
     }
 
-    protected override void SkillUpdate()
+    protected void SkillUpdate()
     {
 
     }
