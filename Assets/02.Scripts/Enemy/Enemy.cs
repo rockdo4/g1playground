@@ -63,6 +63,7 @@ public class Enemy : MonoBehaviour
         mySpawnPos = transform.position;
         mySpawnDir = transform.rotation;
     }
+   
     protected virtual void Start()
     {
         player = GameManager.instance.player;

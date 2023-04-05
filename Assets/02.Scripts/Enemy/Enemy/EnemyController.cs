@@ -30,8 +30,8 @@ public class EnemyController : Enemy
     public float defaultChaseSpeed;
     private float patrolSpeed;
     private float chaseSpeed;
-    public float searchRange;
-    public float attackRange;
+    private float searchRange;
+    private float attackRange;
     public float attackCool;
     private float attackTime;
     public override EnemyState State
@@ -115,6 +115,13 @@ public class EnemyController : Enemy
         preGoingRight = isGoingRight;
         linkMover = GetComponent<AgentLinkMover>();
         onGround = GetComponentInChildren<OnGround>();
+        InitEnemyInfo();
+    }
+    protected void InitEnemyInfo()
+    {
+        attackRange = (float)DataTableMgr.GetTable<MonsterData>().Get(status.id).monAttackRange;
+        searchRange = (float)DataTableMgr.GetTable<MonsterData>().Get(status.id).monDetectRange;
+        //;
     }
     private IEnumerator RestorePosition()
     {
