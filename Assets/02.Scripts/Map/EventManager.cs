@@ -44,6 +44,7 @@ public class EventManager : MonoBehaviour
 
     private int effectCount = 0;
 
+
     private static EventManager m_instance;
     public static EventManager instance
     {
@@ -161,6 +162,7 @@ public class EventManager : MonoBehaviour
             RestStory();
         }
     }
+   
 
     IEnumerator TextAnimationEffect(TextMeshProUGUI textBoard, string narration)
     {
@@ -202,6 +204,7 @@ public class EventManager : MonoBehaviour
         isClickable = true;
         ResetCount();
         Resume();
+        
     }
 
     //////////////////////Story Board/////////////////////////////////

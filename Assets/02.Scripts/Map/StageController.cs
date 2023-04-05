@@ -474,7 +474,6 @@ public class StageController : MonoBehaviour
 
     public void SetReward(bool isSecond)
     {
-        Debug.Log("leb");
         if (SceneManager.GetActiveScene().name != "Scene02")
         {
             return;
@@ -510,7 +509,6 @@ public class StageController : MonoBehaviour
 
         if (!isSecond)
         {
-            Debug.Log("firstreward");
             //poweder set
             rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powder.ToString();
             GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powder);
