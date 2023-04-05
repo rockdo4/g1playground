@@ -15,7 +15,7 @@ public class StoryPopEvent : MonoBehaviour
     //when player enters gives EventManager story Id list and play story
     private void OnTriggerEnter(Collider other)
     {
-       
+        Load();
         if (other.CompareTag("Player"))
         {
             if (playedStory.Contains(storyIdList.First()))
@@ -55,5 +55,5 @@ public class StoryPopEvent : MonoBehaviour
             saveData = newsaveData;
         }
         playedStory = saveData.playedId;
-    }
+      }
 }
