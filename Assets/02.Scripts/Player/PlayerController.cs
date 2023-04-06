@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     private AgentLinkMover linkMover;
     private Vector3 prevPosition;
     private bool inDistance;
+    public float defaultSpeed;
 
     private Coroutine cor;
     private float enemyPathLength;
@@ -82,6 +83,8 @@ public class PlayerController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.enabled = false;
         agent.updateRotation = false;
+        defaultSpeed = moveSpeed;
+        agent.speed = moveSpeed;
         linkMover = GetComponent<AgentLinkMover>();
         prevPosition = agent.transform.position;
         transform.forward = new Vector3(1f, 0f, 0f);
@@ -89,7 +92,7 @@ public class PlayerController : MonoBehaviour
         autoToggle.onValueChanged.AddListener((isAuto) =>
         {
             IsAuto = isAuto;
-            
+
             for (int i = 0; i < playerSkills.toggles.Length; i++)
             {
                 playerSkills.toggles[i].isOn = IsAuto;
@@ -106,7 +109,7 @@ public class PlayerController : MonoBehaviour
         states.Add(typeof(KnockBackState), new KnockBackState(this));
         states.Add(typeof(AutoMoveState), new AutoMoveState(this));
         SetState<IdleState>();
-       // GetComponent<DestructedEvent>().OnDestroyEvent = GameManager.instance.Respawn;
+        // GetComponent<DestructedEvent>().OnDestroyEvent = GameManager.instance.Respawn;
     }
 
     private void Update()
@@ -124,11 +127,23 @@ public class PlayerController : MonoBehaviour
     {
         RemoveAgentLinkMover();
         AddAgentLinkMover();
+
+        testList.Clear();
     }
     private void FixedUpdate()
     {
         CheckFrontObject();
         playerAnimator.SetBool("IsGrounded", isGrounded);
+    }
+    public void SetSpeedReduction(float speed)
+    {
+        agent.speed = speed;
+        moveSpeed = speed;
+    }
+    public void SetSpeedRateReduction(float speedRate)
+    {
+        agent.speed *= speedRate;
+        moveSpeed *= speedRate;
     }
     public void ResetAgent()
     {
@@ -150,7 +165,7 @@ public class PlayerController : MonoBehaviour
     {
         gameObject.AddComponent<AgentLinkMover>();
     }
-    public bool SkillOnOff(bool isOn , int index)
+    public bool SkillOnOff(bool isOn, int index)
     {
         return playerSkills.toggles[index].isOn = isOn;
     }
@@ -187,9 +202,9 @@ public class PlayerController : MonoBehaviour
             if (SceneManager.GetActiveScene().name == "Scene02")
             {
                 var stageController = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>();
-                if(stageController.lockRequirement == StageController.UnLockRequirement.Fight)
+                if (stageController.lockRequirement == StageController.UnLockRequirement.Fight)
                     enemies = stageController.GetStageEnemies();
-                else if(stageController.lockRequirement == StageController.UnLockRequirement.Puzzle ||
+                else if (stageController.lockRequirement == StageController.UnLockRequirement.Puzzle ||
                     stageController.lockRequirement == StageController.UnLockRequirement.Heal)
                 {
                     autoToggle.isOn = false;
@@ -200,7 +215,7 @@ public class PlayerController : MonoBehaviour
             else if (SceneManager.GetActiveScene().name != "Scene02")
                 enemies = DungeonManager.instance.Enemies;
 
-           //SetState<AutoMoveState>();
+            //SetState<AutoMoveState>();
         }
         else
         {
@@ -234,6 +249,25 @@ public class PlayerController : MonoBehaviour
             playerRb.velocity = new Vector3(0f, playerRb.velocity.y, 0f);
     }
 
+    private List<GameObject> testList = new List<GameObject>();
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Pushable"))
+        {
+            if (!testList.Contains(collision.gameObject))
+                testList.Add(collision.gameObject);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("Pushable"))
+        {
+            testList.Remove(collision.gameObject);
+        }
+    }
+
     public void CheckFrontObject()
     {
         var playerPosition = transform.position;
@@ -246,15 +280,20 @@ public class PlayerController : MonoBehaviour
             var hits = Physics.RaycastAll(playerPosition, new Vector3(moveX, 0, 0), 0.5f, layerMask);
             foreach (var hit in hits)
             {
-                if (((hit.transform.CompareTag("Pushable") && !isGrounded)) ||
+                if ((hit.transform.CompareTag("Pushable") && !isGrounded) ||
                     hit.transform.CompareTag("Ground") || hit.transform.CompareTag("Falling"))
                 {
                     IsBlocked = true;
                     return;
                 }
-
             }
+
             playerPosition.y += k;
+        }
+
+        if (testList.Count > 0 && currState.GetType() == typeof(JumpState))
+        {
+            IsBlocked = true;
         }
     }
     public void OnGround(bool isGrounded)
@@ -318,7 +357,7 @@ public class PlayerController : MonoBehaviour
             {
                 foreach (var enemy in enemies)
                 {
-                    if (enemy.GetComponent<Enemy>().GetIsLive()) 
+                    if (enemy.GetComponent<Enemy>().GetIsLive())
                     {
                         count++;
                         agent.CalculatePath(enemy.transform.position, path);
@@ -330,15 +369,15 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-                if (target != null && path != null && isGrounded && target.GetComponentInChildren<OnGround>().isGround) 
+                if (target != null && path != null && isGrounded && target.GetComponentInChildren<OnGround>().isGround)
                 {
                     agent.isStopped = false;
                     inDistance = false;
                     agent.SetDestination(target.transform.position);
                 }
                 var dis = Vector3.Distance(target.transform.position, transform.position);
-                if (dis <= 1.5f && count != 0 && isGrounded && target.transform.position != transform.position)  
-                { 
+                if (dis <= 1.5f && count != 0 && isGrounded && target.transform.position != transform.position)
+                {
                     agent.isStopped = true;
                     inDistance = true;
                     SetMoveX(target.transform.position.x - transform.position.x);
@@ -348,7 +387,7 @@ public class PlayerController : MonoBehaviour
                 {
                     SearchPortal();
                     yield break;
-                } 
+                }
             }
         }
     }
@@ -369,7 +408,7 @@ public class PlayerController : MonoBehaviour
     {
         public IdleState(PlayerController controller) : base(controller) { }
 
-        public override void Enter() 
+        public override void Enter()
         {
             playerController.playerRb.velocity = new Vector3(0f, playerController.playerRb.velocity.y, 0f);
         }
@@ -383,8 +422,8 @@ public class PlayerController : MonoBehaviour
             }
             playerController.playerAnimator.SetFloat("MoveX", playerController.moveX);
             playerController.Jump();
-            if (playerController.IsAuto && 
-                playerController.currState.GetType() != typeof(JumpState) && 
+            if (playerController.IsAuto &&
+                playerController.currState.GetType() != typeof(JumpState) &&
                 playerController.isGrounded)
                 playerController.SetState<AutoMoveState>();
         }
@@ -428,7 +467,7 @@ public class PlayerController : MonoBehaviour
 
         public override void Update()
         {
-            jumpTime +=Time.deltaTime;
+            jumpTime += Time.deltaTime;
             if (jumpTime >= 0.3f && playerController.isGrounded)
             {
                 if (!Mathf.Approximately(playerController.playerRb.velocity.x, 0f))
@@ -462,7 +501,7 @@ public class PlayerController : MonoBehaviour
             if (hitTimer > playerController.hitDuration && playerController.isGrounded)
             {
                 if (playerController.IsAuto)
-                    playerController.SetState<AutoMoveState>(); 
+                    playerController.SetState<AutoMoveState>();
                 else
                     playerController.SetState<IdleState>();
             }
@@ -493,7 +532,7 @@ public class PlayerController : MonoBehaviour
             }
 
             var agentPos = (playerController.agent.transform.position - playerController.prevPosition).normalized;
-            if (!playerController.inDistance&&!Mathf.Approximately(agentPos.x, 0f) && playerController.currState.GetType() != typeof(KnockBackState)) 
+            if (!playerController.inDistance && !Mathf.Approximately(agentPos.x, 0f) && playerController.currState.GetType() != typeof(KnockBackState))
             {
                 playerController.SetMoveX(agentPos.x);
             }
@@ -510,7 +549,7 @@ public class PlayerController : MonoBehaviour
                 playerController.SetState<MoveState>();
                 return;
             }
-            if(Input.GetKeyDown(KeyCode.M))
+            if (Input.GetKeyDown(KeyCode.M))
             {
                 var cc = playerController.GetComponent<AttackedCC>();
                 cc.Reset();
