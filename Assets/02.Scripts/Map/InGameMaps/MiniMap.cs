@@ -37,6 +37,7 @@ public class MiniMap : MonoBehaviour
     List<Image> checkPointIconUsingPool = new List<Image>();
     Dictionary<Image, GameObject> blockIconUsingPool = new Dictionary<Image, GameObject>();
     Dictionary<Image, GameObject> enemiesIconUsingPool = new Dictionary<Image, GameObject>();
+    Dictionary<Image, GameObject> gimmickIconUsingPool = new Dictionary<Image, GameObject>();
 
     private IObjectPool<Image> checkpointiconPool;
     public IObjectPool<Image> CheckPointIconPool
@@ -76,6 +77,32 @@ public class MiniMap : MonoBehaviour
             return enemiesPool;
         }
     }
+
+    private IObjectPool<Image> gimmickPool;
+    public IObjectPool<Image> GimmickPool
+    {
+        get
+        {
+            if (gimmickPool == null)
+            {
+                gimmickPool = new ObjectPool<Image>(CreateBlock, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, true, stackDefaultCapacity, maxPoolSize);
+            }
+            return gimmickPool;
+        }
+    }
+
+    //private IObjectPool<Image> enemiesPool;
+    //public IObjectPool<Image> EnemiesPool
+    //{
+    //    get
+    //    {
+    //        if (enemiesPool == null)
+    //        {
+    //            enemiesPool = new ObjectPool<Image>(CreateEnemy, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, true, stackDefaultCapacity, maxPoolSize);
+    //        }
+    //        return enemiesPool;
+    //    }
+    //}
 
     private Image CreateEnemy()
     {
@@ -129,7 +156,8 @@ public class MiniMap : MonoBehaviour
     {
         checkpointiconPool = new ObjectPool<Image>(CreateCheckPoint, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
         blockPool = new ObjectPool<Image>(CreateBlock, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
-        enemiesPool= new ObjectPool<Image>(CreateEnemy, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
+        enemiesPool = new ObjectPool<Image>(CreateEnemy, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
+        gimmickPool = new ObjectPool<Image>(CreateBlock, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject);
         //singleton
         if (instance != this)
         {
@@ -140,7 +168,7 @@ public class MiniMap : MonoBehaviour
 
     private void Update()
     {
-        if (MapManager.instance.outlines == null || MapManager.instance.GetCurrentChapterObject()==null|| MapManager.instance.GetCurrentChapterObject().name=="Village")
+        if (MapManager.instance.outlines == null || MapManager.instance.GetCurrentChapterObject() == null || MapManager.instance.GetCurrentChapterObject().name == "Village")
         {
             minimapObject.SetActive(false);
             return;
@@ -155,9 +183,10 @@ public class MiniMap : MonoBehaviour
         float playerx = (player.transform.position.x - LB.x) / rect.width;
         float playery = (player.transform.position.y - LB.y) / rect.height;
 
+
         miniMapsize = miniMapHorizontal.rectTransform.sizeDelta;
         if (playerx == float.PositiveInfinity || playery == float.NegativeInfinity)
-        {         
+        {
             return;
         }
 
@@ -168,10 +197,10 @@ public class MiniMap : MonoBehaviour
         float needminus = miniMapRect.rect.height / 2;
 
         float pivotcenter = miniMapRect.rect.height / 4;
+        Debug.Log(pivotcenter);
 
         if (miniMapRect.rect.height > 80)
         {
-
             miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, (miniMapRect.rect.height * normalizedPlayerY - needminus) * -1);
             if (Mathf.Abs(miniMapRect.anchoredPosition.y) > pivotcenter)
             {
@@ -179,15 +208,16 @@ public class MiniMap : MonoBehaviour
                     miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, pivotcenter);
                 else
                     miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, pivotcenter * -1);
-
             }
+
         }
+        else
+            miniMapRect.anchoredPosition = new Vector2(miniMapRect.anchoredPosition.x, 0);
 
         foreach (var pool in blockIconUsingPool)
         {
             pool.Key.gameObject.SetActive(pool.Value.activeSelf);
-            pool.Key.enabled=pool.Value.activeSelf;
-
+            pool.Key.enabled = pool.Value.activeSelf;
         }
 
         foreach (var enemy in enemiesIconUsingPool)
@@ -197,7 +227,15 @@ public class MiniMap : MonoBehaviour
             float x = (enemy.Value.transform.position.x - LB.x) / rect.width;
             float y = (enemy.Value.transform.position.y - LB.y) / rect.height;
             enemy.Key.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
+        }
 
+        foreach (var enemy in gimmickIconUsingPool)
+        {
+            enemy.Key.gameObject.SetActive(enemy.Value.activeSelf);
+            enemy.Key.enabled = enemy.Value.activeSelf;
+            float x = (enemy.Value.transform.position.x - LB.x) / rect.width;
+            float y = (enemy.Value.transform.position.y - LB.y) / rect.height;
+            enemy.Key.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
         }
 
     }
@@ -207,7 +245,6 @@ public class MiniMap : MonoBehaviour
     void Start()
     {
         player = GameManager.instance.player;
-
     }
 
     IEnumerator CSetColliderAndCheckPoint()
@@ -253,7 +290,6 @@ public class MiniMap : MonoBehaviour
 
         rect = new Rect(LB + ((RT - LB) / 2), RT - LB);
 
-
         foreach (var rel in checkPointIconUsingPool)
         {
             checkpointiconPool.Release(rel);
@@ -269,6 +305,12 @@ public class MiniMap : MonoBehaviour
             enemiesPool.Release(rel.Key);
         }
         enemiesIconUsingPool.Clear();
+
+        foreach (var rel in gimmickIconUsingPool)
+        {
+            gimmickPool.Release(rel.Key);
+        }
+        gimmickIconUsingPool.Clear();
 
         var currentcheckpoints = MapManager.instance.GetCurrentStageObject().GetComponentsInChildren<Checkpoint>();
 
@@ -307,9 +349,10 @@ public class MiniMap : MonoBehaviour
 
         if (MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().lockRequirement != UnLockRequirement.Puzzle)
             yield break;
-             
 
         var currentBlock = MapManager.instance.GetCurrentStageObject().transform.Find("Floor");
+
+
         for (int i = 0; i < currentBlock.childCount; i++)
         {
             float x = (currentBlock.GetChild(i).transform.position.x - LB.x) / rect.width;
@@ -323,10 +366,33 @@ public class MiniMap : MonoBehaviour
             temp1.transform.SetParent(miniMapHorizontal.transform, false);
             temp1.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
             blockIconUsingPool.Add(temp1, currentBlock.GetChild(i).gameObject);
-
         }
 
+        Transform currentStage = MapManager.instance.GetCurrentStageObject().transform;
+        int childcount = currentStage.transform.childCount;
+        int fallingcount = 0;
+        for (int i = 0; i < childcount; i++)
+        {
+            if (currentStage.GetChild(i).gameObject.layer == 15)
+            {
+                int objecttilechildcount = currentStage.GetChild(i).childCount;
+                for (int j = 0; j < objecttilechildcount; j++)
+                {
+                    float x = (currentStage.GetChild(i).GetChild(j).transform.position.x - LB.x) / rect.width;
+                    float y = (currentStage.GetChild(i).GetChild(j).transform.position.y - LB.y) / rect.height;
 
+                    var temp = gimmickPool.Get();
+                    if (!currentStage.GetChild(i).GetChild(j).gameObject.activeSelf)
+                    {
+                        temp.enabled = false;
+                    }
+                    temp.transform.SetParent(miniMapHorizontal.transform, false);
+                    temp.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
+
+                    gimmickIconUsingPool.Add(temp, currentStage.GetChild(i).GetChild(j).gameObject);
+                }
+            }
+        }
     }
 
     public void SetMiniMap(int id)

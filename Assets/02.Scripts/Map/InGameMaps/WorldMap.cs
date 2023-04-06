@@ -80,7 +80,6 @@ public class WorldMap : MonoBehaviour
         stage.PrevStageName = MapManager.instance.GetCurrentMapName();
         var checkpoint = stage.GetComponentInChildren<Checkpoint>();
 
-
         GameManager.instance.player.transform.position = checkpoint.transform.position;
         GameManager.instance.player.GetComponent<Rigidbody>().velocity = Vector3.zero;
         var playerStat = GameManager.instance.player.GetComponent<Status>();
@@ -109,11 +108,9 @@ public class WorldMap : MonoBehaviour
         //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).
         //    Find(MapManager.instance.GetCurrentMapName()).gameObject.SetActive(false);
 
-
         stage.gameObject.SetActive(true);
         stage.PrevStageName = MapManager.instance.GetCurrentMapName();
         var checkpoint = stage.GetComponentInChildren<Checkpoint>();
-
 
         GameManager.instance.player.transform.position = checkpoint.transform.position;
         GameManager.instance.player.GetComponent<Rigidbody>().velocity = Vector3.zero;
