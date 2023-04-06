@@ -485,6 +485,8 @@ public class StageController : MonoBehaviour
         if (UnLockRequirement.Puzzle == lockRequirement)
         {
             isClear = true;
+            if (SceneManager.GetActiveScene().name == "Scene02")
+                MapManager.instance.SaveProgress();
         }
 
         List<GameObject> rewardUiList = new List<GameObject>();

@@ -96,11 +96,15 @@ public class WorldMap : MonoBehaviour
         UI.Instance.popupPanel.worldMapPopUp.ActiveFalse();
     }
 
-    private void SetVillage(StageController stage)
+    public void SetVillage(StageController stage)
     {
-        GameManager.instance.player.GetComponent<PlayerInventory>().RefillPotions();
+        if (stage.gameObject.name != "Village")
+        {
+            GameManager.instance.player.GetComponent<PlayerInventory>().RefillPotions();
+        }
         GameManager.instance.player.transform.SetParent(null);
 
+        MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().PortalOpen();
         MapManager.instance.GetCurrentStageObject().SetActive(false);
         //GameObject.FindWithTag("Map").transform.Find(MapManager.instance.GetCurrentChapterName()).
         //    Find(MapManager.instance.GetCurrentMapName()).gameObject.SetActive(false);
