@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.21528155, g: 0.30525383, b: 0.3312603, a: 1}
+  m_IndirectSpecularColor: {r: 0.215265, g: 0.30571723, b: 0.33143777, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8697,12 +8697,12 @@ PrefabInstance:
     - target: {fileID: 5906699128049564886, guid: dc1d5b8d4449844ef9d44a5a43ecec8c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.10000014
+      value: 0.100000024
       objectReference: {fileID: 0}
     - target: {fileID: 5906699128049564886, guid: dc1d5b8d4449844ef9d44a5a43ecec8c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 5906699128049564886, guid: dc1d5b8d4449844ef9d44a5a43ecec8c,
         type: 3}
@@ -14905,6 +14905,7 @@ GameObject:
   - component: {fileID: 961739751}
   - component: {fileID: 961739750}
   - component: {fileID: 961739755}
+  - component: {fileID: 961739756}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -15004,7 +15005,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.312313, y: 1.9132147, z: -10}
+  m_LocalPosition: {x: -28.15002, y: 1.9132148, z: -200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15045,6 +15046,18 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &961739756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961739749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 044ed4a557535462fac240a60b82551b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &962273097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20912,6 +20925,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2306042922432965061, guid: 97a4803aba7d48f49895509181650255,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 961739752}
     - target: {fileID: 2306042922435178170, guid: 97a4803aba7d48f49895509181650255,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -30279,6 +30297,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StageEvent 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255879811933465675, guid: 854c1bb988f8c4db68acdf09ccf08df9,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 961739752}
+    - target: {fileID: 4255879811933465675, guid: 854c1bb988f8c4db68acdf09ccf08df9,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4255879811933465676, guid: 854c1bb988f8c4db68acdf09ccf08df9,
         type: 3}

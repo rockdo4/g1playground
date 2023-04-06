@@ -38,6 +38,8 @@ public class SceneLoader : MonoBehaviour
     [SerializeField]
     private Slider progressBar;
 
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject backImage;
     private string loadSceneName;
 
     public static SceneLoader Create()
@@ -60,6 +62,15 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Camera camera = Camera.main;
+        canvas.worldCamera = camera;
+
+        if (backImage != null)
+        {
+            backImage.SetActive(true);
+        }
+
         gameObject.SetActive(true);
         SceneManager.sceneLoaded += LoadSceneEnd;
         loadSceneName = sceneName;
@@ -113,6 +124,10 @@ public class SceneLoader : MonoBehaviour
         {
             StartCoroutine(Fade(false));
             SceneManager.sceneLoaded -= LoadSceneEnd;
+            if (backImage != null)
+            {
+                backImage.SetActive(false); 
+            }
         }
         StartCoroutine(CGetPlayerStatus());
     }

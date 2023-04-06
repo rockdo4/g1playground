@@ -299,7 +299,7 @@ public class EventManager : MonoBehaviour
         //    yield return null;
         //}
         //stopwatch.Stop();
-        while (timer <= delay - 1f)
+        while (timer <= delay - 0.6f)
         {
             timer += Time.deltaTime;
             yield return null;
