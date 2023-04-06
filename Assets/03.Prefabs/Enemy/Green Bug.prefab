@@ -1326,6 +1326,7 @@ GameObject:
   - component: {fileID: 2382564141760440804}
   - component: {fileID: 7888488867762414450}
   - component: {fileID: -4256789565098699494}
+  - component: {fileID: -2962361966572135423}
   m_Layer: 9
   m_Name: Green Bug
   m_TagString: Enemy
@@ -1570,13 +1571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canKnockBack: 1
-  canStun: 1
-  canSlowDown: 1
-  canReduceDef: 1
-  maxKBCount: 3
-  kBResistTime: 12
-  maxStunCount: 3
-  stunResistTime: 12
+  kBResistTime: 1
 --- !u!114 &7888488867762414450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1603,6 +1598,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSound: {fileID: 11400000, guid: c70d6c4affc264270b45d7cc3d424aa2, type: 2}
+--- !u!114 &-2962361966572135423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526077231205297495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7879528ad407b641944e2de5ac445b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1784987224119609548
 GameObject:
   m_ObjectHideFlags: 0

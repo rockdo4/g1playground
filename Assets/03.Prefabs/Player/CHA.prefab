@@ -60,16 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagedDelay: 1.5
-  damage: 10
-  player:
-    renderers: []
-    normalRendering: {fileID: 2100000, guid: c304053b6bece6f45b435d0a1222d0b1, type: 2}
-    invisibleRendering: {fileID: 2100000, guid: 6bb5ce45e7294464fbe138e2410f7926,
-      type: 2}
-  weapons:
-    renderers: []
-    normalRendering: {fileID: 0}
-    invisibleRendering: {fileID: 0}
+  damageRate: 0.4
 --- !u!1 &1225491547
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +398,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c304053b6bece6f45b435d0a1222d0b1, type: 2}
+  - {fileID: 8734892964182178167, guid: d9ab7a93b93344c46ab81bd2708edc04, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1247,6 +1238,8 @@ GameObject:
   - component: {fileID: 441504632}
   - component: {fileID: 441504619}
   - component: {fileID: 441504618}
+  - component: {fileID: 8277891165400510534}
+  - component: {fileID: 441504641}
   m_Layer: 6
   m_Name: CHA
   m_TagString: Player
@@ -1511,13 +1504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canKnockBack: 1
-  canStun: 1
-  canSlowDown: 1
-  canReduceDef: 1
-  maxKBCount: 3
-  kBResistTime: 12
-  maxStunCount: 3
-  stunResistTime: 12
+  kBResistTime: 1
 --- !u!114 &1674795210733244910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1778,6 +1765,41 @@ MonoBehaviour:
   grassJumpSound: {fileID: 11400000, guid: b74473f4b2cdf418393e874b068a1ad3, type: 2}
   sandJumpSound: {fileID: 11400000, guid: dd8f340f89070440bb1a665dff635e60, type: 2}
   villageJumpSound: {fileID: 11400000, guid: 9e8e9be3967104d9bb373728ed7adf49, type: 2}
+--- !u!114 &8277891165400510534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374462481970909493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7879528ad407b641944e2de5ac445b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &441504641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374462481970909493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12edab73eb5f13e4f9bc97b8d33998a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blinks:
+  - renderers:
+    - {fileID: 4651226339540711423}
+    normalRendering: {fileID: 2100000, guid: c304053b6bece6f45b435d0a1222d0b1, type: 2}
+    invisibleRendering: {fileID: 2100000, guid: 6bb5ce45e7294464fbe138e2410f7926,
+      type: 2}
+  - renderers:
+    - {fileID: 5878623952790130513}
+    normalRendering: {fileID: 2100000, guid: 242d2be7381eb4d4d8dca792b4d071ab, type: 2}
+    invisibleRendering: {fileID: 2100000, guid: f216008a3d7551449b5a1163438f4dea,
+      type: 2}
 --- !u!1 &6047748371506495711
 GameObject:
   m_ObjectHideFlags: 0
@@ -2611,7 +2633,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 69a7ffa31fc3de547a8a2f0e85943a76,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69a7ffa31fc3de547a8a2f0e85943a76, type: 3}
@@ -2624,6 +2646,12 @@ Transform:
 --- !u!1 &5374462480158764676 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 69a7ffa31fc3de547a8a2f0e85943a76,
+    type: 3}
+  m_PrefabInstance: {fileID: 5067821678844318677}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5878623952790130513 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 69a7ffa31fc3de547a8a2f0e85943a76,
     type: 3}
   m_PrefabInstance: {fileID: 5067821678844318677}
   m_PrefabAsset: {fileID: 0}

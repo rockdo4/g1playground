@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 3799094896001745902}
   - component: {fileID: 2660433479213826366}
   - component: {fileID: 7587483161571131435}
+  - component: {fileID: 3430818463446125800}
   m_Layer: 9
   m_Name: PurpleBomp
   m_TagString: Enemy
@@ -417,13 +418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canKnockBack: 1
-  canStun: 1
-  canSlowDown: 1
-  canReduceDef: 1
-  maxKBCount: 3
-  kBResistTime: 12
-  maxStunCount: 3
-  stunResistTime: 12
+  kBResistTime: 1
 --- !u!114 &2660433479213826366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,6 +445,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSound: {fileID: 11400000, guid: d2457bfbb008848e1a008a46376bb1da, type: 2}
+--- !u!114 &3430818463446125800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4507409972792277490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7879528ad407b641944e2de5ac445b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5807673551379012185
 GameObject:
   m_ObjectHideFlags: 0

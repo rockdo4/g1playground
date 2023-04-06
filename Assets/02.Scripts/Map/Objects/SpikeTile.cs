@@ -33,10 +33,15 @@ public class SpikeTile : MonoBehaviour
             timer = 0f;
 
             //add player damage here//
-            status.CurrHp -= (int)(status.FinalValue.maxHp * damagePercentage);
-            var cc = other.GetComponent<AttackedCC>();
-            if (cc != null)
-                cc.ExeKnockBack(transform.position, 7f);
+            var damage = (int)(status.FinalValue.maxHp * damagePercentage);
+            Attack.CC newCC = Attack.CC.None;
+            newCC.knockBackForce = 7f;
+            var attack = new Attack(damage, newCC, false);
+            var attackables = GetComponents<IAttackable>();
+            foreach (var attackable in attackables)
+            {
+                attackable.OnAttack(gameObject, attack, other.transform.position);
+            }
         }
     }
 }

@@ -5,57 +5,22 @@ using UnityEngine;
 
 public class PlayerBodyTrigger : MonoBehaviour
 {
-    [Serializable]
-    public struct InvisibleRendering
-    {
-        public Renderer[] renderers;
-        public Material normalRendering;
-        public Material invisibleRendering;
-
-        public void Opaque()
-        {
-            foreach (var renderer in renderers)
-            {
-                renderer.material = normalRendering;
-            }
-        }
-        public void Transparent()
-        {
-            foreach (var renderer in renderers)
-            {
-                renderer.material = invisibleRendering;
-            }
-        }
-    }
-
     public float damagedDelay;
     private float timer;
-    private float switchTimer;
     private bool isOnDelay = false;
-    private bool transparentMode = false;
-    public int damage;
+    public float damageRate = 0.2f;
     private Vector3 bodyCenter = new Vector3(0f, 0.5f, 0f);
-    [SerializeField] public InvisibleRendering player;
-    [SerializeField] public InvisibleRendering weapons;
-
-    private void Start()
-    {
-        Transparent(false);
-    }
 
     private void Update()
     {
         if (isOnDelay)
         {
-            switchTimer += Time.deltaTime;
-            if (switchTimer > 0.2f)
-            {
-                SwitchMode();
-                switchTimer = 0f;
-            }
             timer += Time.deltaTime;
             if (timer > damagedDelay)
-                End();
+            {
+                isOnDelay = false;
+                timer = 0f;
+            }
         }
     }
 
@@ -63,6 +28,10 @@ public class PlayerBodyTrigger : MonoBehaviour
     {
         if (isOnDelay)
             return;
+        var enemyStat = other.GetComponentInParent<Status>();
+        if (enemyStat == null)
+            return;
+        var damage = (int)(damageRate * (enemyStat.FinalValue.meleePower > enemyStat.FinalValue.skillPower ? enemyStat.FinalValue.meleePower : enemyStat.FinalValue.skillPower));
         Attack.CC newCC = Attack.CC.None;
         newCC.knockBackForce = 7f;
         Attack attack = new Attack(damage, newCC, false);
@@ -75,31 +44,5 @@ public class PlayerBodyTrigger : MonoBehaviour
             attackable.OnAttack(attacker, attack, attackPos);
         }
         isOnDelay = true;
-        Transparent(true);
-    }
-
-    private void SwitchMode() => Transparent(!transparentMode);
-
-    private void Transparent(bool transparent)
-    {
-        transparentMode = transparent;
-        if (transparent)
-        {
-            player.Transparent();
-            weapons.Transparent();
-        }
-        else
-        {
-            player.Opaque();
-            weapons.Opaque();
-        }
-    }
-
-    private void End()
-    {
-        isOnDelay = false;
-        switchTimer = 0f;
-        timer = 0f;
-        Transparent(false);
     }
 }
