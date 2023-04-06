@@ -531,6 +531,16 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 1358104321}
+    - target: {fileID: 7275082097125877855, guid: 106270535cdf5674ebebe59ba6b9e02e,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7275082097125877855, guid: 106270535cdf5674ebebe59ba6b9e02e,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 106270535cdf5674ebebe59ba6b9e02e, type: 3}
 --- !u!1001 &396686193
@@ -621,6 +631,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1737670311973147093, guid: 43f9a4e8f810b6743ad19243709bc33d,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 961739752}
+    - target: {fileID: 1737670311973147093, guid: 43f9a4e8f810b6743ad19243709bc33d,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1737670313196345115, guid: 43f9a4e8f810b6743ad19243709bc33d,
         type: 3}
       propertyPath: m_Name
@@ -895,6 +915,7 @@ GameObject:
   - component: {fileID: 961739752}
   - component: {fileID: 961739751}
   - component: {fileID: 961739750}
+  - component: {fileID: 961739754}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1001,6 +1022,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &961739754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961739749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 044ed4a557535462fac240a60b82551b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1358104321 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5120164146009453512, guid: 106270535cdf5674ebebe59ba6b9e02e,
@@ -16272,6 +16305,7 @@ MonoBehaviour:
   syntheticPopUp: {fileID: 0}
   settingPopUp: {fileID: 0}
   stageRewardPopUp: {fileID: 0}
+  stageDeathPopUp: {fileID: 0}
   gamblingPopUp: {fileID: 0}
   gamblingResult1PopUp: {fileID: 0}
   gamblingResult10PopUp: {fileID: 0}
