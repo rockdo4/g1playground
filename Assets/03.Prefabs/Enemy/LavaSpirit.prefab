@@ -516,10 +516,11 @@ GameObject:
   - component: {fileID: 3289195890045399459}
   - component: {fileID: 3289195890045399458}
   - component: {fileID: 3289195890045399461}
-  - component: {fileID: 914765104476129714}
   - component: {fileID: 6283819752160929502}
   - component: {fileID: 4975310124007684441}
   - component: {fileID: -3979528355401695211}
+  - component: {fileID: -1613018667044470324}
+  - component: {fileID: 6456246741251525275}
   m_Layer: 9
   m_Name: LavaSpirit
   m_TagString: Enemy
@@ -747,28 +748,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59b7229bcaa41b4c942c681478c153b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &914765104476129714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3289195890036032096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acc6b912e573bf34d9a1246670f60546, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canKnockBack: 1
-  canStun: 1
-  canSlowDown: 1
-  canReduceDef: 1
-  maxKBCount: 3
-  kBCount: 0
-  kBResistTime: 12
-  maxStunCount: 3
-  stunCount: 0
-  stunResistTime: 12
 --- !u!114 &6283819752160929502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -808,3 +787,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGround: 0
+--- !u!114 &-1613018667044470324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3289195890036032096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acc6b912e573bf34d9a1246670f60546, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canKnockBack: 1
+  kBResistTime: 1
+--- !u!114 &6456246741251525275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3289195890036032096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7879528ad407b641944e2de5ac445b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
