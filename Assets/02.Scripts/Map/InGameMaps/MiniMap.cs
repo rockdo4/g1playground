@@ -197,7 +197,6 @@ public class MiniMap : MonoBehaviour
         float needminus = miniMapRect.rect.height / 2;
 
         float pivotcenter = miniMapRect.rect.height / 4;
-        Debug.Log(pivotcenter);
 
         if (miniMapRect.rect.height > 80)
         {
