@@ -338,7 +338,6 @@ public class EnemyController : Enemy
         }
         else
         {
-
             findingpathtime += Time.deltaTime;
             if (findingpathtime >= 1.5f)
             {
@@ -383,19 +382,10 @@ public class EnemyController : Enemy
         }
     }
 
-    //public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
-    //{
-    //    if (State == EnemyState.Die)
-    //        return;
-
-    //    State = EnemyState.TakeDamage;
-    //    animator.SetTrigger("TakeDamage");
-    //}
     protected virtual void DieUpdate()
     {
     }
 
-    //protected float floorLength;
     protected Vector3 startPos;
     protected Vector3 endPos;
 
@@ -427,7 +417,6 @@ public class EnemyController : Enemy
             case EnemyMeleeAttack:
                 {
                     attackBox.SetActive(true);
-                    //Play Attack Sound
                     enemySound.PlayAttackSound();
                 }
                 break;
@@ -468,7 +457,6 @@ public class EnemyController : Enemy
             return;
 
         isKbAnimation = false;
-        //State = EnemyState.Chase;
     }
 
     protected virtual void DieDone()
