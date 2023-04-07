@@ -10,7 +10,7 @@ public class MonsterData : StatusData
     public string dropId;
     public float patrolTime;
     public float monAttackRange;
-    public float monSkillRange;
+    public float monDetectRange;
     public int detectRange;
     public float chaseTime;
     public int exp;
@@ -27,6 +27,8 @@ public class MonsterData : StatusData
         str = int.Parse(line["monStr"]);
         dex = int.Parse(line["monDex"]);
         intel = int.Parse(line["monInt"]);
+        monAttackRange = int.Parse(line["monAttackRange"]);
+        monDetectRange = int.Parse(line["detectRange"]);
         //monAttackRange = float.Parse(line["monAttackRange"]);
         maxHp = int.Parse(line["monHealth"]);
         detectRange = int.Parse(line["detectRange"]);
