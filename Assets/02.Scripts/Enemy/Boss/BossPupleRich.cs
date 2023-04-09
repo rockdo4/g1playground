@@ -229,6 +229,7 @@ public class BossPupleRich : Enemy
         if (returnTime < returnCoolTime)
         {
             State = EnemyState.Return;
+            returnCoolTime = 0f;
         }
 
         RayShooter(searchRange, isGoingRight);
@@ -270,7 +271,7 @@ public class BossPupleRich : Enemy
         if (LookAtPos(mySpawnPos))
             agent.SetDestination(mySpawnPos);
 
-        if (Vector3.Distance(transform.position, mySpawnPos) <= 0.5)
+        if (Vector3.Distance(transform.position, mySpawnPos) <= 1.5f)
         {
             State = EnemyState.None;
             returnCoolTime = 0f;
