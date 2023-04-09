@@ -129,8 +129,8 @@ public class BossPupleRich : Enemy
     protected override void OnEnable()
     {
         base.OnEnable();
-        mainColl.enabled = true;
         State = EnemyState.None;
+        mainColl.enabled = true;
         projectileCoolTime = 0f;
     }
 
