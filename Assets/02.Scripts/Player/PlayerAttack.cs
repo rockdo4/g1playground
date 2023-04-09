@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using static PlayerAttack;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class PlayerAttack : MonoBehaviour
     public struct WeaponSet
     {
         public WeaponTypes weaponType;
-        public GameObject weaponGameObject;
+        public GameObject[] weaponGameObject;
         public AnimatorOverrideController overrideController;
         public AnimationClip clip;
         public string attackSound;
@@ -28,6 +27,7 @@ public class PlayerAttack : MonoBehaviour
     private AnimatorOverrider playerAnimatorOverrider;
     public BasicAttack basicAttack;
     public PlayerAttackBox attackBox;
+    //public Transform spearLeftMount;
     public WeaponTypes currWeaponType;
     public float slowModeSpeed;
     [SerializeField] public WeaponSet[] weaponSets;
@@ -57,7 +57,6 @@ public class PlayerAttack : MonoBehaviour
             weaponSetDict[newWeaponAnim.weaponType] = newWeaponAnim;
         }
         weaponSetDictKeys = weaponSetDict.Keys.ToList();
-        //SetAll();
         currWeaponType = WeaponTypes.None;
     }
 
@@ -78,12 +77,16 @@ public class PlayerAttack : MonoBehaviour
         currWeaponType = weaponType;
         foreach (var weaponSet in weaponSetDict)
         {
-            if (weaponSet.Value.weaponGameObject != null)
+            var gameObjects = weaponSet.Value.weaponGameObject;
+            foreach (var gameObject in gameObjects)
             {
-                if (weaponSet.Value.weaponType != currWeaponType)
-                    weaponSet.Value.weaponGameObject.SetActive(false);
-                else
-                    weaponSet.Value.weaponGameObject.SetActive(true);
+                if (gameObject != null)
+                {
+                    if (weaponSet.Value.weaponType != currWeaponType)
+                        gameObject.SetActive(false);
+                    else
+                        gameObject.SetActive(true);
+                }
             }
         }
         SetDamageTime(weaponType);
@@ -146,13 +149,27 @@ public class PlayerAttack : MonoBehaviour
         SetAll();
     }
 
+    //private void OnAnimatorIK(int layerIndex)
+    //{
+    //    if (currWeaponType != WeaponTypes.Spear || !playerAnimator.GetBool("IsAttacking"))
+    //        return;
+    //    playerAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+    //    playerAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+    //    playerAnimator.SetIKPosition(AvatarIKGoal.LeftHand, spearLeftMount.position);
+    //    playerAnimator.SetIKRotation(AvatarIKGoal.LeftHand, spearLeftMount.rotation);
+    //}
+
     public void StartAttack()
     {
         if (currWeaponType == WeaponTypes.None)
             return;
         playerAnimator.SetBool("IsAttacking", true);
-    } 
-    public void EndAttack() => playerAnimator.SetBool("IsAttacking", false);
+    }
+
+    public void EndAttack()
+    {
+        playerAnimator.SetBool("IsAttacking", false);
+    }
 
     public void ExecuteAttack()
     {
