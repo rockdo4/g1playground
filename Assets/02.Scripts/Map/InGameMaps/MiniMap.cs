@@ -168,7 +168,7 @@ public class MiniMap : MonoBehaviour
 
     private void Update()
     {
-        if (MapManager.instance.outlines == null || MapManager.instance.GetCurrentChapterObject() == null || MapManager.instance.GetCurrentChapterObject().name == "Village")
+        if (MapManager.instance.outlines == null || MapManager.instance.GetCurrentChapterObject() == null || MapManager.instance.GetCurrentChapterObject().name == "Village"||MapManager.instance.GetCurrentStageObject().name=="Stage15")
         {
             minimapObject.SetActive(false);
             return;
@@ -228,13 +228,20 @@ public class MiniMap : MonoBehaviour
             enemy.Key.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
         }
 
-        foreach (var enemy in gimmickIconUsingPool)
+        foreach (var gimmick in gimmickIconUsingPool)
         {
-            enemy.Key.gameObject.SetActive(enemy.Value.activeSelf);
-            enemy.Key.enabled = enemy.Value.activeSelf;
-            float x = (enemy.Value.transform.position.x - LB.x) / rect.width;
-            float y = (enemy.Value.transform.position.y - LB.y) / rect.height;
-            enemy.Key.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
+            gimmick.Key.gameObject.SetActive(gimmick.Value.activeSelf);
+            if (gimmick.Value.CompareTag("Falling"))
+            {
+                gimmick.Key.enabled = gimmick.Value.transform.parent.gameObject.activeSelf;
+            }
+            else
+            {
+                gimmick.Key.enabled = gimmick.Value.activeSelf;
+            }
+            float x = (gimmick.Value.transform.position.x - LB.x) / rect.width;
+            float y = (gimmick.Value.transform.position.y - LB.y) / rect.height;
+            gimmick.Key.rectTransform.transform.localPosition = new Vector3(miniMapsize.x * x - miniMapsize.x / 2, miniMapsize.y * y - miniMapsize.y / 2);
         }
 
     }
@@ -369,7 +376,7 @@ public class MiniMap : MonoBehaviour
 
         Transform currentStage = MapManager.instance.GetCurrentStageObject().transform;
         int childcount = currentStage.transform.childCount;
-        int fallingcount = 0;
+
         for (int i = 0; i < childcount; i++)
         {
             if (currentStage.GetChild(i).gameObject.layer == 15)

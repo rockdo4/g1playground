@@ -446,7 +446,7 @@ public class StageController : MonoBehaviour
     {
         foreach (var enemy in enemies)
         {
-            if (enemy.gameObject.activeSelf)
+            if (enemy.gameObject.GetComponent<Enemy>().GetIsLive())
             {
 
                 break;
@@ -551,7 +551,7 @@ public class StageController : MonoBehaviour
         {
             foreach (var enemy in enemies)
             {
-                if (enemy.gameObject.activeSelf)
+                if (enemy.gameObject.GetComponent<Enemy>().GetIsLive())
                 {
                     canOpen = false;
                     greenwallopen = false;
