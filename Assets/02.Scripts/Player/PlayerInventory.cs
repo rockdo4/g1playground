@@ -199,10 +199,15 @@ public class PlayerInventory : MonoBehaviour
                 {
                     newConsumable.count += count;
                     Consumables[i] = newConsumable;
-                    return;
+                    count = 0;
+                    break;
                 }
             }
         }
+
+        if (count > 0)
+            AddConsumable(id, count);
+
         PlayerDataManager.instance.SaveInventory();
         PlayerDataManager.instance.SaveFile();
     }
