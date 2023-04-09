@@ -9,16 +9,11 @@ public class GetCamera : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(AttachCam());
-    }
-
-    IEnumerator AttachCam()
-    {
-        yield return null;
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Camera camera = Camera.main;
         canvas.worldCamera = camera;
     }
+
 
     private void Update()
     {
