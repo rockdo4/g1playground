@@ -21,8 +21,6 @@ public class SpikeTile : MonoBehaviour
         timer += Time.deltaTime;
     }
 
-    
-
     private void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Player"))
@@ -35,9 +33,10 @@ public class SpikeTile : MonoBehaviour
             //add player damage here//
             var damage = (int)(status.FinalValue.maxHp * damagePercentage);
             Attack.CC newCC = Attack.CC.None;
+
             newCC.knockBackForce = 7f;
             var attack = new Attack(damage, newCC, false);
-            var attackables = other.GetComponents<IAttackable>();
+            var attackables = GetComponents<IAttackable>();
             foreach (var attackable in attackables)
             {
                 attackable.OnAttack(gameObject, attack, other.transform.position);
