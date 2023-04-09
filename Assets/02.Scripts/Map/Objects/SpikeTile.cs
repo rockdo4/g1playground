@@ -37,7 +37,7 @@ public class SpikeTile : MonoBehaviour
             Attack.CC newCC = Attack.CC.None;
             newCC.knockBackForce = 7f;
             var attack = new Attack(damage, newCC, false);
-            var attackables = GetComponents<IAttackable>();
+            var attackables = other.GetComponents<IAttackable>();
             foreach (var attackable in attackables)
             {
                 attackable.OnAttack(gameObject, attack, other.transform.position);
