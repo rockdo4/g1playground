@@ -22,6 +22,8 @@ public class SaveDugeonDataVer1 : SaveDungeonData
     public string fridaylv;
     public string playedtime;
     public string playedday;
+    public string weekend;
+
     public SaveDugeonDataVer1()
     {
         version = 1;

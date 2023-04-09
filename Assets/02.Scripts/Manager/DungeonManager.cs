@@ -83,11 +83,12 @@ public class DungeonManager : MonoBehaviour
     private PlayerInventory inven;
     StringBuilder scenename = new StringBuilder();
 
+    private bool weekend;
     void OnEnable()
     {
-       
 
-        StartCoroutine(COnEnable());   
+
+        StartCoroutine(COnEnable());
     }
 
     private IEnumerator COnEnable()
@@ -121,8 +122,13 @@ public class DungeonManager : MonoBehaviour
         saveData.thursdaylv = origindata.thursdaylv;
         saveData.fridaylv = origindata.fridaylv;
         saveData.playedtime = attempt;
-        saveData.playedday = origindata.playedday;
-
+        saveData.playedday = DateTime.Now.ToString();
+        if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+        {
+            saveData.weekend = DateTime.Now.DayOfWeek.ToString();
+        }
+        else
+            saveData.weekend = "";
         switch (today)
         {
             case "Mon":
@@ -140,8 +146,9 @@ public class DungeonManager : MonoBehaviour
             case "Fri":
                 saveData.fridaylv = lv.ToString();
                 break;
-        }
 
+        }
+        Debug.Log($"Save lv is {lv} and attemp is {attempt}");
         SaveLoadSystem.Save(saveData);
     }
 
@@ -153,8 +160,7 @@ public class DungeonManager : MonoBehaviour
             remaningtime.gameObject.SetActive(false);
             // PlayerDataManager.instance.LoadPlayerHpMp();
             PlayerDataManager.instance.LoadFile();
-            GameManager.instance.player.GetComponent<Status>().Restore();         
-
+            GameManager.instance.player.GetComponent<Status>().Restore();
 
             // PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
         }
@@ -163,7 +169,7 @@ public class DungeonManager : MonoBehaviour
     private void LoadFile()
     {
         var saveData = SaveLoadSystem.Load(SaveData.Types.Dungeon) as SaveDugeonDataVer1;
-        if (saveData == null || saveData.playedday == null)
+        if (saveData == null || saveData.weekend == null)
         {
             var newsaveData = new SaveDugeonDataVer1();
             newsaveData.mondaylv = "1";
@@ -173,6 +179,7 @@ public class DungeonManager : MonoBehaviour
             newsaveData.fridaylv = "1";
             newsaveData.playedday = DateTime.Now.ToString();
             newsaveData.playedtime = "0";
+            newsaveData.weekend = "";
             SaveLoadSystem.Save(newsaveData);
             saveData = SaveLoadSystem.Load(SaveData.Types.Dungeon) as SaveDugeonDataVer1;
         }
@@ -198,7 +205,10 @@ public class DungeonManager : MonoBehaviour
 
         if ((DateTime.Now - DateTime.Parse(saveData.playedday)).Milliseconds > 0 && DateTime.Now.DayOfWeek != DateTime.Parse(saveData.playedday).DayOfWeek)
         {
-            saveData.playedtime = "0";
+            if (!weekend&&saveData.weekend!= DateTime.Now.DayOfWeek.ToString())
+                saveData.playedtime = "0";
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+                weekend = true;
         }
         attempt = saveData.playedtime;
 
@@ -221,13 +231,16 @@ public class DungeonManager : MonoBehaviour
     }
     private void SetLevelUi()
     {
+        Debug.Log($"lv is {lv}");
         for (int i = 0; i < lv; i++)
         {
             StringBuilder levs = new StringBuilder();
             levs.Append("Level");
             levs.Append((i + 1).ToString());
-            dungeonLevel.transform.Find("Level").transform.Find(levs.ToString()).GetComponent<Button>().interactable = true;
-            dungeonLevel.transform.Find("Level").transform.Find(levs.ToString()).transform.Find("Image").gameObject.SetActive(false);
+
+            dungeonLevel.transform.Find("Horizontal").transform.Find("Level").transform.Find(levs.ToString()).GetComponent<Button>().interactable = true;
+            dungeonLevel.transform.Find("Horizontal").transform.Find("Level").transform.Find(levs.ToString()).transform.Find("Image").gameObject.SetActive(false);
+
         }
 
     }
@@ -267,7 +280,6 @@ public class DungeonManager : MonoBehaviour
                 }
                 if (enemy.Equals(enemies.Last()))
                 {
-                    SaveFile();
                     SetReward();
 
                     Result.transform.Find("Win").transform.Find("Retry").gameObject.GetComponentInChildren<TextMeshProUGUI>().text = $"({attempt}/3 retry)";
@@ -280,8 +292,9 @@ public class DungeonManager : MonoBehaviour
                     // Result.transform.Find("Win").transform.Find("Reward").GetComponentInChildren<UnityEngine.UI.Image>().sprite=
                     if (lv == instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level)
                         ++lv;
-                    
-                   
+                    SaveFile();
+
+
                     PlayerDataManager.instance.SaveInventory();
                     PlayerDataManager.instance.SaveLevel();
                     PlayerDataManager.instance.SaveSkills();
@@ -291,14 +304,13 @@ public class DungeonManager : MonoBehaviour
             }
         }
 
-
     }
 
     private void SetReward()
     {
-       
+
         var rewardUi = Result.transform.Find("Win").Find("Reward").Find("RewardImages");
-                
+
 
         List<GameObject> rewardUiList = new List<GameObject>();
         string rewardId = scenename.ToString();
@@ -309,7 +321,7 @@ public class DungeonManager : MonoBehaviour
         var equipePiece = rewardTable.Get(rewardId.ToString()).equipe_piece;
         var exp = rewardTable.Get(rewardId.ToString()).exp;
 
-        var secRewardID =rewardId+"S";
+        var secRewardID = rewardId + "S";
         var powderSec = rewardTable.Get(secRewardID.ToString()).powder;
         var essneceSec = rewardTable.Get(secRewardID.ToString()).essence;
         var skillpieceSec = rewardTable.Get(secRewardID.ToString()).skill_piece;
@@ -322,7 +334,7 @@ public class DungeonManager : MonoBehaviour
             rewardUiList.Add(rewardUi.transform.GetChild(i).gameObject);
         }
 
-        if (lv== instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level)
+        if (lv == instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level)
         {
             //poweder set
             rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powder.ToString();
@@ -409,6 +421,7 @@ public class DungeonManager : MonoBehaviour
         // SceneManager.LoadScene("Game", LoadSceneMode.Single);
         SceneManager.LoadScene("Scene02");
 
+        
 
     }
 
@@ -424,6 +437,7 @@ public class DungeonManager : MonoBehaviour
 
             return;
         }
+        Debug.Log($"attempt is {attempt}");
         attempt = (++temp).ToString();
         SaveFile();
         isDungeon = true;
@@ -440,7 +454,7 @@ public class DungeonManager : MonoBehaviour
         SceneManager.LoadScene("Game", LoadSceneMode.Single);
         Debug.Log(scenename);
         SceneManager.LoadScene(scenename.ToString(), LoadSceneMode.Additive);
-
+              
 
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
