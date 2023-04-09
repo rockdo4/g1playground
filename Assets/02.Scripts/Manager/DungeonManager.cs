@@ -205,7 +205,7 @@ public class DungeonManager : MonoBehaviour
 
         if ((DateTime.Now - DateTime.Parse(saveData.playedday)).Milliseconds > 0 && DateTime.Now.DayOfWeek != DateTime.Parse(saveData.playedday).DayOfWeek)
         {
-            if (!weekend&&saveData.weekend!= DateTime.Now.DayOfWeek.ToString())
+            if (!weekend && saveData.weekend != DateTime.Now.DayOfWeek.ToString())
                 saveData.playedtime = "0";
             if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
                 weekend = true;
@@ -316,6 +316,7 @@ public class DungeonManager : MonoBehaviour
         string rewardId = scenename.ToString();
         var rewardTable = DataTableMgr.GetTable<RewardData>();
         var powder = rewardTable.Get(rewardId.ToString()).powder;
+        Debug.Log($"Reward Powder is {powder}");
         var essnece = rewardTable.Get(rewardId.ToString()).essence;
         var skillpiece = rewardTable.Get(rewardId.ToString()).skill_piece;
         var equipePiece = rewardTable.Get(rewardId.ToString()).equipe_piece;
@@ -339,7 +340,7 @@ public class DungeonManager : MonoBehaviour
             //poweder set
             rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powder.ToString();
             GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powder);
-
+            Debug.Log(powder);
             rewardUiList[1].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = essnece.ToString();
             GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40004", essnece);
 
@@ -367,6 +368,8 @@ public class DungeonManager : MonoBehaviour
             GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += expSec;
 
         }
+
+        
 
     }
 
@@ -421,7 +424,7 @@ public class DungeonManager : MonoBehaviour
         // SceneManager.LoadScene("Game", LoadSceneMode.Single);
         SceneManager.LoadScene("Scene02");
 
-        
+
 
     }
 
@@ -454,7 +457,7 @@ public class DungeonManager : MonoBehaviour
         SceneManager.LoadScene("Game", LoadSceneMode.Single);
         Debug.Log(scenename);
         SceneManager.LoadScene(scenename.ToString(), LoadSceneMode.Additive);
-              
+
 
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
