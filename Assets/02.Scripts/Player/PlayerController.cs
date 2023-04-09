@@ -341,7 +341,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator SearchTarget()
     {
         Debug.Log("시작");
-        if (enemies == null)
+        if (enemies == null && !isGrounded)
             yield break;
 
         //SetMoveX(LastMoveX);
