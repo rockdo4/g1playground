@@ -445,11 +445,13 @@ public class Boss4Controller : Enemy
         if (collider.gameObject.CompareTag("Player") && collider.gameObject.GetComponent<ObjectMass>() != null)
         {
             //Debug.Log(State);
+            Vector3 pos = collider.ClosestPoint(transform.position + new Vector3(0f, 0.5f, 0f));
+
 
             if (State == EnemyState.Attack)
-                meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+                meleeAttack.ExecuteAttack(gameObject, player.gameObject, pos);
             else if (State == EnemyState.Skill)
-                meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+                meleeAttack.ExecuteAttack(gameObject, player.gameObject, pos);
         }
     }
 }
