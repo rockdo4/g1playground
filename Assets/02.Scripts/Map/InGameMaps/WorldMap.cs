@@ -20,26 +20,6 @@ public class WorldMap : MonoBehaviour
 
     public void GoHome(GameObject stage)
     {
-        var player = GameManager.instance.player;
-        var playerController = player.GetComponent<PlayerController>();
-        NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
-        var linkMover = player.GetComponent<AgentLinkMover>();
-
-        playerController.autoToggle.isOn = false;
-        playerController.AgentOff();
-        playerController.AgentOnOff();
-        if (agent.isOnOffMeshLink)
-        {
-            agent.ResetPath();
-            linkMover.enabled = false;
-            linkMover.enabled = true;
-        }
-        else if (agent.isOnNavMesh && !agent.currentOffMeshLinkData.valid)
-        {
-            agent.ResetPath();
-        }
-        player.SetActive(false);
-        player.SetActive(true);
         SetStage(stage.GetComponent<StageController>());
     }
 
@@ -101,6 +81,26 @@ public class WorldMap : MonoBehaviour
         {
             GameManager.instance.player.GetComponent<PlayerInventory>().RefillPotions();
         }
+        var player = GameManager.instance.player;
+        var playerController = player.GetComponent<PlayerController>();
+        NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
+        var linkMover = player.GetComponent<AgentLinkMover>();
+
+        playerController.autoToggle.isOn = false;
+        playerController.AgentOff();
+        playerController.AgentOnOff();
+        if (agent.isOnOffMeshLink)
+        {
+            agent.ResetPath();
+            linkMover.enabled = false;
+            linkMover.enabled = true;
+        }
+        else if (agent.isOnNavMesh && !agent.currentOffMeshLinkData.valid)
+        {
+            agent.ResetPath();
+        }
+        player.SetActive(false);
+        player.SetActive(true);
         GameManager.instance.player.transform.SetParent(null);
 
         MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().PortalOpen();
