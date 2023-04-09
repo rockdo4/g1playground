@@ -255,4 +255,6 @@ public class Enemy : MonoBehaviour
             return 0f;
         }
     }
+
+    public Status GetStatus() { return status; }
 }

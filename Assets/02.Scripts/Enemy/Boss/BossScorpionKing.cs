@@ -138,8 +138,6 @@ public class BossScorpionKing : Enemy
         if (isGroggy1 && isGroggy2 && isGroggy3)
             return;
 
-        
-
         if (!isGroggy1 && status.CurrHp <= status.FinalValue.maxHp * groggy1)
         {
             var clip = scorpionSound.groggyClip;
