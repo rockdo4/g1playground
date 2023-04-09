@@ -248,9 +248,10 @@ public class StageController : MonoBehaviour
                 greenwallopen = true;
 
             }
-          
+
+
             //Set worldmap stage button on
-            if (wMapButton != null && isChanged)
+            if ((wMapButton != null && isChanged)&&UnLockRequirement.Puzzle!=lockRequirement)
             {
                 isChanged = false;
                 SetWorldMapButton();
@@ -419,7 +420,7 @@ public class StageController : MonoBehaviour
                 }
             }
             //Set worldmap stage button on
-            if (wMapButton != null && isChanged)
+            if ((wMapButton != null && isChanged) && lockRequirement != UnLockRequirement.Puzzle)
             {
                 isChanged = false;
                 SetWorldMapButton();
@@ -484,6 +485,8 @@ public class StageController : MonoBehaviour
 
         if (UnLockRequirement.Puzzle == lockRequirement)
         {
+            SetWorldMapButton();
+
             isClear = true;
             if (SceneManager.GetActiveScene().name == "Scene02")
                 MapManager.instance.SaveProgress();
