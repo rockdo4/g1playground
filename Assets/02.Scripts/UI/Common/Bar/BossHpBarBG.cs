@@ -25,7 +25,7 @@ public class BossHpBarBG : BarUI
     private void Update()
     {
         float targetValue = enemy.GetStatus().CurrHp;
-        currentValue = Mathf.Lerp(currentValue, targetValue, Time.deltaTime * 2.0f); // 천천히 줄어들게 하기 위해 lerp 함수 사용
+        currentValue = Mathf.Lerp(currentValue, targetValue, Time.deltaTime * 2.0f);
         slider.value = currentValue;
     }
 
