@@ -71,6 +71,11 @@ public class SceneLoader : MonoBehaviour
             backImage.SetActive(true);
         }
 
+        if (progressBar != null)
+        {
+            progressBar.gameObject.SetActive(true);
+        }
+
         gameObject.SetActive(true);
         SceneManager.sceneLoaded += LoadSceneEnd;
         loadSceneName = sceneName;
@@ -127,6 +132,10 @@ public class SceneLoader : MonoBehaviour
             if (backImage != null)
             {
                 backImage.SetActive(false); 
+            }
+            if (progressBar != null)
+            {
+                progressBar.gameObject.SetActive(false);
             }
         }
         StartCoroutine(CGetPlayerStatus());

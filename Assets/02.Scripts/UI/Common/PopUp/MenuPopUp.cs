@@ -7,7 +7,7 @@ public class MenuPopUp : PopupUI
     public ButtonUi skill;
     //public ButtonUi equip;
     public ButtonUi item;
-    //public ButtonUi map;
+    public ButtonUi map;
     public ButtonUi exit;
     //public ButtonUi dungeon;
     public ButtonUi reinforce;
@@ -45,6 +45,7 @@ public class MenuPopUp : PopupUI
             disassemble = GetComponentInChildren<DisassembleButton>(true);
             gambling = GetComponentInChildren<GambleButton>(true);
             setting = GetComponentInChildren<SettingButton>(true);
+            map = GetComponentInChildren<SettingButton>(true);
         }
     }
 
@@ -85,7 +86,7 @@ public class MenuPopUp : PopupUI
         skill.ActivateButton(true);
         //equip.ActivateButton(true);
         item.ActivateButton(false);
-        //map.ActivateButton(true);
+        map.ActivateButton(true);
         exit.ActivateButton(true);
         //dungeon.ActivateButton(true);
         reinforce.ActivateButton(true);
