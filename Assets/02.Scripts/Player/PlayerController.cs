@@ -399,6 +399,7 @@ public class PlayerController : MonoBehaviour
         {
             if (portal.GetNextStageName().CompareTo(MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().PrevStageName) != 0)
             {
+                inDistance = false;
                 target = portal.gameObject;
                 agent.SetDestination(target.transform.position);
             }
