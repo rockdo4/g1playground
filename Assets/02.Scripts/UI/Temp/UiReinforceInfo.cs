@@ -11,6 +11,8 @@ public class UiReinforceInfo : MonoBehaviour
     public Image resultImage;
     public TextMeshProUGUI resultName;
     public TextMeshProUGUI resultDesc;
+    public TextMeshProUGUI firstMaterialCount;
+    public TextMeshProUGUI secondMaterialCount;
     public Image material1;
     public Image material2;
     public Image material3;
@@ -18,6 +20,12 @@ public class UiReinforceInfo : MonoBehaviour
     private Sprite essenceSprite;
     public GameObject resultPopup;
     private bool isLoaded = false;
+    private PlayerInventory inventory;
+
+    private void Awake()
+    {
+        inventory = GameManager.instance.player.GetComponent<PlayerInventory>();
+    }
 
     private void OnDisable()
     {
@@ -55,6 +63,8 @@ public class UiReinforceInfo : MonoBehaviour
         material3.color = Color.clear;
         resultName.text = string.Empty;
         resultDesc.text = string.Empty;
+        firstMaterialCount.text = string.Empty;
+        secondMaterialCount.text = string.Empty;
     }
 
     public bool Set(ReinforceSystem.Types type, string id)
@@ -127,6 +137,8 @@ public class UiReinforceInfo : MonoBehaviour
                 resultImage.transform.localScale = new Vector3(1, 1, 1);
                 material1.transform.localScale = new Vector3(1, 1, 1);
                 material2.transform.localScale = new Vector3(1, 1, 1);
+                firstMaterialCount.text = FirstMaterialCount();
+                secondMaterialCount.text = SecondMaterialCount();
                 break;
             case ReinforceSystem.Types.Armor:
                 resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
@@ -138,7 +150,8 @@ public class UiReinforceInfo : MonoBehaviour
                 resultImage.transform.localScale = new Vector3(1, 1, 1);
                 material1.transform.localScale = new Vector3(1, 1, 1);
                 material2.transform.localScale = new Vector3(1, 1, 1);
-
+                firstMaterialCount.text = FirstMaterialCount();
+                secondMaterialCount.text = SecondMaterialCount();
                 break;
             case ReinforceSystem.Types.Skill:
                 resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
@@ -169,4 +182,39 @@ public class UiReinforceInfo : MonoBehaviour
         stopwatch.Stop();
         resultPopup.SetActive(false);
     }
+
+    public string FirstMaterialCount()
+    {
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string powderId = null;
+        foreach (var data in consumeTable)
+        {
+            if (data.Value.consumeType == ConsumeTypes.Powder)
+            {
+                powderId = data.Value.id;
+                break;
+            }
+        }
+        return inventory.GetConsumableCount(powderId).ToString();
+    }
+
+    public string SecondMaterialCount()
+    {
+        var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
+        string essenceId = null;
+        foreach (var data in consumeTable)
+        {
+            if (data.Value.consumeType == ConsumeTypes.Essence)
+            {
+                essenceId = data.Value.id;
+                break;
+            }
+        }
+        return inventory.GetConsumableCount(essenceId).ToString();
+    }
+
+    //public string SkillMaterialCount()
+    //{
+    //    return;
+    //}
 }
