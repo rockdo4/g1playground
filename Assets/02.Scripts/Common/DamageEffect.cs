@@ -32,7 +32,7 @@ public class DamageEffect : MonoBehaviour
     public void OnDamage(Vector3 pos, int damage, Color color, bool isCritical)
     {
         transform.position = pos + new Vector3(0f, 0f, -20f);
-        text.text = damage == 0 ? "¹æ¾î" : damage.ToString();
+        text.text = damage == 0 ? "ë°©ì–´" : damage.ToString();
         text.color = color;
         if (isCritical)
         {
