@@ -8,11 +8,13 @@ public class DamageEffect : MonoBehaviour
     private TextMeshPro text;
     private float timer = 0f;
     private float oriFontSize;
+    private Renderer textRenderer;
 
     private void Awake()
     {
         text = GetComponent<TextMeshPro>();
         oriFontSize = text.fontSize;
+        textRenderer = GetComponent<Renderer>();
     }
 
     private void Update()
@@ -44,5 +46,6 @@ public class DamageEffect : MonoBehaviour
             text.fontSize = oriFontSize;
             text.outlineWidth = 0f;
         }
+        textRenderer.material.renderQueue = 3004;
     }
 }
