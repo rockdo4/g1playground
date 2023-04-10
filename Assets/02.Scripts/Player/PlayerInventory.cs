@@ -205,8 +205,22 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        if (count > 0)
-            AddConsumable(id, count);
+        while (count > 0)
+        {
+            Consumable newConsumable;
+            newConsumable.id = id;
+            if (count < maxCount)
+            {
+                newConsumable.count = count;
+                count = 0;
+            }
+            else
+            {
+                newConsumable.count = maxCount;
+                count -= maxCount;
+            }
+            Consumables.Add(newConsumable);
+        }
 
         PlayerDataManager.instance.SaveInventory();
         PlayerDataManager.instance.SaveFile();
