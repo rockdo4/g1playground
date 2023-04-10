@@ -132,6 +132,11 @@ public class BossPupleRich : Enemy
         State = EnemyState.None;
         mainColl.enabled = true;
         projectileCoolTime = 0f;
+        spawnCoolTime = 0f;
+        returnCoolTime = 0f;
+        isGroggy1 = false;
+        isGroggy2 = false;
+        isGroggy3 = false;
     }
 
     public float groggy1;
