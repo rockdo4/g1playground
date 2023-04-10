@@ -542,7 +542,7 @@ public class StageController : MonoBehaviour
         {
             rewardUiList[1].SetActive(false);
         }
-        if (essnece != 0)
+        if (exp != 0)
         {
             rewardUiList[4].SetActive(true);
             rewardUiList[4].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = exp.ToString();
