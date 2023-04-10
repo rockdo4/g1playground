@@ -140,7 +140,7 @@ public class GamblingManager : MonoBehaviour
                 break;
             }
         }
-        if (GetPowderCount() >= 300)
+        if (GetPowderCount() >= 2700)
         {
             playerInventory.UseConsumable(powderId, 2700);
             rewardTen.SetActive(true);
