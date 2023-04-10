@@ -109,7 +109,11 @@ public class Enemy : MonoBehaviour
         if (dir.x == 0f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.left), Time.deltaTime * 10f);
-            return true;
+
+            if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
+                return true;
+
+            return false;
         }
         //return true;
 
@@ -152,7 +156,10 @@ public class Enemy : MonoBehaviour
         if (dir.x == 0f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.left), Time.deltaTime * 10f);
-            return true;
+            if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 1f)
+                return true;
+
+            return false;
         }
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
 
