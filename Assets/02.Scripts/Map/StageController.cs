@@ -251,7 +251,7 @@ public class StageController : MonoBehaviour
 
 
             //Set worldmap stage button on
-            if ((wMapButton != null && isChanged)&&UnLockRequirement.Puzzle!=lockRequirement)
+            if ((wMapButton != null && isChanged) && UnLockRequirement.Puzzle != lockRequirement)
             {
                 isChanged = false;
                 SetWorldMapButton();
@@ -493,59 +493,71 @@ public class StageController : MonoBehaviour
         }
 
         List<GameObject> rewardUiList = new List<GameObject>();
+
         var rewardTable = DataTableMgr.GetTable<RewardData>();
         var powder = rewardTable.Get(firstRewardId.ToString()).powder;
         var essnece = rewardTable.Get(firstRewardId.ToString()).essence;
         var skillpiece = rewardTable.Get(firstRewardId.ToString()).skill_piece;
         var equipePiece = rewardTable.Get(firstRewardId.ToString()).equipe_piece;
         var exp = rewardTable.Get(firstRewardId.ToString()).exp;
+        rewardTable = DataTableMgr.GetTable<RewardData>();
 
-        var powderSec = rewardTable.Get(secondRewardId.ToString()).powder;
-        var essneceSec = rewardTable.Get(secondRewardId.ToString()).essence;
-        var skillpieceSec = rewardTable.Get(secondRewardId.ToString()).skill_piece;
-        var equipePieceSec = rewardTable.Get(secondRewardId.ToString()).equipe_piece;
-        var expSec = rewardTable.Get(secondRewardId.ToString()).exp;
-
+        if (!isSecond)
+        {
+            powder = rewardTable.Get(firstRewardId.ToString()).powder;
+            essnece = rewardTable.Get(firstRewardId.ToString()).essence;
+            skillpiece = rewardTable.Get(firstRewardId.ToString()).skill_piece;
+            equipePiece = rewardTable.Get(firstRewardId.ToString()).equipe_piece;
+            exp = rewardTable.Get(firstRewardId.ToString()).exp;
+        }
+        else
+        {
+            powder = rewardTable.Get(secondRewardId.ToString()).powder;
+            essnece = rewardTable.Get(secondRewardId.ToString()).essence;
+            skillpiece = rewardTable.Get(secondRewardId.ToString()).skill_piece;
+            equipePiece = rewardTable.Get(secondRewardId.ToString()).equipe_piece;
+            exp = rewardTable.Get(secondRewardId.ToString()).exp;
+        }
 
         for (int i = 0; i < rewardUi.transform.childCount; i++)
         {
             rewardUiList.Add(rewardUi.transform.GetChild(i).gameObject);
         }
 
-        if (!isSecond)
+
+        if (powder != 0)
         {
-            //poweder set
+            rewardUiList[0].SetActive(true);
             rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powder.ToString();
             GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powder);
+        }
+        else
+        {
+            rewardUiList[0].SetActive(false);
+        }
 
+        if (essnece != 0)
+        {
+            rewardUiList[1].SetActive(true);
             rewardUiList[1].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = essnece.ToString();
             GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40004", essnece);
-
-            rewardUiList[2].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = skillpiece.ToString();
-
-            rewardUiList[3].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = equipePiece.ToString();
-
+        }
+        else
+        {
+            rewardUiList[1].SetActive(false);
+        }
+        if (essnece != 0)
+        {
+            rewardUiList[4].SetActive(true);
             rewardUiList[4].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = exp.ToString();
             GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += exp;
         }
         else
         {
-
-            //poweder set
-            rewardUiList[0].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = powderSec.ToString();
-            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40003", powderSec);
-
-            rewardUiList[1].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = essneceSec.ToString();
-            GameManager.instance.player.GetComponent<PlayerInventory>().AddConsumable("40004", essneceSec);
-
-            rewardUiList[2].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = skillpieceSec.ToString();
-
-            rewardUiList[3].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = equipePieceSec.ToString();
-
-            rewardUiList[4].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = expSec.ToString();
-            GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += expSec;
-
+            rewardUiList[4].SetActive(false);
         }
+       
+
     }
 
     private void CheckEnemies()
