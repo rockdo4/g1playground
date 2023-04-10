@@ -1,4 +1,4 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,17 +26,15 @@ public class SpikeTile : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
         var status = other.GetComponent<PlayerStatus>();
-        if (status != null && timer >= delay) 
+        if (status != null && timer >= delay)
         {
             timer = 0f;
 
-            //add player damage here//
             var damage = (int)(status.FinalValue.maxHp * damagePercentage);
             Attack.CC newCC = Attack.CC.None;
-
             newCC.knockBackForce = 7f;
             var attack = new Attack(damage, newCC, false);
-            var attackables = GetComponents<IAttackable>();
+            var attackables = other.GetComponents<IAttackable>();
             foreach (var attackable in attackables)
             {
                 attackable.OnAttack(gameObject, attack, other.transform.position);
