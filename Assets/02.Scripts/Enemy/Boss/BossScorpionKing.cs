@@ -199,7 +199,6 @@ public class BossScorpionKing : Enemy
         }
 
         animator.SetFloat("Move", agent.velocity.magnitude / chaseSpeed);
-        Debug.Log(State);
 
         if (Input.GetKeyDown(KeyCode.F))
         {
