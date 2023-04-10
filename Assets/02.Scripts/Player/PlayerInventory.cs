@@ -341,19 +341,21 @@ public class PlayerInventory : MonoBehaviour
         if (type == ItemTypes.Consumable)
             return;
 
+        Array.Reverse(indexs);
+        var len = indexs.Length;
         switch (type)
         {
             case ItemTypes.Weapon:
-                foreach (var index in indexs)
+                for (int i = 0; i < len; ++i)
                 {
-                    RemoveWeapon(index);
+                    RemoveWeapon(indexs[i]);
                 }
                 AddWeapon(data.resultItem);
                 break;
             case ItemTypes.Armor:
-                foreach (var index in indexs)
+                for (int i = 0; i < len; ++i)
                 {
-                    RemoveArmor(index);
+                    RemoveArmor(indexs[i]);
                 }
                 AddArmor(data.resultItem);
                 break;
