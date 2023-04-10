@@ -125,6 +125,10 @@ public class BossScorpionKing : Enemy
         mainColl.enabled = true;
         projectileCoolTime = 0f;
         areaCoolTime = 0f;
+        returnCoolTime = 0f;
+        isGroggy1 = false;
+        isGroggy2 = false;
+        isGroggy3 = false;
     }
 
     public float groggy1;
@@ -218,6 +222,7 @@ public class BossScorpionKing : Enemy
         if (returnTime < returnCoolTime)
         {
             State = EnemyState.Return;
+            returnCoolTime = 0f;
         }
 
         RayShooter(searchRange, isGoingRight);
@@ -388,7 +393,7 @@ public class BossScorpionKing : Enemy
         State = EnemyState.Chase;
     }
     private void DieDone()
-    {        
+    {
         gameObject.SetActive(false);
     }
 }
