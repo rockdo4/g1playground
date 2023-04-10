@@ -368,7 +368,8 @@ public class BossPupleRich : Enemy
 #if UNITY_EDITOR
             Debug.Log(State);
 #endif
-            meleeAttack.ExecuteAttack(gameObject, player.gameObject, transform.position);
+            Vector3 pos = collider.ClosestPoint(transform.position + new Vector3(0f, 0.5f, 0f));
+            meleeAttack.ExecuteAttack(gameObject, player.gameObject, pos);
             attackBox.SetActive(false);
         }
     }
