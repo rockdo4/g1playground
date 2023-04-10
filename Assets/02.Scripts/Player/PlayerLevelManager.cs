@@ -16,13 +16,18 @@ public class PlayerLevelManager : MonoBehaviour
         get => currExp;
         set
         {
-            currExp = value;          
-            while (currExp >= MaxExp)
+            if (Level < maxLevel)
             {
-                var leftExp = currExp - MaxExp;
-               
-                LevelUp();
-                currExp = leftExp;
+                currExp = value;
+                while (currExp >= MaxExp)
+                {
+                    var leftExp = currExp - MaxExp;
+
+                    LevelUp();
+                    if (Level >= maxLevel)
+                        break;
+                    currExp = leftExp;
+                }
             }
             SetExpUi();
         }
