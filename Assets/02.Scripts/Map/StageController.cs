@@ -399,6 +399,7 @@ public class StageController : MonoBehaviour
         if (isClear && isStoryStage)
         {
             isStoryStage = false;
+            MapManager.instance.SaveProgress();
             EventManager.instance.SetStoryList(storyIdList);
             EventManager.instance.ChangeColorEffectStory(transform.name);
         }
@@ -497,25 +498,20 @@ public class StageController : MonoBehaviour
         var rewardTable = DataTableMgr.GetTable<RewardData>();
         var powder = rewardTable.Get(firstRewardId.ToString()).powder;
         var essnece = rewardTable.Get(firstRewardId.ToString()).essence;
-        var skillpiece = rewardTable.Get(firstRewardId.ToString()).skill_piece;
-        var equipePiece = rewardTable.Get(firstRewardId.ToString()).equipe_piece;
+     
         var exp = rewardTable.Get(firstRewardId.ToString()).exp;
         rewardTable = DataTableMgr.GetTable<RewardData>();
 
         if (!isSecond)
         {
             powder = rewardTable.Get(firstRewardId.ToString()).powder;
-            essnece = rewardTable.Get(firstRewardId.ToString()).essence;
-            skillpiece = rewardTable.Get(firstRewardId.ToString()).skill_piece;
-            equipePiece = rewardTable.Get(firstRewardId.ToString()).equipe_piece;
+            essnece = rewardTable.Get(firstRewardId.ToString()).essence;          
             exp = rewardTable.Get(firstRewardId.ToString()).exp;
         }
         else
         {
             powder = rewardTable.Get(secondRewardId.ToString()).powder;
-            essnece = rewardTable.Get(secondRewardId.ToString()).essence;
-            skillpiece = rewardTable.Get(secondRewardId.ToString()).skill_piece;
-            equipePiece = rewardTable.Get(secondRewardId.ToString()).equipe_piece;
+            essnece = rewardTable.Get(secondRewardId.ToString()).essence;            
             exp = rewardTable.Get(secondRewardId.ToString()).exp;
         }
 
