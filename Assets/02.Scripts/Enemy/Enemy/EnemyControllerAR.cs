@@ -34,6 +34,7 @@ public class EnemyControllerAR : EnemyController, IAttackable
         linkMover = GetComponent<AgentLinkMover>();
         onGround = GetComponentInChildren<OnGround>();
         skillPivot = GameObject.Find(gameObject.name + "/AttackPivot");
+        InitEnemyInfo();
     }
 
     public void OnAttack(GameObject attacker, Attack attack, Vector3 attackPos)
