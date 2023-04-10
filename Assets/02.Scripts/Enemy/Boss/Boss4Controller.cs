@@ -210,7 +210,6 @@ public class Boss4Controller : Enemy
             SoundManager.instance.PlayEnemyEffect(clip);
             animator.SetTrigger("Spawn");
         }
-        
     }
     protected  void Motion()
     {
@@ -333,14 +332,12 @@ public class Boss4Controller : Enemy
         if (!ChaeckAttackCount())
             State = EnemyState.Idle;
 
-        //attackBox.GetComponent<BoxCollider>().enabled = false;
         attackBox.SetActive(false);
     }
     private void DashSkillDone()
     {
         State = EnemyState.Idle;
         dashBox.SetActive(false);
-
     }
 
     private void Bite()
