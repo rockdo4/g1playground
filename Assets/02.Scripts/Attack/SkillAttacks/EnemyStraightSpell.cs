@@ -20,6 +20,4 @@ public class EnemyStraightSpell : SkillAttack
         projectile.OnCollided = ExecuteAttack;
         projectile.Fire(attacker, startPos, direction, range, lifeTime, false, false, fireSoundEffect, inUseSoundEffect, hitSoundEffect);
     }
-
-
 }
