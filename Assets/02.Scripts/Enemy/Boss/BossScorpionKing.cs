@@ -114,7 +114,7 @@ public class BossScorpionKing : Enemy
             isLive = false;
 
             enemyBody.SetActive(false);
-
+            player.GetComponent<PlayerLevelManager>().CurrExp += DataTableMgr.GetTable<MonsterData>().Get(status.id).exp;
         };
     }
 
