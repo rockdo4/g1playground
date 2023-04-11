@@ -163,6 +163,7 @@ public class UiReinforceInfo : MonoBehaviour
                 resultImage.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 material1.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 material2.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+                //firstMaterialCount.text = 
                 secondMaterialCount.text = PowderMaterialCount() + "/" + data.powder.ToString();
                 break;
         }
