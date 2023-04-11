@@ -25,6 +25,7 @@ public class UiDisassemble : MonoBehaviour
     public Button reinforceButton;
     public GameObject resultPopup;
     public TextMeshProUGUI resultCount;
+    public GameObject disablePopup;
 
     private void Awake()
     {
@@ -199,9 +200,21 @@ public class UiDisassemble : MonoBehaviour
         if (count > 1)
             return true;
 
-        //"무기가 1개 이하일 때는 분해할 수 없습니다";
-        //StartCoroutine();
+        StartCoroutine(CoShowDisable());
         return false;
+    }
+
+    private IEnumerator CoShowDisable()
+    {
+        disablePopup.SetActive(true);
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        while (stopwatch.Elapsed.TotalSeconds < 1)
+        {
+            yield return null;
+        }
+        stopwatch.Stop();
+        disablePopup.SetActive(false);
     }
 
     public void Disassemble()
