@@ -14,7 +14,9 @@ public class UIReinforce : MonoBehaviour
     public UISkillSlot uiSkillSlotPrefab;
     public GameObject ItemInventory;
     public GameObject skillInventory;
+    public ScrollRect itemScroll;
     public RectTransform itemContent;
+    public ScrollRect skillScroll;
     public RectTransform skillContent;
     private List<UIItemSlot> itemSlotList = new List<UIItemSlot>();
     private List<UISkillSlot> skillSlotList = new List<UISkillSlot>();
@@ -34,6 +36,8 @@ public class UIReinforce : MonoBehaviour
     public void OnEnable()
     {
         SetInventory((int)ReinforceSystem.Types.Weapon);
+        itemScroll.verticalNormalizedPosition = 1f;
+        skillScroll.verticalNormalizedPosition = 1f;
         //SetFirstOnInfo();
     }
 
@@ -88,6 +92,11 @@ public class UIReinforce : MonoBehaviour
 
     public void SetInventory(int type)
     {
+        if (this.type != (ReinforceSystem.Types)type)
+        {
+            itemScroll.verticalNormalizedPosition = 1f;
+            skillScroll.verticalNormalizedPosition = 1f;
+        }
         this.type = (ReinforceSystem.Types)type;
         ClearInventory();
         ShowInventory(this.type);
