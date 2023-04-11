@@ -40,7 +40,7 @@ public class MapManager : MonoBehaviour
             Destroy(gameObject);
 
         map = GameObject.FindGameObjectWithTag("Map");
-        int chapterCount=0;
+        int chapterCount = 0;
         if (map != null)
         {
             chapterCount = map.transform.childCount;
@@ -116,7 +116,10 @@ public class MapManager : MonoBehaviour
 
             originData = SaveLoadSystem.Load(SaveData.Types.Stage) as SaveStageDataVer1;
         }
-        originData.unlock[currentMapName] = true;
+        if (currentMapName != null)
+        {
+            originData.unlock[currentMapName] = true;
+        }
         if (currentStageObject != null)
         {
             originData.isStoryStage[currentMapName] = currentStageObject.GetComponent<StageController>().IsStoryStage;
