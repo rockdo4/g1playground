@@ -11,6 +11,7 @@ public class UiCompose : MonoBehaviour
     public int slotCount = 102;
     private int currSlot;
     public UIItemSlot uiItemSlotPrefab;
+    public ScrollRect scroll;
     public RectTransform itemContent;
 
     private List<UIItemSlot> itemSlotList = new List<UIItemSlot>();
@@ -30,6 +31,7 @@ public class UiCompose : MonoBehaviour
     public void OnEnable()
     {
         SetInventory((int)ReinforceSystem.Types.Weapon);
+        scroll.verticalNormalizedPosition = 1f;
         resultPopup.SetActive(false);
     }
 
@@ -64,6 +66,8 @@ public class UiCompose : MonoBehaviour
         if ((ItemTypes)type == ItemTypes.Consumable)
             return;
 
+        if (this.type != (ItemTypes)type)
+            scroll.verticalNormalizedPosition = 1f;
         this.type = (ItemTypes)type;
         ClearInventory();
         List<string> ids = null;

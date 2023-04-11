@@ -9,6 +9,7 @@ public class UIInventory : MonoBehaviour
     public int slotCount;
     private int currSlot;
     public UIItemSlot uiSlotPrefab;
+    public ScrollRect scroll;
     public RectTransform content;
 
     private List<UIItemSlot> slotList = new List<UIItemSlot>();
@@ -32,6 +33,7 @@ public class UIInventory : MonoBehaviour
     {
         itemType = ItemTypes.Weapon;
         SetInventory((int)itemType);
+        scroll.verticalNormalizedPosition = 1f;
     }
 
     public void Init()
@@ -71,6 +73,8 @@ public class UIInventory : MonoBehaviour
         currSlot = -1;
         equipCheckButton.interactable = false;
         itemInfo.SetEmpty();
+        if (this.itemType != (ItemTypes)itemType)
+            scroll.verticalNormalizedPosition = 1f;
         this.itemType = (ItemTypes)itemType;
         List<string> ids = null;
         int len = 0;

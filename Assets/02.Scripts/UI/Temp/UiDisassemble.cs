@@ -14,6 +14,8 @@ public class UiDisassemble : MonoBehaviour
     public UISkillSlot uiSkillSlotPrefab;
     public GameObject ItemInventory;
     public GameObject skillInventory;
+    public ScrollRect itemScroll;
+    public ScrollRect skillScroll;
     public RectTransform itemContent;
     public RectTransform skillContent;
     private List<UIItemSlot> itemSlotList = new List<UIItemSlot>();
@@ -37,6 +39,8 @@ public class UiDisassemble : MonoBehaviour
     public void OnEnable()
     {
         SetInventory((int)ReinforceSystem.Types.Weapon);
+        itemScroll.verticalNormalizedPosition = 1f;
+        skillScroll.verticalNormalizedPosition = 1f;
         resultPopup.SetActive(false);
     }
 
@@ -91,6 +95,11 @@ public class UiDisassemble : MonoBehaviour
 
     public void SetInventory(int type)
     {
+        if (this.type != (ReinforceSystem.Types)type)
+        {
+            itemScroll.verticalNormalizedPosition = 1f;
+            skillScroll.verticalNormalizedPosition = 1f;
+        }
         this.type = (ReinforceSystem.Types)type;
         ClearInventory();
         ShowInventory(this.type);

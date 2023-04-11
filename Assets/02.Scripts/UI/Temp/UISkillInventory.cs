@@ -6,6 +6,7 @@ public class UISkillInventory : MonoBehaviour
 {
     public int slotCount;
     public UISkillSlot uiSlotPrefab;
+    public ScrollRect scroll;
     public RectTransform content;
 
     private List<UISkillSlot> slotList = new List<UISkillSlot>();
@@ -23,6 +24,7 @@ public class UISkillInventory : MonoBehaviour
     private void OnEnable()
     {
         SetInventory();
+        scroll.verticalNormalizedPosition = 1f;
     }
 
     public void Init()
