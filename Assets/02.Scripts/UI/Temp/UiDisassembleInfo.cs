@@ -17,6 +17,8 @@ public class UiDisassembleInfo : MonoBehaviour
             image.sprite = null;
             image.color = Color.clear;
         }
+        itemname.text = string.Empty;
+        itemdesc.text = string.Empty;
     }
 
     public void Set(ReinforceSystem.Types type, string id)

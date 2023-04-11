@@ -53,11 +53,6 @@ public class PlayerLevelManager : MonoBehaviour
         inventory = GetComponent<PlayerInventory>();
     }
 
-    private void Start()
-    {
-       
-    }
-
     public void LevelUp()
     {
         if (Level >= maxLevel)
@@ -77,12 +72,12 @@ public class PlayerLevelManager : MonoBehaviour
 
     public void SetLevel(int level)
     {
+        CurrExp = 0;
         Level = level;
         if (level <= 10)
             MaxExp = level * 100;
         else
             MaxExp = level * 110;
-        CurrExp = 0;
         status.id = Level.ToString();
         status.LoadFromTable();
         inventory.ApplyStatus();
