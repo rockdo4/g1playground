@@ -137,8 +137,8 @@ public class UiReinforceInfo : MonoBehaviour
                 resultImage.transform.localScale = new Vector3(1, 1, 1);
                 material1.transform.localScale = new Vector3(1, 1, 1);
                 material2.transform.localScale = new Vector3(1, 1, 1);
-                firstMaterialCount.text = FirstMaterialCount();
-                secondMaterialCount.text = SecondMaterialCount();
+                firstMaterialCount.text = PowderMaterialCount() + "/" + data.powder.ToString();
+                secondMaterialCount.text = EssenceMaterialCount() + "/" + data.essence.ToString();
                 break;
             case ReinforceSystem.Types.Armor:
                 resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(armorTable.Get(data.result).iconSpriteId).iconName);
@@ -150,8 +150,8 @@ public class UiReinforceInfo : MonoBehaviour
                 resultImage.transform.localScale = new Vector3(1, 1, 1);
                 material1.transform.localScale = new Vector3(1, 1, 1);
                 material2.transform.localScale = new Vector3(1, 1, 1);
-                firstMaterialCount.text = FirstMaterialCount();
-                secondMaterialCount.text = SecondMaterialCount();
+                firstMaterialCount.text = PowderMaterialCount() + "/" + data.powder.ToString();
+                secondMaterialCount.text = EssenceMaterialCount() + "/" + data.essence.ToString();
                 break;
             case ReinforceSystem.Types.Skill:
                 resultImage.sprite = Resources.Load<Sprite>(iconTable.Get(skillTable.Get(data.result).iconSpriteId).iconName);
@@ -163,6 +163,7 @@ public class UiReinforceInfo : MonoBehaviour
                 resultImage.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 material1.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
                 material2.transform.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+                secondMaterialCount.text = PowderMaterialCount() + "/" + data.powder.ToString();
                 break;
         }
         return true;
@@ -183,7 +184,7 @@ public class UiReinforceInfo : MonoBehaviour
         resultPopup.SetActive(false);
     }
 
-    public string FirstMaterialCount()
+    public string PowderMaterialCount()
     {
         var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
         string powderId = null;
@@ -198,7 +199,7 @@ public class UiReinforceInfo : MonoBehaviour
         return inventory.GetConsumableCount(powderId).ToString();
     }
 
-    public string SecondMaterialCount()
+    public string EssenceMaterialCount()
     {
         var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
         string essenceId = null;
