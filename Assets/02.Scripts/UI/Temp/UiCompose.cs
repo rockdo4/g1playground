@@ -126,6 +126,7 @@ public class UiCompose : MonoBehaviour
                 }
                 break;
         }
+        composeButton.interactable = false;
     }
 
     public void Select(UIItemSlot slot)
@@ -141,10 +142,11 @@ public class UiCompose : MonoBehaviour
                     itemSlot.button.interactable = false;
             }
             info.SetMaterial(0, slot.Data.id);
-            if (!ComposeSystem.CheckComposable(slot.Data.id))
-            {
-                // message
-            }
+            composeButton.interactable = true;
+            //if (!ComposeSystem.CheckComposable(slot.Data.id))
+            //{
+            //    // message
+            //}
         }
         else
         {
@@ -170,6 +172,7 @@ public class UiCompose : MonoBehaviour
                 if (itemSlot.Data != null)
                     itemSlot.button.interactable = true;
             }
+            composeButton.interactable = false;
         }
         else
         {

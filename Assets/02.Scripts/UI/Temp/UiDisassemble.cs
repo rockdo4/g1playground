@@ -24,7 +24,7 @@ public class UiDisassemble : MonoBehaviour
     private PlayerSkills playerSkills;
     public ReinforceSystem.Types type;
     public UiDisassembleInfo info;
-    public Button reinforceButton;
+    public Button disassembleButton;
     public GameObject resultPopup;
     public TextMeshProUGUI resultCount;
     public GameObject disablePopup;
@@ -56,6 +56,7 @@ public class UiDisassemble : MonoBehaviour
             var itemButton = itemSlot.GetComponent<Button>();
             itemButton.onClick.AddListener(() => info.Set(type, itemSlot.Data.id));
             itemButton.onClick.AddListener(() => currSlot = slotIndex);
+            itemButton.onClick.AddListener(() => disassembleButton.interactable = true);
 
             var skillSlot = Instantiate(uiSkillSlotPrefab, skillContent);
             skillSlot.SetEmpty();
@@ -63,8 +64,9 @@ public class UiDisassemble : MonoBehaviour
             var skillButton = skillSlot.GetComponent<Button>();
             skillButton.onClick.AddListener(() => info.Set(type, skillSlot.Data.id));
             skillButton.onClick.AddListener(() => currSlot = slotIndex);
+            skillButton.onClick.AddListener(() => disassembleButton.interactable = true);
         }
-        reinforceButton.onClick.AddListener(() => Disassemble());
+        disassembleButton.onClick.AddListener(() => Disassemble());
         SetInventory((int)type);
     }
 
@@ -166,6 +168,7 @@ public class UiDisassemble : MonoBehaviour
                 }
                 break;
         }
+        disassembleButton.interactable = false;
     }
 
     private void ShowInventory(ReinforceSystem.Types type)
@@ -190,6 +193,7 @@ public class UiDisassemble : MonoBehaviour
             return;
         currSlot = -1;
         info.SetEmpty();
+        disassembleButton.interactable = false;
     }
 
     private bool CanDisassemble()

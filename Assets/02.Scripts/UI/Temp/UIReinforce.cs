@@ -228,6 +228,7 @@ public class UIReinforce : MonoBehaviour
             return;
         currSlot = -1;
         info.SetEmpty();
+        reinforceButton.interactable = false;
     }
 
     public void Reinforce()
