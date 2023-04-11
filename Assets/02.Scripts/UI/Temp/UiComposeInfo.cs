@@ -29,6 +29,8 @@ public class UiComposeInfo : MonoBehaviour
             result.sprite = null;
             result.color = Color.clear;
         }
+        itemName.text = string.Empty;
+        itemDesc.text = string.Empty;
     }
 
     public void SetMaterial(int index, string id)

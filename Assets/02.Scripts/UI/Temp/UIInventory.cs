@@ -19,7 +19,8 @@ public class UIInventory : MonoBehaviour
     public Button currArmor;
 
     public UIItemInfo itemInfo;
-    public Button equipButton;
+    public Button equipCheckButton;
+    public Button equipYesButton;
 
     private void Awake()
     {
@@ -43,13 +44,14 @@ public class UIInventory : MonoBehaviour
 
             var button = slot.GetComponent<Button>();
             button.onClick.AddListener(() => itemInfo.Set(slot.Data));
+            button.onClick.AddListener(() => equipCheckButton.interactable = true);
             int slotIndex = i;
             button.onClick.AddListener(() => currSlot = slotIndex);
         }
         currWeapon.onClick.AddListener(() => SetCurrEquipInfo(ItemTypes.Weapon));
         currArmor.onClick.AddListener(() => SetCurrEquipInfo(ItemTypes.Armor));
         SetInventory((int)itemType);
-        equipButton.onClick.AddListener(() => Equip());
+        equipYesButton.onClick.AddListener(() => Equip());
     }
 
     public void ClearInventory()
@@ -67,6 +69,7 @@ public class UIInventory : MonoBehaviour
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
         currSlot = -1;
+        equipCheckButton.interactable = false;
         itemInfo.SetEmpty();
         this.itemType = (ItemTypes)itemType;
         List<string> ids = null;
@@ -157,7 +160,10 @@ public class UIInventory : MonoBehaviour
         }
         currSlot = -1;
         if (itemInfo != null)
+        {
             itemInfo.Set(data);
+            equipCheckButton.interactable = false;
+        }
     }
 
     public void Equip()

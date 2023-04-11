@@ -71,9 +71,6 @@ public class PlayerAttack : MonoBehaviour
 
     public void SetWeapon(WeaponTypes weaponType)
     {
-        if (weaponType == WeaponTypes.None)
-            return;
-
         currWeaponType = weaponType;
         foreach (var weaponSet in weaponSetDict)
         {
@@ -89,6 +86,10 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
         }
+
+        if (weaponType == WeaponTypes.None)
+            return;
+
         SetDamageTime(weaponType);
         attackBox.ResizeAttackBox(weaponSetDict[currWeaponType].attackRange);
         playerAnimatorOverrider.SetAnimations(weaponSetDict[weaponType].overrideController);

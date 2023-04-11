@@ -34,7 +34,7 @@ public class UIReinforce : MonoBehaviour
     public void OnEnable()
     {
         SetInventory((int)ReinforceSystem.Types.Weapon);
-        SetFirstOnInfo();
+        //SetFirstOnInfo();
     }
 
     public void Init()

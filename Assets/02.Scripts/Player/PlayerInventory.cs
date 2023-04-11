@@ -72,11 +72,11 @@ public class PlayerInventory : MonoBehaviour
             return;
         var temp = CurrWeapon;
         CurrWeapon = Weapons[index];
-        playerAttack.SetWeapon(DataTableMgr.GetTable<WeaponData>().Get(CurrWeapon).weaponType);
         if (string.IsNullOrEmpty(temp))
             RemoveWeapon(index);
         else
             Weapons[index] = temp;
+        playerAttack.SetWeapon(DataTableMgr.GetTable<WeaponData>().Get(CurrWeapon).weaponType);
         ApplyStatus();
         PlayerDataManager.instance.SaveInventory();
         PlayerDataManager.instance.SaveFile();
@@ -229,7 +229,10 @@ public class PlayerInventory : MonoBehaviour
     public void RemoveWeapon(int index)
     {
         if (index < 0)
+        {
             CurrWeapon = null;
+            playerAttack.SetWeapon(WeaponTypes.None);
+        }
         else
             Weapons.RemoveAt(index);
         PlayerDataManager.instance.SaveInventory();
