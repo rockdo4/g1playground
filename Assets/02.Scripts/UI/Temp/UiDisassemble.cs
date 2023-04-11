@@ -182,9 +182,34 @@ public class UiDisassemble : MonoBehaviour
         info.SetEmpty();
     }
 
+    private bool CanDisassemble()
+    {
+        int count = 0;
+        switch (type)
+        {
+            case ReinforceSystem.Types.Weapon:
+                if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
+                    ++count;
+                count += playerInventory.Weapons.Count;
+                break;
+            default:
+                return true;
+        }
+
+        if (count > 1)
+            return true;
+
+        //"무기가 1개 이하일 때는 분해할 수 없습니다";
+        //StartCoroutine();
+        return false;
+    }
+
     public void Disassemble()
     {
         if (currSlot == -1)
+            return;
+
+        if (!CanDisassemble())
             return;
 
         var consumeTable = DataTableMgr.GetTable<ConsumeData>().GetTable();
