@@ -47,14 +47,11 @@ public class PlayerSkills : MonoBehaviour
             if (skillStates[i].skill == null)
                 continue;
 
-            if (!skillStates[i].skill.isOnOffSkill)
-            {
-                if (!skillStates[i].skillUsable)
-                {
-                    skillStates[i].skillTimer = 0f;
-                    skillStates[i].skillUsable = true;
-                }
-            }
+            skillStates[i].skillTimer = 0f;
+            skillStates[i].skillUsable = true;
+
+            if (skillStates[i].skillOn)
+                UseSkill(i);
         }
     }
 
@@ -130,8 +127,6 @@ public class PlayerSkills : MonoBehaviour
         {
             SetEmpty(i);
         }
-
-
     }
 
     public void SetEmpty(int index)
