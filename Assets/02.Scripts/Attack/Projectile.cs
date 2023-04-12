@@ -10,8 +10,9 @@ public class Projectile : AttackCollider
     private bool isReturnable = false;
     private bool isReturning = false;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody>();
     }
 
