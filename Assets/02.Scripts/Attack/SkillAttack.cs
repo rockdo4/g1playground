@@ -120,6 +120,6 @@ public class SkillAttack : AttackDefinition
         {
             newStrs = string.Concat(newStrs, strs[i], "\n");
         }
-        File.WriteAllText(path, newStrs, Encoding.Default);
+        File.WriteAllText(path, newStrs, Encoding.UTF8);
     }
 }
