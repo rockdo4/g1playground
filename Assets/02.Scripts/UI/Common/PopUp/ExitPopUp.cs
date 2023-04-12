@@ -4,7 +4,4 @@ using UnityEngine;
 
 public class ExitPopUp : PopupUI
 {
-    protected override void Update()
-    {
-    }
 }

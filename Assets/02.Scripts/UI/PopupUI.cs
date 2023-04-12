@@ -31,7 +31,8 @@ public class PopupUI : MonoBehaviour
         {
             if (gameObject.activeSelf)
             {
-                ActiveFalse();
+                gameObject.SetActive(false);
+                UI.Instance.popupPanel.exitPopUp.ActiveFalse();
             }
         }
     }

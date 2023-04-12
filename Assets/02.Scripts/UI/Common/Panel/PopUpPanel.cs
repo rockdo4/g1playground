@@ -33,6 +33,13 @@ public class PopUpPanel : PanelUi
     {
         Init();
     }
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            exitPopUp.ActiveTrue();
+        }
+    }
 
     public void Init()
     {
@@ -76,10 +83,5 @@ public class PopUpPanel : PanelUi
         gamblingResult10PopUp.ActiveFalse();
         profilePopUp.ActiveFalse();
         probabilityPopUp.ActiveFalse();
-    }
-
-    void Update()
-    {
-
     }
 }

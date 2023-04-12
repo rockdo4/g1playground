@@ -12,6 +12,7 @@ public enum LayoutState
     Main,
     Weekly,
 }
+
 public class UI : MonoBehaviour
 {
     public static UI Instance { get; private set; }
@@ -30,7 +31,8 @@ public class UI : MonoBehaviour
     private LayoutState State;
     [SerializeField]
     public string sceneName;
-    private int keyCount = 0;
+    private int KeyCount = 0;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -84,25 +86,7 @@ public class UI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            keyCount++;
-            if(keyCount > 1)
-            {
-                popupPanel.exitPopUp.gameObject.SetActive(true);
-                keyCount= 0;
-            }
-            else if (keyCount >= 1)
-            {
-                StartCoroutine(CoKeyCountReset());
-            }
-        }
-    }
-
-    IEnumerator CoKeyCountReset()
-    {
-        yield return new WaitForSeconds(1);
-        keyCount = 0;
+        
     }
 
     private void InitUi(string sceneName)
