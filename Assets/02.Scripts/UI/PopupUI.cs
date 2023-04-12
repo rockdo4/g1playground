@@ -24,4 +24,15 @@ public class PopupUI : MonoBehaviour
         Time.timeScale = 1.0f;
         SoundManager.instance.UnPauseSoundEffect();
     }
+
+    protected virtual void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (gameObject.activeSelf)
+            {
+                ActiveFalse();
+            }
+        }
+    }
 }

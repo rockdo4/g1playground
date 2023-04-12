@@ -33,7 +33,7 @@ public class LoadMessageBox : MonoBehaviour
         if (transform.parent != null && transform.parent.GetComponent<Canvas>() != null)
             transform.SetSiblingIndex(transform.parent.childCount);
         else
-            Debug.LogError("error");
+            Debug.Log("error");
 
         void action()
         {
