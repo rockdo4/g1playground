@@ -61,8 +61,6 @@ public class Portal : MonoBehaviour
             NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
             var linkMover = player.GetComponent<AgentLinkMover>();
             playerController.autoToggle.isOn = false;
-            playerController.AgentOff();
-            playerController.AgentOnOff();
             player.GetComponent<PlayerInventory>().RefillPotions();
             player.transform.SetParent(null);
 
@@ -101,16 +99,9 @@ public class Portal : MonoBehaviour
                     if (prevAuto)
                     {
                         player.autoToggle.isOn = true;
-                        player.AgentOnOff();
                     }
-
-
-
                     transform.parent.gameObject.SetActive(false);
-
-
                     SoundManager.instance.PlaySoundEffect(enterPortalClip);
-
                     break;
                 }
             }
