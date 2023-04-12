@@ -49,7 +49,6 @@ public class UISkillInventory : MonoBehaviour
         {
             slot.SetEmpty();
         }
-        currSlot = -1;
 
     }
 
@@ -57,6 +56,8 @@ public class UISkillInventory : MonoBehaviour
     {
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
+        currSlot = -1;
+        skillInfo.SetEmpty();
         List<string> ids = playerSkills.PossessedSkills;
         int len = ids.Count;
         var table = DataTableMgr.GetTable<SkillData>();
