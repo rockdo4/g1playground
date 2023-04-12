@@ -27,6 +27,8 @@ public class SkillAttack : AttackDefinition
     public void SetData(string id)
     {
         var data = DataTableMgr.GetTable<SkillData>().Get(id);
+        if (data == null)
+            return;
         this.id = data.id;
         Reinforce = data.reinforce;
         MaxReinfore= data.maxReinfore;
@@ -105,7 +107,9 @@ public class SkillAttack : AttackDefinition
                     cc.slowDown, ',',
                     cc.slowTime, ',',
                     cc.reduceDef, ',',
-                    cc.reduceDefTime, ','
+                    cc.reduceDefTime, ',',
+                    temp[20], ',',
+                    temp[21], ','
                     );
                 break;
             }

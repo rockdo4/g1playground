@@ -9,6 +9,12 @@ public class EnemyStraightSpell : SkillAttack
     public float range;
     public string projectileId;
 
+    private void Awake()
+    {
+        if (!string.IsNullOrEmpty(id))
+            SetData(id);
+    }
+
     public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction)
     {
         var aStat = attacker.GetComponent<Status>();
