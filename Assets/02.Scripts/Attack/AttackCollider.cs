@@ -21,6 +21,7 @@ public abstract class AttackCollider : MonoBehaviour
     protected PlayerSound hitSound;
     protected List<GameObject> attackedList = new List<GameObject>();
     protected bool onlyCollideLivings = false;
+    private List<TrailRenderer> trailRenderers = new List<TrailRenderer>();
 
     public virtual void Reset()
     {
@@ -43,7 +44,24 @@ public abstract class AttackCollider : MonoBehaviour
         {
             hitSound.Release();
             hitSound = null;
-        }       
+        }
+    }
+
+    protected virtual void Awake()
+    {
+        var trails = GetComponentsInChildren<TrailRenderer>();
+        foreach (var trail in trails)
+        {
+            trailRenderers.Add(trail);
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (var trail in trailRenderers)
+        {
+            trail.Clear();
+        }
     }
 
     protected virtual void Update()
