@@ -67,7 +67,7 @@ public class EnemyMeleeFixed : Enemy, IAttackable
                     mask.SetActive(false);
                     break;
             }
-            Debug.Log(State);
+            //Debug.Log(State);
         }
     }
 

@@ -29107,14 +29107,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1236868141224517618}
   - component: {fileID: 1412690123266791296}
-  - component: {fileID: 1202653592292991570}
   - component: {fileID: 1433132593760118040}
   - component: {fileID: 1289181122532121968}
   - component: {fileID: 1208151829580108044}
   - component: {fileID: 1178461706376355612}
   - component: {fileID: 4215577417378107875}
   - component: {fileID: 6402511953480104244}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ProjectilePupleRich
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33919,26 +33918,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &1202653592292991570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1235897142841795098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 15
-  hitOffset: 0.1
-  UseFirePointRotation: 0
-  rotationOffset: {x: 0, y: 0, z: 0}
-  hit: {fileID: 1767841913861676, guid: 7e33fe33aff4f49449f51ed88f138e9c, type: 3}
-  flash: {fileID: 1840367976591474, guid: e9d1f52e709876143b75f93f52a48156, type: 3}
-  Detached:
-  - {fileID: 1234413924887563066}
 --- !u!199 &1433132593760118040
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -34025,7 +34004,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!135 &1208151829580108044
 SphereCollider:
@@ -34035,10 +34014,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1235897142841795098}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!108 &1178461706376355612
 Light:

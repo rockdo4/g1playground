@@ -4843,14 +4843,13 @@ GameObject:
   m_Component:
   - component: {fileID: 867309259625368547}
   - component: {fileID: 1070037080454501927}
-  - component: {fileID: 977202452097141429}
   - component: {fileID: 1071144316545530801}
   - component: {fileID: 979686258601070687}
   - component: {fileID: 925761488446736607}
   - component: {fileID: 1006828427807089829}
   - component: {fileID: 7611044719074954526}
   - component: {fileID: -8777543222358079408}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ProjectileGreenFruit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9650,26 +9649,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &977202452097141429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872880565611066401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 15
-  hitOffset: 0.1
-  UseFirePointRotation: 0
-  rotationOffset: {x: 0, y: 0, z: 0}
-  hit: {fileID: 1098451438589226, guid: afa1163e40fd2904fbf38e4c00924127, type: 3}
-  flash: {fileID: 1351939137292810, guid: 56bde4ce6c483884084a4ff8b76b3267, type: 3}
-  Detached:
-  - {fileID: 873344385947564643}
 --- !u!199 &1071144316545530801
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -9818,8 +9797,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!135 &1006828427807089829
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9828,10 +9807,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 872880565611066401}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7611044719074954526
 MonoBehaviour:

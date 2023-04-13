@@ -7,6 +7,7 @@ public abstract class AttackCollider : MonoBehaviour
 {
     protected GameObject attacker;
     public System.Action<GameObject, GameObject, Vector3> OnCollided;
+    protected Vector3 lastPos;
     protected float lifeTime;
     protected float timer;
     public string[] detachedEffects;
@@ -79,6 +80,11 @@ public abstract class AttackCollider : MonoBehaviour
         }
     }
 
+    protected virtual void FixedUpdate()
+    {
+        lastPos = transform.position;
+    }
+
     protected virtual bool OnTriggerStay(Collider other)
     {
         if (!other.gameObject.activeSelf ||
@@ -95,7 +101,7 @@ public abstract class AttackCollider : MonoBehaviour
         if (onlyCollideLivings && !isAttackable)
             return false;
 
-        Vector3 pos = other.ClosestPoint(transform.position);
+        Vector3 pos = other.ClosestPoint(lastPos);
         Quaternion rot = Quaternion.LookRotation(transform.forward);
 
         if (OnCollided != null)

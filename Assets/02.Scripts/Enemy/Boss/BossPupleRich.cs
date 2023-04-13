@@ -408,7 +408,7 @@ public class BossPupleRich : Enemy
 
     private void Projectile()
     {
-        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);
+        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, GetShotDir());
     }
     private int projectileCount = 0;
 

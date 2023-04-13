@@ -7,18 +7,6 @@ public class EnemyControllerAR : EnemyController, IAttackable
 {
     public SkillAttack projectileSkill;
     public GameObject skillPivot;
-    protected override void Attack()
-    {
-        switch (projectileSkill)
-        {
-            case SkillAttack:
-                {
-                    enemySound.PlayAttackSound();
-                    ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);
-                }
-                break;
-        }
-    }
     protected override void Awake()
     {
         enemySound = GetComponent<EnemySoundPlayer>();
@@ -46,7 +34,20 @@ public class EnemyControllerAR : EnemyController, IAttackable
         animator.SetTrigger("TakeDamage");
     }
 
-    protected virtual void AttackDone()
+    protected override void Attack()
+    {
+        switch (projectileSkill)
+        {
+            case SkillAttack:
+                {
+                    enemySound.PlayAttackSound();
+                    ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, GetShotDir());
+                }
+                break;
+        }
+    }
+
+    protected override void AttackDone()
     {
         State = EnemyState.Chase;
     }
@@ -76,6 +77,24 @@ public class EnemyControllerAR : EnemyController, IAttackable
     protected virtual void Update()
     {
         base.Update();
+
+        if (State == EnemyState.Chase|| State == EnemyState.Attack)
+        {
+            var dir = player.transform.position - transform.position;
+
+            if (0f < dir.x)
+            {
+                transform.rotation = Quaternion.LookRotation(Vector3.right);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(Vector3.left);
+
+            }
+
+            //transform.rotation = Quaternion.LookRotation(GetShotDir());
+
+        }
     }
     //    protected virtual void None()
     //    {
