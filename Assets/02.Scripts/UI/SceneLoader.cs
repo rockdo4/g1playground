@@ -51,6 +51,8 @@ public class SceneLoader : MonoBehaviour
     public TextMeshProUGUI text;
     private void Awake()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         if (Instance != this)
         {
             Destroy(gameObject);
