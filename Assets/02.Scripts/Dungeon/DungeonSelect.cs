@@ -14,7 +14,6 @@ public class DungeonSelect : PopupUI
     [SerializeField]
     private List<GameObject> days;
    
-
     // Start is called before the first frame update
     protected override void OnEnable()
     {
@@ -28,7 +27,10 @@ public class DungeonSelect : PopupUI
                 {
                     days[i].transform.Find("Lock").Find("Time").gameObject.SetActive(true);
                     tomorrowtime = days[i].transform.Find("Lock").Find("Time").GetComponentInChildren<TextMeshProUGUI>();
-                    break;
+                }
+                else
+                {
+                    days[i].transform.Find("Lock").Find("Time").gameObject.SetActive(false);
                 }
             }
 
@@ -59,9 +61,6 @@ public class DungeonSelect : PopupUI
         {
             tomorrowtime.text = remainingtime.ToString();
         }
-
-
-
     }
 
     private void DungeionEnter()
