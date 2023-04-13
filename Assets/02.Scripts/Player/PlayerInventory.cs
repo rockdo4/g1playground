@@ -422,11 +422,15 @@ public class PlayerInventory : MonoBehaviour
                 if (status.CurrHp == status.FinalValue.maxHp)
                     return;
                 status.CurrHp += (int)(status.FinalValue.maxHp * potionRate[0]);
+                if (status.CurrHp > status.FinalValue.maxHp)
+                    status.CurrHp = status.FinalValue.maxHp;
                 break;
             case Potions.Mp:
                 if (status.CurrMp == status.FinalValue.maxMp)
                     return;
                 status.CurrMp += (int)(status.FinalValue.maxMp * potionRate[1]);
+                if (status.CurrMp > status.FinalValue.maxMp)
+                    status.CurrMp = status.FinalValue.maxMp;
                 break;
         }
         PotionCount[(int)potion] -= 1;

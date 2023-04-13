@@ -70,7 +70,19 @@ public class UISkillInventory : MonoBehaviour
         //    skillInfo.Set(table.Get(ids[0]));
         //    currSlot = 0;
         //}
+        SetCurrSkill();
         skillInfo.ShowCurrPlayerSkills();
+    }
+
+    private void SetCurrSkill()
+    {
+        var currSkill1 = playerSkills.GetCurrSkillIndex(0);
+        var currSkill2 = playerSkills.GetCurrSkillIndex(1);
+
+        foreach (var slot in slotList)
+        {
+            slot.IsCurrSkill(slot.index == currSkill1 || slot.index == currSkill2);
+        }
     }
 
     public void SlotInstantiate(int count)

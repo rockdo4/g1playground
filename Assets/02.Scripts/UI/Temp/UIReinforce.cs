@@ -162,9 +162,21 @@ public class UIReinforce : MonoBehaviour
                         if (!string.IsNullOrEmpty(ids[i]))
                             skillSlotList[i].Set(i, table.Get(ids[i]));
                     }
+                    SetCurrSkill();
                     reinforceButton.interactable = false;
                 }
                 break;
+        }
+    }
+
+    private void SetCurrSkill()
+    {
+        var currSkill1 = playerSkills.GetCurrSkillIndex(0);
+        var currSkill2 = playerSkills.GetCurrSkillIndex(1);
+
+        foreach (var slot in skillSlotList)
+        {
+            slot.IsCurrSkill(slot.index == currSkill1 || slot.index == currSkill2);
         }
     }
 
