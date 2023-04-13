@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public GamblingManager gambling;
     public AttackColliderManager attackColliderManager;
     public EnemyManager enemyManager;
-
+    public GameObject followCamera;
 
     private void Awake()
     {

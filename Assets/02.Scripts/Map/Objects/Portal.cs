@@ -29,6 +29,7 @@ public class Portal : MonoBehaviour
     {
         return pos.transform.position;
     }
+
     private void OnEnable()
     {
         door.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -41,7 +42,6 @@ public class Portal : MonoBehaviour
             CanUse = true;
         }
         ClosePortalInaWhile();
-
     }
 
     private void Awake()
@@ -93,7 +93,8 @@ public class Portal : MonoBehaviour
                     other.GetComponent<PlayerInventory>()?.RefillPotions();
                     //other.GetComponent<PlayerController>().AgentOnOff();
 
-                    Camera.main.transform.position = portal.gameObject.transform.position;
+                    Camera.main.transform.position =other.gameObject.transform.position;
+                    GameManager.instance.followCamera.transform.position = other.gameObject.transform.position;
                     MapManager.instance.SetCurrentMapName(portal.transform.parent.name);
                     MapManager.instance.SetcurrentChapterName(portal.transform.parent.parent.name);
                     if (prevAuto)
@@ -138,10 +139,8 @@ public class Portal : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             loading.enabled = true;
-
         }
     }
-
 
     private void OnTriggerExit(Collider other)
     {
@@ -153,7 +152,6 @@ public class Portal : MonoBehaviour
             slider.value = 0;
             door.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
-
     }
 
     public void ClosePortalInaWhile()
@@ -165,7 +163,6 @@ public class Portal : MonoBehaviour
 
             return;
         }
-
         CanUse = false;
         StopCoroutine(CClosePortalInaWhile());
         StartCoroutine(CClosePortalInaWhile());

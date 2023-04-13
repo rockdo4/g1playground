@@ -9,8 +9,6 @@ public class EnterDungeon : MonoBehaviour
     private void OnEnable()
     {
         dungeon = GameObject.FindWithTag("Dungeon").gameObject;
-     
-
     }
 
     // Update is called once per frame
