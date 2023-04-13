@@ -133,8 +133,7 @@ public class PlayerSkills : MonoBehaviour
     {
         skillStates[index].index = -1;
         skillStates[index].skill = null;
-        toggles[index].image.sprite = null;
-       
+        //toggles[index].image.sprite = null;       
     }
 
     public void SetSkill(int index, int possessedIndex)
