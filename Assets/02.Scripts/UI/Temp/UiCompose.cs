@@ -84,7 +84,6 @@ public class UiCompose : MonoBehaviour
                     {
                         if (ComposeSystem.CheckComposable(playerInventory.CurrWeapon))
                         {
-                            itemSlotList[count].IsEquiped(true);
                             itemSlotList[count].Set(-1, table.Get(playerInventory.CurrWeapon));
                             ++count;
                         }
@@ -93,11 +92,11 @@ public class UiCompose : MonoBehaviour
                     {
                         if (!string.IsNullOrEmpty(ids[i]) && ComposeSystem.CheckComposable(ids[i]))
                         {
-                            itemSlotList[count].IsEquiped(false);
                             itemSlotList[count].Set(i, table.Get(ids[i]));
                             ++count;
                         }
                     }
+                    itemSlotList[0].IsEquiped(!string.IsNullOrEmpty(playerInventory.CurrWeapon));
                 }
                 break;
             case ItemTypes.Armor:
@@ -109,7 +108,6 @@ public class UiCompose : MonoBehaviour
                     {
                         if (ComposeSystem.CheckComposable(playerInventory.CurrArmor))
                         {
-                            itemSlotList[count].IsEquiped(true);
                             itemSlotList[count].Set(-1, table.Get(playerInventory.CurrArmor));
                             ++count;
                         }
@@ -118,11 +116,11 @@ public class UiCompose : MonoBehaviour
                     {
                         if (!string.IsNullOrEmpty(ids[i]) && ComposeSystem.CheckComposable(ids[i]))
                         {
-                            itemSlotList[count].IsEquiped(false);
                             itemSlotList[count].Set(i, table.Get(ids[i]));
                             ++count;
                         }
                     }
+                    itemSlotList[0].IsEquiped(!string.IsNullOrEmpty(playerInventory.CurrArmor));
                 }
                 break;
         }

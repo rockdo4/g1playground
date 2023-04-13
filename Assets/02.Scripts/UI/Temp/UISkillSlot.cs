@@ -24,9 +24,12 @@ public class UISkillSlot : MonoBehaviour
 
     public void Set(int index, SkillData data)
     {
-        if (data == null)
-            SetEmpty();
         this.index = index;
+        if (data == null)
+        {
+            SetEmpty();
+            return;
+        }
         this.data = data;
         button.interactable = true;
         icon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);

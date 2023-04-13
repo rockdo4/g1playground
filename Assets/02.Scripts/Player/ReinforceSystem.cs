@@ -87,7 +87,7 @@ public class ReinforceSystem
                     int len = skills.PossessedSkills.Count;
                     for (int i = 0; i < len; ++i)
                     {
-                        if (string.Equals(skills.PossessedSkills[i], material.id))
+                        if (string.Equals(skills.PossessedSkills[i], material.id) && i != indexOfInventory)
                         {
                             materialIndex = i;
                             break;

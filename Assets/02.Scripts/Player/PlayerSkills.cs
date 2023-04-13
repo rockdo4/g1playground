@@ -133,37 +133,40 @@ public class PlayerSkills : MonoBehaviour
     {
         skillStates[index].index = -1;
         skillStates[index].skill = null;
-        //toggles[index].image.sprite = null;       
+        toggles[index].image.sprite = null;       
     }
 
     public void SetSkill(int index, int possessedIndex)
     {
         if (possessedIndex < 0)
             SetEmpty(index);
-
-        if (PossessedSkills == null)
-            PossessedSkills = new List<string>();
-
-        if (PossessedSkills.Count < 1)
-            return;
-
-        var len = skillStates.Length;
-        var skillData = DataTableMgr.GetTable<SkillData>().Get(PossessedSkills[possessedIndex]);
-        for (int i = 0; i < len; ++i)
+        else
         {
-            if (i == index)
-                continue;
-            if (skillStates[i].skill != null && string.Equals(skillStates[i].skill.Group, skillData.group))
-                return;
-        }
+            if (PossessedSkills == null)
+                PossessedSkills = new List<string>();
 
-        toggles[index].isOn = false;
-        var skill = allSkillGroups[skillData.group];
-        skill.SetData(PossessedSkills[possessedIndex]);
-        skillStates[index].index = possessedIndex;
-        skillStates[index].Set(skill);
+            if (PossessedSkills.Count < 1)
+                return;
+
+            var len = skillStates.Length;
+            var skillData = DataTableMgr.GetTable<SkillData>().Get(PossessedSkills[possessedIndex]);
+            for (int i = 0; i < len; ++i)
+            {
+                if (i == index)
+                    continue;
+                if (skillStates[i].skill != null && string.Equals(skillStates[i].skill.Group, skillData.group))
+                    return;
+            }
+
+            toggles[index].isOn = false;
+            var skill = allSkillGroups[skillData.group];
+            skill.SetData(PossessedSkills[possessedIndex]);
+            skillStates[index].index = possessedIndex;
+            skillStates[index].Set(skill);
+            toggles[index].image.sprite = DataTableMgr.LoadIcon(skillData.iconSpriteId);
+        }
+        
         //toggles[index].image.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(skillData.iconSpriteId).iconName);
-        toggles[index].image.sprite = DataTableMgr.LoadIcon(skillData.iconSpriteId);
 
         PlayerDataManager.instance.SaveSkills();
         PlayerDataManager.instance.SaveFile();

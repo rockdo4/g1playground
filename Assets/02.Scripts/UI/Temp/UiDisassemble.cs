@@ -118,7 +118,6 @@ public class UiDisassemble : MonoBehaviour
                     len = ids.Count;
                     if (!string.IsNullOrEmpty(playerInventory.CurrWeapon))
                     {
-                        itemSlotList[count].IsEquiped(true);
                         itemSlotList[count].Set(-1, table.Get(playerInventory.CurrWeapon));
                         ++count;
                     }
@@ -126,11 +125,11 @@ public class UiDisassemble : MonoBehaviour
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
                         {
-                            itemSlotList[count].IsEquiped(false);
                             itemSlotList[count].Set(i, table.Get(ids[i]));
                             ++count;
                         }
                     }
+                    itemSlotList[0].IsEquiped(!string.IsNullOrEmpty(playerInventory.CurrWeapon));
                 }
                 break;
             case ReinforceSystem.Types.Armor:
@@ -140,7 +139,6 @@ public class UiDisassemble : MonoBehaviour
                     len = ids.Count;
                     if (!string.IsNullOrEmpty(playerInventory.CurrArmor))
                     {
-                        itemSlotList[count].IsEquiped(true);
                         itemSlotList[count].Set(-1, table.Get(playerInventory.CurrArmor));
                         ++count;
                     }
@@ -148,11 +146,11 @@ public class UiDisassemble : MonoBehaviour
                     {
                         if (!string.IsNullOrEmpty(ids[i]))
                         {
-                            itemSlotList[count].IsEquiped(false);
                             itemSlotList[count].Set(i, table.Get(ids[i]));
                             ++count;
                         }
                     }
+                    itemSlotList[0].IsEquiped(!string.IsNullOrEmpty(playerInventory.CurrArmor));
                 }
                 break;
             case ReinforceSystem.Types.Skill:
@@ -160,10 +158,15 @@ public class UiDisassemble : MonoBehaviour
                     var table = DataTableMgr.GetTable<SkillData>();
                     ids = playerSkills.PossessedSkills;
                     len = ids.Count;
-                    for (int i = 0; i < len; ++i)
+                    //if (skillSlotList.Count < len)
+                    //    SkillSlotInstantiate(len - skillSlotList.Count);
+                    var slotCount = skillSlotList.Count;
+                    for (int i = 0; i < slotCount; ++i)
                     {
-                        if (!string.IsNullOrEmpty(ids[i]))
+                        if (i < len)
                             skillSlotList[i].Set(i, table.Get(ids[i]));
+                        else
+                            skillSlotList[i].Set(i, null);
                     }
                     SetCurrSkill();
                 }
@@ -182,6 +185,22 @@ public class UiDisassemble : MonoBehaviour
             slot.IsCurrSkill(slot.index == currSkill1 || slot.index == currSkill2);
         }
     }
+
+    //public void SkillSlotInstantiate(int count)
+    //{
+    //    for (int i = 0; i < count; ++i)
+    //    {
+    //        var slotIndex = skillSlotList.Count;
+    //        var skillSlot = Instantiate(uiSkillSlotPrefab, skillContent);
+    //        skillSlot.SetEmpty();
+    //        skillSlotList.Add(skillSlot);
+    //        var skillButton = skillSlot.GetComponent<Button>();
+    //        skillButton.onClick.AddListener(() => info.Set(type, skillSlot.Data.id));
+    //        skillButton.onClick.AddListener(() => currSlot = slotIndex);
+    //        skillButton.onClick.AddListener(() => disassembleButton.interactable = true);
+    //    }
+    //    SetInventory((int)type);
+    //}
 
     private void ShowInventory(ReinforceSystem.Types type)
     {
