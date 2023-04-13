@@ -129,7 +129,7 @@ public class MapManager : MonoBehaviour
 
     public void SetCurrentMapName(string name)
     {
-        if (SceneManager.GetActiveScene().name != "Scene02")
+        if (SceneManager.GetActiveScene().name != "Scene02"&& SceneManager.GetActiveScene().name != "Tutorial")
             return;
         if (currentStageObject != null)
         {
