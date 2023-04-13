@@ -6,6 +6,7 @@ public class UISkillSlot : MonoBehaviour
     public int index;
     public Image icon;
     public Button button;
+    public Image currFrame;
 
     private SkillData data;
 
@@ -30,4 +31,6 @@ public class UISkillSlot : MonoBehaviour
         button.interactable = true;
         icon.sprite = Resources.Load<Sprite>(DataTableMgr.GetTable<IconData>().Get(data.iconSpriteId).iconName);
     }
+
+    public void IsCurrSkill(bool currSkill) => currFrame.gameObject.SetActive(currSkill);
 }
