@@ -9673,7 +9673,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8208474370384112165}
   - component: {fileID: 8302985643534003055}
-  - component: {fileID: 8101116887484225775}
   - component: {fileID: 8304565265689899035}
   - component: {fileID: 8105121276980555095}
   - component: {fileID: 8158589794661647585}
@@ -14482,26 +14481,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &8101116887484225775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8214117714366922341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 15
-  hitOffset: 0.1
-  UseFirePointRotation: 0
-  rotationOffset: {x: 0, y: 0, z: 0}
-  hit: {fileID: 1493225883543534, guid: 245bf6b0acdf9474ca212c5a4f28b2ce, type: 3}
-  flash: {fileID: 1633242581645256, guid: 51e88bfc3811dab48ac0c06617654e1a, type: 3}
-  Detached:
-  - {fileID: 8214050267681114809}
 --- !u!199 &8304565265689899035
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -14650,8 +14629,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 48
-  m_CollisionDetection: 0
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!135 &8077209360250664399
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -14660,10 +14639,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8214117714366922341}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8508296264087270210
 MonoBehaviour:
@@ -14697,10 +14676,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa0776b58a443b64cbe888b3bf5ad973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detachedEffects:
-  - Glow
-  hitEffect: Hit 4
-  flashEffect: Flash 4
+  detachedEffects: []
+  hitEffect: 
+  flashEffect: 
 --- !u!1 &8214222802409708153
 GameObject:
   m_ObjectHideFlags: 0

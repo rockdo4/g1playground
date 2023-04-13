@@ -357,6 +357,11 @@ public class EnemyController : Enemy
             attackTime = 0f;
             return;
         }
+        //else
+        //{
+        //    Quaternion targetRotation = Quaternion.LookRotation(GetShotDir());
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 30);
+        //}
     }
 
     protected virtual void TakeDamageUpdate()

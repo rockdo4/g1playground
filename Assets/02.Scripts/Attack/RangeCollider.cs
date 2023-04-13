@@ -38,8 +38,9 @@ public class RangeCollider : AttackCollider
         }
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         if (attackPivot != null)
         {
             transform.position = attackPivot.position;

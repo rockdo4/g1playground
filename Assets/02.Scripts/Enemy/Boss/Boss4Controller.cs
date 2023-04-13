@@ -374,7 +374,7 @@ public class Boss4Controller : Enemy
 
     private void ProjectileSkill()
     {
-        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, transform.forward);
+        ((EnemyStraightSpell)projectileSkill).Fire(gameObject, skillPivot.transform.position, GetShotDir());
     }
 
     private void ProjectileSkillDone()

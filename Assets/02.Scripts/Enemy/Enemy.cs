@@ -270,5 +270,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public Vector3 GetShotDir()
+    {
+        var dir = new Vector3(transform.forward.x, transform.forward.y, 0f).normalized;
+        return dir;
+    }
     public Status GetStatus() { return status; }
 }

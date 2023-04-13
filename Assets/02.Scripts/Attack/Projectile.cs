@@ -28,8 +28,9 @@ public class Projectile : AttackCollider
         }
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         foreach(var effect in effects)
         {
             effect.transform.position = transform.position;
