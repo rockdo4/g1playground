@@ -60,10 +60,16 @@ public class UISkillInventory : MonoBehaviour
         skillInfo.SetEmpty();
         List<string> ids = playerSkills.PossessedSkills;
         int len = ids.Count;
+        if (slotList.Count < len)
+            SlotInstantiate(len - slotList.Count);
+        var count = slotList.Count;
         var table = DataTableMgr.GetTable<SkillData>();
-        for (int i = 0; i < len; ++i)
+        for (int i = 0; i < count; ++i)
         {
-            slotList[i].Set(i, table.Get(ids[i]));
+            if (i < len)
+                slotList[i].Set(i, table.Get(ids[i]));
+            else
+                slotList[i].Set(i, null);
         }
         //if (len > 0)
         //{
@@ -81,6 +87,7 @@ public class UISkillInventory : MonoBehaviour
 
         foreach (var slot in slotList)
         {
+            Debug.Log(slot.index);
             slot.IsCurrSkill(slot.index == currSkill1 || slot.index == currSkill2);
         }
     }
@@ -109,5 +116,6 @@ public class UISkillInventory : MonoBehaviour
 
         playerSkills.SetSkill(index, currSlot);
         skillInfo.ShowCurrPlayerSkills();
+        SetInventory();
     }
 }

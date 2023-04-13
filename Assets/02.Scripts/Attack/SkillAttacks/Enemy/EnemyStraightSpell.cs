@@ -11,8 +11,8 @@ public class EnemyStraightSpell : SkillAttack
 
     private void Awake()
     {
-        if (!string.IsNullOrEmpty(id))
-            SetData(id);
+        //if (!string.IsNullOrEmpty(id))
+        //    SetData(id);
     }
 
     public void Fire(GameObject attacker, Vector3 startPos, Vector3 direction)
