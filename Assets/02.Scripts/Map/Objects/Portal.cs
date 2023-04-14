@@ -94,7 +94,8 @@ public class Portal : MonoBehaviour
                     //other.GetComponent<PlayerController>().AgentOnOff();
 
                     Camera.main.transform.position =other.gameObject.transform.position;
-                    GameManager.instance.followCamera.transform.position = other.gameObject.transform.position;
+                    GameManager.instance.followCamera.GetComponent<FollowCamera>().ZeroToSoftZone();
+                    GameManager.instance.followCamera.GetComponent<FollowCamera>().ResetToSoftZone();
                     MapManager.instance.SetCurrentMapName(portal.transform.parent.name);
                     MapManager.instance.SetcurrentChapterName(portal.transform.parent.parent.name);
                     if (prevAuto)
@@ -109,6 +110,8 @@ public class Portal : MonoBehaviour
             //player.AddAgentLinkMover();
         }
     }
+
+   
 
 
     private void OnTriggerStay(Collider other)
