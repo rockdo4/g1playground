@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,8 @@ public class UISkillInventory : MonoBehaviour
     private PlayerSkills playerSkills;
     private int currSlot;
 
+    private int playerSkillIndex = -1;
+    public UISkillInventoryPlayerSkill[] inventoryPlayerSkills = new UISkillInventoryPlayerSkill[2];
     public UISkillInfo skillInfo;
 
     private void Awake()
@@ -49,7 +52,6 @@ public class UISkillInventory : MonoBehaviour
         {
             slot.SetEmpty();
         }
-
     }
 
     public void SetInventory()
@@ -57,6 +59,7 @@ public class UISkillInventory : MonoBehaviour
         // make Count in itemTypes, return if itemType >= ItemTypes.Count
         ClearInventory();
         currSlot = -1;
+        SetPlayerSkillIndex(-1);
         skillInfo.SetEmpty();
         List<string> ids = playerSkills.PossessedSkills;
         int len = ids.Count;
@@ -109,12 +112,28 @@ public class UISkillInventory : MonoBehaviour
         SetInventory();
     }
 
-    public void SetPlayerSkill(int index)
+    public void SetPlayerSkillIndex(int index)
     {
-        if (currSlot < 0)
+        if (index >= 0 && playerSkillIndex == index)
+        {
+            inventoryPlayerSkills[playerSkillIndex].OnOffFrame(false);
+            playerSkillIndex = -1;
+            return;
+        }
+        playerSkillIndex = index;
+        var len = inventoryPlayerSkills.Length;
+        for (int i = 0; i < len; ++i)
+        {
+            inventoryPlayerSkills[i].OnOffFrame(i == playerSkillIndex);
+        }
+    }
+
+    public void SetPlayerSkill()
+    {
+        if (currSlot < 0 || playerSkillIndex < 0)
             return;
 
-        playerSkills.SetSkill(index, currSlot);
+        playerSkills.SetSkill(playerSkillIndex, currSlot);
         skillInfo.ShowCurrPlayerSkills();
         SetInventory();
     }
