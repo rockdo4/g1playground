@@ -40,7 +40,11 @@ public class MapManager : MonoBehaviour
             Destroy(gameObject);
 
         map = GameObject.FindGameObjectWithTag("Map");
-        var chapterCount = map.transform.childCount;
+        int chapterCount=0;
+        if (map != null)
+        {
+            chapterCount = map.transform.childCount;
+        }
         for (int i = 0; i < chapterCount; i++)
         {
             var chapter = map.transform.GetChild(i).gameObject;
@@ -64,7 +68,7 @@ public class MapManager : MonoBehaviour
         {
             return;
         }
-           
+
         foreach (var stage in saveData.unlock)
         {
             foreach (var map in maps)
