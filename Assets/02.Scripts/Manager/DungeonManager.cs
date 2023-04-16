@@ -162,7 +162,6 @@ public class DungeonManager : MonoBehaviour
             PlayerDataManager.instance.LoadFile();
             GameManager.instance.player.GetComponent<Status>().Restore();
 
-
             // PlayerDataManager.instance.MoveToLastPos(GameManager.instance.player);
         }
 
@@ -305,7 +304,6 @@ public class DungeonManager : MonoBehaviour
             }
         }
 
-
     }
 
     private void SetReward()
@@ -423,6 +421,7 @@ public class DungeonManager : MonoBehaviour
         // SceneManager.LoadScene("Game", LoadSceneMode.Single);
         SceneManager.LoadScene("Scene02");
 
+        
 
     }
 
@@ -455,7 +454,7 @@ public class DungeonManager : MonoBehaviour
         SceneManager.LoadScene("Game", LoadSceneMode.Single);
         Debug.Log(scenename);
         SceneManager.LoadScene(scenename.ToString(), LoadSceneMode.Additive);
-
+              
 
         remaningtime.gameObject.SetActive(true);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
