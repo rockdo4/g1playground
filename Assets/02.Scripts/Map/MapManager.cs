@@ -39,6 +39,37 @@ public class MapManager : MonoBehaviour
         if (instance != this)
             Destroy(gameObject);
 
+        //map = GameObject.FindGameObjectWithTag("Map");
+        //int chapterCount = 0;
+        //if (map != null)
+        //{
+        //    chapterCount = map.transform.childCount;
+        //}
+        //Debug.Log("checkpoint!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        //for (int i = 0; i < chapterCount; i++)
+        //{
+        //    var chapter = map.transform.GetChild(i).gameObject;
+        //    var temp = chapter.GetComponentsInChildren<StageController>(true);
+        //    Debug.Log("in for!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        //    foreach (var t in temp)
+        //    {
+        //        Debug.Log(t.name);
+
+        //        maps.Add(t);
+        //        if (t.name == "Village")
+        //            currentStageObject = t.gameObject;
+        //    }
+        //}
+        StartCoroutine(SetMap());
+        LoadProgress();
+    }
+
+    IEnumerator SetMap()
+    {
+        yield return null;
+        yield return null;
+
         map = GameObject.FindGameObjectWithTag("Map");
         int chapterCount = 0;
         if (map != null)
@@ -49,6 +80,7 @@ public class MapManager : MonoBehaviour
         {
             var chapter = map.transform.GetChild(i).gameObject;
             var temp = chapter.GetComponentsInChildren<StageController>(true);
+
             foreach (var t in temp)
             {
                 maps.Add(t);
@@ -56,8 +88,6 @@ public class MapManager : MonoBehaviour
                     currentStageObject = t.gameObject;
             }
         }
-
-        LoadProgress();
     }
 
     public void LoadProgress()
