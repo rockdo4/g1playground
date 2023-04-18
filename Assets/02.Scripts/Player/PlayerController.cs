@@ -202,10 +202,10 @@ public class PlayerController : MonoBehaviour
             if (SceneManager.GetActiveScene().name == "Scene02")
             {
                 var stageController = GameObject.Find(MapManager.instance.GetCurrentMapName()).GetComponent<StageController>();
-                if (stageController.lockRequirement == StageController.UnLockRequirement.Fight)
+                if (stageController.unlockRequirement == StageController.UnLockRequirement.Fight)
                     enemies = stageController.GetStageEnemies();
-                else if (stageController.lockRequirement == StageController.UnLockRequirement.Puzzle ||
-                    stageController.lockRequirement == StageController.UnLockRequirement.Heal)
+                else if (stageController.unlockRequirement == StageController.UnLockRequirement.Puzzle ||
+                    stageController.unlockRequirement == StageController.UnLockRequirement.Heal)
                 {
                     autoToggle.isOn = false;
                     SetState<IdleState>();

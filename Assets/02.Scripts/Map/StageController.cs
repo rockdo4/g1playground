@@ -55,7 +55,7 @@ public class StageController : MonoBehaviour
     private List<GameObject> enemies;
     private List<GameObject> objectTiles = new List<GameObject>();
 
-    public UnLockRequirement lockRequirement;
+    public UnLockRequirement unlockRequirement;
     private List<Portal> portals;
     public List<Portal> Portals { get { return portals; } set { portals = value; } }
 
@@ -242,7 +242,7 @@ public class StageController : MonoBehaviour
         //If there is no enemies in the stage
         if (enemies.Count <= 0)
         {
-            if (lockRequirement != UnLockRequirement.Puzzle)
+            if (unlockRequirement != UnLockRequirement.Puzzle)
             {
                 isClear = true;
                 greenwallopen = true;
@@ -251,7 +251,7 @@ public class StageController : MonoBehaviour
 
 
             //Set worldmap stage button on
-            if ((wMapButton != null && isChanged) && UnLockRequirement.Puzzle != lockRequirement)
+            if ((wMapButton != null && isChanged) && UnLockRequirement.Puzzle != unlockRequirement)
             {
                 isChanged = false;
                 SetWorldMapButton();
@@ -268,7 +268,7 @@ public class StageController : MonoBehaviour
         {
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
         }
-        if (lockRequirement == UnLockRequirement.Puzzle)
+        if (unlockRequirement == UnLockRequirement.Puzzle)
         {
             TileColorManager.instance.ChangeTileMaterial(transform.name, true);
         }
@@ -292,7 +292,7 @@ public class StageController : MonoBehaviour
 
     void SetUi()
     {
-        switch (lockRequirement)
+        switch (unlockRequirement)
         {
             case UnLockRequirement.Fight:
                 UI.Instance.SetBattle();
@@ -309,7 +309,7 @@ public class StageController : MonoBehaviour
     {
         yield return null;
         //UI setting
-        switch (lockRequirement)
+        switch (unlockRequirement)
         {
             case UnLockRequirement.Fight:
                 UI.Instance.SetBattle();
@@ -370,7 +370,7 @@ public class StageController : MonoBehaviour
 
     private void Update()
     {
-        if (!isClear && UnLockRequirement.Puzzle == lockRequirement)
+        if (!isClear && UnLockRequirement.Puzzle == unlockRequirement)
         {
             if (RewardBox != null)
             {
@@ -421,14 +421,14 @@ public class StageController : MonoBehaviour
                 }
             }
             //Set worldmap stage button on
-            if ((wMapButton != null && isChanged) && lockRequirement != UnLockRequirement.Puzzle)
+            if ((wMapButton != null && isChanged) && unlockRequirement != UnLockRequirement.Puzzle)
             {
                 isChanged = false;
                 SetWorldMapButton();
             }
         }
 
-        if (lockRequirement == UnLockRequirement.Heal)
+        if (unlockRequirement == UnLockRequirement.Heal)
         {
             //
         }
@@ -456,7 +456,7 @@ public class StageController : MonoBehaviour
             else if (enemy == enemies.Last())
             {
 
-                if (lockRequirement == UnLockRequirement.Fight)
+                if (unlockRequirement == UnLockRequirement.Fight)
                 {
                     SetReward(true);
                     rewarded = true;
@@ -484,7 +484,7 @@ public class StageController : MonoBehaviour
         GameManager.instance.ui.popupPanel.gameObject.GetComponentInChildren<StageRewardPopUp>(true).gameObject.SetActive(true);
         var rewardUi = GameManager.instance.ui.popupPanel.GetComponentInChildren<StageRewardPopUp>(true).transform.Find("StageReward").Find("RewardItems").gameObject;
 
-        if (UnLockRequirement.Puzzle == lockRequirement)
+        if (UnLockRequirement.Puzzle == unlockRequirement)
         {
             SetWorldMapButton();
 
@@ -581,12 +581,12 @@ public class StageController : MonoBehaviour
                     {
                         RewardBox.GetComponent<GoldBox>().isFirst = IsClear;
                     }
-                    if (lockRequirement == UnLockRequirement.Fight)
+                    if (unlockRequirement == UnLockRequirement.Fight)
                     {
                         SetReward(false);
 
                     }
-                    if (lockRequirement == UnLockRequirement.Fight || lockRequirement == UnLockRequirement.Tutorial)
+                    if (unlockRequirement == UnLockRequirement.Fight || unlockRequirement == UnLockRequirement.Tutorial)
                         isClear = true;
 
                     canOpen = true;

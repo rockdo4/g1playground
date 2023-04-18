@@ -353,7 +353,7 @@ public class MiniMap : MonoBehaviour
         }
 
 
-        if (MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().lockRequirement != UnLockRequirement.Puzzle)
+        if (MapManager.instance.GetCurrentStageObject().GetComponent<StageController>().unlockRequirement != UnLockRequirement.Puzzle)
             yield break;
 
         var currentBlock = MapManager.instance.GetCurrentStageObject().transform.Find("Floor");
