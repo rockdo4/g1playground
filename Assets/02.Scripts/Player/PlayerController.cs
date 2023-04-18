@@ -95,7 +95,8 @@ public class PlayerController : MonoBehaviour
 
             for (int i = 0; i < playerSkills.toggles.Length; i++)
             {
-                playerSkills.toggles[i].isOn = IsAuto;
+                if (playerSkills.toggles[i].interactable)
+                    playerSkills.toggles[i].isOn = IsAuto;
             }
             AgentOnOff();
         });
