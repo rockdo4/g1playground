@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum LayoutState
 {
@@ -123,6 +124,7 @@ public class UI : MonoBehaviour
         UI.Instance.popupPanel.Init();
         UI.Instance.popupPanel.menuPopUp.SetDefault();
         UI.Instance.popupPanel.menuSlider.SetNotDefaultMenu();
+        minimapPanel.ActiveFalse();
     }
 
     public void SetVillageUi()
@@ -157,7 +159,8 @@ public class UI : MonoBehaviour
         potionPanel.ActiveTrue();
         skillPanel.ActiveTrue();
         autoPanel.ActiveTrue();
-        minimapPanel.ActiveTrue();
+        if(SceneManager.GetActiveScene().name == "Scene02")
+            minimapPanel.ActiveTrue();
     }
 
     public void SetDungeon()
