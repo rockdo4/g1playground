@@ -10,6 +10,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -222,9 +223,11 @@ public class DungeonManager : MonoBehaviour
             StringBuilder levs = new StringBuilder();
             levs.Append("Level");
             levs.Append((i + 1).ToString());
+            var findTransform = dungeonLevel.transform.Find("Horizontal").transform.Find("Level").transform.Find(levs.ToString());
+            findTransform.GetComponent<Button>().interactable = true;
+            findTransform.transform.Find("Image").gameObject.SetActive(false);
+            findTransform.GetComponentInChildren<TextMeshProUGUI>(true).gameObject.SetActive(true);
 
-            dungeonLevel.transform.Find("Horizontal").transform.Find("Level").transform.Find(levs.ToString()).GetComponent<Button>().interactable = true;
-            dungeonLevel.transform.Find("Horizontal").transform.Find("Level").transform.Find(levs.ToString()).transform.Find("Image").gameObject.SetActive(false);
         }
     }
 
