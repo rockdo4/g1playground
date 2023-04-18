@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -375,6 +375,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 532381460179958584, guid: 106270535cdf5674ebebe59ba6b9e02e,
+        type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 532381460179958584, guid: 106270535cdf5674ebebe59ba6b9e02e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a2ccafd7585bf0143b1b4e1e32d8abbc,
+        type: 3}
+    - target: {fileID: 532381460179958584, guid: 106270535cdf5674ebebe59ba6b9e02e,
+        type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1595563858789026098, guid: 106270535cdf5674ebebe59ba6b9e02e,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1390,8 +1406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 044ed4a557535462fac240a60b82551b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetAspect: 1.7777778
-  letterboxColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &1358104321 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5120164146009453512, guid: 106270535cdf5674ebebe59ba6b9e02e,
@@ -13987,12 +14001,14 @@ MonoBehaviour:
   slotCount: 60
   uiSlotPrefab: {fileID: 1473815712914823935, guid: 67110d4b421eb8f4bbeee2a08ef4bd8a,
     type: 3}
+  scroll: {fileID: 0}
   content: {fileID: 3334638611270871677}
   itemType: 0
   currWeapon: {fileID: 4188473534842913410}
   currArmor: {fileID: 6091601836841596205}
   itemInfo: {fileID: 3875097141317226177}
-  equipButton: {fileID: 8936322518567700975}
+  equipCheckButton: {fileID: 0}
+  equipYesButton: {fileID: 0}
 --- !u!222 &3825439096143973912
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15814,12 +15830,14 @@ MonoBehaviour:
   slotCount: 60
   uiSlotPrefab: {fileID: 1473815712914823935, guid: 67110d4b421eb8f4bbeee2a08ef4bd8a,
     type: 3}
+  scroll: {fileID: 0}
   content: {fileID: 0}
   itemType: 2
   currWeapon: {fileID: 0}
   currArmor: {fileID: 0}
   itemInfo: {fileID: 0}
-  equipButton: {fileID: 0}
+  equipCheckButton: {fileID: 0}
+  equipYesButton: {fileID: 0}
 --- !u!224 &3825439096256985051
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16669,6 +16687,7 @@ MonoBehaviour:
   gamblingResult10PopUp: {fileID: 0}
   profilePopUp: {fileID: 0}
   probabilityPopUp: {fileID: 0}
+  messagePopUp: []
   menuSlider: {fileID: 0}
 --- !u!224 &3825439096332796809
 RectTransform:
@@ -34790,7 +34809,9 @@ MonoBehaviour:
     type: 3}
   ItemInventory: {fileID: 3825439097033252691}
   skillInventory: {fileID: 2850815379129197851}
+  itemScroll: {fileID: 0}
   itemContent: {fileID: 3825439097582682037}
+  skillScroll: {fileID: 0}
   skillContent: {fileID: 8286269720071463517}
   type: 1
   info: {fileID: 3825439097826281157}
@@ -38120,13 +38141,16 @@ MonoBehaviour:
     type: 3}
   ItemInventory: {fileID: 3825439097612680183}
   skillInventory: {fileID: 6705471710040056252}
+  itemScroll: {fileID: 0}
+  skillScroll: {fileID: 0}
   itemContent: {fileID: 3825439097643128081}
   skillContent: {fileID: 9124413359209049070}
   type: 0
   info: {fileID: 3825439096142834139}
-  reinforceButton: {fileID: 3825439096551431029}
+  disassembleButton: {fileID: 0}
   resultPopup: {fileID: 3825439096500165338}
   resultCount: {fileID: 0}
+  disablePopup: {fileID: 0}
 --- !u!222 &3825439097543429452
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38736,6 +38760,7 @@ MonoBehaviour:
   slotCount: 55
   uiSlotPrefab: {fileID: 926651991406123336, guid: 6f21490bd9f56c047bd46e9deead1024,
     type: 3}
+  scroll: {fileID: 0}
   content: {fileID: 3825439097539051176}
   skillInfo: {fileID: 3825439096161917499}
 --- !u!222 &3825439097565428198
@@ -42667,6 +42692,8 @@ MonoBehaviour:
   resultImage: {fileID: 3825439097381847208}
   resultName: {fileID: 3825439097866756743}
   resultDesc: {fileID: 3825439096191943411}
+  firstMaterialCount: {fileID: 0}
+  secondMaterialCount: {fileID: 0}
   material1: {fileID: 3825439097155292808}
   material2: {fileID: 3825439096748461136}
   material3: {fileID: 3825439096791927134}
@@ -44348,6 +44375,7 @@ MonoBehaviour:
   slotCount: 102
   uiItemSlotPrefab: {fileID: 1473815712914823935, guid: 67110d4b421eb8f4bbeee2a08ef4bd8a,
     type: 3}
+  scroll: {fileID: 0}
   itemContent: {fileID: 3825439096700150711}
   type: 0
   info: {fileID: 3825439096832647806}

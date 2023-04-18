@@ -18,15 +18,17 @@ public class BossHpBarBG : BarUI
     private void OnEnable()
     {
         slider.maxValue = enemy.GetStatus().FinalValue.maxHp;
-        currentValue = enemy.GetStatus().CurrHp;
-        slider.value = currentValue;
+        // currentValue = enemy.GetStatus().CurrHp;
+        //slider.value = currentValue;
+        slider.value = enemy.GetStatus().CurrHp;
     }
 
     private void Update()
     {
         float targetValue = enemy.GetStatus().CurrHp;
-        currentValue = Mathf.Lerp(currentValue, targetValue, Time.deltaTime * 2.0f);
-        slider.value = currentValue;
+        //currentValue = Mathf.Lerp(currentValue, targetValue, Time.deltaTime * 2.0f);
+        //slider.value = currentValue;
+        slider.value = Mathf.Lerp(currentValue, targetValue, Time.deltaTime * 2.0f);
     }
 
 }
