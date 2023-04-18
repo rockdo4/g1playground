@@ -135,7 +135,7 @@ public class PlayerSkills : MonoBehaviour
             return;
         skillStates[index].index = -1;
         skillStates[index].skill = null;
-        //toggles[index].image.sprite = null;
+        toggles[index].image.sprite = Resources.Load<Sprite>("Select/UI/Rectangle 153 2");
 
         PlayerDataManager.instance.SaveSkills();
         PlayerDataManager.instance.SaveFile();
