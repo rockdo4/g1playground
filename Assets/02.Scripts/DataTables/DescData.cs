@@ -9,6 +9,6 @@ public class DescData : ICSVParsing
     public void Parse(Dictionary<string, string> line)
     {
         id = line["Desc_ID"];
-        text = line["Text"].Replace("n", "\n");
+        text = line["Text"]/*.Replace("n", "\n")*/;
     }
 }
