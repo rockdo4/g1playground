@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 
 public class UIItemInfo : MonoBehaviour
 {
+    public ItemData Data { get; private set; }
     public Image equipmentImage;
     public TextMeshProUGUI itemName;
     public TextMeshProUGUI itemInfo;
@@ -48,6 +49,7 @@ public class UIItemInfo : MonoBehaviour
 
     public void SetEmpty()
     {
+        Data = null;
         equipmentImage.sprite = null;
         equipmentImage.color = Color.clear;
         itemName.text = string.Empty;
@@ -60,6 +62,7 @@ public class UIItemInfo : MonoBehaviour
 
     public void Set(ItemData data)
     {
+        Data = data;
         if (data == null)
         {
             SetEmpty();

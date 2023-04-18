@@ -21,6 +21,7 @@ public class UIInventory : MonoBehaviour
 
     public UIItemInfo itemInfo;
     public Button equipCheckButton;
+    public Button unequipCheckButton;
     public Button equipYesButton;
 
     private void Awake()
@@ -47,6 +48,7 @@ public class UIInventory : MonoBehaviour
             var button = slot.GetComponent<Button>();
             button.onClick.AddListener(() => itemInfo.Set(slot.Data));
             button.onClick.AddListener(() => equipCheckButton.interactable = true);
+            button.onClick.AddListener(() => unequipCheckButton.interactable = false);
             int slotIndex = i;
             button.onClick.AddListener(() => currSlot = slotIndex);
         }
@@ -72,6 +74,7 @@ public class UIInventory : MonoBehaviour
         ClearInventory();
         currSlot = -1;
         equipCheckButton.interactable = false;
+        unequipCheckButton.interactable = false;
         itemInfo.SetEmpty();
         if (this.itemType != (ItemTypes)itemType)
             scroll.verticalNormalizedPosition = 1f;
@@ -167,6 +170,7 @@ public class UIInventory : MonoBehaviour
         {
             itemInfo.Set(data);
             equipCheckButton.interactable = false;
+            unequipCheckButton.interactable = true;
         }
     }
 
@@ -190,6 +194,24 @@ public class UIInventory : MonoBehaviour
                 return;
         }
         itemInfo.SetEmpty();
+        SetInventory((int)itemType);
+    }
+
+    public void Unequip()
+    {
+        ItemTypes type = ItemTypes.None;
+        switch (itemInfo.Data)
+        {
+            case WeaponData:
+                type = ItemTypes.Weapon;
+                break;
+            case ArmorData:
+                type = ItemTypes.Armor;
+                break;
+            default:
+                return;
+        }
+        playerInventory.SetEmpty(type);
         SetInventory((int)itemType);
     }
 

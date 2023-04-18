@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum ItemTypes
 {
+    None = -1,
     Weapon,
     Armor,
     Consumable,

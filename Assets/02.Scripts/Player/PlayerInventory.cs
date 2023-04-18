@@ -97,6 +97,28 @@ public class PlayerInventory : MonoBehaviour
         PlayerDataManager.instance.SaveFile();
     }
 
+    public void SetEmpty(ItemTypes itemType)
+    {
+        switch (itemType)
+        {
+            case ItemTypes.Weapon:
+                if (string.IsNullOrEmpty(CurrWeapon))
+                    return;
+                AddWeapon(CurrWeapon);
+                CurrWeapon = null;
+                break;
+            case ItemTypes.Armor:
+                AddArmor(CurrArmor);
+                CurrArmor = null;
+                break;
+            default:
+                return;
+        }
+        ApplyStatus();
+        PlayerDataManager.instance.SaveInventory();
+        PlayerDataManager.instance.SaveFile();
+    }
+
     public void ApplyStatus()
     {
         List<Status.Value> values = new List<Status.Value>();

@@ -131,9 +131,14 @@ public class PlayerSkills : MonoBehaviour
 
     public void SetEmpty(int index)
     {
+        if (index < 0 || index >= skillStates.Length)
+            return;
         skillStates[index].index = -1;
         skillStates[index].skill = null;
-        toggles[index].image.sprite = null;       
+        toggles[index].image.sprite = null;
+
+        PlayerDataManager.instance.SaveSkills();
+        PlayerDataManager.instance.SaveFile();
     }
 
     public void SetSkill(int index, int possessedIndex)

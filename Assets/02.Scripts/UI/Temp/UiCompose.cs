@@ -73,6 +73,7 @@ public class UiCompose : MonoBehaviour
         List<string> ids = null;
         int len = 0;
         int count = 0;
+        itemSlotList[0].IsEquiped(false);
         switch ((ItemTypes)type)
         {
             case ItemTypes.Weapon:
@@ -85,6 +86,7 @@ public class UiCompose : MonoBehaviour
                         if (ComposeSystem.CheckComposable(playerInventory.CurrWeapon))
                         {
                             itemSlotList[count].Set(-1, table.Get(playerInventory.CurrWeapon));
+                            itemSlotList[0].IsEquiped(true);
                             ++count;
                         }
                     }
@@ -96,7 +98,6 @@ public class UiCompose : MonoBehaviour
                             ++count;
                         }
                     }
-                    itemSlotList[0].IsEquiped(!string.IsNullOrEmpty(playerInventory.CurrWeapon));
                 }
                 break;
             case ItemTypes.Armor:
@@ -109,6 +110,7 @@ public class UiCompose : MonoBehaviour
                         if (ComposeSystem.CheckComposable(playerInventory.CurrArmor))
                         {
                             itemSlotList[count].Set(-1, table.Get(playerInventory.CurrArmor));
+                            itemSlotList[0].IsEquiped(true);
                             ++count;
                         }
                     }
@@ -120,7 +122,6 @@ public class UiCompose : MonoBehaviour
                             ++count;
                         }
                     }
-                    itemSlotList[0].IsEquiped(!string.IsNullOrEmpty(playerInventory.CurrArmor));
                 }
                 break;
         }

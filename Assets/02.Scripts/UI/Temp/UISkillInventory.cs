@@ -17,6 +17,8 @@ public class UISkillInventory : MonoBehaviour
     private int playerSkillIndex = -1;
     public UISkillInventoryPlayerSkill[] inventoryPlayerSkills = new UISkillInventoryPlayerSkill[2];
     public UISkillInfo skillInfo;
+    public Button equipButton;
+    public Button unequipButton;
 
     private void Awake()
     {
@@ -90,7 +92,6 @@ public class UISkillInventory : MonoBehaviour
 
         foreach (var slot in slotList)
         {
-            Debug.Log(slot.index);
             slot.IsCurrSkill(slot.index == currSkill1 || slot.index == currSkill2);
         }
     }
@@ -116,9 +117,24 @@ public class UISkillInventory : MonoBehaviour
     {
         if (index >= 0 && playerSkillIndex == index)
         {
+            equipButton.interactable = false;
+            unequipButton.interactable = false;
             inventoryPlayerSkills[playerSkillIndex].OnOffFrame(false);
             playerSkillIndex = -1;
             return;
+        }
+        if (index < 0)
+        {
+            equipButton.interactable = false;
+            unequipButton.interactable = false;
+        }
+        else
+        {
+            equipButton.interactable = true;
+            if (playerSkills.GetCurrSkillIndex(index) < 0)
+                unequipButton.interactable = false;
+            else
+                unequipButton.interactable = true;
         }
         playerSkillIndex = index;
         var len = inventoryPlayerSkills.Length;
@@ -134,6 +150,13 @@ public class UISkillInventory : MonoBehaviour
             return;
 
         playerSkills.SetSkill(playerSkillIndex, currSlot);
+        skillInfo.ShowCurrPlayerSkills();
+        SetInventory();
+    }
+
+    public void SetPlayerSkillEmpty()
+    {
+        playerSkills.SetEmpty(playerSkillIndex);
         skillInfo.ShowCurrPlayerSkills();
         SetInventory();
     }
