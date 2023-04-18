@@ -89,6 +89,7 @@ public class PlayerSkills : MonoBehaviour
             int n = i;
             toggles[i].onValueChanged.AddListener(onOff => SkillOnOff(n, onOff));
             toggles[i].onValueChanged.AddListener(onOff => ToggleSkill(n, onOff));
+            toggles[i].interactable = false;
         }
     }
 
@@ -133,9 +134,11 @@ public class PlayerSkills : MonoBehaviour
     {
         if (index < 0 || index >= skillStates.Length)
             return;
+        toggles[index].isOn = false;
+        toggles[index].interactable = false;
+        toggles[index].image.sprite = Resources.Load<Sprite>("Select/UI/Rectangle 153 2");
         skillStates[index].index = -1;
         skillStates[index].skill = null;
-        toggles[index].image.sprite = Resources.Load<Sprite>("Select/UI/Rectangle 153 2");
 
         PlayerDataManager.instance.SaveSkills();
         PlayerDataManager.instance.SaveFile();
@@ -168,6 +171,7 @@ public class PlayerSkills : MonoBehaviour
             skill.SetData(PossessedSkills[possessedIndex]);
             skillStates[index].index = possessedIndex;
             skillStates[index].Set(skill);
+            toggles[index].interactable = true;
             toggles[index].image.sprite = DataTableMgr.LoadIcon(skillData.iconSpriteId);
         }
         
