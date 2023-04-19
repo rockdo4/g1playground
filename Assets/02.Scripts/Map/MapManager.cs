@@ -39,29 +39,32 @@ public class MapManager : MonoBehaviour
         if (instance != this)
             Destroy(gameObject);
 
-        //map = GameObject.FindGameObjectWithTag("Map");
-        //int chapterCount = 0;
-        //if (map != null)
-        //{
-        //    chapterCount = map.transform.childCount;
-        //}
-        //Debug.Log("checkpoint!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        //for (int i = 0; i < chapterCount; i++)
-        //{
-        //    var chapter = map.transform.GetChild(i).gameObject;
-        //    var temp = chapter.GetComponentsInChildren<StageController>(true);
-        //    Debug.Log("in for!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        if (SceneManager.GetActiveScene().name == "Scene02")
+        {
+            map = GameObject.FindGameObjectWithTag("Map");
+            int chapterCount = 0;
+            if (map != null)
+            {
+                chapterCount = map.transform.childCount;
+            }
+            for (int i = 0; i < chapterCount; i++)
+            {
+                var chapter = map.transform.GetChild(i).gameObject;
+                var temp = chapter.GetComponentsInChildren<StageController>(true);
 
-        //    foreach (var t in temp)
-        //    {
-        //        Debug.Log(t.name);
+                foreach (var t in temp)
+                {
 
-        //        maps.Add(t);
-        //        if (t.name == "Village")
-        //            currentStageObject = t.gameObject;
-        //    }
-        //}
-        StartCoroutine(SetMap());
+                    maps.Add(t);
+                    if (t.name == "Village")
+                        currentStageObject = t.gameObject;
+                }
+            }
+        }
+        else
+        {
+            StartCoroutine(SetMap());
+        }
         LoadProgress();
     }
 
@@ -159,7 +162,7 @@ public class MapManager : MonoBehaviour
 
     public void SetCurrentMapName(string name)
     {
-        if (SceneManager.GetActiveScene().name != "Scene02"&& SceneManager.GetActiveScene().name != "Tutorial")
+        if (SceneManager.GetActiveScene().name != "Scene02" && SceneManager.GetActiveScene().name != "Tutorial")
             return;
         if (currentStageObject != null)
         {

@@ -101,6 +101,7 @@ public class PlayerDataManager : MonoBehaviour
         }
         playerName = saveData.playerName;
         lastSaveMapId = saveData.lastMapId;
+       
         lastSaveChapterName = saveData.lastChapter;
         lastPlayerPos = saveData.lastPlayerPos;
 
