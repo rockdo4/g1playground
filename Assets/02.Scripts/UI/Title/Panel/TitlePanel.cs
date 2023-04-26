@@ -18,6 +18,9 @@ public class TitlePanel : PanelUi, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!isTouch)
+            return;
+
         if (!IsPointerOverUIObject(eventData))
         {
             string savepath = Application.persistentDataPath + "/Save/Save_Player.bin";
@@ -34,22 +37,38 @@ public class TitlePanel : PanelUi, IPointerDownHandler
         }
     }
 
-
+    private float touchAbleTime = 0f;
+    private bool isTouch = false;
     private void Awake()
     {
         crewButton = GetComponentInChildren<CrewButton>(true);
         resetButton = GetComponentInChildren<ResetButton>(true);
+
+
         //text = GetComponentInChildren<TextMeshProUGUI>();
     }
     private void OnEnable()
     {
-        StartCoroutine(BlinkText());
+        text.text = " ";
     }
     private void OnDisable()
     {
         StopAllCoroutines();
     }
+    private void Update()
+    {
+        if (!isTouch)
+        {
+            touchAbleTime += Time.deltaTime;
 
+            if (touchAbleTime > 1.0f)
+            {
+                isTouch = true;
+                text.text = "Touch to start";
+                StartCoroutine(BlinkText());
+            }
+        }
+    }
     private IEnumerator BlinkText()
     {
         while (true)
