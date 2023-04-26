@@ -148,6 +148,8 @@ public class Boss4Controller : Enemy
         State = EnemyState.None;
         isSpawned = true;
         isDied = true;
+        dashCoolTime = 0f;
+        projectileCoolTime = 0f;
     }
 
     public void Update()
@@ -205,18 +207,18 @@ public class Boss4Controller : Enemy
     {
         if (isSpawned)
         {
-            isSpawned = false;            
+            isSpawned = false;
             var clip = plantSound.spawnClip;
             SoundManager.instance.PlayEnemyEffect(clip);
             animator.SetTrigger("Spawn");
         }
     }
-    protected  void Motion()
+    protected void Motion()
     {
         LookAtFront();
     }
     private float idleCool = 0f;
-    protected  void IdleUpdate()
+    protected void IdleUpdate()
     {
         idleCool += Time.deltaTime;
 
@@ -230,7 +232,7 @@ public class Boss4Controller : Enemy
     }
 
     private bool isSkillType = false;
-    protected  void ChaseUpdate()
+    protected void ChaseUpdate()
     {
         if (LookAtTarget())
             agent.SetDestination(player.transform.position);
