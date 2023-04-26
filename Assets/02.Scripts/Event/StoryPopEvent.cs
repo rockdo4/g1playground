@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StoryPopEvent : MonoBehaviour
 {
@@ -35,6 +36,8 @@ public class StoryPopEvent : MonoBehaviour
 
     public void Save()
     {
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+            return;
         var saveData = new SavePlayedDataVer1();
         foreach (var played in playedStory)
         {

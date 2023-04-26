@@ -20,14 +20,21 @@ public class TitlePanel : PanelUi, IPointerDownHandler
     {
         if (!IsPointerOverUIObject(eventData))
         {
-            string savepath = Application.persistentDataPath + "/Save/Save_Player.bin";
-
+            string savepath = Application.persistentDataPath + "/Save/Save_Stage.bin";
+            string storyfile = Application.persistentDataPath + "/Save/Save_Story.bin";
+            string playerfile=Application.persistentDataPath + "/Save/Save_Player.bin";
             if (File.Exists(savepath))
             {
                 SceneLoader.Instance.LoadScene("Scene02");
             }
             else
             {
+                if (File.Exists(storyfile))
+                    File.Delete(storyfile);
+                if (File.Exists(playerfile))
+                    File.Delete(playerfile);
+
+
                 SceneLoader.Instance.LoadScene("Tutorial");
 
             }

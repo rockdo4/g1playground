@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -441,6 +442,11 @@ public class DungeonManager : MonoBehaviour
         PlayerDataManager.instance.LoadInventory();
         PlayerDataManager.instance.LoadSkills();
         player.GetComponent<Status>().Restore();
+
+        GameObject cam=GameObject.Find("BackGround");
+        GameObject Follow = GameObject.Find("FollowCamera");
+        Follow.GetComponent<CinemachineConfiner>().m_BoundingShape2D = cam.GetComponent<PolygonCollider2D>();
+
     }
 
     public void RefillAttempt()

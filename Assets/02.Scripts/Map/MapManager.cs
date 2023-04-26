@@ -41,6 +41,7 @@ public class MapManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Scene02")
         {
+            Debug.Log("Awake");
             map = GameObject.FindGameObjectWithTag("Map");
             int chapterCount = 0;
             if (map != null)
@@ -65,7 +66,9 @@ public class MapManager : MonoBehaviour
         {
             StartCoroutine(SetMap());
         }
+        SaveProgress();
         LoadProgress();
+
     }
 
     IEnumerator SetMap()
@@ -95,6 +98,7 @@ public class MapManager : MonoBehaviour
 
     public void LoadProgress()
     {
+
         var saveData = SaveLoadSystem.Load(SaveData.Types.Stage) as SaveStageDataVer1;
 
         if (saveData == null)
@@ -133,6 +137,8 @@ public class MapManager : MonoBehaviour
 
     public void SaveProgress()
     {
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+            return;
         var originData = SaveLoadSystem.Load(SaveData.Types.Stage) as SaveStageDataVer1;
         if (originData == null)
         {
@@ -153,7 +159,7 @@ public class MapManager : MonoBehaviour
         {
             originData.unlock[currentMapName] = true;
         }
-        if (currentStageObject != null)
+        if (currentStageObject != null&&currentMapName!=null)
         {
             originData.isStoryStage[currentMapName] = currentStageObject.GetComponent<StageController>().IsStoryStage;
         }
