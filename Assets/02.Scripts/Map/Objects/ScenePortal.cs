@@ -11,6 +11,7 @@ public class ScenePortal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            GameManager.instance.player.GetComponent<Status>().Restore();
             SceneLoader.Instance.LoadScene(scene);
             //SceneManager.LoadScene(scene);
         }
