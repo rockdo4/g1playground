@@ -180,7 +180,6 @@ public class PlayerController : MonoBehaviour
             {
                 StopCoroutine(cor);
                 cor = null;
-                Debug.Log("끝");
             }
             cor = StartCoroutine(SearchTarget());
         }
@@ -193,7 +192,6 @@ public class PlayerController : MonoBehaviour
         {
             StopCoroutine(cor);
             cor = null;
-            Debug.Log("끝");
         }
     }
     public void AgentOnOff()
@@ -224,7 +222,6 @@ public class PlayerController : MonoBehaviour
             {
                 StopCoroutine(cor);
                 cor = null;
-                Debug.Log("끝");
             }
             SetState<IdleState>();
         }
@@ -341,7 +338,6 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator SearchTarget()
     {
-        Debug.Log("시작");
         if (enemies == null && !isGrounded)
             yield break;
 

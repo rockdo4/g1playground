@@ -41,7 +41,6 @@ public class MapManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Scene02")
         {
-            Debug.Log("Awake");
             map = GameObject.FindGameObjectWithTag("Map");
             int chapterCount = 0;
             if (map != null)
@@ -68,6 +67,7 @@ public class MapManager : MonoBehaviour
         }
         SaveProgress();
         LoadProgress();
+        UI.Instance.popupPanel.stageDeathPopUp.gameObject.SetActive(false);
 
     }
 

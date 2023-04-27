@@ -161,7 +161,7 @@ public class PlayerDataManager : MonoBehaviour
         LoadLevel();
         LoadInventory();
         LoadSkills();
-        LoadPlayerHpMp();
+        //LoadPlayerHpMp();
     }
 
     public void SavePlayerHpMp()
