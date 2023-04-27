@@ -155,6 +155,8 @@ public class DungeonManager : MonoBehaviour
     {
         if (scene.name == "Scene02")
         {
+            Result.transform.Find("Win").gameObject.SetActive(false);
+            Result.transform.Find("Lose").gameObject.SetActive(false);
             remaningtime.gameObject.SetActive(false);
             PlayerDataManager.instance.LoadFile();
             GameManager.instance.player.GetComponent<Status>().Restore();
@@ -232,8 +234,12 @@ public class DungeonManager : MonoBehaviour
         }
     }
 
+    private bool started = false;
+
     private void Update()
     {
+        if (!started)
+            return;
         if (isDungeon && enemies != null)
         {
             Result.gameObject.SetActive(false);
@@ -251,7 +257,6 @@ public class DungeonManager : MonoBehaviour
                 Result.transform.Find("Lose").gameObject.SetActive(true);
 
                 isDungeon = false;
-
             }
 
             foreach (var enemy in enemies)
@@ -338,7 +343,7 @@ public class DungeonManager : MonoBehaviour
             rewardUiList[4].transform.Find("Count").GetComponent<TextMeshProUGUI>().text = expSec.ToString();
             GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp += expSec;
 
-        }       
+        }
     }
 
     public void HomeOpen()
@@ -391,6 +396,10 @@ public class DungeonManager : MonoBehaviour
     public void JoinDungeon()
     {
         scenename.Clear();
+        if (instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week == null)
+        {
+            return;
+        }
         int temp = Int32.Parse(attempt);
 
         if (temp >= 3)
@@ -401,6 +410,8 @@ public class DungeonManager : MonoBehaviour
             return;
         }
         attempt = (++temp).ToString();
+
+        started = false;
         SaveFile();
         isDungeon = true;
         exitButton.gameObject.SetActive(false);
@@ -408,6 +419,9 @@ public class DungeonManager : MonoBehaviour
         Result.transform.Find("Win").gameObject.SetActive(false);
         Result.transform.Find("Lose").gameObject.SetActive(false);
         dungeonLevel.gameObject.SetActive(false);
+
+ 
+
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).week);
         scenename.Append("_");
         scenename.Append(instance.dungeonTable.Get(instance.SelectedLevel.ToString()).level);
@@ -443,10 +457,10 @@ public class DungeonManager : MonoBehaviour
         PlayerDataManager.instance.LoadSkills();
         player.GetComponent<Status>().Restore();
 
-        GameObject cam=GameObject.Find("BackGround");
+        GameObject cam = GameObject.Find("BackGround");
         GameObject Follow = GameObject.Find("FollowCamera");
         Follow.GetComponent<CinemachineConfiner>().m_BoundingShape2D = cam.GetComponent<PolygonCollider2D>();
-
+        started = true;
     }
 
     public void RefillAttempt()
@@ -508,7 +522,7 @@ public class DungeonManager : MonoBehaviour
         remaningtime.gameObject.SetActive(true);
         pannel.gameObject.SetActive(false);
         time = dungeonTable.Get(SelectedLevel.ToString()).countdown;
-        
-        StartCoroutine(SetEnemy());     
+
+        StartCoroutine(SetEnemy());
     }
 }

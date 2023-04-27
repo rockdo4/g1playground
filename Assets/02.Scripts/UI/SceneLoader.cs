@@ -145,7 +145,10 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator CGetPlayerStatus()
     {
-        yield return null;
+        for (int i = 0; i < 2; ++i)
+        {
+            yield return null;
+        }
         GameManager.instance.player.GetComponent<Status>().Restore();
         PlayerDataManager.instance.LoadFile();
 

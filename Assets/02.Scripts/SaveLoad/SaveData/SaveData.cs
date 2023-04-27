@@ -10,7 +10,6 @@ public class SaveData
         Player,
         Option,
         Dungeon,
-        CheckPoint,
         Stage,
         Story,
         Count,       

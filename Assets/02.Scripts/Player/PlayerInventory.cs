@@ -40,7 +40,6 @@ public class PlayerInventory : MonoBehaviour
     {
         status = GetComponent<PlayerStatus>();
         playerAttack = GetComponent<PlayerAttack>();
-        SetDefault();
     }
 
     public void SetDefault()
@@ -48,8 +47,8 @@ public class PlayerInventory : MonoBehaviour
         Weapons = defaultWeapons.ToList();
         Armors = defaultArmors.ToList();
         Consumables = defaultConsumables.ToList();
-        CurrWeapon = null;
-        CurrArmor = null;
+        SetWeapon(0);
+        SetArmor(0);
     }
 
     public void Load(List<string> weapons, List<string> armors, List<Consumable> consumables, string currWeapon, string currArmor)
