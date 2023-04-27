@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     {
         if (instance != this)
             Destroy(gameObject);
+        if (string.Equals(SceneManager.GetActiveScene().name, "Tutorial"))
+            player.GetComponent<DestructedEvent>().OnDestroyEvent = player.GetComponent<Status>().Restore;
     }
 
     public void Respawn()
