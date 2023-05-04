@@ -1,20 +1,5 @@
 # Changelog for com.google.play.assetdelivery
 
-## [1.8.2] - 2023-03-10
-- Updated Play Common and Play Core dependency from 1.8.1 to 1.8.2
-
-## [1.8.1] - 2022-09-08
-- Updated plugin's data collection procedure. For more information and the opt-out
-  process, please refer to the [data collection](https://github.com/google/play-unity-plugins#data-collection)
-  section in README.
-
-## [1.8.0] - 2022-07-06
-### New Features
-- Migrated to [Play Asset Delivery 2.0.0](https://developer.android.com/reference/com/google/android/play/core/release-notes-asset_delivery#2-0-0).
-
-### Bug Fixes
-- Fixed issue #170: sample files erroneously included in iOS and other non-android platforms
-
 ## [1.7.0] - 2022-02-15
 ### New Features
 - Incremented version number to match other packages

@@ -1,16 +1,5 @@
 # Changelog for com.google.play.core
 
-## [1.8.2] - 2023-03-10
-- Updated Android App Bundle dependency from 1.8.0 to 1.9.0
-
-## [1.8.1] - 2022-09-08
-- Updated plugin's data collection procedure. For more information and the opt-out
-  process, please refer to the [data collection](https://github.com/google/play-unity-plugins#data-collection)
-  section in README.
-
-## [1.8.0] - 2022-07-06
-### New Features
-- Migrated to [Core-Common 2.0.0](https://developer.android.com/reference/com/google/android/play/core/release-notes-common#2-0-0).
 ## [1.7.0] - 2022-02-15
 ### New Features
 - Incremented version number to match other packages
