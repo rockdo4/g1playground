@@ -105,6 +105,7 @@ public class PlayerInventory : MonoBehaviour
                     return;
                 AddWeapon(CurrWeapon);
                 CurrWeapon = null;
+                playerAttack.SetWeapon(WeaponTypes.None);
                 break;
             case ItemTypes.Armor:
                 AddArmor(CurrArmor);

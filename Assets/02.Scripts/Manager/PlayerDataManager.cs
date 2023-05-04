@@ -79,12 +79,16 @@ public class PlayerDataManager : MonoBehaviour
         saveData.currLevel = GameManager.instance.player.GetComponent<PlayerLevelManager>().Level;
         saveData.currExp = GameManager.instance.player.GetComponent<PlayerLevelManager>().CurrExp;
 
+        saveData.endTutorial = endTutorial;
+
         SaveLoadSystem.Save(saveData);
     }
 
     public void LoadFile()
     {
         var saveData = SaveLoadSystem.Load(SaveData.Types.Player) as SavePlayerDataVer1;
+        if (saveData != null && !saveData.endTutorial)
+            saveData = null;
         if (saveData == null)
         {
             playerName = null;
@@ -125,6 +129,8 @@ public class PlayerDataManager : MonoBehaviour
         MapManager.instance.SetcurrentChapterName("Village");
         playerCurrHp = saveData.playerCurrHp;
         playerCurrMp = saveData.playerCurrMp;
+
+        endTutorial = saveData.endTutorial;
 
         LoadPlayer();
     }
