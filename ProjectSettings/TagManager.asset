@@ -3,7 +3,22 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Ground
+  - Pushable
+  - Map
+  - Stage
+  - Door
+  - AttackBox
+  - Portal
+  - Dungeon
+  - Falling
+  - CheckPoint
+  - EnemyBody
+  - PlayerBody
+  - StartPoint
+  - Chapter
   layers:
   - Default
   - TransparentFX
@@ -11,18 +26,18 @@ TagManager:
   - 
   - Water
   - UI
+  - Player
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Enemy
+  - CollisionBlocker
+  - Projectile
+  - Door
+  - Stage
+  - BackGround
+  - ObjectTile
+  - BodyTrigger
+  - OnlyCollideWithPlayer
   - 
   - 
   - 
@@ -40,4 +55,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Profile
+    uniqueID: 2239946009
+    locked: 0
+  - name: Bar
+    uniqueID: 2301274603
     locked: 0

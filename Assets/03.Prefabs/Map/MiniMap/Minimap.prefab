@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2309847837137920997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2309847837137921003}
+  - component: {fileID: 2309847837137921002}
+  m_Layer: 0
+  m_Name: Minimap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2309847837137921003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2309847837137920997}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2309847837137921002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2309847837137920997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1665f7426e446444b8b6ec7bb19547ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  miniMapHorizontal: {fileID: 0}
+  miniMapRect: {fileID: 0}
+  playerPos: {fileID: 0}
+  minimapObject: {fileID: 0}
+  mask: {fileID: 0}
+  checkpointPrefab: {fileID: 4277799124383418885, guid: 155d875129c3c2e40822d0f07a55389b,
+    type: 3}
+  blockPrefab: {fileID: 57541623999611406, guid: 3cabfd73f406ef44186f6cb21ed837c7,
+    type: 3}
+  enemyPrefab: {fileID: 7665470331280956075, guid: 341b728d086708548bc763534625bf8d,
+    type: 3}
+  maxPoolSize: 50
+  stackDefaultCapacity: 10
